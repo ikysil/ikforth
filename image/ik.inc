@@ -3,7 +3,7 @@
 ;  ik.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  IK words
@@ -13,24 +13,22 @@
                         $DEF    'INIT-USER',$INIT_USER
                         CLD
                         MOV     [DWORD PTR EDI + BASE_VAR],10
-                        MOV     [DWORD PTR EDI + STATE_VAR],FALSE
+                        MOV     [DWORD PTR EDI + STATE_VAR],F_FALSE
                         MOV     [DWORD PTR EDI + CURRENT_VAR],OFFSET FORTH_WORDLIST_EQU + DESIRED_BASE_EQU
                         $NEXT
 
-;  SMUDGE
-;  Makes latest word hidden/visible in search
-                        $COLON  'SMUDGE',$SMUDGE
-                        CW      $LATEST_FETCH
-                        CW      $LIT
-                        CC      VEF_HIDDEN
-                        CW      $TOGGLE
-                        CW      $EXIT
+;******************************************************************************
+;  I/O
+;******************************************************************************
 
-;  TOGGLE
-;  D: c-addr mask --
-                        $DEF    'TOGGLE',$TOGGLE
-                        POPDS   ECX
-                        POPDS   EBX
-                        XOR     [BYTE PTR EBX],CL
-                        $NEXT
+;  (TYPE)
+                        $COLON  '(TYPE)',$PTYPE
+                        CW      $RFROM                  ; a
+                        CW      $COUNT                  ; a+1 b
+                        CW      $OVER                   ; a+1 b a+1
+                        CW      $OVER                   ; a+1 b a+1 b
+                        CW      $ADD                    ; a+1 b a+1+b
+                        CW      $TOR                    ; a+1 b
+                        CW      $TYPE
+                        CEXIT
 

@@ -3,21 +3,11 @@
 ;  block.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Block words
 ;******************************************************************************
-
-;  READ-BLOCK
-                        $DEF    'READ-BLOCK'
-                        $CALL   READ_BLOCK_FUNC
-                        $NEXT
-
-;  WRITE-BLOCK
-                        $DEF    'WRITE-BLOCK'
-                        $CALL   WRITE_BLOCK_FUNC
-                        $NEXT
 
 ;  7.6.1.0790 BLK
                         $USER   'BLK',$BLK
@@ -41,14 +31,14 @@
                         OR      EAX,EAX
                         JZ      SHORT BLOCK_READ
                         MOV     EAX,[DWORD PTR EDI + BLOCK_UPDATED_VAR]
-                        CMP     EAX,FALSE
+                        CMP     EAX,F_FALSE
                         JZ      SHORT BLOCK_READ
                         MOV     EBX,EDI
                         ADD     EBX,BLOCK_VAR
                         PUSHDS  EBX
                         PUSHDS  <[DWORD PTR EDI + BLOCK_NUM_VAR]>
                         $CALL   WRITE_BLOCK_FUNC
-                        MOV     [DWORD PTR EDI + BLOCK_UPDATED_VAR],FALSE
+                        MOV     [DWORD PTR EDI + BLOCK_UPDATED_VAR],F_FALSE
 BLOCK_READ:
                         POPDS   EAX
                         MOV     [DWORD PTR EDI + BLOCK_NUM_VAR],EAX

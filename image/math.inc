@@ -3,7 +3,7 @@
 ;  math.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Integer math

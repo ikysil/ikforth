@@ -3,7 +3,7 @@
 ;  primitives.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Primitives
@@ -89,9 +89,19 @@ NOQBRANCH:
                         $DEF    '(DO-INT/COMP)',,$DOVAR
                         LABEL   $PDO_INT_COMP FAR
                         ADD     EAX,CELL_SIZE
-                        CMP     [DWORD PTR EDI + STATE_VAR],FALSE
+                        CMP     [DWORD PTR EDI + STATE_VAR],F_FALSE
                         JZ      PDIC_INT
                         ADD     EAX,CELL_SIZE
 PDIC_INT:
                         MOV     EAX,[DWORD PTR EAX]
                         $JMP
+
+;  (DO-DOES>)
+                        $DEF    '(DO-DOES>)',,$DOVAR
+                        LABEL   $DODOES FAR
+                        PUSHRS  ESI
+                        POPDS   ESI
+                        ADD     EAX,CELL_SIZE
+                        PUSHDS  EAX
+                        $NEXT
+

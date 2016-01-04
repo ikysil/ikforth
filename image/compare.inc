@@ -3,7 +3,7 @@
 ;  compare.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Compare
@@ -13,14 +13,14 @@
 ;  Return a false flag.
 ;  D: -- false
                         $DEF    'FALSE',$FALSE
-                        PUSHDS  FALSE
+                        PUSHDS  F_FALSE
                         $NEXT
 
 ;  6.2.2298 TRUE
 ;  Return a true flag, a single-cell value with all bits set.
 ;  D: -- true
                         $DEF    'TRUE',$TRUE
-                        PUSHDS  TRUE
+                        PUSHDS  F_TRUE
                         $NEXT
 
 ;  <
@@ -28,9 +28,9 @@
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JL      SHORT LE_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 LE_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -40,9 +40,9 @@ LE_YES:
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JG      SHORT GR_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 GR_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -53,9 +53,9 @@ GR_YES:
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JZ      SHORT EQ_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 EQ_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -67,9 +67,9 @@ EQ_YES:
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JNZ     SHORT NOEQ_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 NOEQ_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -79,9 +79,9 @@ NOEQ_YES:
                         $DEF    '0<',$ZEROLE
                         POPDS   EAX
                         OR      EAX,EAX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JL      SHORT ZEROLE_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 ZEROLE_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -91,9 +91,9 @@ ZEROLE_YES:
                         $DEF    '0=',$ZEROEQ
                         POPDS   EAX
                         OR      EAX,EAX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JZ      SHORT ZEROEQ_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 ZEROEQ_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -104,9 +104,9 @@ ZEROEQ_YES:
                         $DEF    '0<>',$ZERONOEQ
                         POPDS   EAX
                         OR      EAX,EAX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JNZ     SHORT ZERONOEQ_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 ZERONOEQ_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -117,9 +117,9 @@ ZERONOEQ_YES:
                         $DEF    '0>',$ZEROGR
                         POPDS   EAX
                         OR      EAX,EAX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JG      SHORT ZEROGR_YES
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 ZEROGR_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -135,9 +135,9 @@ ZEROGR_YES:
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JB      SHORT ULE_YES           ; jump if EAX < EBX
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 ULE_YES:
                         PUSHDS  EAX
                         $NEXT
@@ -149,9 +149,9 @@ ULE_YES:
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
-                        MOV     EAX,TRUE
+                        MOV     EAX,F_TRUE
                         JA      SHORT UGR_YES           ; jump if EAX > EBX
-                        MOV     EAX,FALSE
+                        MOV     EAX,F_FALSE
 UGR_YES:
                         PUSHDS  EAX
                         $NEXT

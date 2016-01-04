@@ -3,7 +3,7 @@
 ;  ftable.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Functions provided by loader.
@@ -28,8 +28,7 @@ FUNC_AREA_SIZE          =       ( FUNC_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
                         MACRO   $CALL NAME
                         PUSHRS  EDI
                         MOV     EBX,[DWORD PTR FUNC_TABLE_PTR + DESIRED_BASE_EQU]
-                        ADD     EBX,&NAME * CELL_SIZE
-                        MOV     EBX,[DWORD PTR EBX]
+                        MOV     EBX,[DWORD PTR EBX + &NAME * CELL_SIZE]
                         CALL    EBX
                         POPRS   EDI
                         ENDM    $CALL
@@ -57,3 +56,6 @@ FUNC_AREA_SIZE          =       ( FUNC_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
                         $FUNC   START_THREAD
                         $FUNC   COMPARE
                         $FUNC   PAGE
+                        $FUNC   ALLOCATE
+                        $FUNC   FREE
+                        $FUNC   REALLOCATE

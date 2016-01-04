@@ -3,7 +3,7 @@
 ;  search.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Words search
@@ -112,17 +112,15 @@ SW_NOT_FOUND:
                         CW      $SEARCH_WORDLIST
                         CW      $DUP
                         CW      $ZEROEQ
-                        CW      $QBRANCH
-                        CW      FF_FOUND
+                        CQBR    FF_FOUND
                           CW      $RFROM
                           CW      $SWAP
-                        CW      $BRANCH
-                        CW      FF_EXIT
+                        CBR     FF_EXIT
 FF_FOUND:
                           CW      $RFROM
                           CW      $DROP
 FF_EXIT:
-                        CW      $EXIT
+                        CEXIT
 
 ;  6.1.1550 FIND
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )

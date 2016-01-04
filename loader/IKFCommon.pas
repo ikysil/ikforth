@@ -10,11 +10,11 @@ const
   fFALSE    = 0;
 
 type
-  TMainProc = procedure( EvalStr: PChar; EvalStrLen: Cardinal ); stdcall;
-  TForthThreadFunc = procedure( UserDataAreaAddr, ExecutionToken: Cardinal ); stdcall;
+  TMainProc = procedure(EvalStr: PChar; EvalStrLen: Cardinal); stdcall;
+  TForthThreadFunc = procedure(UserDataAreaAddr, ExecutionToken: Cardinal); stdcall;
 
   TImageHeader = record
-    Signature: array[ 0 .. 14 ] of Char;
+    Signature: array[0 .. 14] of Char;
     EndOfSignature: Byte;  // shall be #0
     DesiredBase: Integer;
     DesiredSize: Integer;
@@ -27,7 +27,7 @@ type
 
   PFuncTable = ^TFuncTable;
   TFuncTable = record
-// order MUST be the same as in IKForth.asm FUNC_TABLE
+// order MUST be the same as in FKernel.asm FUNC_TABLE
     fGetLastError,
     fLoadLibrary,
     fFreeLibrary,
@@ -50,12 +50,15 @@ type
     fATXY,
     fStartThread,
     fCompare,
-    fPage
+    fPage,
+    fAlloc,
+    fFree,
+    fReAlloc
       : Pointer;
   end;
 
   PBlock = ^TBlock;
-  TBlock = array[ 0 .. BlockSize - 1 ] of Char;
+  TBlock = array[0 .. BlockSize - 1] of Char;
 
 var
   ApplicationPath: string;
@@ -70,9 +73,11 @@ uses
   SysUtils;
 
 initialization
+begin
   CanExit:= False;
-  ApplicationPath:= ExtractFileDir( ParamStr( 0 ));
-  ImageFileName:=   ChangeFileExt( ParamStr( 0 ), '.img' );
-  StartFile:=       ChangeFileExt( ParamStr( 0 ), '.f' );
+  ApplicationPath:= ExtractFileDir(ParamStr(0));
+  ImageFileName:=   ChangeFileExt(ParamStr(0), '.img');
+  StartFile:=       ExtractRelativePath(GetCurrentDir + '\', ChangeFileExt(ParamStr(0), '.f'));
+end;
 
 end.

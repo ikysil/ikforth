@@ -3,7 +3,7 @@
 ;  data.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Data space
@@ -22,7 +22,7 @@
 ;  COMPILE,
                         $COLON  'COMPILE,',$COMPILEC,<VEF_COMPILE_ONLY>
                         CW      $COMMA
-                        CW      $EXIT
+                        CEXIT
 
 ;  6.1.0710 ALLOT
 ;  Allocates n memory cells on the top of vocabulary
@@ -54,27 +54,23 @@
 
 ;  6.1.0950 CONSTANT
                         $COLON  'CONSTANT',$CONSTANT
-                        CW      $LIT
-                        CW      $DOCONST
-                        CW      $LIT
-                        CC      VEF_USUAL
+                        CWLIT   $DOCONST
+                        CCLIT   VEF_USUAL
                         CW      $PARSE_CHECK_HEADERC
                         CW      $DROP
                         CW      $COMMA
-                        CW      $EXIT
+                        CEXIT
 
 ;  6.1.1780 LITERAL
                         $COLON  'LITERAL',$LITERAL,<VEF_IMMEDIATE OR VEF_COMPILE_ONLY>
-                        CW      $LIT
-                        CW      $LIT
+                        CWLIT   $LIT
                         CW      $COMPILEC
                         CW      $COMMA
-                        CW      $EXIT
+                        CEXIT
 
 ;  6.1.1650 HERE
 ;  addr is the data-space pointer.
 ;  D: -- addr
                         $COLON  'HERE',$HERE
-                        CW      $DP
-                        CW      $FETCH
-                        CW      $EXIT
+                        CFETCH  $DP
+                        CEXIT

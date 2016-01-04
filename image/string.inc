@@ -3,7 +3,7 @@
 ;  string.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  String words
@@ -52,12 +52,6 @@ CMOVE_EXIT:
 CMOVEGR_EXIT:
                         POPRS   ESI
                         POPRS   EDI
-                        $NEXT
-
-;  17.6.1.0935 COMPARE
-                        $DEF    'COMPARE',$COMPARE
-                        $CALL   COMPARE_FUNC
-                        PUSHDS  EAX
                         $NEXT
 
 ;  6.1.0980 COUNT

@@ -3,7 +3,7 @@
 ;  parse.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Parsing
@@ -66,17 +66,15 @@ PWORD_EXIT:
 ;  6.1.2450 WORD
                         $COLON  'WORD',$WORD
                         CW      $SOURCE                 ; c c-addr u
-                        CW      $TOIN
-                        CW      $FETCH
+                        CFETCH  $TOIN
                         CW      $SUB
                         CW      $SWAP                   ; c u c-addr
-                        CW      $TOIN                   ; c u c-addr addr
-                        CW      $FETCH                  ; c u c-addr offset
+                        CFETCH  $TOIN                   ; c u c-addr offset
                         CW      $ADD                    ; c u c-addr
                         CW      $SWAP                   ; c c-addr u
                         CW      $POCKET                 ; c c-addr u dest-addr
                         CW      $PWORD
-                        CW      $EXIT
+                        CEXIT
 
 ;  (PARSE)
                         $DEF    '(PARSE)',$PPARSE
@@ -105,16 +103,14 @@ PPARSE_EXIT:
 ;  6.2.2008 PARSE
                         $COLON  'PARSE',$PARSE
                         CW      $SOURCE                 ; c c-addr u
-                        CW      $TOIN
-                        CW      $FETCH
+                        CFETCH  $TOIN
                         CW      $SUB
                         CW      $SWAP                   ; c u c-addr
-                        CW      $TOIN                   ; c u c-addr addr
-                        CW      $FETCH                  ; c u c-addr offset
+                        CFETCH  $TOIN                   ; c u c-addr offset
                         CW      $ADD                    ; c u c-addr
                         CW      $SWAP                   ; c c-addr u
                         CW      $PPARSE                 ; c-addr u
-                        CW      $EXIT
+                        CEXIT
 
 ;  (S")
 ;  -- c-addr count
@@ -128,15 +124,13 @@ PPARSE_EXIT:
                         CW      $ADD
                         CW      $TOR
                         CW      $SWAP
-                        CW      $EXIT
+                        CEXIT
 
 ;  S"-COMP
                         $COLON  'S"-COMP',$SQ_COMP
-                        CW      $LIT
-                        CC      '"'
+                        CCLIT   '"'
                         CW      $PARSE
-                        CW      $LIT
-                        CW      $PSQUOTE
+                        CWLIT   $PSQUOTE
                         CW      $COMPILEC
                         CW      $DUP
                         CW      $COMMA
@@ -145,12 +139,11 @@ PPARSE_EXIT:
                         CW      $ALLOT
                         CW      $SWAP
                         CW      $CMOVE
-                        CW      $EXIT
+                        CEXIT
 
 ;  S"-INT
                         $COLON  'S"-INT',$SQ_INT
-                        CW      $LIT
-                        CC      '"'
+                        CCLIT   '"'
                         CW      $PARSE
                         CW      $2DUP
                         CW      $SQUOTE_BUFFER
@@ -159,7 +152,7 @@ PPARSE_EXIT:
                         CW      $NIP
                         CW      $SQUOTE_BUFFER
                         CW      $SWAP
-                        CW      $EXIT
+                        CEXIT
 
 ;     6.1.2165 S"
 ;  11.6.1.2165 S"
@@ -168,34 +161,27 @@ PPARSE_EXIT:
                         CW      $SQ_COMP
 
 ;  \
-;                        $DEF    '\',$BSLASH,$ENTER,VEF_IMMEDIATE
-;                        CW      $BLK
-;                        CW      $FETCH
+;                        $COLON  '\',$BSLASH,VEF_IMMEDIATE
+;                        CFETCH  $BLK
 ;                        CW      $ZEROGR
-;                        CW      $QBRANCH
-;                        CW      BS_NOTBLOCK
-;                          CW      $TOIN
-;                          CW      $FETCH
-;                          CW      $LIT
-;                          CC      63
+;                        CQBR    BS_NOTBLOCK
+;                          CFETCH  $TOIN
+;                          CCLIT   63
 ;                          CW      $INVERT
 ;                          CW      $AND
-;                          CW      $LIT
-;                          CC      64
+;                          CCLIT   64
 ;                          CW      $ADD
-;                        CW      $BRANCH
-;                        CW      BS_EXIT
+;                        CBR     BS_EXIT
 ;BS_NOTBLOCK:
 ;                          CW      $SOURCE
 ;                          CW      $NIP
 ;BS_EXIT:
-;                        CW      $TOIN
-;                        CW      $STORE
-;                        CW      $EXIT
+;                        CSTORE  $TOIN
+;                        CEXIT
 
 ;  \
-                        $DEF    '\',,$ENTER,VEF_IMMEDIATE
+                        $COLON  '\',$BSLASH,VEF_IMMEDIATE
                         CW      $ZERO
                         CW      $PARSE
                         CW      $2DROP
-                        CW      $EXIT
+                        CEXIT

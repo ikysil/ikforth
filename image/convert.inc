@@ -3,7 +3,7 @@
 ;  convert.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Misc convertion words
@@ -14,30 +14,7 @@
 ;  D: CFA -- PFA
                         $COLON  '>BODY',$TOBODY
                         CW      $CELLADD
-                        CW      $EXIT
-
-;  >NAME
-;  D: xt -- name-addr
-                        $DEF    '>NAME',$TONAME
-                        POPDS   EAX
-                        SUB     EAX,5
-                        XOR     EBX,EBX
-                        MOV     BL,[BYTE PTR EAX]
-                        SUB     EAX,EBX
-                        INC     EAX
-                        PUSHDS  EAX
-                        $NEXT
-
-;  NAME>
-;  D: name-addr -- xt
-                        $DEF    'NAME>',$FROMNAME
-                        POPDS   EAX
-                        XOR     EBX,EBX
-                        MOV     BL,[BYTE PTR EAX]
-                        ADD     EAX,EBX
-                        ADD     EAX,6
-                        PUSHDS  EAX
-                        $NEXT
+                        CEXIT
 
 ;  6.1.0570 >NUMBER
                         $DEF    '>NUMBER',$TONUMBER
@@ -65,8 +42,13 @@ TN_CONT:
                         INC     ECX
                   REPNE SCASB
                         JNZ     SHORT TN_CONT2
-                        OR      ECX,ECX
-                        JNZ     SHORT TN_CONT1
+                        DEC     EDI
+                        DEC     EDI
+                        SUB     EDI,OFFSET DIGITS_TABLE + DESIRED_BASE_EQU
+                        CMP     EDI,EBX
+                        JGE     SHORT TN_CONT2
+                        CMP     ECX,0
+                        JG      SHORT TN_CONT1
 TN_CONT2:
                         POPDS   ECX
                         POPDS   EDI

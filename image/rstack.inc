@@ -3,7 +3,7 @@
 ;  rstack.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Return stack manipulation
@@ -79,8 +79,7 @@
 
 ;  RP0
                         $DEF    'RP0',$RP0
-                        MOV     EAX,EDI
-                        ADD     EAX,RSTACK_VAR
+                        LEA     EAX,[DWORD PTR EDI + RSTACK_VAR]
                         PUSHDS  EAX
                         $NEXT
 
@@ -94,3 +93,20 @@
                         POPDS   EBP
                         $NEXT
 
+;  +R
+;  D: x - x
+;  R:   - x
+                        $DEF    '+R',$PLUS_R,,VEF_COMPILE_ONLY
+                        FETCHDS EAX
+                        PUSHRS  EAX
+                        $NEXT
+
+;  2+R
+;  D: x1 x2 - x1 x2
+;  R:       - x1 x2
+                        $DEF    '2+R',$2PLUS_R,,VEF_COMPILE_ONLY
+                        FETCHDS EAX
+                        FETCHDS EBX,1
+                        PUSHRS  EBX
+                        PUSHRS  EAX
+                        $NEXT

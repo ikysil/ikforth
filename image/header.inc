@@ -1,9 +1,9 @@
 ;******************************************************************************
 ;
-;  ik.inc
+;  header.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  HEADER & support words
@@ -11,28 +11,53 @@
 
 ;  CREATE-REPORT
                         $VAR    'CREATE-REPORT',$CREATE_REPORT
-                        CC      FALSE
+                        CC      F_FALSE
 
 ;  CREATE-WARN-ON-DUPLICATE
                         $VAR    'CREATE-WARN-ON-DUPLICATE',$CREATE_WOD
-                        CC      FALSE
+                        CC      F_FALSE
 
 ;  MAX-NAME-LENGTH
                         $VAR    'MAX-NAME-LENGTH',$MAX_NAME_LENGTH
                         CC      MAX_NAME_LENGTH
 
-;  LATEST@
+;  &USUAL
+;  D: -- VEF-USUAL
+                        $CONST  '&USUAL',$AMP_USUAL
+                        CC      VEF_USUAL
+
+;  &IMMEDIATE
+;  D: -- VEF-IMMEDIATE
+                        $CONST  '&IMMEDIATE',$AMP_IMMEDIATE
+                        CC      VEF_IMMEDIATE
+
+;  &HIDDEN
+;  D: -- VEF-HIDDEN
+                        $CONST  '&HIDDEN',$AMP_HIDDEN
+                        CC      VEF_HIDDEN
+
+;  &COMPILE-ONLY
+;  D: -- VEF-COMPILE-ONLY
+                        $CONST  '&COMPILE-ONLY',$AMP_COMPILE_ONLY
+                        CC      VEF_COMPILE_ONLY
+
+;  &IMMEDIATE/COMPILE-ONLY
+;  D: -- VEF-IMMEDIATE or VEF-COMPILE-ONLY
+                        $CONST  '&IMMEDIATE/COMPILE-ONLY',$AMP_IMMEDIATE_COMPILE_ONLY
+                        CC      <VEF_IMMEDIATE OR VEF_COMPILE_ONLY>
+
+;  LATEST-HEAD@
 ;  addr is the link address of the last compiled word in compilation wordlist.
 ;  D: -- addr
-                        $DEF    'LATEST@',$LATEST_FETCH
+                        $DEF    'LATEST-HEAD@',$LATEST_HEAD_FETCH
                         MOV     EAX,[DWORD PTR EDI + CURRENT_VAR]       ; get CURRENT wid
                         PUSHDS  <[DWORD PTR EAX]>
                         $NEXT
 
-;  LATEST!
+;  LATEST-HEAD!
 ;  addr is the link address of the last compiled word in compilation wordlist.
 ;  D: addr --
-                        $DEF    'LATEST!',$LATEST_STORE
+                        $DEF    'LATEST-HEAD!',$LATEST_HEAD_STORE
                         MOV     EAX,[DWORD PTR EDI + CURRENT_VAR]       ; get CURRENT wid
                         POPDS   <[DWORD PTR EAX]>
                         $NEXT
@@ -42,58 +67,45 @@
                         $COLON  'CHECK-NAME',$CHECK_NAME
                         CW      $DUP
                         CW      $ZEROEQ
-                        CW      $QBRANCH
-                        CW      NAME_ZEROGR
-                          CW      $LIT
-                          CC      -16
-                          CW      $THROW
+                        CQBR    NAME_ZEROGR
+                          CTHROW  -16
 NAME_ZEROGR:
                         CW      $DUP
-                        CW      $MAX_NAME_LENGTH
-                        CW      $FETCH
+                        CFETCH  $MAX_NAME_LENGTH
                         CW      $GR
-                        CW      $QBRANCH
-                        CW      NAME_OK
-                          CW      $LIT
-                          CC      -19
-                          CW      $THROW
+                        CQBR    NAME_OK
+                          CTHROW  -19
 NAME_OK:
-                        CW      $EXIT
+                        CEXIT
 
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
                         $COLON  'REPORT-NAME',$REPORT_NAME
-                        CW      $CREATE_REPORT
-                        CW      $FETCH
-                        CW      $QBRANCH
-                        CW      NO_REPORT
+                        CFETCH  $CREATE_REPORT
+                        CQBR    NO_REPORT
                           CW      $2DUP
                           CW      $TYPE
                           $WRITE  < >
 NO_REPORT:
-                        CW      $EXIT
+                        CEXIT
 
 ;  CHECK-DUPLICATE-NAME
 ;  D: c-addr count -- c-addr count
                         $COLON  'CHECK-DUPLICATE-NAME',$CHECK_DUPLICATE_NAME
-                        CW      $CREATE_WOD
-                        CW      $FETCH
-                        CW      $QBRANCH
-                        CW      CDN_OK
+                        CFETCH  $CREATE_WOD
+                        CQBR    CDN_OK
                         CW      $2DUP
-                        CW      $CURRENT
-                        CW      $FETCH
+                        CFETCH  $CURRENT
                         CW      $SEARCH_WORDLIST        ; c-addr u 0 | c-addr u xt +/-1
                         CW      $ZERONOEQ
-                        CW      $QBRANCH
-                        CW      CDN_OK
+                        CQBR    CDN_OK
                           CW      $DROP
                           $WRITE  <Redefinition of >
                           CW      $2DUP
                           CW      $TYPE                 
                           $WRITE  < >
 CDN_OK:
-                        CW      $EXIT
+                        CEXIT
 
 ;  (HEADER,)
 ;  Compile header without CFA
@@ -107,27 +119,24 @@ CDN_OK:
                         CW      $DUP
                         CW      $CCOMMA                 ; compile length
                         CW      $QDUP
-                        CW      $QBRANCH
-                        CW      NO_NAME
+                        CQBR    NO_NAME
                           CW      $HERE                   ; count c-addr count here
                           CW      $SWAP                   ; count c-addr here count
                           CW      $DUP
                           CW      $ALLOT
                           CW      $CMOVE                  ; put name
-                        CW      $BRANCH
-                        CW      NAME_EXIT
+                        CBR     NAME_EXIT
 NO_NAME:
                           CW      $DROP
 NAME_EXIT:
-                        CW      $LIT
-                        CC      2
+                        CCLIT   2
                         CW      $ADD
                         CW      $CCOMMA                 ; compile (length + 2)
-                        CW      $LATEST_FETCH
+                        CW      $LATEST_HEAD_FETCH
                         CW      $COMMA
                         CW      $RFROM
-                        CW      $LATEST_STORE
-                        CW      $EXIT
+                        CW      $LATEST_HEAD_STORE
+                        CEXIT
 
 ;  (CFA,)
 ;  Compile CFA after (HEADER,)
@@ -135,25 +144,23 @@ NAME_EXIT:
                         $COLON  '(CFA,)',$PCFA_C
                         CW      $DUP
                         CW      $ZEROEQ
-                        CW      $QBRANCH
-                        CW      EXECUTOR_XT
+                        CQBR    EXECUTOR_XT
                           CW      $DROP
                           CW      $HERE
-                          CW      $LIT
-                          CC      CELL_SIZE
+                          CCLIT   CELL_SIZE
                           CW      $ADD
 EXECUTOR_XT:
                         CW      $HERE
                         CW      $SWAP
                         CW      $COMMA
-                        CW      $EXIT
+                        CEXIT
 
 ;  HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
                         $COLON  'HEADER,',$HEADERC
                         CW      $PHEADERC
                         CW      $PCFA_C
-                        CW      $EXIT
+                        CEXIT
 
 ;  CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
@@ -164,7 +171,7 @@ EXECUTOR_XT:
                         CW      $CHECK_DUPLICATE_NAME
                         CW      $RFROM
                         CW      $HEADERC
-                        CW      $EXIT
+                        CEXIT
 
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
@@ -175,4 +182,137 @@ EXECUTOR_XT:
                         CW      $COUNT
                         CW      $RFROM
                         CW      $CHECK_HEADERC
-                        CW      $EXIT
+                        CEXIT
+
+;  HFLAGS!
+;  D: x h-id --
+;  Store flags specified by x to the flags field of the header
+                        $COLON  'HFLAGS!',$HFLAGS_STORE
+                        CW      $CSTORE
+                        CEXIT
+
+;  HFLAGS@
+;  D: h-id -- x
+;  Get flags from the flags field of the header
+                        $COLON  'HFLAGS@',$HFLAGS_FETCH
+                        CW      $CFETCH
+                        CEXIT
+
+;  SET-HFLAGS!
+;  D: flags --
+                        $COLON  'SET-HFLAGS!',$SET_HFLAGS_STORE
+                        CW      $LATEST_HEAD_FETCH
+                        CW      $DUP
+                        CW      $HFLAGS_FETCH
+                        CW      $ROT
+                        CW      $OR
+                        CW      $SWAP
+                        CW      $HFLAGS_STORE
+                        CEXIT
+
+;  RESET-HFLAGS!
+;  D: flags --
+                        $COLON  'RESET-HFLAGS!',$RESET_HFLAGS_STORE
+                        CW      $LATEST_HEAD_FETCH
+                        CW      $DUP
+                        CW      $HFLAGS_FETCH
+                        CW      $ROT
+                        CW      $INVERT
+                        CW      $AND
+                        CW      $SWAP
+                        CW      $HFLAGS_STORE
+                        CEXIT
+
+;  INVERT-HFLAGS!
+;  D: flags --
+                        $COLON  'INVERT-HFLAGS!',$INVERT_HFLAGS_STORE
+                        CW      $LATEST_HEAD_FETCH
+                        CW      $DUP
+                        CW      $HFLAGS_FETCH
+                        CW      $ROT
+                        CW      $XOR
+                        CW      $SWAP
+                        CW      $HFLAGS_STORE
+                        CEXIT
+
+;  >HEAD
+;  D: xt -- h-id
+;  h-id is the address of vocabulary entry flags
+                        $DEF    '>HEAD',$TO_HEAD
+                        POPDS   EAX
+                        SUB     EAX,5
+                        XOR     EBX,EBX
+                        MOV     BL,[BYTE PTR EAX]
+                        SUB     EAX,EBX
+                        PUSHDS  EAX
+                        $NEXT
+
+;  HEAD>
+;  D: h-id -- xt
+;  h-id is the address of vocabulary entry flags
+                        $DEF    'HEAD>',$HEAD_FROM
+                        POPDS   EAX
+                        INC     EAX
+                        XOR     EBX,EBX
+                        MOV     BL,[BYTE PTR EAX]
+                        ADD     EAX,EBX
+                        ADD     EAX,6
+                        PUSHDS  EAX
+                        $NEXT
+
+;  HEAD>NAME
+                        $COLON  'HEAD>NAME',$HEAD_TO_NAME
+                        CW      $1ADD
+                        CEXIT
+
+;  NAME>HEAD
+                        $COLON  'NAME>HEAD',$NAME_TO_HEAD
+                        CW      $1SUB
+                        CEXIT
+
+;  >NAME
+;  D: xt -- name-addr
+                        $COLON  '>NAME',$TO_NAME
+                        CW      $TO_HEAD
+                        CW      $HEAD_TO_NAME
+                        CEXIT
+
+;  NAME>
+;  D: name-addr -- xt
+                        $COLON  'NAME>',$NAME_FROM
+                        CW      $NAME_TO_HEAD
+                        CW      $HEAD_FROM
+                        CEXIT
+
+;  >LINK
+;  D: CFA -- LFA
+                        $COLON  '>LINK',$TO_LINK
+                        CCLIT   CELL_SIZE
+                        CW      $SUB
+                        CEXIT
+
+;  LINK>
+;  D: LFA -- CFA
+                        $COLON  'LINK>',$LINK_FROM
+                        CCLIT   CELL_SIZE
+                        CW      $ADD
+                        CEXIT
+
+;  H>NEXT>H
+;  D: h-id -- prev_h-id | 0
+                        $COLON  'H>NEXT>H',$H_TO_NEXT_TO_H
+                        CW      $HEAD_FROM
+                        CW      $TO_LINK
+                        CW      $FETCH
+                        CEXIT
+
+;  H>#NAME
+;  D: h-id -- addr len
+                        $COLON  'H>#NAME',$H_TO_HASH_NAME
+                        CW      $HEAD_TO_NAME
+                        CW      $DUP
+                        CW      $1ADD
+                        CW      $SWAP
+                        CW      $CFETCH
+                        CEXIT
+

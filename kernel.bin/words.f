@@ -1,12 +1,13 @@
 \
 \  words.f
 \
-\  Copyright (C) 1999-2001 Illya Kysil
+\  Copyright (C) 1999-2003 Illya Kysil
 \
 
-S" KERNEL\ANSI-EC.F"      INCLUDED
-S" KERNEL\IKFORTH.F"      INCLUDED
-S" KERNEL\CHAIN.F"        INCLUDED
+S" lib\kernel\consts.f"       INCLUDED
+S" lib\kernel\ikforth.f"      INCLUDED
+\ S" lib\kernel\source.f"       INCLUDED
+S" lib\kernel\chain.f"        INCLUDED
 
 :NONAME INIT-USER ;
 CHAIN STARTUP-CHAIN
@@ -14,36 +15,51 @@ CHAIN STARTUP-CHAIN
 :NONAME ;
 CHAIN SHUTDOWN-CHAIN
 
-S" KERNEL\DLLINTF.F"      INCLUDED
+S" lib\kernel\double.f"       INCLUDED
+S" lib\kernel\format.f"       INCLUDED
+S" lib\kernel\exception.f"    INCLUDED
+S" lib\kernel\search-order.f" INCLUDED
+S" lib\kernel\string.f"       INCLUDED
+S" lib\kernel\zchar.f"        INCLUDED
+S" lib\kernel\required.f"     INCLUDED
 
-S" KERNEL\DOUBLE.F"       INCLUDED
-S" KERNEL\FORMAT.F"       INCLUDED
-S" KERNEL\SEARCH-ORDER.F" INCLUDED
-S" KERNEL\REQUIRED.F"     INCLUDED
-S" KERNEL\ENVIRONMENT.F"  INCLUDED
-S" KERNEL\EXCEPTION.F"    INCLUDED
-S" KERNEL\QUIT.F"         INCLUDED
-S" KERNEL\BLOCK.F"        INCLUDED
-S" KERNEL\CASE.F"         INCLUDED
-S" KERNEL\TOOLS.F"        INCLUDED
-S" KERNEL\MARKER.F"       INCLUDED
+required-report off
 
-S" KERNEL\STRING.F"       INCLUDED
-S" KERNEL\VALUE.F"        INCLUDED
+S" lib\kernel\environment.f"  INCLUDED
+S" lib\kernel\platform.f"     INCLUDED
+S" lib\kernel\quit.f"         INCLUDED
+S" lib\kernel\block.f"        INCLUDED
+S" lib\kernel\case.f"         INCLUDED
+S" lib\ansi\value.f"          INCLUDED
 
-S" WIN\CONSTS.F"          INCLUDED
-\ S" WIN\WINCON.F"          INCLUDED
-S" WIN\KERNEL32.F"        INCLUDED
-S" WIN\CONSOLE.F"         INCLUDED
+S" lib\kernel\tools.f"        INCLUDED
 
-S" KERNEL\MEMORY.F"       INCLUDED
-S" KERNEL\MISC.F"         INCLUDED
-S" KERNEL\FILE.F"         INCLUDED
-S" KERNEL\LOCALS.F"       INCLUDED
-S" KERNEL\SEE.F"          INCLUDED
-S" EXT\LOOP.F"            INCLUDED
-S" EXT\CLASS.F"           INCLUDED
+: WIN32 TRUE ;
 
-S" EXT\486ASM-IKF-PRE.F"  INCLUDED
-S" EXT\486ASM\486ASM.F"   INCLUDED
-S" EXT\486ASM-IKF-POST.F" INCLUDED
+[DEFINED] WIN32 [IF]
+
+<ENV
+
+: PLATFORM S" Win32" ;
+
+ENV>
+
+S" lib\win32\dllintf.f"       INCLUDED
+\ S" lib\win32\wincon.f"        INCLUDED
+S" lib\win32\consts.f"        INCLUDED
+S" lib\win32\kernel32.f"      INCLUDED
+S" lib\win32\winerror.f"      INCLUDED
+S" lib\win32\winconsole.f"    INCLUDED
+
+[THEN]
+
+S" lib\kernel\misc.f"         INCLUDED
+S" lib\kernel\file.f"         INCLUDED
+S" lib\ansi\see.f"            INCLUDED
+
+S" lib\~ik\macro.f"           INCLUDED
+S" lib\~ik\loop.f"            INCLUDED
+S" lib\~ik\class.f"           INCLUDED
+S" lib\~ik\486asm.f"          INCLUDED
+S" lib\~ik\float.f"           INCLUDED
+S" lib\~ik\S$.f"              INCLUDED

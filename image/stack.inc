@@ -3,7 +3,7 @@
 ;  stack.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Stack manipulation
@@ -58,6 +58,7 @@ QDUPZERO:
                         PUSHDS  EBX
                         $NEXT
 
+
 ;  6.1.1260 DROP
 ;  Remove top cell from the stack
 ;  D: a --
@@ -97,6 +98,38 @@ QDUPZERO:
                         PUSHDS  EBX
                         PUSHDS  ECX
                         PUSHDS  EAX
+                        $NEXT
+
+;  8.6.2.0420 2ROT
+;  D: a1 a2 b1 b2 c1 c2 -- b1 b2 c1 c2 a1 a2
+                        $DEF    '2ROT',$2ROT
+                        PUSHRS  EDI
+                        PUSHRS  ESI
+                        POPDS   EDX     \ c2
+                        POPDS   ECX     \ c1
+                        POPDS   EBX     \ b2
+                        POPDS   EAX     \ b1
+                        POPDS   EDI     \ a2
+                        POPDS   ESI     \ a1
+                        PUSHDS  EAX
+                        PUSHDS  EBX
+                        PUSHDS  ECX
+                        PUSHDS  EDX
+                        PUSHDS  ESI
+                        PUSHDS  EDI
+                        POPRS   ESI
+                        POPRS   EDI
+                        $NEXT
+
+;  -ROT
+;  D: a b c -- c a b 
+                        $DEF    '-ROT',$MROT
+                        POPDS   ECX
+                        POPDS   EBX
+                        POPDS   EAX
+                        PUSHDS  ECX
+                        PUSHDS  EAX
+                        PUSHDS  EBX
                         $NEXT
 
 ;  6.1.2260 SWAP

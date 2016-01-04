@@ -3,7 +3,7 @@
 ;  double.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Double number words
@@ -11,13 +11,12 @@
 
 ;  8.6.1.0390 2LITERAL
                         $COLON  '2LITERAL',$2LITERAL,<VEF_IMMEDIATE OR VEF_COMPILE_ONLY>
-                        CW      $LIT
-                        CW      $2LIT
+                        CWLIT   $2LIT
                         CW      $COMPILEC
                         CW      $SWAP
                         CW      $COMMA
                         CW      $COMMA
-                        CW      $EXIT
+                        CEXIT
 
 ;  8.6.1.1040 D+
 ;  ( d1|ud1 d2|ud2 -- d3|ud3 )

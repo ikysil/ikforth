@@ -2,48 +2,52 @@ unit IKFunc;
 
 interface
 
-function fGetLastError: Integer; stdcall;
-function fLoadLibrary( NameLen: Integer; NameAddr: Cardinal ): Integer; stdcall;
-procedure fFreeLibrary( LibID: Integer ); stdcall;
-function fGetProcAddress( LibID: Integer; NameLen: Integer; NameAddr: Cardinal ): Pointer; stdcall;
+function  fGetLastError: Integer; stdcall;
+function  fLoadLibrary(NameLen: Integer; NameAddr: Cardinal): Integer; stdcall;
+procedure fFreeLibrary(LibID: Integer); stdcall;
+function  fGetProcAddress(LibID: Integer; NameLen: Integer; NameAddr: Cardinal): Pointer; stdcall;
 procedure fBye; stdcall;
-procedure fEmit( A: Char ); stdcall;
-procedure fType( Len, Addr: Integer ); stdcall;
-function fAccept( Len: Integer; Addr: Cardinal ): Cardinal; stdcall;
-procedure fReadBlock( BlockNum, Addr: Cardinal ); stdcall;
-procedure fWriteBlock( BlockNum, Addr: Cardinal ); stdcall;
-procedure fFileClose( FileID: Integer ); stdcall;
-function fFileCreate( FileAccessMethod, NameLen: Integer; NameAddr: Cardinal ): Integer; stdcall;
-function fFilePosition( FileID: Integer ): Int64; stdcall;
-function fFileOpen( FileAccessMethod, NameLen: Integer; NameAddr: Cardinal ): Integer; stdcall;
-function fFileRead( FileID: Integer; Len, Addr: Cardinal ): Cardinal; stdcall;
-procedure fFileReposition( FileID: Integer; HighWord, LowWord: Cardinal ); stdcall;
-procedure fFileWrite( FileID: Integer; Len, Addr: Cardinal ); stdcall;
-function fFileReadLine( FileID: Integer; Len, Addr: Cardinal ): Int64; stdcall;
-procedure fFileResize( FileID: Integer; HighWord, LowWord: Cardinal ); stdcall;
-procedure fATXY( Y, X: Integer ); stdcall;
-function fStartThread( ParentUserDataAreaAddr: Cardinal;
-                       CreateSuspended: Integer; XT: Cardinal ): LongWord; stdcall;
-function fCompare( StrLen2, StrAddr2, StrLen1, StrAddr1: Cardinal ): Integer; stdcall;
+procedure fEmit(A: Char); stdcall;
+procedure fType(Len, Addr: Integer); stdcall;
+function  fAccept(Len: Integer; Addr: Cardinal): Cardinal; stdcall;
+procedure fReadBlock(BlockNum, Addr: Cardinal); stdcall;
+procedure fWriteBlock(BlockNum, Addr: Cardinal); stdcall;
+procedure fFileClose(FileID: Integer); stdcall;
+function  fFileCreate(FileAccessMethod, NameLen: Integer; NameAddr: Cardinal): Integer; stdcall;
+function  fFilePosition(FileID: Integer): Int64; stdcall;
+function  fFileOpen(FileAccessMethod, NameLen: Integer; NameAddr: Cardinal): Integer; stdcall;
+function  fFileRead(FileID: Integer; Len, Addr: Cardinal): Cardinal; stdcall;
+procedure fFileReposition(FileID: Integer; HighWord, LowWord: Cardinal); stdcall;
+procedure fFileWrite(FileID: Integer; Len, Addr: Cardinal); stdcall;
+function  fFileReadLine(FileID: Integer; Len, Addr: Cardinal): Int64; stdcall;
+procedure fFileResize(FileID: Integer; HighWord, LowWord: Cardinal); stdcall;
+procedure fATXY(Y, X: Integer); stdcall;
+function  fStartThread(ParentUserDataAreaAddr: Cardinal;
+                       CreateSuspended: Integer; XT: Cardinal): LongWord; stdcall;
+function  fCompare(StrLen2, StrAddr2, StrLen1, StrAddr1: Cardinal): Integer; stdcall;
 procedure fPage; stdcall;
+function  fAlloc(Size: Cardinal): Pointer; stdcall;
+procedure fFree(Addr: Pointer); stdcall;
+function  fReAlloc(Addr: Pointer; NewSize: Cardinal): Pointer; stdcall;
 
 implementation
 
 uses
-  Math, IKFUtils, Windows, Classes, IKFCommon, SysUtils;
+  Windows, SysUtils, Classes, Math,
+  IKFUtils, IKFCommon;
 
-function GetString( Addr, Len: Cardinal ): string;
+function GetString(Addr, Len: Integer): string;
 var
-  I: Cardinal;
+  I: Integer;
 begin
   Result:= '';
   for I:= 0 to Len - 1 do
-    Result:= Result + PChar( Addr + I )^;
+    Result:= Result + PChar(Addr + I)^;
 end;
 
-function Print( S: string ): Cardinal;
+function Print(S: string): Cardinal;
 begin
-  WriteConsole( hOut, PChar( S ), Length( S ), Result, nil );
+  WriteConsole(hOut, PChar(S), Length(S), Result, nil);
 end;
 
 function fGetLastError: Integer;
@@ -51,44 +55,44 @@ begin
   Result:= GetLastError;
 end;
 
-function fLoadLibrary( NameLen: Integer; NameAddr: Cardinal ): Integer;
+function fLoadLibrary(NameLen: Integer; NameAddr: Cardinal): Integer;
 var
   LibName: string;
 begin
-  LibName:= GetString( NameAddr, NameLen );
-  Result:= LoadLibrary( PChar( LibName ));
+  LibName:= GetString(NameAddr, NameLen);
+  Result:= {Safe}LoadLibrary(PChar(LibName));
 end;
 
-procedure fFreeLibrary( LibID: Integer );
+procedure fFreeLibrary(LibID: Integer);
 begin
-  FreeLibrary( LibID );
+  FreeLibrary(LibID);
 end;
 
-function fGetProcAddress( LibID: Integer; NameLen: Integer; NameAddr: Cardinal ): Pointer;
+function fGetProcAddress(LibID: Integer; NameLen: Integer; NameAddr: Cardinal): Pointer;
 var
   ProcName: string;
 begin
-  ProcName:= GetString( NameAddr, NameLen );
-  Result:= GetProcAddress( LibID, PChar( ProcName ));
+  ProcName:= GetString(NameAddr, NameLen);
+  Result:= GetProcAddress(LibID, PChar(ProcName));
 end;
 
 procedure fBye;
 begin
   CanExit:= True;
-  while True do Sleep( 1000 );
+  while True do Sleep(1000);
 end;
 
-procedure fEmit( A: Char );
+procedure fEmit(A: Char);
 begin
-  Print( A );
+  Print(A);
 end;
 
-procedure fType( Len, Addr: Integer );
+procedure fType(Len, Addr: Integer);
 begin
-  Print( GetString( Addr, Len ));
+  Print(GetString(Addr, Len));
 end;
 
-function fAccept( Len: Integer; Addr: Cardinal ): Cardinal;
+function fAccept(Len: Integer; Addr: Cardinal): Cardinal;
 var
   IR: TInputRecord;
   Event: TKeyEventRecord;
@@ -100,111 +104,116 @@ begin
   CanExit:= False;
   S:= '';
   repeat
-    ReadConsoleInput( hIn, IR, 1, R );
+    ReadConsoleInput(hIn, IR, 1, R);
     if IR.EventType = KEY_EVENT then
     begin
-      Event:= TKeyEventRecord( IR.Event );
-      CanExit:= ( Event.bKeyDown ) and ( Event.AsciiChar = #13 );
-      if ( Event.AsciiChar in [ #32 .. #127 ]) and Event.bKeyDown and
-         ( Length( S ) < Len ) then
+      Event:= TKeyEventRecord(IR.Event);
+      CanExit:= (Event.bKeyDown) and (Event.AsciiChar = #13);
+      if (Event.AsciiChar in [#32 .. #127]) and Event.bKeyDown and
+         (Length(S) < Len) then
       begin
         S:= S + Event.AsciiChar;
-        Print( Event.AsciiChar );
+        Print(Event.AsciiChar);
       end;
-      if ( Event.AsciiChar = #8 ) and Event.bKeyDown and ( Length( S ) > 0 ) then
+      if (Event.AsciiChar = #8) and Event.bKeyDown and (Length(S) > 0) then
       begin
-        SetLength( S, Length( S ) - 1 );
-        Print( #8' '#8 );
+        SetLength(S, Length(S) - 1);
+        Print(#8' '#8);
       end;
     end;
   until CanExit;
-  Result:= Cardinal( Min( Len, Length( S )));
+  Result:= Cardinal(Min(Len, Length(S)));
   for I:= 0 to Result - 1 do
-    Char( Pointer( Addr + Cardinal( I ))^):= S[ I + 1 ];
+    Char(Pointer(Addr + Cardinal(I))^):= S[I + 1];
 end;
 
-procedure fReadBlock( BlockNum, Addr: Cardinal );
+function MakeBlockName(BlockNum: Cardinal): string;
+begin
+  Result:= Format('%s\blocks\%.8X', [ApplicationPath, BlockNum]);
+end;
+
+procedure fReadBlock(BlockNum, Addr: Cardinal);
 var
   Block: PBlock;
   FName: string;
   S: TStream;
 begin
-  Block:= PBlock( Addr );
-  FName:= Format( '%s\blocks\%.8X', [ ApplicationPath, BlockNum ]);
-  FillChar( Block^, BlockSize, ' ' );
+  Block:= PBlock(Addr);
+  FName:= MakeBlockName(BlockNum);
+  FillChar(Block^, BlockSize, ' ');
   S:= nil;
   try
-    S:= TFileStream.Create( FName, fmOpenRead );
-    S.Read( Block^, 1024 );
+    S:= TFileStream.Create(FName, fmOpenRead);
+    S.Read(Block^, 1024);
   except
   end;
-  FreeAndNil( S );
+  FreeAndNil(S);
 end;
 
-procedure fWriteBlock( BlockNum, Addr: Cardinal );
+procedure fWriteBlock(BlockNum, Addr: Cardinal);
 var
   Block: PBlock;
   FName: string;
   S: TStream;
 begin
-  Block:= PBlock( Addr );
-  FName:= Format( '%s\blocks\%.8X', [ ApplicationPath, BlockNum ]);
+  Block:= PBlock(Addr);
+  FName:= MakeBlockName(BlockNum);
   S:= nil;
   try
-    S:= TFileStream.Create( FName, fmCreate );
-    S.Write( Block^, 1024 );
+    S:= TFileStream.Create(FName, fmCreate);
+    S.Write(Block^, 1024);
   except
   end;
-  FreeAndNil( S );
+  FreeAndNil(S);
 end;
 
-procedure fFileClose( FileID: Integer );
+procedure fFileClose(FileID: Integer);
 begin
-  FileClose( FileID );
+  FileClose(FileID);
 end;
 
-function fFileCreate( FileAccessMethod, NameLen: Integer; NameAddr: Cardinal ): Integer;
+function fFileCreate(FileAccessMethod, NameLen: Integer; NameAddr: Cardinal): Integer;
 var
   FName: string;
 begin
-  FName:= GetString( NameAddr, NameLen );
-  if FileExists( FName ) then DeleteFile( FName );
-  Result:= FileCreate( FName );
+  FName:= GetString(NameAddr, NameLen);
+  if FileExists(FName) then DeleteFile(FName);
+  Result:= FileCreate(FName);
 end;
 
-function fFilePosition( FileID: Integer ): Int64;
+function fFilePosition(FileID: Integer): Int64;
 var
   LowWord, HighWord: Cardinal;
 begin
   HighWord:= 0;
-  LowWord:= SetFilePointer( FileID, 0, @HighWord, FILE_CURRENT );
-  Result:= ( Int64( HighWord ) shl 32 ) or LowWord;
+  LowWord:= SetFilePointer(FileID, 0, @HighWord, FILE_CURRENT);
+  Result:= (Int64(HighWord) shl 32) or LowWord;
 end;
 
-function fFileOpen( FileAccessMethod, NameLen: Integer; NameAddr: Cardinal ): Integer;
+function fFileOpen(FileAccessMethod, NameLen: Integer; NameAddr: Cardinal): Integer;
 var
   FName: string;
 begin
-  FName:= GetString( NameAddr, NameLen );
-  Result:= FileOpen( FName, FileAccessMethod );
+  FName:= GetString(NameAddr, NameLen);
+  Result:= FileOpen(FName, FileAccessMethod);
 end;
 
-function fFileRead( FileID: Integer; Len, Addr: Cardinal ): Cardinal;
+function fFileRead(FileID: Integer; Len, Addr: Cardinal): Cardinal;
 begin
-  Result:= FileRead( FileID, Pointer( Addr )^, Len );
+  Result:= FileRead(FileID, Pointer(Addr)^, Len);
 end;
 
-procedure fFileReposition( FileID: Integer; HighWord, LowWord: Cardinal );
+procedure fFileReposition(FileID: Integer; HighWord, LowWord: Cardinal);
 begin
-  SetFilePointer( FileID, LowWord, @HighWord, FILE_BEGIN );
+  SetFilePointer(FileID, LowWord, @HighWord, FILE_BEGIN);
 end;
 
-procedure fFileWrite( FileID: Integer; Len, Addr: Cardinal );
+procedure fFileWrite(FileID: Integer; Len, Addr: Cardinal);
 begin
-  FileWrite( FileID, Pointer( Addr )^, Len );
+  FileWrite(FileID, Pointer(Addr)^, Len);
 end;
 
-function fFileReadLine( FileID: Integer; Len, Addr: Cardinal ): Int64;
+function fFileReadLine(FileID: Integer; Len, Addr: Cardinal): Int64;
 var
   Res: Cardinal;
   C: Char;
@@ -218,37 +227,37 @@ begin
   EndOfFile:= False;
   while I < Len do
   begin
-    Res:= FileRead( FileID, C, 1 );
+    Res:= FileRead(FileID, C, 1);
     if Res = 0 then
     begin
       EndOfFile:= True;
       Break;
     end;
-    PChar( Addr + I )^:= C;
-    if ( C = #10 ) or ( C = #13 ) then Break;
+    PChar(Addr + I)^:= C;
+    if (C = #10) or (C = #13) then Break;
     S:= S + C;
-    Inc( I );
+    Inc(I);
   end;
-  if EndOfFile and ( I = 0 ) then
+  if EndOfFile and (I = 0) then
     Flag:= 0
   else
     Flag:= -1;
-  Result:= ( Int64( Flag ) shl 32 ) or I;
+  Result:= (Int64(Flag) shl 32) or I;
 end;
 
-procedure fFileResize( FileID: Integer; HighWord, LowWord: Cardinal );
+procedure fFileResize(FileID: Integer; HighWord, LowWord: Cardinal);
 begin
-  SetFilePointer( FileID, LowWord, @HighWord, FILE_BEGIN );
-  SetEndOfFile( FileID );
+  SetFilePointer(FileID, LowWord, @HighWord, FILE_BEGIN);
+  SetEndOfFile(FileID);
 end;
 
-procedure fATXY( Y, X: Integer );
+procedure fATXY(Y, X: Integer);
 var
   C: _COORD;
 begin
   C.X:= X;
   C.Y:= Y;
-  SetConsoleCursorPosition( hOut, C );
+  SetConsoleCursorPosition(hOut, C);
 end;
 
 type
@@ -258,57 +267,48 @@ type
     ExecutionToken: Cardinal;
   end;
 
-function fThreadFunc( Parameter: Pointer ): Integer;
+function fThreadFunc(Parameter: Pointer): Integer;
 var
   FTP: PForthThreadParams;
-  Flag: Boolean;
 begin
-  FTP:= PForthThreadParams( Parameter );
-  Flag:= True;
-  while Flag do
-  begin
-    try
-      TForthThreadFunc( IHeader.ThreadProcAddr )( FTP.UserDataAreaAddr, FTP.ExecutionToken );
-      Flag:= False;
-    except
-      on E: Exception do
-      begin
-        Print( E.Message );
-      end;
-    end;
+  FTP:= PForthThreadParams(Parameter);
+  try
+    TForthThreadFunc(IHeader.ThreadProcAddr)(FTP.UserDataAreaAddr, FTP.ExecutionToken);
+  finally
+    FreeMem(Pointer(FTP.UserDataAreaAddr), IHeader.UserDataAreaSize);
+    FreeMem(FTP, SizeOf(TForthThreadParams));
+    Result:= 0;
   end;
-  FreeMem( Pointer( FTP.UserDataAreaAddr ), IHeader.UserDataAreaSize );
-  FreeMem( FTP, SizeOf( TForthThreadParams ));
-  Result:= 0;
 end;
 
-function fStartThread( ParentUserDataAreaAddr: Cardinal;
-                       CreateSuspended: Integer; XT: Cardinal ): LongWord;
+function fStartThread(ParentUserDataAreaAddr: Cardinal;
+                      CreateSuspended: Integer; XT: Cardinal): LongWord;
 var
   FTP: PForthThreadParams;
   Flags: LongWord;
 begin
-  GetMem( FTP, SizeOf( TForthThreadParams ));
+  GetMem(FTP, SizeOf(TForthThreadParams));
   FTP.ExecutionToken:= XT;
-  GetMem( Pointer( FTP.UserDataAreaAddr ), IHeader.UserDataAreaSize );
-  ZeroMemory( Pointer( FTP.UserDataAreaAddr ), IHeader.UserDataAreaSize );
+  GetMem(Pointer(FTP.UserDataAreaAddr), IHeader.UserDataAreaSize);
+  ZeroMemory(Pointer(FTP.UserDataAreaAddr), IHeader.UserDataAreaSize);
   if ParentUserDataAreaAddr <> 0 then
   begin
-    Move( Pointer( ParentUserDataAreaAddr )^, Pointer( FTP.UserDataAreaAddr )^,
-          IHeader.UserDataAreaSize );
+    Move(Pointer(ParentUserDataAreaAddr)^, Pointer(FTP.UserDataAreaAddr)^,
+          IHeader.UserDataAreaSize);
   end;
   Flags:= 0;
-  if CreateSuspended = fTRUE then Flags:= CREATE_SUSPENDED;
-  BeginThread( nil, IHeader.DataStackSize, fThreadFunc, FTP, Flags, Result );
+  if CreateSuspended = fTRUE then
+    Flags:= CREATE_SUSPENDED;
+  BeginThread(nil, IHeader.DataStackSize, fThreadFunc, FTP, Flags, Result);
 end;
 
-function fCompare( StrLen2, StrAddr2, StrLen1, StrAddr1: Cardinal ): Integer;
+function fCompare(StrLen2, StrAddr2, StrLen1, StrAddr1: Cardinal): Integer;
 var
   S1, S2: string;
 begin
-  S1:= GetString( StrAddr1, StrLen1 );
-  S2:= GetString( StrAddr2, StrLen2 );
-  Result:= CompareStr( S1, S2 );
+  S1:= GetString(StrAddr1, StrLen1);
+  S2:= GetString(StrAddr2, StrLen2);
+  Result:= CompareStr(S1, S2);
   if Result < 0 then Result:= -1;
   if Result > 0 then Result:= 1;
 end;
@@ -316,12 +316,34 @@ end;
 procedure fPage;
 var
   C: _COORD;
+  CSBI: TConsoleScreenBufferInfo;
   Chars: Cardinal;
 begin
   C.X:= 0;
   C.Y:= 0;
-  FillConsoleOutputCharacter( hOut, ' ', 4096, C, Chars );
-  SetConsoleCursorPosition( hOut, C );
+  GetConsoleScreenBufferInfo(hOut, CSBI);
+  FillConsoleOutputCharacter(hOut, ' ', CSBI.dwSize.X * CSBI.dwSize.Y, C, Chars);
+  SetConsoleCursorPosition(hOut, C);      
+end;
+
+function  fAlloc(Size: Cardinal): Pointer;
+begin
+  Result:= Pointer(GlobalAlloc(GPTR, Size));
+  if Assigned(Result) then
+    SetLastError(0);
+end;
+
+procedure fFree(Addr: Pointer);
+begin
+  if GlobalFree(Cardinal(Addr)) <> 0 then
+    SetLastError(0);
+end;
+
+function  fReAlloc(Addr: Pointer; NewSize: Cardinal): Pointer;
+begin
+  Result:= Pointer(GlobalReAlloc(Cardinal(Addr), NewSize, GMEM_ZEROINIT));
+  if Assigned(Result) then
+    SetLastError(0);
 end;
 
 end.

@@ -3,7 +3,7 @@
 ;  varconst.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;  Variables & constants
@@ -136,3 +136,4 @@ MAIN_PROC:
 MAX_ORDER_COUNT         EQU     16
                         $CONST  'MAX-ORDER-COUNT'
                         CC      MAX_ORDER_COUNT
+

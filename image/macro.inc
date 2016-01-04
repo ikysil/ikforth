@@ -3,12 +3,12 @@
 ;  macro.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 
-TRUE                    EQU     0FFFFFFFFh
-FALSE                   EQU     0
+F_TRUE                  EQU     0FFFFFFFFh
+F_FALSE                 EQU     0
 
 CELL_SIZE               EQU     4
 
@@ -48,6 +48,15 @@ VEF_COMPILE_ONLY        EQU     04h                     ; compile only mode
 ;    CODE       label of the CFA
 ;    EXECUTOR   the executor of a word ( = [DWORD PTR CODE] if ommited)
 ;    FLAGS      entry flags
+;  Vocabulary entry layout
+;  Offset Length // bytes
+;  +0     1      FLAGS (VEF_XXX)
+;  +1     1      name length (or 0)                       // NFA
+;  +2     n      name (in OEM codepage)
+;  +2+n   1      n + 2
+;  +2+n+1 4      link to previous word or 0 if first word // LFA
+;  +2+n+5 4      address of internal interpreter          // CFA
+;  +2+n+9 x                                               // PFA
 ;******************************************************************************
                         MACRO   $DEF NAME,CODE,EXECUTOR,FLAGS
                         LOCAL   $$DEF,$$PREVFLD,$$LBLNAME,$$CODE
@@ -87,12 +96,69 @@ $$CODE:
                         DD      NAME + DESIRED_BASE_EQU
                         ENDM    CW
 
+                        MACRO   CWLIT VALUE
+                        CW      $LIT
+                        CW      VALUE
+                        ENDM    CWLIT
+
 ;******************************************************************************
 ;  Use this macro to compile constants
 ;******************************************************************************
                         MACRO   CC VALUE
                         DD      VALUE
                         ENDM    CC
+
+                        MACRO   CCLIT VALUE
+                        CW      $LIT
+                        CC      VALUE
+                        ENDM    CCLIT
+
+;******************************************************************************
+;  Compile @
+;******************************************************************************
+                        MACRO   CFETCH ADDR
+                        CW      ADDR
+                        CW      $FETCH
+                        ENDM    CFETCH
+
+;******************************************************************************
+;  Compile !
+;******************************************************************************
+                        MACRO   CSTORE ADDR
+                        CW      ADDR
+                        CW      $STORE
+                        ENDM    CSTORE
+
+;******************************************************************************
+;  Compile a conditional branch ?BRANCH
+;******************************************************************************
+                        MACRO   CQBR VALUE
+                        CW      $QBRANCH
+                        CW      VALUE
+                        ENDM    CQBR
+
+;******************************************************************************
+;  Compile an unconditional branch BRANCH
+;******************************************************************************
+                        MACRO   CBR VALUE
+                        CW      $BRANCH
+                        CW      VALUE
+                        ENDM    CBR
+
+;******************************************************************************
+;  Compile THROW
+;******************************************************************************
+                        MACRO   CTHROW VALUE
+                        CCLIT   VALUE
+                        CW      $THROW
+                        ENDM    CTHROW
+
+;******************************************************************************
+;  Compile EXIT
+;******************************************************************************
+                        MACRO   CEXIT
+                        CW      $EXIT
+                        ENDM    CEXIT
 
 ;******************************************************************************
 ;  Push a value to return stack

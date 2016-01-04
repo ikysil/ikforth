@@ -3,7 +3,7 @@
 ;  user.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2001 Illya Kysil
+;  Copyright (C) 1999-2003 Illya Kysil
 ;
 ;******************************************************************************
 ;
@@ -45,11 +45,11 @@ USER_AREA_SIZE          =       ( USER_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
                         _VAR    CURR_FILE_POS
                         _ALLOC  CELL_SIZE
 
-MAX_LINE_LENGTH         EQU     128
+MAX_LINE_LENGTH         EQU     1024
                         _VAR    #LINE
                         _VAR    LINE,<MAX_LINE_LENGTH + 1>
 
-MAX_TIB_LENGTH          EQU     128
+MAX_TIB_LENGTH          EQU     1024
                         _VAR    #TIB
                         _VAR    TIB,<MAX_TIB_LENGTH + 1>
 
@@ -65,6 +65,7 @@ MAX_TIB_LENGTH          EQU     128
                         _VAR    THROW_ADDRESS
                         _VAR    THROW_WORD
 
+                        _VAR    WIN32_EXCEPTION_CONTEXT,256
                         _VAR    SQUOTE_BUFFER,1024
 
                         _VAR    POCKET,256
