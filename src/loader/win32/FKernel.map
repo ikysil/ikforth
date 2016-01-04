@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.0
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       03/10/09 17:26:40
+Created on:       04/05/19 18:20:05
 Executable Image: FKernel.exe
 creating a Windows NT character-mode executable
 
@@ -86,43 +86,43 @@ Module: IKFUtils.obj(I:\projects\Forth\IKForth\src\loader\IKFUtils.cpp)
 00401505+      void near ShowLastError( char near * )
 00401570+      void near SetFuncTable( _ImageHeader const near * )
 00401601       void near StartForth( char const near *, char const near * )
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(stk)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(stk)
 004017b7       __CHK
 004017c7*      __STK
 004017e6*      __STKOVERFLOW_
 004017f6       __GRO
 00401816*      __alloca_probe
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strrchr)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strrchr)
 00401830       strrchr_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strcat)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strcat)
 00401850       strcat_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strcpy)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strcpy)
 00401890       strcpy_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(cstrtwwt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(cstrtwwt)
 004018b0       _wstart_
 004018b0*      _wstart2_
 004018b0*      WinMainCRTStartup
-Module: T:\OpenWatcom\lib386\nt\plib3r.lib(fsroot)
+Module: t:\openwatcom\lib386\nt\plib3r.lib(fsroot)
 00407a2e       ___wcpp_4_data_init_fs_root_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(memset)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(memset)
 00401920       memset_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strncpy)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strncpy)
 00401940       strncpy_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(i8s)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(i8s)
 00401976*      __U8RS
 00401990       __I8RS
 004019ab       __I8LS
 004019ab*      __U8LS
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(memmove)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(memmove)
 004019d0       memmove_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strlen)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strlen)
 00401a30       strlen_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(_strcmp)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(_strcmp)
 00401a50       strcmp_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(xmsgwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(xmsgwnt)
 00401b90+      __exit_with_msg_
 00401bd0       __fatal_runtime_error_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mainwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mainwnt)
 00408050       ___Is_DLL
 004077bc*      ___TlsIndex
 004077c0+      ___FirstThreadData
@@ -149,22 +149,22 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mainwnt)
 004077fc       ___sig_init_rtn
 00407800       ___sig_fini_rtn
 00407804       ___process_fini
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(wmainwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(wmainwnt)
 00401f90       __WinMain
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(segdefns)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(segdefns)
 00401003       ___begtext
 00407000*      __nullarea
 00407a28       __Start_XI
 00407a4c       __End_XI
 00407a4c       __Start_YI
 00407a5e       __End_YI
-Module: T:\OpenWatcom\lib386\nt\plib3r.lib(cppdata)
+Module: t:\openwatcom\lib386\nt\plib3r.lib(cppdata)
 00408680       __wint_thread_data
 004086a4*      __compiled_under_NT
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(__stos)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(__stos)
 00402040       __STOSB
 00402077*      __STOSD
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(hdlman)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(hdlman)
 00407808+      ___NHandles
 0040780c       ___OSHandles
 00407810+      ___FakeHandles
@@ -177,10 +177,10 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(hdlman)
 00402370       __initPOSIXHandles_
 00402460*      __set_handles_
 00402470*      _grow_handles_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(enterdb)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(enterdb)
 004024b0       __EnterWVIDEO_
 0040781c+      ___WD_Present
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(crwdata)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(crwdata)
 00407864       __osmajor
 00407865       __osminor
 00407866       __osbuild
@@ -208,23 +208,23 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(crwdata)
 0040785c       __no87
 00407878*      __FPE_handler
 00407878*      ___FPE_handler
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(environ)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(environ)
 004086b0       ___env_mask
 004086b4       _environ
 004086b8       __wenviron
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(getmodfn)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(getmodfn)
 004024e0       __lib_GetModuleFileNameW_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strdup)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strdup)
 00402580       __clib_strdup_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(istable)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(istable)
 0040764c       __IsTable
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(ustrdup)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(ustrdup)
 004025d0       __clib_wcsdup_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nfree)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nfree)
 00402600       free_
 00402610       _nfree_
 004086c0       ___MiniHeapFreeRover
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(excptwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(excptwnt)
 004027e0+      ___ReportException@4
 00402c50       __DefaultExceptionHandler_
 00402c90+      ___ExceptionFilter
@@ -237,42 +237,42 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(excptwnt)
 004086d0*      _sw
 004086d4+      ___ExceptionHandled
 004086d5+      ___ReportInvoked
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(stklmwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(stklmwnt)
 00402f20       __init_stack_limits_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(initrtns)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(initrtns)
 00402fa0       __InitRtns
 00402ff0       __FiniRtns
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mthrdini)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mthrdini)
 00403050*      __InitThreadData_
 00407898       ___ThreadDataSize
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(stackwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(stackwnt)
 00403080       stackavail_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(cinit)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(cinit)
 00403090       __CommonInit_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(exit)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(exit)
 004030a0+      __null_int23_exit_
 004030c0       exit_
 00403120+      _exit_
 0040789c+      ___int23_exit
 004078a0+      ___FPE_handler_exit
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(dosseg)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(dosseg)
 00001234       __DOSseg__
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nmalloc)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nmalloc)
 00403140       malloc_
 00403150       _nmalloc_
 004078a4       ___nheapbeg
 004078a8       ___MiniHeapRover
 004078ac       ___LargestSizeB4MiniHeapRover
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(seterrno)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(seterrno)
 00403270       __set_errno_
 00403280*      __set_EDOM_
 00403290*      __set_ERANGE_
 004032a0*      __set_EINVAL_
 004032b0*      __set_doserrno_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nrealloc)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nrealloc)
 004032c0       realloc_
 004032d0+      _nrealloc_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(iomode)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(iomode)
 004078b0       ___NFiles
 004078b4+      ___init_mode
 00403350       __grow_iomode_
@@ -280,26 +280,26 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(iomode)
 00403470*      __GetIOMode_
 004034e0*      __IOMode_
 004034f0       __SetIOMode_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(setenvp)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(setenvp)
 00403570       __setenvp_
 00403660       __freeenvp_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(ustrlen)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(ustrlen)
 004036c0       wcslen_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(memcpy)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(memcpy)
 004036e0       memcpy_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mem)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mem)
 00403710       __MemAllocator
 004037d0       __MemFree
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(heapmod)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(heapmod)
 00408700       ___nheap_clean
 00408701       ___fheap_clean
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(conutwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(conutwnt)
 00403920*      __NTRealKey_
 004039d0*      __NTConsoleInput_
 004039e0       __NTConsoleOutput_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(fclex387)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(fclex387)
 004039f0       _ClearFPE_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(signlwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(signlwnt)
 00407910+      _SignalTable
 00403a00+      __SetSignalFunc_
 00403a50+      __GetSignalFunc_
@@ -312,113 +312,113 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(signlwnt)
 00403d80+      __SigInit_
 00403dd0+      __SigFini_
 00403e10+      __sig_init_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nmemneed)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nmemneed)
 00403e30       __nmemneed_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(grownear)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(grownear)
 00403f60       __ExpandDGROUP_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nmsize)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nmsize)
 00403fd0*      _msize_
 00403fe0       _nmsize_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nexpand)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nexpand)
 00403ff0*      _expand_
 00404000+      __HeapManager_expand_
 004041e0       _nexpand_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(isattwnt)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(isattwnt)
 00404230       isatty_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(dofilstr)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(dofilstr)
 00404260       __ParsePosixHandleStr_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(clearenv)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(clearenv)
 00404380       clearenv_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(abort)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(abort)
 00404420*      abort_
 00404430       __terminate_
 0040797c       ___abort
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(cntrl87)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(cntrl87)
 00404450       _control87_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(heapen)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(heapen)
 004044b0*      _heapenable_
 00407980       ___heap_enabled
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nheapmin)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(nheapmin)
 004044e0*      _heapshrink_
 004044f0*      _heapmin_
 00404500*      _nheapmin_
 004045b0       _nheapshrink_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(amblksiz)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(amblksiz)
 00407984       __amblksiz
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(getenv)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(getenv)
 004045f0       getenv_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strtol)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(strtol)
 00404820*      strtoul_
 00404830       strtol_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(putenv)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(putenv)
 004048a0       putenv_
 00404a50       __putenv_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(01h)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(01h)
 00407a14       __8087
 00407a15       __real87
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbsnicmp)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbsnicmp)
 00404cd0       _mbsnicmp_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(tolower)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(tolower)
 00404d60       tolower_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbschr)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbschr)
 00404d70       _mbschr_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbslen)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbslen)
 00404dd0       _mbslen_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbstowcs)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbstowcs)
 00404e00       mbstowcs_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(uputenv)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(uputenv)
 00404e80*      _wputenv_
 00405000       __wputenv_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(toupper)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(toupper)
 004051b0       toupper_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(chk8087)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(chk8087)
 004051e0+      __init_8087_
 00405220*      _fpreset_
 00405230       __chk8087_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbterm)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbterm)
 00405280       _mbterm_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbcicmp)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbcicmp)
 004052c0       _mbcicmp_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbsinc)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbsinc)
 00405320       _mbsinc_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbconv)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbconv)
 00405350       _mbvtop_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbclen)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbclen)
 00405370       _mbclen_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbccmp)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbccmp)
 004053a0       _mbccmp_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbtowc)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbtowc)
 00405400       mbtowc_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(ustrchr)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(ustrchr)
 004054a0       wcschr_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(setenvar)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(setenvar)
 004054d0       __lib_SetEnvironmentVariableW_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(crtwenv)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(crtwenv)
 004055c0       __create_wide_environment_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(wcstombs)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(wcstombs)
 00405630       wcstombs_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(utoupper)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(utoupper)
 004056f0       towupper_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(save8087)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(save8087)
 00407a18       ___Save8087
 00407a1c       ___Rest8087
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(8087cw)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(8087cw)
 00407a20       __8087cw
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(init8087)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(init8087)
 00405710       __init_80x87
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbisdbcs)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbisdbcs)
 00408710       ___IsDBCS
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbislead)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbislead)
 00405740*      _ismbblead_
 00408720       ___MBCSIsTable
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbccpy)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbccpy)
 00405760       _mbccpy_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbsupr)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbsupr)
 004057a0       _mbsupr_
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbinit)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(mbinit)
 004057c0       __mbinit_
 00407a24       ___MBCodePage
-Module: T:\OpenWatcom\lib386\nt\clib3r.lib(wctomb)
+Module: t:\openwatcom\lib386\nt\clib3r.lib(wctomb)
 00405950       wctomb_
 
 
@@ -481,10 +481,10 @@ _ExitProcess@4                      KERNEL32.DLL
                         |   Libraries Used   |
                         +--------------------+
 
-T:\OpenWatcom\lib386\nt\clib3r.lib
-T:\OpenWatcom\lib386\nt\plib3r.lib
-T:\OpenWatcom\lib386\nt\kernel32.lib
-T:\OpenWatcom\lib386\nt\user32.lib
+t:\openwatcom\lib386\nt\clib3r.lib
+t:\openwatcom\lib386\nt\plib3r.lib
+t:\openwatcom\lib386\nt\kernel32.lib
+t:\openwatcom\lib386\nt\user32.lib
 
 
                         +-----------------------+
@@ -494,4 +494,4 @@ T:\OpenWatcom\lib386\nt\user32.lib
 Stack size:  00010000 (65536.)
 Memory size:  000167c6 (92102.)
 Entry point address: 004018b0
-Link time: 00:00.30
+Link time: 00:00.72

@@ -75,7 +75,8 @@ DEFER DEFER-PRI
       CR FALSE
     ENDOF
     ." Unknown executor" TRUE SWAP
-  ENDCASE R-DROP ;
+  ENDCASE R-DROP
+;
 
 : CHECK-EXIT (S body-addr -- flag )
   @

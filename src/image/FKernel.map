@@ -1,6 +1,6 @@
 Open Watcom Linker Version 1.0
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       04/01/15 15:11:54
+Created on:       04/05/19 18:20:06
 Executable Image: ..\FKernel.img
 creating a Windows NT character-mode executable
 
@@ -57,4 +57,4 @@ Symbol                              Module
 Stack size:  1000 (4096.)
 Memory size:  289b (10395.)
 Entry point address: 00003708
-Link time: 00:00.50
+Link time: 00:00.00
