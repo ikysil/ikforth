@@ -17,10 +17,6 @@ CR DUP  FS-TEST U@16L 9 U.R
 CR DUP  FS-TEST  @16L 9 U.R
 DROP
 )
-: test create-report @ >R create-report off
-       s" test\ansitest.f" ['] included catch
-       R> create-report ! throw ;
-
 : WT S" TEST\WORDSTEST.F" INCLUDED ;
 
 (

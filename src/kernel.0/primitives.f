@@ -14,39 +14,54 @@ REPORT-NEW-NAME @
 \ [
 (DO-:) &IMMEDIATE/COMPILE-ONLY PARSE-CHECK-HEADER, [ DROP
    TRUE STATE ! \ entering compilation state
-  FALSE STATE ! (;) [
+  FALSE STATE ! (;)
+[
 
 \ ]
 (DO-:) &USUAL PARSE-CHECK-HEADER, ] DROP
    TRUE STATE ! \ entering compilation state
-   TRUE STATE ! (;) [
+   TRUE STATE ! (;)
+[
 
 \ ;
-(DO-:) &IMMEDIATE/COMPILE-ONLY PARSE-CHECK-HEADER, ; DROP ]
+(DO-:) &IMMEDIATE/COMPILE-ONLY PARSE-CHECK-HEADER, ; DROP
+]
   POSTPONE (;) &HIDDEN RESET-HFLAGS! POSTPONE [ (;)
 [
 
 \ :
-(DO-:) &HIDDEN PARSE-CHECK-HEADER, : DROP ]
-  (DO-:) &HIDDEN PARSE-CHECK-HEADER, DROP ] ;
+(DO-:) &HIDDEN PARSE-CHECK-HEADER, : DROP
+]
+  (DO-:) &HIDDEN PARSE-CHECK-HEADER, DROP ]
+;
 
 \ -----------------------------------------------------------------------------
 \  IMMEDIATE COMPILE-ONLY IMMEDIATE/COMPILE-ONLY
 \ -----------------------------------------------------------------------------
 
-: IMMEDIATE &IMMEDIATE SET-HFLAGS! ;
+: IMMEDIATE
+  &IMMEDIATE SET-HFLAGS!
+;
 
-: COMPILE-ONLY &COMPILE-ONLY SET-HFLAGS! ;
+: COMPILE-ONLY
+  &COMPILE-ONLY SET-HFLAGS!
+;
 
-: IMMEDIATE/COMPILE-ONLY &IMMEDIATE/COMPILE-ONLY SET-HFLAGS! ;
+: IMMEDIATE/COMPILE-ONLY
+  &IMMEDIATE/COMPILE-ONLY SET-HFLAGS!
+;
 
 \ -----------------------------------------------------------------------------
 \  HIDE REVEAL
 \ -----------------------------------------------------------------------------
 
-: HIDE   &HIDDEN SET-HFLAGS! ;
+: HIDE
+  &HIDDEN SET-HFLAGS!
+;
 
-: REVEAL &HIDDEN RESET-HFLAGS! ;
+: REVEAL
+  &HIDDEN RESET-HFLAGS!
+;
 
 \ -----------------------------------------------------------------------------
 
@@ -79,16 +94,20 @@ BASE !
 
 \ 6.1.0950 CONSTANT
 : CONSTANT
-  (DO-CONSTANT) &USUAL PARSE-CHECK-HEADER, DROP , ;
+  (DO-CONSTANT) &USUAL PARSE-CHECK-HEADER, DROP ,
+;
 
 : VARIABLE
-  (DO-VARIABLE) &USUAL PARSE-CHECK-HEADER, DROP 0 , ;
+  (DO-VARIABLE) &USUAL PARSE-CHECK-HEADER, DROP 0 ,
+;
 
 : USER       \ "name" -- 
-  (DO-USER) &USUAL PARSE-CHECK-HEADER, DROP USER-SIZE-VAR @ , ;
+  (DO-USER) &USUAL PARSE-CHECK-HEADER, DROP USER-SIZE-VAR @ ,
+;
 
 : USER-ALLOC \ user-size --
-  USER-SIZE-VAR SWAP OVER @ + SWAP ! ;
+  USER-SIZE-VAR SWAP OVER @ + SWAP !
+;
 
 : CODE \ (S "name" -- )
   0 &USUAL PARSE-CHECK-HEADER, HERE SWAP !
@@ -97,15 +116,20 @@ BASE !
 : END-CODE
 ; IMMEDIATE \ do nothing
 
-: (;CODE) R> LATEST-HEAD@ HEAD> ! ;
+: (;CODE)
+  R> LATEST-HEAD@ HEAD> !
+;
 
-: ;CODE &HIDDEN RESET-HFLAGS! POSTPONE (;CODE) POSTPONE [ ; IMMEDIATE/COMPILE-ONLY
+: ;CODE
+  &HIDDEN RESET-HFLAGS! POSTPONE (;CODE) POSTPONE [
+; IMMEDIATE/COMPILE-ONLY
 
 BASE @
 16 BASE !
 
 : :NONAME
-  (DO-:) 0 0 &HIDDEN HEADER, ] ;
+  (DO-:) 0 0 &HIDDEN HEADER, ]
+;
 
 HERE
   83 B, C0 B, 1 CELLS B,   \ ADD     EAX,CELL_SIZE
@@ -114,7 +138,8 @@ HERE
 CONSTANT (DO-CREATE)
 
 : CREATE
-  (DO-CREATE) &USUAL PARSE-CHECK-HEADER, DROP ;
+  (DO-CREATE) &USUAL PARSE-CHECK-HEADER, DROP
+;
 
 : (DOES)
   R> LATEST-HEAD@ HEAD> !
@@ -158,7 +183,8 @@ BASE !
 \ -----------------------------------------------------------------------------
 
 : INT/COMP:
-  (DO-INT/COMP) &IMMEDIATE PARSE-CHECK-HEADER, DROP SWAP , , ;
+  (DO-INT/COMP) &IMMEDIATE PARSE-CHECK-HEADER, DROP SWAP , ,
+;
 
 \ -----------------------------------------------------------------------------
 \  LEAVE I J I' (DO)

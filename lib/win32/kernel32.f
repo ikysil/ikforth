@@ -97,7 +97,34 @@ DEFER WriteConsole
 
 Int32DLLEntry GetNumberOfConsoleInputEvents KERNEL32.DLL GetNumberOfConsoleInputEvents
 
+STRUCT COORD
+  WORD: COORD.X
+  WORD: COORD.Y  
+ENDSTRUCT
+
+STRUCT SMALL_RECT
+  WORD: SMALL_RECT.Left
+  WORD: SMALL_RECT.Top
+  WORD: SMALL_RECT.Right
+  WORD: SMALL_RECT.Bottom
+ENDSTRUCT
+
+STRUCT CONSOLE_SCREEN_BUFFER_INFO
+  COORD STRUCT-SIZEOF STRUCT-FIELD      CONSOLE_SCREEN_BUFFER_INFO.dwSize
+  COORD STRUCT-SIZEOF STRUCT-FIELD      CONSOLE_SCREEN_BUFFER_INFO.dwCursorPosition
+  WORD:                                 CONSOLE_SCREEN_BUFFER_INFO.wAttributes
+  SMALL_RECT STRUCT-SIZEOF STRUCT-FIELD CONSOLE_SCREEN_BUFFER_INFO.srWindow
+  COORD STRUCT-SIZEOF STRUCT-FIELD      CONSOLE_SCREEN_BUFFER_INFO.dwMaximumWindowSize
+ENDSTRUCT
+
 Int32DLLEntry SetConsoleCursorPosition KERNEL32.DLL SetConsoleCursorPosition
+
+Int32DLLEntry GetConsoleScreenBufferInfo KERNEL32.DLL GetConsoleScreenBufferInfo
+Int32DLLEntry FillConsoleOutputCharacterA KERNEL32.DLL FillConsoleOutputCharacterA
+Int32DLLEntry FillConsoleOutputCharacterW KERNEL32.DLL FillConsoleOutputCharacterW
+
+DEFER FillConsoleOutputCharacter
+' FillConsoleOutputCharacterA IS FillConsoleOutputCharacter
 
 Int32DLLEntry FormatMessageA KERNEL32.DLL FormatMessageA
 Int32DLLEntry FormatMessageW KERNEL32.DLL FormatMessageW

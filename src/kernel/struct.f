@@ -9,30 +9,29 @@ CR .( Loading STRUCT definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-: STRUCTURE (S "name" -- addr offset[0] )
+: STRUCT (S "name" -- addr offset[0] )
   CREATE HERE 0 DUP ,
-  DOES> @
 ;
 
-: ENDSTRUCTURE (S addr offset -- )
+: ENDSTRUCT (S addr offset -- )
   SWAP !
 ;
 
-:NONAME ' >BODY @ ;
-:NONAME ' >BODY @ POSTPONE LITERAL ;
-INT/COMP: SIZEOF (S "name" -- size-of )
+: STRUCT-SIZEOF (S struct_addr -- sizeof_struct )
+  @
+;
 
-: FIELD (S offset size "name" -- offset+size )
+: STRUCT-FIELD (S offset size "name" -- offset+size )
   CREATE OVER , +
   DOES> @ +
 ;
 
 : --
-  FIELD
+  STRUCT-FIELD
 ;
 
 : CHARS:
-  CHARS FIELD
+  CHARS STRUCT-FIELD
 ;
 
 : CHAR:
@@ -40,7 +39,7 @@ INT/COMP: SIZEOF (S "name" -- size-of )
 ;
 
 : BYTES:
-  FIELD
+  STRUCT-FIELD
 ;
 
 : BYTE:
@@ -48,7 +47,7 @@ INT/COMP: SIZEOF (S "name" -- size-of )
 ;
 
 : WORDS:
-  /WORDS FIELD
+  /WORDS STRUCT-FIELD
 ;
 
 : WORD:
@@ -56,7 +55,7 @@ INT/COMP: SIZEOF (S "name" -- size-of )
 ;
 
 : CELLS:
-  CELLS FIELD
+  CELLS STRUCT-FIELD
 ;
 
 : CELL:
@@ -64,7 +63,7 @@ INT/COMP: SIZEOF (S "name" -- size-of )
 ;
 
 : 2CELLS:
-  2* CELLS FIELD
+  2* CELLS STRUCT-FIELD
 ;
 
 : 2CELL:

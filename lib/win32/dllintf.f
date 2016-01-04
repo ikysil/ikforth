@@ -14,13 +14,16 @@ REPORT-NEW-NAME OFF
 BASE @ 
 
 : (DLL.Init) (S lib-addr sliteral<DLL> -- )
-  (LoadLibrary) GetLastError THROW SWAP ! ;
+  (LoadLibrary) GetLastError THROW SWAP !
+;
 
 : (DLL.Done) (S lib-addr -- )
-  @ FreeLibrary ;
+  @ FreeLibrary
+;
 
 : (DLL) (S 'Name' -- body-addr )
-  CREATE HERE 0 , DOES> @ ;
+  CREATE HERE 0 , DOES> @
+;
 
 : DLLImport (S DLL '"dllpath"' -- )
   (DLL) >R
@@ -37,10 +40,12 @@ BASE @
      POSTPONE LITERAL
      POSTPONE (DLL.Done)
      POSTPONE ;
-  R> SHUTDOWN-CHAIN CHAIN.ADD ;
+  R> SHUTDOWN-CHAIN CHAIN.ADD
+;
 
 : (DLLEntry.Init) (S entry-addr xt<DLL> sliteral<DLLName> -- )
-  ROT EXECUTE (GetProcAddress) GetLastError THROW SWAP ! ;
+  ROT EXECUTE (GetProcAddress) GetLastError THROW SWAP !
+;
 
 : DLLEntry.Init (S 'DLL' 'DLLName' -- )
   LATEST-HEAD@ HEAD> >BODY
@@ -51,7 +56,8 @@ BASE @
      POSTPONE SLITERAL
      POSTPONE (DLLEntry.Init)
      POSTPONE ;
-  R> DUP STARTUP-CHAIN CHAIN.ADD EXECUTE ;
+  R> DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
+;
 
 HEX
 
@@ -67,7 +73,8 @@ HEX
   $NEXT
 
 : VoidDLLEntry (S 'Name' 'DLL' 'DLLName' -- )
-  (VoidDLLEntry) DLLEntry.Init ;
+  (VoidDLLEntry) DLLEntry.Init
+;
 
 : (Int32DLLEntry) (S 'Name' -- )
   CREATE 0 , 
@@ -82,7 +89,8 @@ HEX
   $NEXT
 
 : Int32DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
-  (Int32DLLEntry) DLLEntry.Init ;
+  (Int32DLLEntry) DLLEntry.Init
+;
 
 : (Int64DLLEntry) (S 'Name' -- )
   CREATE 0 ,
@@ -98,7 +106,8 @@ HEX
   $NEXT
 
 : Int64DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
-  (Int64DLLEntry) DLLEntry.Init ;
+  (Int64DLLEntry) DLLEntry.Init
+;
 
 BASE !
 

@@ -130,17 +130,6 @@ DWORD  __stdcall fStartThread(void * ParentUserDataAreaAddr, DWORD CreateSuspend
   return threadId;
 }
 
-void    __stdcall fPage(){
-  _COORD C;
-  CONSOLE_SCREEN_BUFFER_INFO CSBI;
-  DWORD Chars;
-  C.X = 0;
-  C.Y = 0;
-  GetConsoleScreenBufferInfo(hOut, &CSBI);
-  FillConsoleOutputCharacter(hOut, ' ', CSBI.dwSize.X * CSBI.dwSize.Y, C, &Chars);
-  SetConsoleCursorPosition(hOut, C);      
-}
-
 void *  __stdcall fAlloc(DWORD size){
   void * result = (void *)GlobalAlloc(GPTR, size);
   if(result != NULL)

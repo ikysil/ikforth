@@ -32,7 +32,6 @@ void SetFuncTable(ImageHeader const * Header){
   ft->fFileReposition = &fFileReposition;
   ft->fFileReadLine   = &fFileReadLine;
   ft->fStartThread    = &fStartThread;
-  ft->fPage           = &fPage;
   ft->fAlloc          = &fAlloc;
   ft->fFree           = &fFree;
   ft->fReAlloc        = &fReAlloc;

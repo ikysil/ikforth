@@ -19,7 +19,7 @@
 
 ;  MAX-NAME-LENGTH
                         $VAR    'MAX-NAME-LENGTH',$MAX_NAME_LENGTH
-                        CC      32
+                        CC      64
 
 ;  &USUAL
 ;  D: -- VEF-USUAL

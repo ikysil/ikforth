@@ -56,6 +56,11 @@
 
                         CC      SQUOTE_BUFFER_VAR
 
+;  S"-BUFFER-SIZE
+                        $CONST  'S"-BUFFER-SIZE'
+
+                        CC      SQUOTE_BUFFER_SIZE
+
 ;  POCKET
                         $USER   'POCKET',$POCKET
 
@@ -119,7 +124,7 @@ STATE_VAR:
 ;  D: -- char
                         $CONST  'BL',$BL
 
-                        CC      ' '
+                        CC      20h ;' '
 
 ;  MAIN
 ;  First Forth word to EXECUTE

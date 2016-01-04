@@ -70,7 +70,7 @@ S" Class declaration needed"
 : >SIZE (S instance | class -- size-addr )
   CELL+ ;
 
-: SIZEOF (S instance | class -- size )
+: CLASS-SIZEOF (S instance | class -- size )
   CLASSOF >SIZE @ ;
 
 : >MEMBERS (S class | instance -- class-members-chain )
@@ -116,7 +116,7 @@ DEFER THIS ' THIS@ IS THIS
 
 : <SUPER (S class -- )
   CURRENT-CLASS 2DUP = IF EXC-INVALID-INHERITANCE THROW THEN
-                2DUP >SUPER ! >SIZE SWAP SIZEOF SWAP ! ;
+                2DUP >SUPER ! >SIZE SWAP CLASS-SIZEOF SWAP ! ;
 
 : CLASS-ADDMEMBER (S members-flags member-CFA member-id class -- )
   >R HERE >R , , , R> R> >MEMBERS CHAIN.ADD ;
@@ -209,10 +209,10 @@ USER MEMBER-ID 1 CELLS USER-ALLOC
 : DOES>-INSTANCE DOES> CELL+ ;
 
 : DICT-INSTANCE (S class "name" -- )
-  CREATE DUP , SIZEOF ALLOT DOES>-INSTANCE ;
+  CREATE DUP , CLASS-SIZEOF ALLOT DOES>-INSTANCE ;
 
 : CREATE-HEAP-INSTANCE (S class -- heap-instance )
-  DUP SIZEOF ALLOCATE THROW DUP -ROT ! CELL+ ;
+  DUP CLASS-SIZEOF ALLOCATE THROW DUP -ROT ! CELL+ ;
 
 : FREE-HEAP-INSTANCE (S heap-instance -- )
   CELL- FREE THROW ;
@@ -266,7 +266,7 @@ INT/COMP: FIELD-ADDR
 
   M: .INFO THIS INVOKE .NAME SPACE THIS CLASSOF INVOKE .NAME SPACE THIS H.8 ;M
 
-  M: .CLASSINFO THIS INVOKE .NAME ." , SIZEOF=" THIS SIZEOF . ;M
+  M: .CLASSINFO THIS INVOKE .NAME ." , SIZEOF=" THIS CLASS-SIZEOF . ;M
 
   : (.T) (S class level -- level )
      OVER SUPER ?DUP IF SWAP RECURSE THEN
@@ -312,7 +312,7 @@ INT/COMP: FIELD-ADDR
 ;CLASS
 
 : CLASS: (S "name" -- )
-  OBJECT DUP SIZEOF (CLASS) ;
+  OBJECT DUP CLASS-SIZEOF (CLASS) ;
 
 BASE !
 

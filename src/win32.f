@@ -12,10 +12,10 @@
 
 ENV>
 
-S" src\win32\dllintf.f"         INCLUDED
-S" src\win32\wincon.f"          INCLUDED
-S" src\win32\kernel32.f"        INCLUDED
-S" src\win32\winexception.f"    INCLUDED
-S" src\win32\winconsole.f"      INCLUDED
-S" src\win32\winfile.f"         INCLUDED
-S" src\win32\winmisc.f"         INCLUDED
+S" lib\win32\dllintf.f"         INCLUDED
+S" lib\win32\wincon.f"          INCLUDED
+S" lib\win32\kernel32.f"        INCLUDED
+S" lib\win32\winexception.f"    INCLUDED
+S" lib\win32\winconsole.f"      INCLUDED
+S" lib\win32\winfile.f"         INCLUDED
+S" lib\win32\winmisc.f"         INCLUDED

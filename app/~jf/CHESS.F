@@ -111,7 +111,7 @@ variable level \ level at which the program is looking. 0=actual position
 create symbols \ symbols of empty field and of the values of the pieces
 \ compiled here with , so use CELLS instead of CHARS
 
-  CHAR . , CHAR p , CHAR k , CHAR b ,
+  ( CHAR . ) BL , CHAR p , CHAR k , CHAR b ,
   CHAR r , CHAR q , CHAR K ,
 
 create values \ values of empty field and of the pieces
@@ -128,7 +128,7 @@ create values \ values of empty field and of the pieces
      dup i + c@ dup                         \ symbols compiled with , use CELLS
      07 and cells symbols + 1 type          \ type piece - 'key in' piece
      dup 80 and if ." W" drop else          \ is piece White?
-      if ." B" else ." °" then
+      if ." B" else ."  " then
      then
     loop
     10 +                                 \ next row

@@ -27,7 +27,6 @@ typedef struct _FuncTable{
   void * fFileReposition;
   void * fFileReadLine;
   void * fStartThread;
-  void * fPage;
   void * fAlloc;
   void * fFree;
   void * fReAlloc;

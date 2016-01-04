@@ -34,16 +34,23 @@ USER .S-PRINT-XT 1 CELLS USER-ALLOC
 
 : H.S BASE @ >R HEX U.S R> BASE ! ;
 
-: >PRINTABLE DUP BL < IF DROP [CHAR] . THEN ;
+: >PRINTABLE (S c -- printable_c )
+  DUP BL < IF DROP [CHAR] . THEN
+;
 
-: DUMP OVER BASE @ HEX 2SWAP + ROT
+: DUMP
+  OVER BASE @ HEX 2SWAP + ROT
   DO I <#
     0 15 DO DUP I + C@ >PRINTABLE HOLD -1 +LOOP
     0 15 DO BL HOLD DUP I + @ 0 # # 2DROP -1 +LOOP
     BL HOLD BL HOLD 0 # # # # # # # # #> TYPE CR
-  16 +LOOP BASE ! ;
+  16 +LOOP
+  BASE !
+;
 
-: ? @ . ;
+: ?
+  @ .
+;
 
 : WORD-ATTR (S h-id -- )
   HFLAGS@
@@ -122,8 +129,9 @@ USER .S-PRINT-XT 1 CELLS USER-ALLOC
   IF OVER >R NDROP R> WORDLIST-WORDS THEN
 ;
 
-: .REQUIRED-LIST (S -- )
-  INCLUDED-WORDLIST WORDLIST-WORDS ;
+: .INCLUDED-LIST (S -- )
+  INCLUDED-WORDLIST WORDLIST-WORDS
+;
 
 : (WORDS-COUNT) (S wid -- word count in wordlist )
   WL>LATEST @  
@@ -139,32 +147,43 @@ USER .S-PRINT-XT 1 CELLS USER-ALLOC
 
 : WORDS-COUNT (S -- word count in first wordlist )
   (GET-ORDER) ?DUP 0>
-  IF OVER >R NDROP R> (WORDS-COUNT) ELSE 0 THEN ;
+  IF OVER >R NDROP R> (WORDS-COUNT) ELSE 0 THEN
+;
 
-: AHEAD POSTPONE BRANCH >MARK 2 ; IMMEDIATE/COMPILE-ONLY
+: AHEAD
+  POSTPONE BRANCH >MARK 2
+; IMMEDIATE/COMPILE-ONLY
 
 VOCABULARY ASSEMBLER
 
 VOCABULARY EDITOR
 
-: [ELSE] 1 BEGIN
-           BEGIN BL WORD COUNT DUP WHILE
-                 2DUP S" [IF]" COMPARE 0=
-                 IF
-                   2DROP 1+
-                 ELSE
-                   2DUP S" [ELSE]" COMPARE 0=
-                   IF
-                     2DROP 1- DUP IF 1+ THEN
-                   ELSE
-                     S" [THEN]" COMPARE 0=
-                     IF 1- THEN
-                   THEN
-                 THEN ?DUP 0= IF EXIT THEN
-           REPEAT 2DROP
-           REFILL 0= UNTIL DROP ; IMMEDIATE
+: [ELSE]
+  1 BEGIN
+    BEGIN
+      BL WORD COUNT DUP
+    WHILE
+      2DUP S" [IF]" COMPARE 0=
+      IF
+        2DROP 1+
+      ELSE
+        2DUP S" [ELSE]" COMPARE 0=
+        IF
+          2DROP 1- DUP IF 1+ THEN
+        ELSE
+          S" [THEN]" COMPARE 0=
+          IF 1- THEN
+        THEN
+      THEN
+      ?DUP 0= IF EXIT THEN
+    REPEAT 2DROP
+    REFILL 0=
+  UNTIL DROP
+; IMMEDIATE
 
-: [IF] 0= IF POSTPONE [ELSE] THEN ; IMMEDIATE
+: [IF]
+  0= IF POSTPONE [ELSE] THEN
+; IMMEDIATE
 
 : [THEN] ; IMMEDIATE
 

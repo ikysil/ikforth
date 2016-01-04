@@ -12,14 +12,15 @@ REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
 USER #ORDER 1 CELLS USER-ALLOC
-:NONAME 0 #ORDER ! ;
-DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
+:NONAME
+  0 #ORDER !
+; DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
 16 CONSTANT MAX-ORDER-COUNT
 
 USER CONTEXT MAX-ORDER-COUNT 1+ CELLS USER-ALLOC
 
-: FIND-ORDER (S c-addr -- c-addr 0 | xt 1 | xt -1 )
+:NONAME \ FIND-ORDER (S c-addr -- c-addr 0 | xt 1 | xt -1 )
   0 #ORDER @ 0 ?DO                              \ S: c-addr 0
                  OVER COUNT                     \ S: c-addr 0 c-addr1 count
                  I CELLS CONTEXT + @            \ S: c-addr 0 c-addr1 count wid
@@ -35,21 +36,34 @@ USER CONTEXT MAX-ORDER-COUNT 1+ CELLS USER-ALLOC
                                                 \ not found S: c-addr
                                                 \ try to search FORTH-WORDLIST
                DEFER@-EXECUTE FIND
+; IS FIND
+
+\ ' FIND-ORDER IS FIND
+
+: GET-ORDER
+  #ORDER @ 0
+  ?DO
+    #ORDER @ I - 1- CELLS CONTEXT + @
+  LOOP
+  #ORDER @
 ;
 
-' FIND-ORDER IS FIND
+: SET-ORDER
+  DUP MAX-ORDER-COUNT > IF EXC-SEARCH-ORDER-OVERFLOW  THROW THEN
+  DUP 0<                IF EXC-SEARCH-ORDER-UNDERFLOW THROW THEN
+  DUP #ORDER ! 0
+  ?DO
+    I CELLS CONTEXT + !
+  LOOP
+;
 
-: GET-ORDER #ORDER @ 0 ?DO #ORDER @ I - 1- CELLS CONTEXT + @ LOOP #ORDER @ ;
+: GET-CURRENT
+  CURRENT @
+;
 
-: (GET-ORDER) FORTH-WORDLIST GET-ORDER 1+ ;
-
-: SET-ORDER DUP MAX-ORDER-COUNT > IF EXC-SEARCH-ORDER-OVERFLOW  THROW THEN
-            DUP 0<                IF EXC-SEARCH-ORDER-UNDERFLOW THROW THEN
-            DUP #ORDER ! 0 ?DO I CELLS CONTEXT + ! LOOP ;
-
-: GET-CURRENT CURRENT @ ;
-
-: SET-CURRENT CURRENT ! ;
+: SET-CURRENT
+  CURRENT !
+;
 
 VARIABLE LAST-WORDLIST
 FORTH-WORDLIST LAST-WORDLIST !
@@ -59,7 +73,9 @@ FORTH-WORDLIST LAST-WORDLIST !
 \  +0                   last word in wordlist (modified by header creation words)
 \  +1                   VOCABULARY XT (if any, 0 otherwise)
 \  +2                   previous WORDLIST
-: WORDLIST HERE DUP 0 DUP , , LAST-WORDLIST DUP >R @ , R> ! ;
+: WORDLIST
+  HERE DUP 0 DUP , , LAST-WORDLIST DUP >R @ , R> !
+;
 
 : WL>LATEST (S wordlist-id -- latest-word-addr )
 ;
@@ -72,31 +88,48 @@ FORTH-WORDLIST LAST-WORDLIST !
   [ 2 CELLS ] LITERAL +
 ;
 
-: ONLY 0 SET-ORDER ;
+: ONLY
+  0 SET-ORDER
+;
 
-: ALSO        GET-ORDER ?DUP IF
-                               OVER SWAP 1+
-                             ELSE
-                               FORTH-WORDLIST 1
-                             THEN SET-ORDER ;
+: ALSO
+  GET-ORDER ?DUP
+  IF
+    OVER SWAP 1+
+  ELSE
+    FORTH-WORDLIST 1
+  THEN SET-ORDER
+;
 
-: PREVIOUS    GET-ORDER ?DUP IF
-                               NIP 1- SET-ORDER
-                             THEN ;
+: PREVIOUS
+  GET-ORDER ?DUP
+  IF
+    NIP 1- SET-ORDER
+  THEN
+;
 
-: DEFINITIONS GET-ORDER ?DUP IF
-                               OVER SET-CURRENT NDROP
-                             ELSE
-                               FORTH-WORDLIST SET-CURRENT
-                             THEN ;
+: DEFINITIONS
+  GET-ORDER ?DUP
+  IF
+    OVER SET-CURRENT NDROP
+  ELSE
+    FORTH-WORDLIST SET-CURRENT
+  THEN
+;
 
-: DOES>-VOCABULARY DOES> @ >R GET-ORDER
-                         DUP 0= IF 1 THEN
-                         NIP R> SWAP SET-ORDER ;
+: DOES>-VOCABULARY
+  DOES> @ >R GET-ORDER
+        DUP 0= IF 1 THEN
+        NIP R> SWAP SET-ORDER
+;
 
-: (VOCABULARY) HERE SWAP CREATE DUP , WL>VOC ! DOES>-VOCABULARY ;
+: (VOCABULARY)
+  HERE SWAP CREATE DUP , WL>VOC ! DOES>-VOCABULARY
+;
 
-: VOCABULARY WORDLIST (VOCABULARY) ;
+: VOCABULARY
+  WORDLIST (VOCABULARY)
+;
 
 : .WORDLIST-NAME (S wid -- )
   DUP ." H# " H.8 SPACE WL>VOC @ ?DUP
@@ -106,6 +139,10 @@ FORTH-WORDLIST LAST-WORDLIST !
     ." (nonamed)"
   THEN
 ;
+
+: (GET-ORDER)
+  FORTH-WORDLIST GET-ORDER 1+
+;  
 
 : ORDER
   (GET-ORDER)
@@ -120,9 +157,8 @@ FORTH-WORDLIST LAST-WORDLIST !
   BEGIN
     DUP
   WHILE
-    DUP WL>PREV-WL @ >R
-        .WORDLIST-NAME CR
-    R>
+    DUP WL>PREV-WL @ SWAP
+    .WORDLIST-NAME CR
   REPEAT DROP
 ;
 

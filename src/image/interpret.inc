@@ -213,7 +213,7 @@ IW_EXIT:
                         CEXIT
 
 ;  D: c-addr u -- 
-                        $COLON  '(INTERPRET-WORD-NOT-FOUND)',$PINTERPRET_WORD_NOT_FOUND
+                        $COLON  0,$PINTERPRET_WORD_NOT_FOUND
 
                         CW      $2DROP
                         CTHROW  -13

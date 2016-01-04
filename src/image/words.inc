@@ -7,9 +7,9 @@
 ;
 ;******************************************************************************
 
+                        INCLUDE "host.inc"
                         INCLUDE "primitives.inc"
                         INCLUDE "varconst.inc"
-                        INCLUDE "host.inc"
                         INCLUDE "ik.inc"
                         INCLUDE "source.inc"
                         INCLUDE "thread.inc"

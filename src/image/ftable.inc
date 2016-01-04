@@ -47,7 +47,6 @@ FUNC_TABLE:
                         $FUNC   FILE_REPOSITION
                         $FUNC   FILE_READ_LINE
                         $FUNC   START_THREAD
-                        $FUNC   PAGE
                         $FUNC   ALLOCATE
                         $FUNC   FREE
                         $FUNC   REALLOCATE

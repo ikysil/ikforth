@@ -73,7 +73,7 @@ __PREVFLD:
                         DB      __PREVFLD - __DEF 
 ;; LFA
                         DD      VOC_LINK
-VOC_LINK                =       __DEF      + IMAGE_BASE
+VOC_LINK                =       __DEF + IMAGE_BASE
 
 ;; CFA
                         IFNB    <CODE>

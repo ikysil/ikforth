@@ -1,8 +1,10 @@
 REPORT-NEW-NAME OFF
 
-' _INCLUDE-FILE  IS INCLUDE-FILE
+: marker create does> drop ;
 
-: chess s" app\chess.f" included ;
+: debugger s" lib\~jp\debugger.f" included ;
+
+: load_chess s" app\~ik\chess.f" included ;
 
 : WT S" lib\test\wordstest.f" INCLUDED ;
 
@@ -51,6 +53,7 @@ REPORT-NEW-NAME OFF
 \ st
 
 requires" lib\~ik\open-interpreter.f"
+requires" lib\~ik\peimage.f"
 
 \ : a ['] ST RUSH ." test" ;
 

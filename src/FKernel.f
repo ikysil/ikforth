@@ -12,67 +12,18 @@ REPORT-NEW-NAME @
 TRUE REPORT-NEW-NAME-DUPLICATE !
 FALSE REPORT-NEW-NAME !
 
-S" src\kernel\_kernel0.f" INCLUDED
+S" src\kernel.0\_kernel0.f" INCLUDED
 
 \ ' _READ-LINE     IS READ-LINE
-' _INCLUDED      IS INCLUDED
-
-: .VERSION
-  ." IKForth v1.0" CR
-  ." Copyright (C) 1999-2003 Illya Kysil" CR
-  ." Compiled: "
-  [
-    TIME&DATE DECIMAL
-    <# 5 ROLL S>D # # 2DROP CHAR : HOLD
-       4 ROLL S>D # # 2DROP CHAR : HOLD
-       3 ROLL S>D #S  2DROP
-       BL HOLD CHAR , HOLD
-       S>D #S 2DROP CHAR / HOLD MONTH>STR S"HOLD CHAR / HOLD S>D #S #>
-  ] SLITERAL TYPE
-;
-
-: .PLATFORM
-  ." Platform: " PLATFORM? TYPE
-;
-
-:NONAME .VERSION CR .PLATFORM CR CR .ENV-INFO ;
-STARTUP-CHAIN CHAIN.ADD
-
-:NONAME ." Bye..." CR ;
-SHUTDOWN-CHAIN CHAIN.ADD
-
-0 VALUE GLOBAL-INIT-FLAG 
-
-:NONAME
-  INIT-USER
-  DECIMAL
-  GLOBAL-INIT-FLAG 0=
-  IF
-    1 TO GLOBAL-INIT-FLAG
-    STARTUP-CHAIN CHAIN.EXECUTE>
-    GetCommandLine DUP lstrlen CMD-LINE 2!
-    CR ." Loading startup include" CR
-    CATCH( SF @ #SF @ INCLUDED )CATCH
-    CASE
-      0 OF
-\ no errors
-      ENDOF
-\      2 OF
-\ ignore file not found exception
-\      ENDOF
-      DUP .EXCEPTION 
-    ENDCASE
-  THEN
-  DECIMAL
-  QUIT
-; IS MAIN
+\ ' _INCLUDED      IS INCLUDED
+\ ' _INCLUDE-FILE  IS INCLUDE-FILE
 
 REPORT-NEW-NAME !
 REPORT-NEW-NAME-DUPLICATE !
 
 DECIMAL
 
-H# 800000 DATA-AREA-SIZE !
+0x00800000 DATA-AREA-SIZE !
 
 CR .( Writing IKForth.img )
 S" IKForth.img" W/O CREATE-FILE THROW

@@ -79,7 +79,7 @@ HLD-SIZE USER-ALLOC USER HLD0
 
 : H.8 8 H.N ;
 
-: S"HOLD ( c-addr count -- )
+: S"HOLD \ (S c-addr count -- )
   SWAP OVER + SWAP 0 ?DO [ 1 CHARS ] LITERAL - DUP @ HOLD LOOP DROP ;
 
 REPORT-NEW-NAME !

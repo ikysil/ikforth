@@ -18,9 +18,9 @@ REPORT-NEW-NAME OFF
         STD_ERROR_HANDLE  GetStdHandle TO STDERR ;
 DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
-:NONAME (S y x -- )
+: WIN-AT-XY (S x y -- )
   16 LSHIFT OR STDOUT SetConsoleCursorPosition DROP
-; IS AT-XY
+;
 
 USER NumberOfConsoleInputEvents 1 CELLS USER-ALLOC
 
@@ -116,8 +116,22 @@ VARIABLE PENDING-CHAR
   REPEAT
 ;
 
+CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
+
 : WIN-ERASE-CHAR
-  8 EMIT BL EMIT 8 EMIT
+  CSBI STDOUT GetConsoleScreenBufferInfo 0<>
+  IF
+    CSBI CONSOLE_SCREEN_BUFFER_INFO.dwCursorPosition DUP
+    COORD.X W@ 0=
+    IF
+      CSBI CONSOLE_SCREEN_BUFFER_INFO.srWindow SMALL_RECT.Right W@
+      SWAP COORD.Y W@ 1-
+    ELSE
+      DUP  COORD.X W@ 1-
+      SWAP COORD.Y W@
+    THEN
+    2DUP AT-XY SPACE AT-XY
+  THEN
 ;
 
 \ 6.1.0695 ACCEPT 
@@ -169,11 +183,35 @@ VARIABLE PENDING-CHAR
   SWAP R> 2DROP
 ;
 
+\ 10.6.1.2005 PAGE 
+\ (S -- )
+\ Move to another page for output. Actual function depends on the output device.
+\ On a terminal, PAGE clears the screen and resets the cursor position to the upper left corner.
+\ On a printer, PAGE performs a form feed. 
+: WIN-PAGE (S -- )
+  CSBI STDOUT GetConsoleScreenBufferInfo DROP
+  0 0 CSBI CONSOLE_SCREEN_BUFFER_INFO.dwSize DUP COORD.X W@ SWAP COORD.Y W@ *
+  BL STDOUT FillConsoleOutputCharacter DROP
+  0 0 AT-XY
+;
+
+\ 10.6.2.1325 EMIT? 
+\ (S -- flag )
+\ flag is true if the user output device is ready to accept data and the execution
+\ of EMIT in place of EMIT? would not have suffered an indefinite delay.
+\ If the device status is indeterminate, flag is true. 
+: WIN-EMIT? (S -- flag )
+  TRUE
+;
+
+' WIN-AT-XY             IS AT-XY
 ' WIN-CONSOLE-EKEY?     IS EKEY?
 ' WIN-CONSOLE-EKEY      IS EKEY
 ' WIN-CONSOLE-EKEY>CHAR IS EKEY>CHAR
 ' WIN-CONSOLE-KEY?      IS KEY?
 ' WIN-CONSOLE-KEY       IS KEY
 ' WIN-ACCEPT            IS ACCEPT
+' WIN-PAGE              IS PAGE
+' WIN-EMIT?             IS EMIT?
 
 REPORT-NEW-NAME !

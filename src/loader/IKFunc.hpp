@@ -16,7 +16,6 @@ HANDLE  __stdcall fFileOpen(int fileAccessMethod, int nameLen, char const * name
 void    __stdcall fFileReposition(HANDLE fileID, LONG HWord, LONG LWord);
 __int64 __stdcall fFileReadLine(HANDLE fileId, int cLen, char * cAddr);
 DWORD   __stdcall fStartThread(void * ParentUserDataAreaAddr, DWORD CreateSuspended, DWORD XT);
-void    __stdcall fPage();
 void *  __stdcall fAlloc(DWORD size);
 void    __stdcall fFree(void * addr);
 void *  __stdcall fReAlloc(void * addr, DWORD newSize);

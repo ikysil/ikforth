@@ -42,7 +42,7 @@ USER_AREA_SIZE          =       ( USER_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
                         _VAR    CURR_FILE_POS
                         _ALLOC  CELL_SIZE
 
-MAX_FILE_LINE_LENGTH     EQU    1024
+MAX_FILE_LINE_LENGTH    EQU    1024
                         _VAR    HASH_FILE_LINE
                         _VAR    FILE_LINE,MAX_FILE_LINE_LENGTH
 
@@ -51,7 +51,9 @@ MAX_FILE_LINE_LENGTH     EQU    1024
                         _VAR    EXCEPTION_HANDLER
 
                         _VAR    WIN32_EXCEPTION_CONTEXT,256
-                        _VAR    SQUOTE_BUFFER,1024
+
+SQUOTE_BUFFER_SIZE      EQU     1024
+                        _VAR    SQUOTE_BUFFER,SQUOTE_BUFFER_SIZE
 
                         _VAR    POCKET,256
 

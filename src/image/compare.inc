@@ -83,6 +83,7 @@ NOEQ_YES:
 ;  6.1.0250 0<
 ;  D: a -- flag ( a < 0 )
                         $CODE   '0<',$ZEROLE,VEF_USUAL
+
                         POPDS   EAX
                         OR      EAX,EAX
                         MOV     EAX,F_TRUE
@@ -95,6 +96,7 @@ ZEROLE_YES:
 ;  6.1.0270 0=
 ;  D: a -- flag ( a = 0 )
                         $CODE   '0=',$ZEROEQ,VEF_USUAL
+
                         POPDS   EAX
                         OR      EAX,EAX
                         MOV     EAX,F_TRUE
@@ -108,6 +110,7 @@ ZEROEQ_YES:
 ;  Flag is true if and only if x is not equal to zero.
 ;  D: x -- flag
                         $CODE   '0<>',$ZERONOEQ,VEF_USUAL
+
                         POPDS   EAX
                         OR      EAX,EAX
                         MOV     EAX,F_TRUE
@@ -121,6 +124,7 @@ ZERONOEQ_YES:
 ;  Flag is true if and only if n is greater than zero.
 ;  D: n -- flag
                         $CODE   '0>',$ZEROGR,VEF_USUAL
+
                         POPDS   EAX
                         OR      EAX,EAX
                         MOV     EAX,F_TRUE
@@ -138,6 +142,7 @@ ZEROGR_YES:
 ;  Flag is true if and only if u1 is less than u2.
 ;  D: u1 u2 -- flag ( u1 < u2 )
                         $CODE   'U<',$ULE,VEF_USUAL
+
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
@@ -152,6 +157,7 @@ ULE_YES:
 ;  D: u1 u2 -- flag
 ;  flag is true if and only if u1 is greater than u2. 
                         $CODE   'U>',$UGR,VEF_USUAL
+
                         POPDS   EBX
                         POPDS   EAX
                         CMP     EAX,EBX
