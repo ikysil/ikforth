@@ -10,16 +10,17 @@
 ;******************************************************************************
 
                         $CONST  'R/O',$R_O
+
                         CC      0
 
 ;  11.6.1.2090 READ-LINE 
 ;  (S c-addr u1 fileid -- u2 flag ior )
                         $DEFER  'READ-LINE',$READ_LINE
 
-                        CW      $PREAD_LINE
+                        CW      $_READ_LINE
 
 
-                        $COLON  '(INCLUDED)',$PINCLUDED
+                        $COLON  0,$_INCLUDED
 
                         CW      $R_O
                         CW      $OPEN_FILE
@@ -31,11 +32,15 @@
 ;  D: c-addr count --
                         $DEFER  'INCLUDED',$INCLUDED
 
-                        CW      $PINCLUDED
+                        CW      $_INCLUDED
 
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
-                        $COLON  'INCLUDE-FILE',$INCLUDE_FILE
+                        $DEFER  'INCLUDE-FILE',$INCLUDE_FILE
+
+                        CW      $_INCLUDE_FILE
+
+                        $COLON  0,$_INCLUDE_FILE
 
                         CW      $INPUT_TO_R
                         CW      $RESET_INPUT
@@ -63,7 +68,7 @@ INCLUDE_FILE_EXIT:
                         CW      $THROW
                         CEXIT
 
-                        $COLON  'SAVE-INPUT-FILE',$SAVE_INPUT_FILE
+                        $COLON  0,$SAVE_INPUT_FILE
 
                         CW      $SOURCE_ID
                         CW      $CURRENT_FILE_POSITION
@@ -73,7 +78,7 @@ INCLUDE_FILE_EXIT:
                         CCLIT   5
                         CEXIT
 
-                        $COLON  'RESTORE-INPUT-FILE',$RESTORE_INPUT_FILE
+                        $COLON  0,$RESTORE_INPUT_FILE
 
                         CW      $DROP
                         CW      $DUP
@@ -95,7 +100,7 @@ INCLUDE_FILE_EXIT:
 @@PRESTORE_FILE_INPUT_EXIT:
                         CEXIT
 
-                        $COLON  'RESET-INPUT-FILE',$RESET_INPUT_FILE
+                        $COLON  0,$RESET_INPUT_FILE
 
                         CW      $ZERO
                         CW      $DUP

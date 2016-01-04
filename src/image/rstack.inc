@@ -119,11 +119,11 @@
                         MOV     EAX,ECX
                         OR      ECX,ECX
 @@N_TO_R_LOOP:
-                        JECXZ   @@N_TO_R_EXIT
+                        JECXZ   SHORT @@N_TO_R_EXIT
                         POPDS   EBX
                         PUSHRS  EBX
                         DEC     ECX
-                        JMP     @@N_TO_R_LOOP
+                        JMP     SHORT @@N_TO_R_LOOP
 @@N_TO_R_EXIT:
                         PUSHRS  EAX
                         $NEXT
@@ -136,11 +136,11 @@
                         MOV     EAX,ECX
                         OR      ECX,ECX
 @@N_R_FROM_LOOP:
-                        JECXZ   @@N_R_FROM_EXIT
+                        JECXZ   SHORT @@N_R_FROM_EXIT
                         POPRS   EBX
                         PUSHDS  EBX
                         DEC     ECX
-                        JMP     @@N_R_FROM_LOOP
+                        JMP     SHORT @@N_R_FROM_LOOP
 @@N_R_FROM_EXIT:
                         PUSHDS  EAX
                         $NEXT

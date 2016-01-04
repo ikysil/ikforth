@@ -11,6 +11,7 @@
 
 ;  8.6.1.0390 2LITERAL
                         $COLON  '2LITERAL',$2LITERAL,VEF_IMMEDIATE_COMPILE_ONLY
+
                         CWLIT   $2LIT
                         CW      $COMPILEC
                         CW      $SWAP
@@ -22,6 +23,7 @@
 ;  ( d1|ud1 d2|ud2 -- d3|ud3 )
 ;  Add d2|ud2 to d1|ud1, giving the sum d3|ud3. 
                         $CODE   'D+',$DADD,VEF_USUAL
+
                         POPDS   ECX
                         POPDS   EBX
                         POPDS   EDX
@@ -36,6 +38,7 @@
 ;  ( d1 -- d2 )
 ;  d2 is the negation of d1.
                         $CODE   'DNEGATE',$DNEGATE,VEF_USUAL
+
                         POPDS   EDX
                         POPDS   EAX
                         SUB     EAX,1

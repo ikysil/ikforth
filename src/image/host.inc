@@ -98,7 +98,7 @@
                         CGET_LAST_ERROR
                         $NEXT
 
-                        $CODE   '(READ-LINE)',$PREAD_LINE
+                        $CODE   0,$_READ_LINE
 
                         $CALL   FILE_READ_LINE_FUNC
                         PUSHDS  EAX

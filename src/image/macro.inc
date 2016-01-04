@@ -73,7 +73,7 @@ __PREVFLD:
                         DB      __PREVFLD - __DEF 
 ;; LFA
                         DD      VOC_LINK
-VOC_LINK                =       __DEF - SIGN + DESIRED_BASE_EQU
+VOC_LINK                =       __DEF      + IMAGE_BASE
 
 ;; CFA
                         IFNB    <CODE>
@@ -81,9 +81,9 @@ VOC_LINK                =       __DEF - SIGN + DESIRED_BASE_EQU
                         ENDIF
 
                         IFNB    <EXECUTOR>
-                          DD      EXECUTOR - SIGN + DESIRED_BASE_EQU
+                          DD      EXECUTOR + IMAGE_BASE
                         ELSE
-                          DD      __CODE - SIGN + DESIRED_BASE_EQU
+                          DD      __CODE   + IMAGE_BASE
                         ENDIF
 __CODE:
 ;; PFA
@@ -93,7 +93,7 @@ __CODE:
 ;  Use this macro to compile FORTH threaded definitions
 ;******************************************************************************
                      CW MACRO   NAME
-                        DD      NAME - SIGN + DESIRED_BASE_EQU
+                        DD      NAME + IMAGE_BASE
                         ENDM
 
                   CWLIT MACRO   VALUE
@@ -236,7 +236,7 @@ __CODE:
                         ENDM
 
                   $CODE MACRO   NAME,CODE,FLAGS
-                        $DEF    &NAME,&CODE,"",FLAGS
+                        $DEF    &NAME,&CODE,"",&FLAGS
                         ENDM
 
 ;******************************************************************************
@@ -254,11 +254,9 @@ __S_END:
 ;
 ;******************************************************************************
                     $CR MACRO   
-                        CW      $LIT
-                        CC      13
+                        CCLIT   13
                         CW      $EMIT
-                        CW      $LIT
-                        CC      10
+                        CCLIT   10
                         CW      $EMIT
                         ENDM
 

@@ -37,16 +37,15 @@ THREAD_PROC:
                         MOV     [EDI + EBX_VAR],EBX
 
 ; setup per-thread exception handler
-                        LEA     EAX,SEH_HANDLER - SIGN + DESIRED_BASE_EQU
+                        MOV     EAX,OFFSET SEH_HANDLER + IMAGE_BASE
                         PUSHDS  EAX
                         PUSHDS  FS:[0]
                         MOV     FS:[0],ESP
 
-                        MOV     EBP,EDI
-                        ADD     EBP,RSTACK_VAR
+                        LEA     EBP,EDI + RSTACK_VAR
                         MOV     [EDI + ESP_VAR],ESP
                         PUSHDS  ECX
-                        LEA     ESI,DO_THREAD - SIGN + DESIRED_BASE_EQU
+                        MOV     ESI,OFFSET DO_THREAD + IMAGE_BASE
                         $NEXT
 DO_THREAD:
                         CW      $CATCH
@@ -70,7 +69,7 @@ SEH_HANDLER:
                         ADD     EDI,WIN32_EXCEPTION_CONTEXT_VAR
                 REP     MOVSB
 ; fixup CONTEXT.EIP
-                        MOV     [EBX + 46 * 4],OFFSET DO_SEH - SIGN + DESIRED_BASE_EQU
+                        MOV     [EBX + 46 * 4],OFFSET DO_SEH + IMAGE_BASE
 ; fixup CONTEXT.EAX (= Win32 exception code)
                         MOV     [EBX + 44 * 4],EAX
 ; eax=0 reload context & continue execution
@@ -83,7 +82,7 @@ SEH_HANDLER:
                         RET
 DO_SEH:
                         PUSHDS  EAX
-                        LEA     ESI,DO_FORTH_SEH - SIGN + DESIRED_BASE_EQU
+                        MOV     ESI,OFFSET DO_FORTH_SEH + IMAGE_BASE
                         $NEXT
 DO_FORTH_SEH:
                         CW      $SEH_HANDLER

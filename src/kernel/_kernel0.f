@@ -1,5 +1,5 @@
 \
-\  words.f
+\  _kernel0.f
 \
 \  Copyright (C) 1999-2003 Illya Kysil
 \
@@ -48,6 +48,7 @@ S" src\win32.f"                 INCLUDED
 S" lib\~ik\macro.f"             INCLUDED
 S" lib\~ik\loop.f"              INCLUDED
 S" lib\~ik\486asm.f"            INCLUDED
+S" lib\~ik\struct.f"            INCLUDED
 S" lib\~ik\class.f"             INCLUDED
 S" lib\~ik\float.f"             INCLUDED
 S" lib\~ik\S$.f"                INCLUDED

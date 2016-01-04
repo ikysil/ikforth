@@ -39,14 +39,14 @@ TN_LOOP:
 TN_CONT:
                         PUSHDS  EDI
                         PUSHDS  ECX
-                        MOV     EDI,OFFSET DIGITS_TABLE - SIGN + DESIRED_BASE_EQU
+                        MOV     EDI,OFFSET DIGITS_TABLE + IMAGE_BASE
                         MOV     ECX,EBX
                         INC     ECX
                   REPNE SCASB
                         JNZ     SHORT TN_CONT2
                         DEC     EDI
                         DEC     EDI
-                        SUB     EDI,OFFSET DIGITS_TABLE - SIGN + DESIRED_BASE_EQU
+                        SUB     EDI,OFFSET DIGITS_TABLE + IMAGE_BASE
                         CMP     EDI,EBX
                         JGE     SHORT TN_CONT2
                         CMP     ECX,0

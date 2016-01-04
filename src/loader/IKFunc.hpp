@@ -2,7 +2,6 @@
 #define _IKFunc_
 
 #include "IKFCommon.hpp"
-#include "IKFUtils.hpp"
 
 HMODULE __stdcall fLoadLibrary(int nameLen, char const * nameAddr);
 void    __stdcall fFreeLibrary(HMODULE libID);

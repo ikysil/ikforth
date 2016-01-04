@@ -45,4 +45,9 @@ typedef struct _ImageHeader{
   DWORD             DataStackSize;
 } ImageHeader;
 
+extern bool CanExit;
+
+extern ImageHeader IHeader;
+extern HANDLE hOut;
+
 #endif

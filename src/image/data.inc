@@ -15,9 +15,9 @@
                         $CODE   ',',$COMMA
 
                         POPDS   EAX
-                        MOV     EBX,DWORD PTR [DP_VAR - SIGN + DESIRED_BASE_EQU]
+                        MOV     EBX,DWORD PTR [DP_VAR + IMAGE_BASE]
                         MOV     DWORD PTR [EBX],EAX
-                        ADD     DWORD PTR [DP_VAR - SIGN + DESIRED_BASE_EQU],CELL_SIZE
+                        ADD     DWORD PTR [DP_VAR + IMAGE_BASE],CELL_SIZE
                         $NEXT
 
 ;  COMPILE,
@@ -32,7 +32,7 @@
                         $CODE   'ALLOT',$ALLOT
 
                         POPDS   EAX
-                        ADD     DWORD PTR [DP_VAR - SIGN + DESIRED_BASE_EQU],EAX
+                        ADD     DWORD PTR [DP_VAR + IMAGE_BASE],EAX
                         $NEXT
 
 ;  6.1.0860 C,
@@ -41,9 +41,9 @@
                         $CODE   'C,',$CCOMMA
 
                         POPDS   EAX
-                        MOV     EBX,DWORD PTR [DP_VAR - SIGN + DESIRED_BASE_EQU]
+                        MOV     EBX,DWORD PTR [DP_VAR + IMAGE_BASE]
                         MOV     BYTE PTR [EBX],AL
-                        INC     DWORD PTR [DP_VAR - SIGN + DESIRED_BASE_EQU]
+                        INC     DWORD PTR [DP_VAR + IMAGE_BASE]
                         $NEXT
 
 ;  (;)

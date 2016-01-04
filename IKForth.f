@@ -1,5 +1,9 @@
 REPORT-NEW-NAME OFF
 
+' _INCLUDE-FILE  IS INCLUDE-FILE
+
+: chess s" app\chess.f" included ;
+
 : WT S" lib\test\wordstest.f" INCLUDED ;
 
 \ : a1 >r rp@ 1 type r> drop ;
@@ -43,6 +47,7 @@ REPORT-NEW-NAME OFF
 : st5 s" " s" 1" compare . ;
 : st6 s" 1" s" " compare . ;
 : st st1 st2 st3 st4 st5 st6 ;
+
 \ st
 
 requires" lib\~ik\open-interpreter.f"

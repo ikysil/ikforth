@@ -87,7 +87,7 @@ NOQBRANCH:
                         $VAR    '(DO-INT/COMP)'
           $PDO_INT_COMP LABEL   FAR
                         ADD     EAX,CELL_SIZE
-                        CMP     BYTE PTR [STATE_VAR - SIGN + DESIRED_BASE_EQU],F_FALSE
+                        CMP     BYTE PTR [STATE_VAR + IMAGE_BASE],F_FALSE
                         JZ      PDIC_INT
                         ADD     EAX,CELL_SIZE
 PDIC_INT:

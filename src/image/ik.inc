@@ -14,7 +14,7 @@
 
                         CLD
                         MOV     DWORD PTR [EDI + BASE_VAR],10
-                        MOV     DWORD PTR [EDI + CURRENT_VAR],OFFSET FORTH_WORDLIST_EQU - SIGN + DESIRED_BASE_EQU
+                        MOV     DWORD PTR [EDI + CURRENT_VAR],OFFSET FORTH_WORDLIST_EQU + IMAGE_BASE
                         $NEXT
 
 ;******************************************************************************

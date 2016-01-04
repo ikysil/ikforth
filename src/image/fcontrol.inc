@@ -10,7 +10,8 @@
 ;******************************************************************************
 
 ;  6.1.1370 EXECUTE
-                        $CODE   'EXECUTE',$EXECUTE,VEF_USUAL
+                        $CODE   'EXECUTE',$EXECUTE
+
                         POPDS   EAX                     ; pop new IP from data stack
                         $JMP
 
@@ -19,7 +20,8 @@
 ;******************************************************************************
 
 ;  (?DO)
-                        $CODE   '(?DO)',,VEF_USUAL
+                        $CODE   '(?DO)'
+
                         LODSD
                         POPDS   ECX
                         POPDS   EBX
@@ -34,7 +36,8 @@ PQDO_EXIT:
                         $NEXT
 
 ;  (LOOP)
-                        $CODE   '(LOOP)',,VEF_USUAL
+                        $CODE   '(LOOP)'
+
                         LODSD
                         POPRS   ECX                     ; current
                         FETCHRS EBX                     ; limit
@@ -50,7 +53,8 @@ PLOOP_NOEQ:
                         $NEXT
 
 ;  (+LOOP)
-                        $CODE   '(+LOOP)',,VEF_USUAL
+                        $CODE   '(+LOOP)'
+
                         LODSD                           ; loop addr
                         POPDS   EDX                     ; loop index increment
                         POPRS   ECX                     ; current

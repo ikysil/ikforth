@@ -4,30 +4,38 @@
 #  Copyright (C) 1999-2003 Illya Kysil
 #
 
-IKForth.img: src\FKernel.exe src\FKernel.img \
-             src\*.f src\kernel\*.f src\win32\*.f \
-             lib\ansi\*.f lib\~ik\*.f lib\~js\486asm\*.f
-      src\FKernel.exe
-      copy src\FKernel.exe IKForth.exe
+all :   IKForth.exe IKForth.img
 
-src\FKernel.img: src\image\FKernel.asm src\image\*.inc
-      cd  src\image
-      wasm -e200 -3ps -mf -bt=nt -d1 FKernel.asm
-      wlink file FKernel.obj system nt op map op offset=0 name ..\FKernel.img
-      wdis -l=FKernel.lst ..\FKernel.img
-      cd  ..\..
+IKForth.exe : src\FKernel.exe
+        echo Building $@
+        copy src\FKernel.exe IKForth.exe > nul
 
-src\FKernel.exe: src\loader\*.cpp src\loader\*.hpp
-      cd  src\loader\win32
-      wmake
-      copy FKernel.exe ..\..\FKernel.exe
-      cd  ..\..\..
+IKForth.img : src\FKernel.exe src\FKernel.img &
+              src\*.f src\kernel\*.f src\win32\*.f &
+              lib\ansi\*.f lib\~ik\*.f lib\~js\486asm\*.f
+        echo Building $@
+        src\FKernel.exe
 
-clean: IKForth.img
-      del src\image\*.obj
-      del src\image\FKernel.lst
-      del src\FKernel.img
-      del src\FKernel.exe
-      cd  src\loader\win32
-      wmake clean
-      cd  ..\..\..
+src\FKernel.img : src\image\FKernel.asm src\image\*.inc
+        echo Building $@
+        cd  src\image
+        wasm -e200 -3ps -mf -bt=nt FKernel.asm -q
+        wlink file FKernel.obj system nt op map op q op offset=0 name ..\FKernel.img
+        wdis -l=FKernel.lst ..\FKernel.img
+        cd  ..\..
+
+src\FKernel.exe : src\loader\*.cpp src\loader\*.hpp
+        echo Building $@
+        cd  src\loader\win32
+        wmake $(__MAKEOPTS__)
+        copy FKernel.exe ..\..\FKernel.exe > nul
+        cd  ..\..\..
+
+clean : .symbolic
+        del src\image\*.obj
+        del src\image\FKernel.lst
+        del src\FKernel.img
+        del src\FKernel.exe
+        cd  src\loader\win32
+        wmake clean $(__MAKEOPTS__)
+        cd  ..\..\..

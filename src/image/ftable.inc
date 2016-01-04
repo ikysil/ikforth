@@ -28,7 +28,7 @@ FUNC_NUM                =       ( FUNC_NUM / CELL_SIZE + 1 ) * CELL_SIZE
 
                   $CALL MACRO   NAME
                         PUSHRS  EDI
-                        MOV     EAX,DWORD PTR [FUNC_TABLE - SIGN + DESIRED_BASE_EQU + &NAME * CELL_SIZE]
+                        MOV     EAX,DWORD PTR [FUNC_TABLE + IMAGE_BASE + &NAME * CELL_SIZE]
                         CALL    EAX
                         POPRS   EDI
                         ENDM    $CALL

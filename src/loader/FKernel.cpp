@@ -4,6 +4,11 @@
 
 #include "FKernel.hpp"
 
+bool CanExit = false;
+
+ImageHeader IHeader;
+HANDLE hOut;
+
 void ChangeFileExt(char * fName, char * fExt){
   char * dIndex = strrchr(fName, '.');
   char * sIndex = strrchr(fName, '\\');

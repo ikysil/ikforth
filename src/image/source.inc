@@ -29,7 +29,7 @@
 ;  c-addr is the address of, and u is the number of characters in
 ;  the input buffer. 
 ;  D: -- c-addr u
-                        $COLON  '(SOURCE)',$PSOURCE
+                        $COLON  0,$_SOURCE
 
                         CW      $FILE_LINE
                         CFETCH  $HASH_FILE_LINE
@@ -37,11 +37,11 @@
 
                         $DEFER  'SOURCE',$SOURCE
 
-                        CW      $PSOURCE
+                        CW      $_SOURCE
                         
 ;  6.2.2125 REFILL
 ;  D: -- flag
-                        $COLON  '(REFILL)',$PREFILL
+                        $COLON  0,$_REFILL
 
                         CW      $FILE_LINE
                         CCLIT   MAX_FILE_LINE_LENGTH
@@ -56,7 +56,7 @@
 
                         $DEFER  'REFILL',$REFILL
 
-                        CW      $PREFILL 
+                        CW      $_REFILL 
 
                         $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT
 

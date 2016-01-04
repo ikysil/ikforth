@@ -25,7 +25,7 @@
 ;******************************************************************************
 
                         .386P
-                        .MODEL FLAT
+                        .MODEL  FLAT
 
                    MAIN SEGMENT USE32
 
@@ -42,6 +42,9 @@ SIGN                    =       1000h
                         ALIGN   16
 
 DESIRED_BASE_EQU        EQU     20000000h
+
+IMAGE_BASE              =       DESIRED_BASE_EQU - SIGN
+
 DESIRED_SIZE_EQU        EQU     00040000h               ; 256KB
 
 DATA_STACK_SIZE         EQU     00004000h               ; 16KB
@@ -52,9 +55,9 @@ USER_AREA_SIZE0         EQU     00020000h               ; 128KB
                         DD      DESIRED_BASE_EQU
 DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
-                        DD      START - SIGN + DESIRED_BASE_EQU
-                        DD      THREAD_PROC - SIGN + DESIRED_BASE_EQU
-                        DD      FUNC_TABLE - SIGN + DESIRED_BASE_EQU
+                        DD      START       + IMAGE_BASE
+                        DD      THREAD_PROC + IMAGE_BASE
+                        DD      FUNC_TABLE  + IMAGE_BASE
                         DD      USER_AREA_SIZE0 + USER_AREA_SIZE
                         DD      DATA_STACK_SIZE
 
@@ -81,14 +84,14 @@ DESIRED_SIZE_VAR:
 
 START:
                         POPDS   EAX
-                        POPDS   [SF_VAR - SIGN + DESIRED_BASE_EQU]
-                        POPDS   [HASH_SF_VAR - SIGN + DESIRED_BASE_EQU]
+                        POPDS   [SF_VAR + IMAGE_BASE]
+                        POPDS   [HASH_SF_VAR + IMAGE_BASE]
                         PUSHDS  EAX
-                        MOV     EAX,[MAIN_PROC_VAR - SIGN + DESIRED_BASE_EQU]
+                        MOV     EAX,[MAIN_PROC_VAR + IMAGE_BASE]
                         PUSHDS  EAX
                         PUSHDS  F_FALSE
                         PUSHDS  0
-                        MOV     EAX,[FUNC_TABLE - SIGN + DESIRED_BASE_EQU + START_THREAD_FUNC * CELL_SIZE]
+                        MOV     EAX,[FUNC_TABLE + IMAGE_BASE + START_THREAD_FUNC * CELL_SIZE]
                         CALL    EAX
                         RET
 
@@ -128,7 +131,6 @@ DO_CR:
                         $CR
 DO_FORTH_NO_EXCEPTIONS:
                         CW      $PBYE
-                        CW      $EXIT
 
 LATEST_WORD             = VOC_LINK
 HERE:

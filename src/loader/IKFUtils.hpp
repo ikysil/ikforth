@@ -4,11 +4,6 @@
 #include "IKFCommon.hpp"
 #include "IKFunc.hpp"
 
-bool CanExit = false;
-
-ImageHeader IHeader;
-HANDLE hOut;
-
 void StartForth(char const * ImageFileName, char const * StartFileName);
 
 #endif

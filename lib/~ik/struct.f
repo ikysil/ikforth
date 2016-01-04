@@ -11,7 +11,7 @@ REPORT-NEW-NAME OFF
 
 : STRUCTURE (S "name" -- addr offset[0] )
   CREATE HERE 0 DUP ,
-  DOES> CREATE @ ALLOT
+  DOES> @
 ;
 
 : ENDSTRUCTURE (S addr offset -- )

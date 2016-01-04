@@ -1,5 +1,6 @@
 name FKernel
 op map
+op quiet
 system nt
 option stack=64k
 file FKernel.obj

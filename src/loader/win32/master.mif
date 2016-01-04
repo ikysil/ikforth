@@ -36,6 +36,7 @@ $(LNK) : $(lnk_dependencies)
 #    @%append $(LNK) debug all
     @%append $(LNK) name $(name)
     @%append $(LNK) op map
+    @%append $(LNK) op quiet
     @%make linkit
     @for %i in ($(OBJS)) do @%append $(LNK) file %i
 
@@ -43,7 +44,7 @@ $(LNK) : $(lnk_dependencies)
 .EXTENSIONS:
 .EXTENSIONS: .exe
 .EXTENSIONS: .obj
-.EXTENSIONS: .cpp .hpp .dlg .rc .ico .bmp .cur
+.EXTENSIONS: .cpp .hpp .asm .inc .dlg .rc .ico .bmp .cur
 
 .cpp:..;$(CDIR)
 .ico:..
@@ -54,7 +55,10 @@ $(LNK) : $(lnk_dependencies)
 .cpp.obj :
         $(CC) $(CFLAGS) $[@
 
-clean: .symbolic
+.asm.obj :
+        wasm $[@
+
+clean : .symbolic
     @erase *.obj
     @erase *.err
     @erase *.exe

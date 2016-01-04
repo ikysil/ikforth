@@ -1,12 +1,6 @@
 Open Watcom Linker Version 1.0
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       03/08/29 13:14:33
-file IKFunc.obj(I:\projects\Forth\IKForth\src\loader.c\IKFunc.cpp): redefinition of bool near CanExit ignored
-file IKFunc.obj(I:\projects\Forth\IKForth\src\loader.c\IKFunc.cpp): redefinition of _ImageHeader near IHeader ignored
-file IKFunc.obj(I:\projects\Forth\IKForth\src\loader.c\IKFunc.cpp): redefinition of void near * near hOut ignored
-file IKFUtils.obj(I:\projects\Forth\IKForth\src\loader.c\IKFUtils.cpp): redefinition of bool near CanExit ignored
-file IKFUtils.obj(I:\projects\Forth\IKForth\src\loader.c\IKFUtils.cpp): redefinition of _ImageHeader near IHeader ignored
-file IKFUtils.obj(I:\projects\Forth\IKForth\src\loader.c\IKFUtils.cpp): redefinition of void near * near hOut ignored
+Created on:       03/09/08 13:27:55
 Executable Image: FKernel.exe
 creating a Windows NT character-mode executable
 
@@ -19,7 +13,7 @@ Group                           Address              Size
 =====                           =======              ====
 
 .idata                          00406000             00000562
-DGROUP                          00407000             00011890
+DGROUP                          00407000             00011830
 
 
 
@@ -49,8 +43,8 @@ TIB                    DATA           DGROUP         00407a5e        00000000
 TI                     DATA           DGROUP         00407a5e        00000000
 TIE                    DATA           DGROUP         00407a5e        00000000
 DATA                   DATA           DGROUP         00407a5e        00000000
-_BSS                   BSS            DGROUP         00408010        00000880
-STACK                  STACK          DGROUP         00408890        00010000
+_BSS                   BSS            DGROUP         00408010        00000820
+STACK                  STACK          DGROUP         00408830        00010000
 
 
                         +----------------+
@@ -63,13 +57,13 @@ STACK                  STACK          DGROUP         00408890        00010000
 Address        Symbol
 =======        ======
 
-Module: FKernel.obj(I:\projects\Forth\IKForth\src\loader.c\FKernel.cpp)
+Module: FKernel.obj(I:\projects\Forth\IKForth\src\loader\FKernel.cpp)
 00401010+      void near ChangeFileExt( char near *, char near * )
 0040104d       _WinMain@16
 00408010       bool near CanExit
 00408014       _ImageHeader near IHeader
 00408040       void near * near hOut
-Module: IKFunc.obj(I:\projects\Forth\IKForth\src\loader.c\IKFunc.cpp)
+Module: IKFunc.obj(I:\projects\Forth\IKForth\src\loader\IKFunc.cpp)
 004010c0       void near * near fLoadLibrary( int, char const near * )
 00401112       void near fFreeLibrary( void near * )
 0040112b       int (near * near fGetProcAddress( void near *, int, char const near * ))()
@@ -89,7 +83,7 @@ Module: IKFunc.obj(I:\projects\Forth\IKForth\src\loader.c\IKFunc.cpp)
 00401507       void near fFree( void near * )
 0040152a       void near * near fReAlloc( void near *, long unsigned )
 00407750+      int near accessMethod[]
-Module: IKFUtils.obj(I:\projects\Forth\IKForth\src\loader.c\IKFUtils.cpp)
+Module: IKFUtils.obj(I:\projects\Forth\IKForth\src\loader\IKFUtils.cpp)
 00401559+      void near ShowLastError( char near * )
 004015c4+      void near SetFuncTable( _ImageHeader const near * )
 0040165c       void near StartForth( char const near *, char const near * )
@@ -130,7 +124,7 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(xmsgwnt)
 00401bf0+      __exit_with_msg_
 00401c30       __fatal_runtime_error_
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mainwnt)
-004080b0       ___Is_DLL
+00408050       ___Is_DLL
 004077bc*      ___TlsIndex
 004077c0+      ___FirstThreadData
 004077c4       ___GetThreadPtr
@@ -166,8 +160,8 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(segdefns)
 00407a4c       __Start_YI
 00407a5e       __End_YI
 Module: T:\OpenWatcom\lib386\nt\plib3r.lib(cppdata)
-004086e0       __wint_thread_data
-00408704*      __compiled_under_NT
+00408680       __wint_thread_data
+004086a4*      __compiled_under_NT
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(__stos)
 004020a0       __STOSB
 004020d7*      __STOSD
@@ -216,9 +210,9 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(crwdata)
 00407878*      __FPE_handler
 00407878*      ___FPE_handler
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(environ)
-00408710       ___env_mask
-00408714       _environ
-00408718       __wenviron
+004086b0       ___env_mask
+004086b4       _environ
+004086b8       __wenviron
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(getmodfn)
 00402540       __lib_GetModuleFileNameW_
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(strdup)
@@ -230,7 +224,7 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(ustrdup)
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(nfree)
 00402660       free_
 00402670       _nfree_
-00408720       ___MiniHeapFreeRover
+004086c0       ___MiniHeapFreeRover
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(excptwnt)
 00402840+      ___ReportException@4
 00402cb0       __DefaultExceptionHandler_
@@ -241,9 +235,9 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(excptwnt)
 00402f70*      __DoneExceptionHandler_
 0040787c       ___oscode_check_func
 00407880       ___raise_func
-00408730*      _sw
-00408734+      ___ExceptionHandled
-00408735+      ___ReportInvoked
+004086d0*      _sw
+004086d4+      ___ExceptionHandled
+004086d5+      ___ReportInvoked
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(stklmwnt)
 00402f80       __init_stack_limits_
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(initrtns)
@@ -298,8 +292,8 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mem)
 00403770       __MemAllocator
 00403830       __MemFree
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(heapmod)
-00408760       ___nheap_clean
-00408761       ___fheap_clean
+00408700       ___nheap_clean
+00408701       ___fheap_clean
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(conutwnt)
 00403980*      __NTRealKey_
 00403a30*      __NTConsoleInput_
@@ -414,10 +408,10 @@ Module: T:\OpenWatcom\lib386\nt\clib3r.lib(8087cw)
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(init8087)
 00405770       __init_80x87
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbisdbcs)
-00408770       ___IsDBCS
+00408710       ___IsDBCS
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbislead)
 004057a0*      _ismbblead_
-00408780       ___MBCSIsTable
+00408720       ___MBCSIsTable
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbccpy)
 004057c0       _mbccpy_
 Module: T:\OpenWatcom\lib386\nt\clib3r.lib(mbsupr)
@@ -502,6 +496,6 @@ T:\OpenWatcom\lib386\nt\user32.lib
                         +-----------------------+
 
 Stack size:  00010000 (65536.)
-Memory size:  00016908 (92424.)
+Memory size:  000168a8 (92328.)
 Entry point address: 00401910
-Link time: 00:00.50
+Link time: 00:00.20
