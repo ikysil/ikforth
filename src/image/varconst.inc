@@ -11,72 +11,88 @@
 
 ;  D: -- 0
                         $CONST  '0',$ZERO
+
                         CC      0
 
 ;  CASE-SENSITIVE
 ;  If CASE-SENSITIVE is true, then FIND is case sensitive
                         $USER   'CASE-SENSITIVE',$CASE_SENSITIVE
+
                         CC      CASE_SENSITIVE_VAR
 
 ;  CURRENT-FILE-POSITION
                         $USER   'CURRENT-FILE-POSITION',$CURRENT_FILE_POSITION
+
                         CC      CURR_FILE_POS_VAR
 
 ;  FILE-LINE
 ;  Line address for INCLUDED
                         $USER   'FILE-LINE',$FILE_LINE
+
                         CC      FILE_LINE_VAR
 
 ;  #FILE-LINE
 ;  Line length for INCLUDED
-                        $USER   '#FILE-LINE',$#FILE_LINE
-                        CC      #FILE_LINE_VAR
+                        $USER   '#FILE-LINE',$HASH_FILE_LINE
+
+                        CC      HASH_FILE_LINE_VAR
 
                         $CONST  'MAX-FILE-LINE-LENGTH'
+
                         CC      MAX_FILE_LINE_LENGTH
 
 ;  USER-SIZE-VAR
                         $VAR    'USER-SIZE-VAR'
+
                         CC      USER_AREA_SIZE
 
 ;  EXCEPTION-HANDLER
                         $USER   'EXCEPTION-HANDLER',$EXCEPTION_HANDLER
+
                         CC      EXCEPTION_HANDLER_VAR
 
 ;  S"-BUFFER
                         $USER   'S"-BUFFER',$SQUOTE_BUFFER
+
                         CC      SQUOTE_BUFFER_VAR
 
 ;  POCKET
                         $USER   'POCKET',$POCKET
+
                         CC      POCKET_VAR
 
 ;  CURRENT
                         $USER   'CURRENT',$CURRENT
+
                         CC      CURRENT_VAR
 
 ;  Start file name
 ;  #SF
-                        $VAR    '#SF',$#SF
-#SF_VAR:
+                        $VAR    '#SF',$HASH_SF
+
+HASH_SF_VAR:
                         CC      0
 
 ;  SF
                         $VAR    'SF',$SF
+
 SF_VAR:
                         CC      0
 
 ;  DATA-AREA-BASE
                         $CONST  'DATA-AREA-BASE'
+
                         CC      DESIRED_BASE_EQU
 
 ;  DATA-AREA-SIZE
                         $CONST  'DATA-AREA-SIZE'
+
                         CW      DESIRED_SIZE_VAR
 
 ;  DP
 ;  HERE = DP @
                         $VAR    'DP',$DP
+
 DP_VAR:
                         CW      HERE
 
@@ -86,6 +102,7 @@ DP_VAR:
 ;  STATE is true when in compilation state, false otherwise.
 ;  The true value in STATE is non-zero, but is otherwise implementation-defined.
                         $VAR    'STATE',$STATE
+
 STATE_VAR:
                         CC      F_FALSE
 
@@ -94,16 +111,20 @@ STATE_VAR:
 ;  radix {{2...36}}.
 ;  D: -- a-addr
                         $USER   'BASE',$BASE
+
                         CC      BASE_VAR
 
 ;  6.1.0770 BL
 ;  Push space character on stack
 ;  D: -- char
                         $CONST  'BL',$BL
+
                         CC      ' '
 
 ;  MAIN
 ;  First Forth word to EXECUTE
-                        $DEFER  'MAIN',$MAIN
-MAIN_PROC:
+                        $DEFER  'MAIN'
+
+MAIN_PROC_VAR:
                         CW      $DO_FORTH
+

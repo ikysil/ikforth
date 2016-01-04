@@ -11,6 +11,7 @@
 
 ;  IS-INT/COMP?
                         $COLON  'IS-INT/COMP?',$IS_INT_COMPQ
+
                         CW      $FETCH
                         CWLIT   $PDO_INT_COMP
                         CW      $EQ
@@ -18,12 +19,14 @@
 
 ;  INT/COMP>INT
                         $COLON  'INT/COMP>INT',$INT_COMP_TO_INT
+
                         CW      $TOBODY
                         CW      $FETCH
                         CEXIT
 
 ;  INT/COMP>COMP
                         $COLON  'INT/COMP>COMP',$INT_COMP_TO_COMP
+
                         CW      $TOBODY
                         CW      $CELLADD
                         CW      $FETCH
@@ -31,6 +34,7 @@
 
 ;  COMP'
                         $COLON  'COMP''',$COMP_TICK
+
                         CW      $BL
                         CW      $WORD
                         CW      $FIND
@@ -59,6 +63,7 @@ CT_EXIT:
 
 ;  POSTPONE,
                         $COLON  'POSTPONE,',$POSTPONEC
+
                         CW      $SWAP
                         CW      $LITERAL
                         CW      $COMPILEC
@@ -66,6 +71,7 @@ CT_EXIT:
 
 ;  POSTPONE
                         $COLON  'POSTPONE',,VEF_IMMEDIATE
+
                         CW      $COMP_TICK
                         CW      $POSTPONEC
                         CEXIT

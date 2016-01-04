@@ -11,9 +11,10 @@
 
 ;  INIT-USER
                         $CODE   'INIT-USER',$INIT_USER
+
                         CLD
-                        MOV     [DWORD PTR EDI + BASE_VAR],10
-                        MOV     [DWORD PTR EDI + CURRENT_VAR],OFFSET FORTH_WORDLIST_EQU + DESIRED_BASE_EQU
+                        MOV     DWORD PTR [EDI + BASE_VAR],10
+                        MOV     DWORD PTR [EDI + CURRENT_VAR],OFFSET FORTH_WORDLIST_EQU - SIGN + DESIRED_BASE_EQU
                         $NEXT
 
 ;******************************************************************************
@@ -22,6 +23,7 @@
 
 ;  (TYPE)
                         $COLON  '(TYPE)',$PTYPE
+
                         CW      $RFROM                  ; a
                         CW      $COUNT                  ; a+1 b
                         CW      $OVER                   ; a+1 b a+1

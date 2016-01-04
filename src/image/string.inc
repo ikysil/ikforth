@@ -15,6 +15,7 @@
 ;  starting at c-addr1 to that starting at c-addr2, proceeding character-by-character
 ;  from lower addresses to higher addresses. 
                         $CODE   'CMOVE',$CMOVE
+
                         PUSHRS  EDI
                         PUSHRS  ESI
                         POPDS   ECX
@@ -35,6 +36,7 @@ CMOVE_EXIT:
 ;  starting at c-addr1 to that starting at c-addr2, proceeding character-by-character
 ;  from higher addresses to lower addresses. 
                         $CODE   'CMOVE>',$CMOVEGR
+
                         PUSHRS  EDI
                         PUSHRS  ESI
                         POPDS   ECX
@@ -56,8 +58,9 @@ CMOVEGR_EXIT:
 
 ;  6.1.0980 COUNT
                         $CODE   'COUNT',$COUNT
+
                         POPDS   EBX
-                        MOVZX   EAX,[BYTE PTR EBX]
+                        MOVZX   EAX,BYTE PTR [EBX]
                         INC     EBX
                         PUSHDS  EBX
                         PUSHDS  EAX

@@ -10,22 +10,22 @@
 ;******************************************************************************
 
 USER_AREA_SIZE          =       0
-                        MACRO   _ALLOC SIZE
+                 _ALLOC MACRO   SIZE
 USER_AREA_SIZE          =       USER_AREA_SIZE + SIZE
-                        ENDM    _ALLOC
+                        ENDM
 
-                        MACRO   _VAR  NAME,SIZE
+                   _VAR MACRO   NAME,SIZE
 &NAME&_VAR              =       USER_AREA_SIZE
                         IFNB    <SIZE>
                           _ALLOC  SIZE
                         ELSE
                           _ALLOC  CELL_SIZE
                         ENDIF
-                        ENDM    _VAR 
+                        ENDM
 
-                        MACRO   _ALIGN
+                 _ALIGN MACRO
 USER_AREA_SIZE          =       ( USER_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
-                        ENDM    _ALIGN
+                        ENDM
 
                         _VAR    RETURN_ADDR
                         _VAR    EDI
@@ -43,8 +43,8 @@ USER_AREA_SIZE          =       ( USER_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
                         _ALLOC  CELL_SIZE
 
 MAX_FILE_LINE_LENGTH     EQU    1024
-                        _VAR    #FILE_LINE
-                        _VAR    FILE_LINE,<MAX_FILE_LINE_LENGTH + 1>
+                        _VAR    HASH_FILE_LINE
+                        _VAR    FILE_LINE,MAX_FILE_LINE_LENGTH
 
                         _VAR    CURRENT
 

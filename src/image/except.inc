@@ -10,6 +10,7 @@
 ;******************************************************************************
 
                         $COLON  'EXC-PUSH',$EXC_PUSH
+
                         CW      $SPFETCH
                         CW      $RFROM
                         CW      $SWAP
@@ -22,6 +23,7 @@
                         CEXIT
 
                         $COLON  'EXC-DROP',$EXC_DROP
+
                         CW      $RFROM
                         CW      $RFROM
                         CSTORE  $EXCEPTION_HANDLER
@@ -32,6 +34,7 @@
 
 ;  9.6.1.0875 CATCH 
                         $COLON  'CATCH',$CATCH
+
                         CW      $EXC_PUSH
                         CW      $EXECUTE
                         CW      $EXC_DROP
@@ -41,6 +44,7 @@
 ;  (THROW)
 ;  D: exc-id --
                         $COLON  '(THROW)',$PTHROW
+
                         CFETCH  $EXCEPTION_HANDLER
                         CW      $RPSTORE
                         CW      $RFROM
@@ -55,6 +59,7 @@
 
 ;  9.6.1.2275 THROW
                         $COLON  'THROW',$THROW
+
                         CW      $QDUP
                         CQBR    THROW_EXIT
                           CW      $PTHROW

@@ -11,12 +11,13 @@
 
 ;  16.6.1.1595 FORTH-WORDLIST
                         $VAR    'FORTH-WORDLIST',$FORTH_WORDLIST
+
 FORTH_WORDLIST_EQU:
                         DD      LATEST_WORD             ; last word in a list
                         CC      0                       ; wordlist name
                         CC      0                       ; wordlist link
 
-                        PROC    UPCASE
+                 UPCASE PROC
                         CMP     AL,'a'
                         JB      SHORT @@UC              ; jump if AH < 'a'
                         CMP     AL,'z'
@@ -24,22 +25,23 @@ FORTH_WORDLIST_EQU:
                         SUB     AL,'a' - 'A'            ; convert to uppercase
 @@UC:
                         RET
-                        ENDP    UPCASE
+                 UPCASE ENDP
 
 ;  16.6.1.2192 SEARCH-WORDLIST
 ;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
                         $CODE   'SEARCH-WORDLIST',$SEARCH_WORDLIST
+
                         PUSHRS  EDI
                         PUSHRS  ESI
                         POPDS   EAX                     ; wid
-                        MOV     ESI,[DWORD PTR EAX]     ; get LATEST word link
-                        MOV     EBX,[DWORD PTR EDI + CASE_SENSITIVE_VAR]
+                        MOV     ESI,DWORD PTR [EAX]     ; get LATEST word link
+                        MOV     EBX,DWORD PTR [EDI + CASE_SENSITIVE_VAR]
                         POPDS   ECX                     ; u
                         POPDS   EDI                     ; c-addr
 SW_LOOP:
                         OR      ESI,ESI
                         JZ      SHORT SW_NOT_FOUND
-                        MOV     AX,[WORD PTR ESI]
+                        MOV     AX,WORD PTR [ESI]
                         CMP     AH,CL
                         JNZ     SHORT SW_NEXT
                         TEST    AL,VEF_HIDDEN
@@ -49,8 +51,8 @@ SW_LOOP:
                         PUSHDS  ECX
                         ADD     ESI,2
 CMP_LOOP:
-                        MOV     AL,[BYTE PTR ESI]
-                        MOV     AH,[BYTE PTR EDI]
+                        MOV     AL,BYTE PTR [ESI]
+                        MOV     AH,BYTE PTR [EDI]
                         OR      EBX,EBX
                         JNZ     SHORT CMP_CONT
                         CALL    UPCASE
@@ -74,20 +76,20 @@ CMP_EXIT:
                         POPDS   EDI
                         POPDS   ESI
 SW_NEXT:
-                        MOVZX   EAX,[BYTE PTR ESI + 1]
+                        MOVZX   EAX,BYTE PTR [ESI + 1]
                         ADD     ESI,EAX
                         ADD     ESI,3
-                        MOV     ESI,[DWORD PTR ESI]
+                        MOV     ESI,DWORD PTR [ESI]
                         JMP     SHORT SW_LOOP
 
 SW_FOUND:
-                        MOV     AL,[BYTE PTR ESI]
+                        MOV     AL,BYTE PTR [ESI]
                         TEST    AL,VEF_IMMEDIATE
                         MOV     EAX,1
                         JNZ     SHORT SW_FOUND_IMMEDIATE
                         NEG     EAX
 SW_FOUND_IMMEDIATE:
-                        MOVZX   EBX,[BYTE PTR ESI + 1]
+                        MOVZX   EBX,BYTE PTR [ESI + 1]
                         ADD     ESI,EBX
                         ADD     ESI,7
                         PUSHDS  ESI
@@ -105,6 +107,7 @@ SW_NOT_FOUND:
 ;  FIND-FORTH
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
                         $COLON  'FIND-FORTH',$FIND_FORTH
+
                         CW      $DUP
                         CW      $TOR
                         CW      $COUNT
@@ -125,5 +128,6 @@ FF_EXIT:
 ;  6.1.1550 FIND
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
                         $DEFER  'FIND',$FIND
+
                         CW      $FIND_FORTH
 

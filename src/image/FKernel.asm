@@ -24,22 +24,22 @@
 ;
 ;******************************************************************************
 
-                        IDEAL
-                        P386
+                        .386P
+                        .MODEL FLAT
 
-                        SEGMENT MAIN USE32
+                   MAIN SEGMENT USE32
 
                         ASSUME  CS:MAIN,DS:MAIN,ES:MAIN
 
-                        INCLUDE "macro.inc"
+                        ORG     0h
 
 ;******************************************************************************
 ;  Header
 ;******************************************************************************
-SIGN:
+SIGN                    =       1000h 
                         DB      'IKFI'                  ; MAX. 15 bytes !!!
 
-                        DB      16 - ( $ - SIGN ) DUP ( 0 ) 
+                        ALIGN   16
 
 DESIRED_BASE_EQU        EQU     20000000h
 DESIRED_SIZE_EQU        EQU     00040000h               ; 256KB
@@ -52,11 +52,13 @@ USER_AREA_SIZE0         EQU     00020000h               ; 128KB
                         DD      DESIRED_BASE_EQU
 DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
-                        DD      OFFSET START + DESIRED_BASE_EQU
-                        DD      OFFSET THREAD_PROC + DESIRED_BASE_EQU
-                        DD      OFFSET FUNC_TABLE + DESIRED_BASE_EQU
+                        DD      START - SIGN + DESIRED_BASE_EQU
+                        DD      THREAD_PROC - SIGN + DESIRED_BASE_EQU
+                        DD      FUNC_TABLE - SIGN + DESIRED_BASE_EQU
                         DD      USER_AREA_SIZE0 + USER_AREA_SIZE
                         DD      DATA_STACK_SIZE
+
+                        INCLUDE "macro.inc"
 
 ;******************************************************************************
 ;  Include functions table
@@ -79,30 +81,29 @@ DESIRED_SIZE_VAR:
 
 START:
                         POPDS   EAX
-                        POPDS   <[DWORD PTR SF_VAR + DESIRED_BASE_EQU]>
-                        POPDS   <[DWORD PTR #SF_VAR + DESIRED_BASE_EQU]>
+                        POPDS   [SF_VAR - SIGN + DESIRED_BASE_EQU]
+                        POPDS   [HASH_SF_VAR - SIGN + DESIRED_BASE_EQU]
                         PUSHDS  EAX
-                        PUSHDS  <[DWORD PTR MAIN_PROC + DESIRED_BASE_EQU]>
+                        MOV     EAX,[MAIN_PROC_VAR - SIGN + DESIRED_BASE_EQU]
+                        PUSHDS  EAX
                         PUSHDS  F_FALSE
                         PUSHDS  0
-                        CALL    [DWORD PTR FUNC_TABLE + DESIRED_BASE_EQU + START_THREAD_FUNC * CELL_SIZE]
+                        MOV     EAX,[FUNC_TABLE - SIGN + DESIRED_BASE_EQU + START_THREAD_FUNC * CELL_SIZE]
+                        CALL    EAX
                         RET
 
                         $COLON  'DO-FORTH',$DO_FORTH,VEF_HIDDEN
+
                         CW      $INIT_USER
-                        CW      $SF
-                        CW      $FETCH
-                        CW      $#SF
-                        CW      $FETCH
+                        CFETCH  $SF
+                        CFETCH  $HASH_SF
                         CWLIT   $INCLUDED
                         CW      $CATCH
                         CQBR    DO_FORTH_NO_EXCEPTIONS
                         $CR
                         $WRITE  <Exception caught while INCLUDing [>
-                        CW      $SF
-                        CW      $FETCH
-                        CW      $#SF
-                        CW      $FETCH
+                        CFETCH  $SF
+                        CFETCH  $HASH_SF
                         CW      $TYPE
                         $WRITE  <]>
                         CW      $2DROP
@@ -132,6 +133,6 @@ DO_FORTH_NO_EXCEPTIONS:
 LATEST_WORD             = VOC_LINK
 HERE:
 
-                        ENDS    MAIN
+                   MAIN ENDS
                         END     START
 

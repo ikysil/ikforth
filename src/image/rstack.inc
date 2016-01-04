@@ -31,7 +31,7 @@
 ;  Copy value from the return stack to data stack
 ;  R: a -- a
 ;  D:   -- a
-                        $CODE   'R@',$RFETCH
+                        $CODE   'R@',$RFETCH,VEF_USUAL
                         FETCHRS EAX
                         PUSHDS  EAX
                         $NEXT
@@ -59,7 +59,7 @@
 ;  6.2.0415 2R@
 ;  D:     -- a b
 ;  R: a b -- a b
-                        $CODE   '2R@',$2RFETCH
+                        $CODE   '2R@',$2RFETCH,VEF_USUAL
                         FETCHRS EBX,0
                         FETCHRS EAX,1
                         PUSHDS  EAX
@@ -67,7 +67,7 @@
                         $NEXT
 
 ;  R-PICK
-                        $CODE   'R-PICK',$R_PICK
+                        $CODE   'R-PICK',$R_PICK,VEF_USUAL
                         POPDS   EBX
                         FETCHRS EAX,EBX
                         PUSHDS  EAX
@@ -78,13 +78,13 @@
                         CC      RETURN_STACK_SIZE
 
 ;  RP0
-                        $CODE   'RP0',$RP0
-                        LEA     EAX,[DWORD PTR EDI + RSTACK_VAR]
+                        $CODE   'RP0',$RP0,VEF_USUAL
+                        LEA     EAX,DWORD PTR [EDI + RSTACK_VAR]
                         PUSHDS  EAX
                         $NEXT
 
 ;  RP@
-                        $CODE   'RP@',$RPFETCH
+                        $CODE   'RP@',$RPFETCH,VEF_USUAL
                         PUSHDS  EBP
                         $NEXT
 

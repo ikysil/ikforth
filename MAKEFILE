@@ -12,18 +12,22 @@ IKForth.img: src\FKernel.exe src\FKernel.img \
 
 src\FKernel.img: src\image\FKernel.asm src\image\*.inc
       cd  src\image
-      tasm32  /z/q/n/la FKernel.asm
+      wasm -e200 -3ps -mf -bt=nt -d1 FKernel.asm
+      wlink file FKernel.obj system nt op map op offset=0 name ..\FKernel.img
+      wdis -l=FKernel.lst ..\FKernel.img
       cd  ..\..
-      tlink32 /x/aa src\image\FKernel.obj,src\FKernel.img
 
-src\FKernel.exe: src\loader\*.pas src\loader\*.dpr
-      cd  src\loader
-      dcc32 FKernel.dpr
-      cd  ..\..
+src\FKernel.exe: src\loader\*.cpp src\loader\*.hpp
+      cd  src\loader\win32
+      wmake
+      copy FKernel.exe ..\..\FKernel.exe
+      cd  ..\..\..
 
 clean: IKForth.img
-      del src\loader\*.dcu
       del src\image\*.obj
       del src\image\FKernel.lst
       del src\FKernel.img
       del src\FKernel.exe
+      cd  src\loader\win32
+      wmake clean
+      cd  ..\..\..

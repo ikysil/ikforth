@@ -12,23 +12,24 @@
 ;  Result ( if any ) is returned via EAX ( int ), EDX:EAX ( long int ).
 ;******************************************************************************
 FUNC_NUM                =       0
-                        MACRO   FUNC_ALLOC SIZE
+             FUNC_ALLOC MACRO   SIZE
                         DD      0
 FUNC_NUM                =       FUNC_NUM + SIZE
                         ENDM    FUNC_ALLOC
 
-                        MACRO   $FUNC NAME
+                  $FUNC MACRO   NAME
 &NAME&_FUNC             =       FUNC_NUM
                         FUNC_ALLOC  1
                         ENDM    $FUNC
 
-                        MACRO   FUNC_ALIGN
+             FUNC_ALIGN MACRO
 FUNC_NUM                =       ( FUNC_NUM / CELL_SIZE + 1 ) * CELL_SIZE
                         ENDM    FUNC_ALIGN
 
-                        MACRO   $CALL NAME
+                  $CALL MACRO   NAME
                         PUSHRS  EDI
-                        CALL    [DWORD PTR FUNC_TABLE + DESIRED_BASE_EQU + &NAME * CELL_SIZE]
+                        MOV     EAX,DWORD PTR [FUNC_TABLE - SIGN + DESIRED_BASE_EQU + &NAME * CELL_SIZE]
+                        CALL    EAX
                         POPRS   EDI
                         ENDM    $CALL
 

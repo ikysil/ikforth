@@ -15,6 +15,7 @@
 
 ;  (WORD)
                         $CODE   '(WORD)',$PWORD
+
                         PUSHRS  ESI
                         PUSHRS  EDI
                         MOV     EAX,EDI
@@ -33,7 +34,7 @@ PWORD_LOOP:
                         DEC     ECX
                         JS      SHORT PWORD_EXIT
                         LODSB
-                        INC     [DWORD PTR EBP]         ; inc >IN
+                        INC     DWORD PTR [EBP]         ; inc >IN
                         OR      AL,AL
                         JZ      SHORT PWORD_EXIT
                         OR      AH,AH
@@ -55,16 +56,17 @@ PWORD_NOT_IN_WORD:
                         JMP     SHORT PWORD_ADDCHAR
 PWORD_EXIT:
                         POPDS   EBP
-                        MOV     [BYTE PTR EDI],32       ; store space
+                        MOV     BYTE PTR [EDI],32       ; store space
                         POPRS   EDI
                         PUSHDS  EDI
-                        MOV     [BYTE PTR EDI],BL       ; store length
+                        MOV     BYTE PTR [EDI],BL       ; store length
                         POPRS   EDI
                         POPRS   ESI
                         $NEXT
 
 ;  6.1.2450 WORD
                         $COLON  'WORD',$WORD
+
                         CW      $SOURCE                 ; c c-addr u
                         CFETCH  $TOIN
                         CW      $SUB
@@ -78,6 +80,7 @@ PWORD_EXIT:
 
 ;  (PARSE)
                         $CODE   '(PARSE)',$PPARSE
+
                         PUSHRS  ESI
                         POPDS   ECX                     ; count
                         POPDS   ESI                     ; source address
@@ -88,7 +91,7 @@ PPARSE_LOOP:
                         DEC     ECX
                         JS      SHORT PPARSE_EXIT
                         LODSB
-                        INC     [DWORD PTR EDI + TOIN_VAR]
+                        INC     DWORD PTR [EDI + TOIN_VAR]
                         OR      AL,AL
                         JZ      SHORT PPARSE_EXIT
                         CMP     AL,DL
@@ -102,6 +105,7 @@ PPARSE_EXIT:
 
 ;  6.2.2008 PARSE
                         $COLON  'PARSE',$PARSE
+
                         CW      $SOURCE                 ; c c-addr u
                         CFETCH  $TOIN
                         CW      $SUB
@@ -115,6 +119,7 @@ PPARSE_EXIT:
 ;  (S")
 ;  -- c-addr count
                         $COLON  '(S")',$PSQUOTE
+
                         CW      $RFROM
                         CW      $DUP
                         CW      $FETCH
@@ -128,7 +133,8 @@ PPARSE_EXIT:
 
 ;  S"-COMP
                         $COLON  'S"-COMP',$SQ_COMP
-                        CCLIT   '"'
+
+                        CCLIT   22h ;'"'
                         CW      $PARSE
                         CWLIT   $PSQUOTE
                         CW      $COMPILEC
@@ -143,7 +149,8 @@ PPARSE_EXIT:
 
 ;  S"-INT
                         $COLON  'S"-INT',$SQ_INT
-                        CCLIT   '"'
+
+                        CCLIT   22h ;'"'
                         CW      $PARSE
                         CW      $2DUP
                         CW      $SQUOTE_BUFFER
@@ -157,14 +164,17 @@ PPARSE_EXIT:
 ;     6.1.2165 S"
 ;  11.6.1.2165 S"
                         $DEF    'S"',$SQUOTE,$PDO_INT_COMP,VEF_IMMEDIATE
+
                         CW      $SQ_INT
                         CW      $SQ_COMP
 
 ;  \
                         $DEFER  '\',,VEF_IMMEDIATE
+
                         CW      $PBSLASH
 
                         $COLON  '(\)',$PBSLASH,VEF_IMMEDIATE
+
                         CW      $ZERO
                         CW      $PARSE
                         CW      $2DROP

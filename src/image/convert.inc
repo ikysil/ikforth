@@ -13,13 +13,15 @@
 ;  Convert CFA to PFA
 ;  D: CFA -- PFA
                         $COLON  '>BODY',$TOBODY
+
                         CW      $CELLADD
                         CEXIT
 
 ;  6.1.0570 >NUMBER
                         $CODE   '>NUMBER',$TONUMBER
+
                         PUSHRS  EDI
-                        MOV     EBX,[DWORD PTR EDI + BASE_VAR]
+                        MOV     EBX,DWORD PTR [EDI + BASE_VAR]
                         POPDS   ECX                     ; u1
                         POPDS   EDI                     ; c-addr1
                         POPDS   EDX                     ; ud1
@@ -28,7 +30,7 @@ TN_LOOP:
                         OR      ECX,ECX
                         JZ      SHORT TN_STOP
                         PUSHRS  EAX
-                        MOV     AL,[BYTE PTR EDI]
+                        MOV     AL,BYTE PTR [EDI]
                         CMP     AL,'a'
                         JB      SHORT TN_CONT           ; jump if AL < 'a'
                         CMP     AL,'z'
@@ -37,14 +39,14 @@ TN_LOOP:
 TN_CONT:
                         PUSHDS  EDI
                         PUSHDS  ECX
-                        MOV     EDI,OFFSET DIGITS_TABLE + DESIRED_BASE_EQU
+                        MOV     EDI,OFFSET DIGITS_TABLE - SIGN + DESIRED_BASE_EQU
                         MOV     ECX,EBX
                         INC     ECX
                   REPNE SCASB
                         JNZ     SHORT TN_CONT2
                         DEC     EDI
                         DEC     EDI
-                        SUB     EDI,OFFSET DIGITS_TABLE + DESIRED_BASE_EQU
+                        SUB     EDI,OFFSET DIGITS_TABLE - SIGN + DESIRED_BASE_EQU
                         CMP     EDI,EBX
                         JGE     SHORT TN_CONT2
                         CMP     ECX,0
@@ -82,6 +84,7 @@ TN_STOP:
 
 ;  DIGITS
                         $CONST  'DIGITS',$DIGITS
+
                         CW      DIGITS_TABLE
 DIGITS_TABLE:
                         DB      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',0
@@ -90,6 +93,7 @@ DIGITS_TABLE:
 ;  Convert single cell value to double cell value
 ;  D: a -- aa
                         $CODE   'S>D',$STOD
+
                         POPDS   EAX
                         CDQ
                         PUSHDS  EAX

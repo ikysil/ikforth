@@ -15,10 +15,12 @@
 ;  11.6.1.2090 READ-LINE 
 ;  (S c-addr u1 fileid -- u2 flag ior )
                         $DEFER  'READ-LINE',$READ_LINE
+
                         CW      $PREAD_LINE
 
 
                         $COLON  '(INCLUDED)',$PINCLUDED
+
                         CW      $R_O
                         CW      $OPEN_FILE
                         CW      $THROW
@@ -28,11 +30,13 @@
 ;  11.6.1.1718 INCLUDED
 ;  D: c-addr count --
                         $DEFER  'INCLUDED',$INCLUDED
+
                         CW      $PINCLUDED
 
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
                         $COLON  'INCLUDE-FILE',$INCLUDE_FILE
+
                         CW      $INPUT_TO_R
                         CW      $RESET_INPUT
                         CW      $SOURCE_ID_STORE
@@ -60,6 +64,7 @@ INCLUDE_FILE_EXIT:
                         CEXIT
 
                         $COLON  'SAVE-INPUT-FILE',$SAVE_INPUT_FILE
+
                         CW      $SOURCE_ID
                         CW      $CURRENT_FILE_POSITION
                         CW      $2FETCH
@@ -69,6 +74,7 @@ INCLUDE_FILE_EXIT:
                         CEXIT
 
                         $COLON  'RESTORE-INPUT-FILE',$RESTORE_INPUT_FILE
+
                         CW      $DROP
                         CW      $DUP
                         CSTORE  $TOIN
@@ -90,6 +96,7 @@ INCLUDE_FILE_EXIT:
                         CEXIT
 
                         $COLON  'RESET-INPUT-FILE',$RESET_INPUT_FILE
+
                         CW      $ZERO
                         CW      $DUP
                         CSTORE  $TOIN

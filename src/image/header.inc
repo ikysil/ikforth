@@ -44,27 +44,30 @@
 ;  &IMMEDIATE/COMPILE-ONLY
 ;  D: -- VEF-IMMEDIATE or VEF-COMPILE-ONLY
                         $CONST  '&IMMEDIATE/COMPILE-ONLY'
-                        CC      <VEF_IMMEDIATE OR VEF_COMPILE_ONLY>
+                        CC      VEF_IMMEDIATE_COMPILE_ONLY
 
 ;  LATEST-HEAD@
 ;  addr is the link address of the last compiled word in compilation wordlist.
 ;  D: -- addr
                         $CODE   'LATEST-HEAD@',$LATEST_HEAD_FETCH
-                        MOV     EAX,[DWORD PTR EDI + CURRENT_VAR]       ; get CURRENT wid
-                        PUSHDS  <[DWORD PTR EAX]>
+
+                        MOV     EAX,DWORD PTR [EDI + CURRENT_VAR]       ; get CURRENT wid
+                        PUSHDS  [EAX]
                         $NEXT
 
 ;  LATEST-HEAD!
 ;  addr is the link address of the last compiled word in compilation wordlist.
 ;  D: addr --
                         $CODE   'LATEST-HEAD!',$LATEST_HEAD_STORE
-                        MOV     EAX,[DWORD PTR EDI + CURRENT_VAR]       ; get CURRENT wid
-                        POPDS   <[DWORD PTR EAX]>
+
+                        MOV     EAX,DWORD PTR [EDI + CURRENT_VAR]       ; get CURRENT wid
+                        POPDS   [EAX]
                         $NEXT
 
 ;  CHECK-NAME
 ;  D: c-addr count -- c-addr count
                         $COLON  'CHECK-NAME',$CHECK_NAME
+
                         CW      $DUP
                         CW      $ZEROEQ
                         CQBR    NAME_ZEROGR
@@ -81,6 +84,7 @@ NAME_OK:
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
                         $COLON  '(REPORT-NAME)',$PREPORT_NAME
+
                         CFETCH  $REPORT_NEW_NAME
                         CQBR    NO_REPORT
                           CW      $2DUP
@@ -105,12 +109,14 @@ CDN_OK:
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
                         $DEFER  'REPORT-NAME',$REPORT_NAME
+
                         CW      $PREPORT_NAME
 
 ;  (HEADER,)
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                         $COLON  '(HEADER,)',$PHEADERC
+
                         CW      $HERE
                         CW      $TOR
                         CW      $CCOMMA                 ; compile flags
@@ -142,6 +148,7 @@ NAME_EXIT:
 ;  Compile CFA after (HEADER,)
 ;  D: executor-xt | 0 -- xt
                         $COLON  '(CFA,)',$PCFA_C
+
                         CW      $DUP
                         CW      $ZEROEQ
                         CQBR    EXECUTOR_XT
@@ -158,6 +165,7 @@ EXECUTOR_XT:
 ;  HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
                         $COLON  'HEADER,',$HEADERC
+
                         CW      $PHEADERC
                         CW      $PCFA_C
                         CEXIT
@@ -165,6 +173,7 @@ EXECUTOR_XT:
 ;  CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
                         $COLON  'CHECK-HEADER,',$CHECK_HEADERC
+
                         CW      $TOR
                         CW      $CHECK_NAME
                         CW      $REPORT_NAME
@@ -175,6 +184,7 @@ EXECUTOR_XT:
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
                         $COLON  'PARSE-CHECK-HEADER,',$PARSE_CHECK_HEADERC
+
                         CW      $TOR
                         CW      $BL
                         CW      $WORD
@@ -187,6 +197,7 @@ EXECUTOR_XT:
 ;  D: x h-id --
 ;  Store flags specified by x to the flags field of the header
                         $COLON  'HFLAGS!',$HFLAGS_STORE
+
                         CW      $CSTORE
                         CEXIT
 
@@ -194,12 +205,14 @@ EXECUTOR_XT:
 ;  D: h-id -- x
 ;  Get flags from the flags field of the header
                         $COLON  'HFLAGS@',$HFLAGS_FETCH
+
                         CW      $CFETCH
                         CEXIT
 
 ;  SET-HFLAGS!
 ;  D: flags --
                         $COLON  'SET-HFLAGS!'
+
                         CW      $LATEST_HEAD_FETCH
                         CW      $DUP
                         CW      $HFLAGS_FETCH
@@ -212,6 +225,7 @@ EXECUTOR_XT:
 ;  RESET-HFLAGS!
 ;  D: flags --
                         $COLON  'RESET-HFLAGS!'
+
                         CW      $LATEST_HEAD_FETCH
                         CW      $DUP
                         CW      $HFLAGS_FETCH
@@ -225,6 +239,7 @@ EXECUTOR_XT:
 ;  INVERT-HFLAGS!
 ;  D: flags --
                         $COLON  'INVERT-HFLAGS!'
+
                         CW      $LATEST_HEAD_FETCH
                         CW      $DUP
                         CW      $HFLAGS_FETCH
@@ -238,10 +253,11 @@ EXECUTOR_XT:
 ;  D: xt -- h-id
 ;  h-id is the address of vocabulary entry flags
                         $CODE   '>HEAD',$TO_HEAD
+
                         POPDS   EAX
                         SUB     EAX,5
                         XOR     EBX,EBX
-                        MOV     BL,[BYTE PTR EAX]
+                        MOV     BL,BYTE PTR [EAX]
                         SUB     EAX,EBX
                         PUSHDS  EAX
                         $NEXT
@@ -250,10 +266,11 @@ EXECUTOR_XT:
 ;  D: h-id -- xt
 ;  h-id is the address of vocabulary entry flags
                         $CODE   'HEAD>',$HEAD_FROM
+
                         POPDS   EAX
                         INC     EAX
                         XOR     EBX,EBX
-                        MOV     BL,[BYTE PTR EAX]
+                        MOV     BL,BYTE PTR [EAX]
                         ADD     EAX,EBX
                         ADD     EAX,6
                         PUSHDS  EAX
@@ -261,17 +278,20 @@ EXECUTOR_XT:
 
 ;  HEAD>NAME
                         $COLON  'HEAD>NAME',$HEAD_TO_NAME
+
                         CW      $1ADD
                         CEXIT
 
 ;  NAME>HEAD
                         $COLON  'NAME>HEAD',$NAME_TO_HEAD
+
                         CW      $1SUB
                         CEXIT
 
 ;  >NAME
 ;  D: xt -- name-addr
                         $COLON  '>NAME',$TO_NAME
+
                         CW      $TO_HEAD
                         CW      $HEAD_TO_NAME
                         CEXIT
@@ -279,6 +299,7 @@ EXECUTOR_XT:
 ;  NAME>
 ;  D: name-addr -- xt
                         $COLON  'NAME>',$NAME_FROM
+
                         CW      $NAME_TO_HEAD
                         CW      $HEAD_FROM
                         CEXIT
@@ -286,6 +307,7 @@ EXECUTOR_XT:
 ;  >LINK
 ;  D: CFA -- LFA
                         $COLON  '>LINK',$TO_LINK
+
                         CCLIT   CELL_SIZE
                         CW      $SUB
                         CEXIT
@@ -293,6 +315,7 @@ EXECUTOR_XT:
 ;  LINK>
 ;  D: LFA -- CFA
                         $COLON  'LINK>',$LINK_FROM
+
                         CCLIT   CELL_SIZE
                         CW      $ADD
                         CEXIT
@@ -300,6 +323,7 @@ EXECUTOR_XT:
 ;  H>NEXT>H
 ;  D: h-id -- prev_h-id | 0
                         $COLON  'H>NEXT>H',$H_TO_NEXT_TO_H
+
                         CW      $HEAD_FROM
                         CW      $TO_LINK
                         CW      $FETCH
@@ -308,6 +332,7 @@ EXECUTOR_XT:
 ;  H>#NAME
 ;  D: h-id -- addr len
                         $COLON  'H>#NAME',$H_TO_HASH_NAME
+
                         CW      $HEAD_TO_NAME
                         CW      $DUP
                         CW      $1ADD

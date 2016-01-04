@@ -1,0 +1,60 @@
+Open Watcom Linker Version 1.0
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       03/08/29 13:14:39
+Executable Image: ..\FKernel.img
+creating a Windows NT character-mode executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+.idata                          00004000             00000014
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+_TEXT                  CODE           AUTO           00001000        00000000
+_DATA                  DATA           AUTO           00001000        00000000
+MAIN                                  AUTO           00001000        000028f3
+.idata                 .idata         .idata         00004000        00000014
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+
+
+                        +----------------------+
+                        |   Imported Symbols   |
+                        +----------------------+
+
+Symbol                              Module
+======                              ======
+
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  1000 (4096.)
+Memory size:  2907 (10503.)
+Entry point address: 00003770
+Link time: 00:00.60

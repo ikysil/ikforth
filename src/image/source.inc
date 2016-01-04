@@ -16,13 +16,13 @@
 ;  -1              String (via EVALUATE)
 ;   0              User input device
 ;  >0              File handle
-                        $CODE   'SOURCE-ID',$SOURCE_ID
-                        PUSHDS  <[DWORD PTR EDI + SOURCE_ID_VAR]>
+                        $CODE   'SOURCE-ID',$SOURCE_ID,VEF_USUAL
+                        PUSHDS  [EDI + SOURCE_ID_VAR]
                         $NEXT
 
 ;  SOURCE-ID!
-                        $CODE   'SOURCE-ID!',$SOURCE_ID_STORE
-                        POPDS   <[DWORD PTR EDI + SOURCE_ID_VAR]>
+                        $CODE   'SOURCE-ID!',$SOURCE_ID_STORE,VEF_USUAL
+                        POPDS   [EDI + SOURCE_ID_VAR]
                         $NEXT
 
 ;  6.1.2216 SOURCE
@@ -30,38 +30,45 @@
 ;  the input buffer. 
 ;  D: -- c-addr u
                         $COLON  '(SOURCE)',$PSOURCE
+
                         CW      $FILE_LINE
-                        CFETCH  $#FILE_LINE
+                        CFETCH  $HASH_FILE_LINE
                         CEXIT
 
                         $DEFER  'SOURCE',$SOURCE
+
                         CW      $PSOURCE
                         
 ;  6.2.2125 REFILL
 ;  D: -- flag
                         $COLON  '(REFILL)',$PREFILL
+
                         CW      $FILE_LINE
                         CCLIT   MAX_FILE_LINE_LENGTH
                         CW      $SOURCE_ID
                         CW      $READ_LINE
                         CW      $DROP
                         CW      $SWAP
-                        CSTORE  $#FILE_LINE
+                        CSTORE  $HASH_FILE_LINE
                         CW      $ZERO
                         CSTORE  $TOIN
                         CEXIT
 
                         $DEFER  'REFILL',$REFILL
+
                         CW      $PREFILL 
 
                         $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT
+
                         CW      $SAVE_INPUT_FILE
 
                         $COLON  'SAVE-INPUT',$SAVE_INPUT
+
                         CW      $PSAVE_INPUT
                         CEXIT
 
                         $COLON  'RESTORE-INPUT',$RESTORE_INPUT
+
                         CW      $1SUB
                         CW      $SWAP
                         CW      $EXECUTE
@@ -69,14 +76,17 @@
                         CEXIT
 
                         $DEFER  '(RESET-INPUT)',$PRESET_INPUT
+
                         CW      $RESET_INPUT_FILE
 
                         $COLON  'RESET-INPUT',$RESET_INPUT
+
                         CW      $PRESET_INPUT
                         CEXIT
 
 ;  INPUT>R
                         $COLON  'INPUT>R',$INPUT_TO_R,VEF_COMPILE_ONLY
+
                         CW      $RFROM
                         CW      $SAVE_INPUT
                         CW      $N_TO_R
@@ -85,6 +95,7 @@
 
 ;  R>INPUT
                         $COLON  'R>INPUT',$R_TO_INPUT,VEF_COMPILE_ONLY
+
                         CW      $RFROM
                         CW      $N_R_FROM
                         CW      $RESTORE_INPUT

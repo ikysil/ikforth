@@ -12,7 +12,7 @@
 ;  6.1.0090 *
 ;  Multiply n1|u1 by n2|u2 giving the product n3|u3.
 ;  D: n1|u1 n2|u2 -- n3|u3
-                        $CODE   '*',$MUL
+                        $CODE   '*',$MUL,VEF_USUAL
                         POPDS   EAX
                         POPDS   EBX
                         IMUL    EBX
@@ -21,7 +21,7 @@
 
 ;  6.1.0120 +
 ;  D: a b -- a+b
-                        $CODE   '+',$ADD
+                        $CODE   '+',$ADD,VEF_USUAL
                         POPDS   EAX
                         POPDS   EBX
                         ADD     EAX,EBX
@@ -30,7 +30,7 @@
 
 ;  6.1.0160 -
 ;  D: a b -- a-b
-                        $CODE   '-',$SUB
+                        $CODE   '-',$SUB,VEF_USUAL
                         POPDS   EBX
                         POPDS   EAX
                         SUB     EAX,EBX
@@ -39,7 +39,7 @@
 
 ;  6.1.0290 1+
 ;  D: a -- a+1
-                        $CODE   '1+',$1ADD
+                        $CODE   '1+',$1ADD,VEF_USUAL
                         POPDS   EAX
                         INC     EAX
                         PUSHDS  EAX
@@ -47,7 +47,7 @@
 
 ;  6.1.0300 1-
 ;  D: a -- a-1
-                        $CODE   '1-',$1SUB
+                        $CODE   '1-',$1SUB,VEF_USUAL
                         POPDS   EAX
                         DEC     EAX
                         PUSHDS  EAX
@@ -55,7 +55,7 @@
 
 ;  6.1.0320 2*
 ;  D: a -- a*2
-                        $CODE   '2*',$2MUL
+                        $CODE   '2*',$2MUL,VEF_USUAL
                         POPDS   EAX
                         SAL     EAX,1
                         PUSHDS  EAX
@@ -63,7 +63,7 @@
 
 ;  6.1.0330 2/
 ;  D: a -- a/2
-                        $CODE   '2/',$2DIV
+                        $CODE   '2/',$2DIV,VEF_USUAL
                         POPDS   EAX
                         SAR     EAX,1
                         PUSHDS  EAX
@@ -71,7 +71,7 @@
 
 ;  6.1.1805 LSHIFT
 ;  D: a b -- a << b
-                        $CODE   'LSHIFT',$LSHIFT
+                        $CODE   'LSHIFT',$LSHIFT,VEF_USUAL
                         POPDS   ECX
                         POPDS   EAX
                         SHL     EAX,CL
@@ -80,7 +80,7 @@
 
 ;  6.1.2162 RSHIFT
 ;  D: a b -- a >> b
-                        $CODE   'RSHIFT',$RSHIFT
+                        $CODE   'RSHIFT',$RSHIFT,VEF_USUAL
                         POPDS   ECX
                         POPDS   EAX
                         SHR     EAX,CL
@@ -90,7 +90,7 @@
 ;  6.1.1810 M*
 ;  d is the signed product of n1 times n2.
 ;  D: n1 n2 -- d
-                        $CODE   'M*',$MMUL
+                        $CODE   'M*',$MMUL,VEF_USUAL
                         POPDS   EAX
                         POPDS   EBX
                         IMUL    EBX
@@ -100,7 +100,7 @@
 
 ;  6.1.1910 NEGATE
 ;  D: a -- -a
-                        $CODE   'NEGATE',$NEGATE
+                        $CODE   'NEGATE',$NEGATE,VEF_USUAL
                         POPDS   EAX
                         NEG     EAX
                         PUSHDS  EAX
@@ -111,7 +111,7 @@
 ;  Input and output stack arguments are signed. An ambiguous condition exists
 ;  if n1 is zero or if the quotient lies outside the range of a single-cell signed integer.
 ;  D: d1 n1 -- n2 n3
-                        $CODE   'SM/REM',$SMDIVREM
+                        $CODE   'SM/REM',$SMDIVREM,VEF_USUAL
                         POPDS   EBX                     ; n1
                         POPDS   EDX
                         POPDS   EAX
@@ -128,7 +128,7 @@
 ;  Multiply u1 by u2, giving the unsigned double-cell product ud.
 ;  All values and arithmetic are unsigned.
 ;  D: u1 u2 -- ud
-                        $CODE   'UM*',$UMMUL
+                        $CODE   'UM*',$UMMUL,VEF_USUAL
                         POPDS   EBX
                         POPDS   EAX
                         MUL     EBX
@@ -141,7 +141,7 @@
 ;  All values and arithmetic are unsigned. An ambiguous condition exists if u1
 ;  is zero or if the quotient lies outside the range of a single-cell unsigned integer.
 ;  D: ud u1 -- u2 u3
-                        $CODE   'UM/MOD',$UMDIVMOD
+                        $CODE   'UM/MOD',$UMDIVMOD,VEF_USUAL
                         POPDS   EBX                     ; u1
                         POPDS   EDX
                         POPDS   EAX
@@ -156,7 +156,7 @@
 
 ;  6.1.0720 AND
 ;  D: a b -- a and b
-                        $CODE   'AND',$AND
+                        $CODE   'AND',$AND,VEF_USUAL
                         POPDS   EBX
                         POPDS   EAX
                         AND     EAX,EBX
@@ -165,7 +165,7 @@
 
 ;  6.1.1720 INVERT
 ;  D: a -- NOT a
-                        $CODE   'INVERT',$INVERT
+                        $CODE   'INVERT',$INVERT,VEF_USUAL
                         POPDS   EAX
                         NOT     EAX
                         PUSHDS  EAX
@@ -173,7 +173,7 @@
 
 ;  6.1.1980 OR
 ;  D: a b -- a or b
-                        $CODE   'OR',$OR
+                        $CODE   'OR',$OR,VEF_USUAL
                         POPDS   EBX
                         POPDS   EAX
                         OR      EAX,EBX
@@ -182,7 +182,7 @@
 
 ;  6.1.2490 XOR
 ;  D: a b -- a xor b
-                        $CODE   'XOR',$XOR
+                        $CODE   'XOR',$XOR,VEF_USUAL
                         POPDS   EBX
                         POPDS   EAX
                         XOR     EAX,EBX
@@ -191,7 +191,7 @@
 
 ;  UD/
 ;  D: UD1 UD2 -- REMD QD
-                        $CODE   'UD/',$UDDIV
+                        $CODE   'UD/',$UDDIV,VEF_USUAL
                         PUSHRS  EDI
                         PUSHRS  ESI
                         POPDS   ECX

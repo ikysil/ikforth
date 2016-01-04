@@ -11,10 +11,12 @@
 
 ;  >NUMBER-SIGNED
                         $USER   '>NUMBER-SIGNED',$TONUMBER_SIGNED
+
                         CC      TONUMBER_SIGNED_VAR
 
 ;  DO-INT-DEFINED
                         $COLON  'DO-INT-DEFINED',$DO_INT_DEFINED
+
                         CW      $OVER
                         CW      $TO_HEAD
                         CW      $HFLAGS_FETCH
@@ -30,6 +32,7 @@ DID_INTERPRET:
 
 ;  DO-COMP-DEFINED
                         $COLON  'DO-COMP-DEFINED',$DO_COMP_DEFINED
+
                         CW      $ZEROGR
                         CQBR    DCD_NOT_IMMEDIATE
                           CW      $EXECUTE
@@ -41,6 +44,7 @@ DCD_EXIT:
 
 ;  DO-DEFINED
                         $COLON  'DO-DEFINED',$DO_DEFINED
+
                         CFETCH  $STATE
                         CQBR    DD_INTERPRETATION
                           CW      $DO_COMP_DEFINED
@@ -53,15 +57,16 @@ DD_EXIT:
 ;  IL-CHECK-SIGN
 ;  ( C-ADDR U -- C-ADDR U )
                         $COLON  'IL-CHECK-SIGN',$ILCS
+
                         CW      $FALSE
                         CSTORE  $TONUMBER_SIGNED
                         CW      $OVER
                         CW      $CFETCH
                         CW      $DUP
-                        CCLIT   '-'
+                        CCLIT   45 ;'-'
                         CW      $NOEQ
                         CQBR    ILCS_SIGNED
-                        CCLIT   '+'
+                        CCLIT   43 ;'+'
                         CW      $NOEQ
                         CQBR    ILCS_UNSIGNED
                         CBR     ILCS_EXIT
@@ -80,6 +85,7 @@ ILCS_EXIT:
 ;  IL-CHECK-LIT
 ;  ( C-ADDR U - N TRUE | C-ADDR U FALSE )
                         $COLON  'IL-CHECK-LIT',$ILCL
+
                         CW      $ZERO
                         CW      $DUP
                         CW      $2SWAP
@@ -102,6 +108,7 @@ ILCL_EXIT:
 
 ;  DO-LIT
                         $COLON  'DO-LIT',$DO_LIT
+
                         CFETCH  $STATE
                         CQBR    DL_EXIT
                           CW      $LITERAL
@@ -111,11 +118,12 @@ DL_EXIT:
 ;  IL-CHECK-2LIT
 ;  ( D C-ADDR U - D TRUE | FALSE )
                         $COLON  'IL-CHECK-2LIT',$ILC2L
+
                         CW      $1SUB
                         CW      $ZEROEQ
                         CQBR    ILC2L_EXIT2
                         CW      $CFETCH
-                        CCLIT   '.'
+                        CCLIT   46 ;'.'
                         CW      $EQ
                         CQBR    ILC2L_EXIT1
                         CFETCH  $TONUMBER_SIGNED
@@ -134,6 +142,7 @@ ILC2L_EXIT:
 
 ;  DO-2LIT
                         $COLON  'DO-2LIT',$DO_2LIT
+
                         CFETCH  $STATE
                         CQBR    D2L_EXIT
                           CW      $2LITERAL
@@ -143,6 +152,7 @@ D2L_EXIT:
 ;  INTERPRET-LITERAL
 ;  ( C-ADDR U -- flag )
                         $COLON  'INTERPRET-LITERAL',$INTERPRET_LITERAL
+
                         CW      $DUP
                         CW      $ZERO
                         CW      $NOEQ
@@ -154,7 +164,7 @@ D2L_EXIT:
                         CQBR    IL_OK1          ; branch if u <> 1
                         CW      $OVER           ; c-addr u c-addr
                         CW      $CFETCH
-                        CCLIT   '.'
+                        CCLIT   46 ;'.'
                         CW      $EQ
                         CQBR    IL_OK1          ; branch if c-addr @ <> '.'
                         CW      $2DROP
@@ -179,6 +189,7 @@ IL_EXIT:
 ;  INTERPRET-WORD
 ;  ( C-ADDR -- )
                         $COLON  'INTERPRET-WORD',$INTERPRET_WORD
+
                         CW      $FIND
                         CW      $QDUP
                         CQBR    IW_NOT_FOUND
@@ -203,6 +214,7 @@ IW_EXIT:
 
 ;  D: c-addr u -- 
                         $COLON  '(INTERPRET-WORD-NOT-FOUND)',$PINTERPRET_WORD_NOT_FOUND
+
                         CW      $2DROP
                         CTHROW  -13
                         CEXIT
@@ -210,10 +222,12 @@ IW_EXIT:
 ;  INTERPRET-WORD-NOT-FOUND
 ;  D: c-addr u -- 
                         $DEFER  'INTERPRET-WORD-NOT-FOUND',$INTERPRET_WORD_NOT_FOUND
+
                         CW      $PINTERPRET_WORD_NOT_FOUND
 
 ;  INTERPRET
                         $COLON  'INTERPRET',$INTERPRET
+
 INT_LOOP:
                         CW      $BL
                         CW      $WORD                   ; c-addr

@@ -13,6 +13,7 @@
 ;  Branch to address compiled next if flag on stack is zero
 ;  D: flag --
                         $CODE   '?BRANCH',$QBRANCH
+
                         POPDS   EAX
                         OR      EAX,EAX
                         LODSD
@@ -24,6 +25,7 @@ NOQBRANCH:
 ;  BRANCH
 ;  Branch to address compiled next
                         $CODE   'BRANCH',$BRANCH
+
                         LODSD
                         MOV     ESI,EAX
                         $NEXT
@@ -31,6 +33,7 @@ NOQBRANCH:
 ;  LIT
 ;  Compiled by LITERAL
                         $CODE   'LIT',$LIT
+
                         LODSD
                         PUSHDS  EAX
                         $NEXT
@@ -38,6 +41,7 @@ NOQBRANCH:
 ;  2LIT
 ;  Compiled by 2LITERAL
                         $CODE   '2LIT',$2LIT
+
                         LODSD
                         PUSHDS  EAX
                         LODSD
@@ -46,14 +50,14 @@ NOQBRANCH:
 
 ;  (DO-VARIABLE)
                         $VAR    '(DO-VARIABLE)'
-                        LABEL   $DOVAR FAR
+                 $DOVAR LABEL   FAR
                         ADD     EAX,CELL_SIZE
                         PUSHDS  EAX
                         $NEXT
 
 ;  (DO-:)
                         $VAR    '(DO-:)'
-                        LABEL   $ENTER FAR
+                 $ENTER LABEL   FAR
                         PUSHRS  ESI                     ; push current IP on return stack
                         ADD     EAX,CELL_SIZE
                         MOV     ESI,EAX
@@ -61,32 +65,32 @@ NOQBRANCH:
 
 ;  (DO-CONSTANT)
                         $VAR    '(DO-CONSTANT)'
-                        LABEL   $DOCONST FAR
-                        PUSHDS  <[DWORD PTR EAX + CELL_SIZE]>
+               $DOCONST LABEL   FAR
+                        PUSHDS  [EAX + CELL_SIZE]
                         $NEXT
 
 ;  (DO-USER)
                         $VAR    '(DO-USER)'
-                        LABEL   $DOUSER FAR
-                        MOV     EBX,[DWORD PTR EAX + CELL_SIZE]
+                $DOUSER LABEL   FAR
+                        MOV     EBX,DWORD PTR [EAX + CELL_SIZE]
                         ADD     EBX,EDI
                         PUSHDS  EBX
                         $NEXT
 
 ;  (DO-DEFER)
                         $VAR    '(DO-DEFER)'
-                        LABEL   $DODEFER FAR
-                        MOV     EAX,[DWORD PTR EAX + CELL_SIZE]
+               $DODEFER LABEL   FAR
+                        MOV     EAX,DWORD PTR [EAX + CELL_SIZE]
                         $JMP
 
 ;  (DO-INT/COMP)
                         $VAR    '(DO-INT/COMP)'
-                        LABEL   $PDO_INT_COMP FAR
+          $PDO_INT_COMP LABEL   FAR
                         ADD     EAX,CELL_SIZE
-                        CMP     [DWORD PTR STATE_VAR + DESIRED_BASE_EQU],F_FALSE
-                        JZ      SHORT PDIC_INT
+                        CMP     BYTE PTR [STATE_VAR - SIGN + DESIRED_BASE_EQU],F_FALSE
+                        JZ      PDIC_INT
                         ADD     EAX,CELL_SIZE
 PDIC_INT:
-                        MOV     EAX,[DWORD PTR EAX]
+                        MOV     EAX,DWORD PTR [EAX]
                         $JMP
 

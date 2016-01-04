@@ -1,0 +1,7 @@
+name FKernel
+op map
+system nt
+option stack=64k
+file FKernel.obj
+file IKFunc.obj
+file IKFUtils.obj
