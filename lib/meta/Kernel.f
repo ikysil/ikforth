@@ -1,7 +1,7 @@
 \
 \  Kernel.f
 \
-\  Copyright (C) 1999-2003 Illia Kysil
+\  Copyright (C) 1999-2004 Illia Kysil
 \
 \  IKForth kernel
 \

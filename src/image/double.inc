@@ -3,7 +3,7 @@
 ;  double.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2003 Illya Kysil
+;  Copyright (C) 1999-2004 Illya Kysil
 ;
 ;******************************************************************************
 ;  Double number words

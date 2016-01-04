@@ -1,7 +1,7 @@
 \
 \  main.f
 \
-\  Copyright (C) 1999-2003 Illya Kysil
+\  Copyright (C) 1999-2004 Illya Kysil
 \
 
 CR .( Loading MAIN definitions )
@@ -23,7 +23,7 @@ REPORT-NEW-NAME OFF
 
 : .VERSION
   ." IKForth v1.0" CR
-  ." Copyright (C) 1999-2003 Illya Kysil" CR
+  ." Copyright (C) 1999-2004 Illya Kysil" CR
 ;
 
 : .PLATFORM

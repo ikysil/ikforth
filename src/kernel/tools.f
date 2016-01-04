@@ -1,7 +1,7 @@
 \
 \  tools.f
 \
-\  Copyright (C) 1999-2003 Illya Kysil
+\  Copyright (C) 1999-2004 Illya Kysil
 \
 \  TOOLS and TOOLS-EXT wordsets
 \
