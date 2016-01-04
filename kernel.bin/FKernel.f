@@ -1,0 +1,72 @@
+\
+\  FKernel.f
+\
+\  Copyright (C) 1999-2001 Illya Kysil
+\
+
+HERE
+
+CREATE-WARN-ON-DUPLICATE @
+CREATE-REPORT @
+
+TRUE CREATE-WARN-ON-DUPLICATE !
+FALSE CREATE-REPORT !
+
+S" KERNEL.BIN\WORDS.F" INCLUDED
+
+: .VERSION
+  ." IKForth v1.0" CR
+  ." Copyright (C) 1999-2001 Illya Kysil" CR
+  ." Compiled: "
+  [
+    TIME&DATE DECIMAL
+    <# 5 ROLL S>D # # 2DROP CHAR : HOLD
+       4 ROLL S>D # # 2DROP CHAR : HOLD
+       3 ROLL S>D #S  2DROP
+       BL HOLD CHAR , HOLD
+       S>D #S 2DROP CHAR / HOLD MONTH>STR S"HOLD CHAR / HOLD S>D #S #>
+  ] SLITERAL TYPE ;
+
+:NONAME .VERSION CR CR .ENV-INFO ;
+STARTUP-CHAIN CHAIN.ADD
+
+:NONAME ." Bye..." CR ;
+SHUTDOWN-CHAIN CHAIN.ADD
+
+: STARTUP-INCLUDE SF @ #SF @ INCLUDED ;
+
+0 VALUE GLOBAL-INIT-FLAG 
+
+:NONAME
+  INIT-USER
+  GLOBAL-INIT-FLAG 0=
+  IF
+    STARTUP-CHAIN CHAIN.EXECUTE>
+    GetCommandLine DUP lstrlen CMD-LINE 2!
+    ['] STARTUP-INCLUDE CATCH ?DUP 0<> IF .EXCEPTION THEN
+    1 TO GLOBAL-INIT-FLAG
+  THEN
+  DECIMAL
+  QUIT ;
+IS MAIN
+
+CREATE-REPORT !
+CREATE-WARN-ON-DUPLICATE !
+
+DECIMAL
+
+$ 800000 DATA-AREA-SIZE !
+
+CR .( Writing IKForth.img )
+S" IKForth.img" W/O CREATE-FILE THROW
+DATA-AREA-BASE HERE OVER - 4096 / 1+ 4096 * 2 PICK WRITE-FILE THROW
+CLOSE-FILE THROW
+
+.( OK ) CR
+
+.( Total data area size  ) DATA-AREA-SIZE @       16 U.R .(  bytes ) CR
+.( Unused data area size ) UNUSED                 16 U.R .(  bytes ) CR
+.( Compiled              ) HERE SWAP -            16 U.R .(  bytes ) CR
+.( New vocabulary size   ) HERE DATA-AREA-BASE -  16 U.R .(  bytes ) CR
+
+BYE

@@ -1,0 +1,32 @@
+#  Makefile for IKForth.
+#
+#  Copyright (C) 1999-2001 Illya Kysil
+#
+#  Usage:   make -B         # IKForth
+#           make -B -DDEBUG # IKForth with debug info
+#
+
+!if $d(DEBUG)
+TASMDEBUG=/zi
+LINKDEBUG=/v
+!else
+TASMDEBUG=
+LINKDEBUG=
+!endif
+
+IKForth.img: kernel.bin\FKernel.exe kernel.bin\FKernel.img \
+             kernel.bin\*.f kernel\*.f ansi\*.f ext\*.f win\*.f
+      kernel.bin\FKernel.exe
+      copy kernel.bin\FKernel.exe IKForth.exe
+
+kernel.bin\FKernel.img: image\meta.asm image\*.inc
+      cd image
+      tasm32  $(TASMDEBUG) /t/z/l/q meta.asm
+      cd ..
+      tlink32 $(LINKDEBUG) /x image\meta.obj,kernel.bin\FKernel.img
+
+kernel.bin\FKernel.exe: loader\*.pas loader\*.dpr
+      cd loader
+      dcc32 FKernel.dpr
+      cd ..
+

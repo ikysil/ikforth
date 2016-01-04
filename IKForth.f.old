@@ -1,0 +1,82 @@
+\ s" ext\unit.f" included
+(
+s" ext\fetchstore-ext.f" included
+
+HEX
+
+: FS-TEST >IN @ BL WORD COUNT TYPE 9 EMIT >IN ! ' EXECUTE ;
+
+VARIABLE A-TEST
+
+44FF A-TEST !
+
+A-TEST
+CR DUP  FS-TEST U@16B 9 U.R
+CR DUP  FS-TEST  @16B 9 U.R 
+CR DUP  FS-TEST U@16L 9 U.R
+CR DUP  FS-TEST  @16L 9 U.R
+DROP
+)
+: test create-report @ >R create-report off
+       s" test\ansitest.f" ['] included catch
+       R> create-report ! throw ;
+
+: WT S" TEST\WORDSTEST.F" INCLUDED ;
+
+(
+: kernel include" kernel.f\kernel.f" ;
+
+ kernel
+
+CR
+
+: DW GET-ORDER
+     >IN @ >R BL WORD COUNT TYPE
+     CR R@ >IN ! ONLY        ' >BODY 64 DUMP 
+     CR R> >IN ! ALSO TARGET ' >BODY 64 DUMP
+     SET-ORDER ;
+HEX
+cr 20000000 GET-BASE-ADDR h.8
+cr 20040000 GET-BASE-ADDR h.8
+cr 20080000 GET-BASE-ADDR h.8
+cr 200c0000 GET-BASE-ADDR h.8
+DECIMAL
+)
+\ S" EXT\CLASS-NEW.F" INCLUDED
+\ S" test" GET/CREATE-FIELD-ID
+\ CR S" .name" GET/CREATE-METHOD-ID h.8
+\ CR S" .name" GET-METHOD-ID h.8
+cr
+object >members 12 dump
+
+object invoke .name
+class: test
+  1 cells field test
+  1 cells field test1
+  M: t ;M
+  123 M-ID: ." Should print 123" ;M
+;class
+
+class: test1 test <super
+  1 cells field test1
+;class
+
+cr
+
+
+test1 invoke .tree
+
+test1 dict-instance a
+cr a invoke .info
+cr
+: a1 a dup h.8 field-addr test1 cr h.8 ;
+a1
+: a2 a invoke .tree ;
+cr a2
+test1 123 invoke-id
+cr object invoke .members
+cr test invoke .members
+cr test1 invoke .members
+cr
+: a3 test1 123 invoke-id ;
+a3
