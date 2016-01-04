@@ -6,31 +6,21 @@
 
 CR .( Loading VALUE definitions )
 
-CREATE-REPORT @
-CREATE-REPORT OFF
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
 
 \ -----------------------------------------------------------------------------
-\ VALUE
+\ VALUE TO +TO
 \ -----------------------------------------------------------------------------
 
 : VALUE CREATE , DOES> @ ;
 
-: TO
-  ' >BODY
-  STATE @
-  IF
-    POSTPONE LITERAL POSTPONE !
-  ELSE
-    !
-  THEN ; IMMEDIATE
+:NONAME ' >BODY ! ;
+:NONAME ' >BODY POSTPONE LITERAL POSTPONE ! ;
+INT/COMP: TO IMMEDIATE
 
-: +TO
-  ' >BODY
-  STATE @
-  IF
-    POSTPONE LITERAL POSTPONE +!
-  ELSE
-    +!
-  THEN ; IMMEDIATE
+:NONAME ' >BODY +! ;
+:NONAME ' >BODY POSTPONE LITERAL POSTPONE +! ;
+INT/COMP: +TO IMMEDIATE
 
-CREATE-REPORT !
+REPORT-NEW-NAME !

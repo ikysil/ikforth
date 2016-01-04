@@ -6,8 +6,8 @@
 
 CR .( Loading CLASS definitions )
 
-CREATE-REPORT @
-CREATE-REPORT OFF
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
 
 BASE @
 
@@ -294,8 +294,8 @@ INT/COMP: FIELD-ADDR
            DUP
            [ 2 CELLS ] LITERAL + @ DUP
            CR .MEMBER-TYPE
-           OVER       @ ." ID=0x" H.8 1 SPACES
-           OVER CELL+ @ ." XT=0x" H.8 2 SPACES
+           OVER       @ ." ID=H# " H.8 1 SPACES
+           OVER CELL+ @ ." XT=H# " H.8 2 SPACES
            MF-NAME AND
            IF
              @ >HEAD H>#NAME TYPE
@@ -316,4 +316,4 @@ INT/COMP: FIELD-ADDR
 
 BASE !
 
-CREATE-REPORT !
+REPORT-NEW-NAME !

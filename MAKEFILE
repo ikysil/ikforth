@@ -1,37 +1,29 @@
+#
 #  Makefile for IKForth.
 #
 #  Copyright (C) 1999-2003 Illya Kysil
 #
-#  Usage:   make -B         # IKForth
-#           make -B -DDEBUG # IKForth with debug info
-#
 
-!if $d(DEBUG)
-TASMDEBUG=/zi
-LINKDEBUG=/v
-!else
-TASMDEBUG=
-LINKDEBUG=
-!endif
+IKForth.img: src\FKernel.exe src\FKernel.img \
+             src\*.f src\kernel\*.f src\win32\*.f \
+             lib\ansi\*.f lib\~ik\*.f lib\~js\486asm\*.f
+      src\FKernel.exe
+      copy src\FKernel.exe IKForth.exe
 
-IKForth.img: kernel.bin\FKernel.exe kernel.bin\FKernel.img \
-             kernel.bin\*.f lib\kernel\*.f lib\ansi\*.f lib\~ik\*.f lib\~js\486asm\*.f lib\win32\*.f
-      kernel.bin\FKernel.exe
-      copy kernel.bin\FKernel.exe IKForth.exe
+src\FKernel.img: src\image\FKernel.asm src\image\*.inc
+      cd  src\image
+      tasm32  /z/q/n/la FKernel.asm
+      cd  ..\..
+      tlink32 /x/aa src\image\FKernel.obj,src\FKernel.img
 
-kernel.bin\FKernel.img: image\FKernel.asm image\*.inc
-      cd image
-      tasm32  $(TASMDEBUG) /q/z/la FKernel.asm
-      cd ..
-      tlink32 $(LINKDEBUG) /x image\FKernel.obj,kernel.bin\FKernel.img
-
-kernel.bin\FKernel.exe: loader\*.pas loader\*.dpr
-      cd loader
+src\FKernel.exe: src\loader\*.pas src\loader\*.dpr
+      cd  src\loader
       dcc32 FKernel.dpr
-      cd ..
+      cd  ..\..
 
 clean: IKForth.img
-      del loader\*.dcu
-      del image\*.obj
-      del kernel.bin\FKernel.img
-      del kernel.bin\FKernel.exe
+      del src\loader\*.dcu
+      del src\image\*.obj
+      del src\image\FKernel.lst
+      del src\FKernel.img
+      del src\FKernel.exe

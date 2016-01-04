@@ -8,8 +8,8 @@
 
 CR .( Loading FLOAT definitions )
 
-CREATE-REPORT @
-CREATE-REPORT OFF
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
 
 <ENV
              TRUE  CONSTANT FLOATING
@@ -18,4 +18,4 @@ ENV>
 
 S" lib\~be\float.f"           INCLUDED
 
-CREATE-REPORT !
+REPORT-NEW-NAME !

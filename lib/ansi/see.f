@@ -6,8 +6,8 @@
 
 CR .( Loading SEE definitions )
 
-CREATE-REPORT @
-CREATE-REPORT OFF
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
 
 BASE @
 
@@ -19,7 +19,7 @@ BASE @
 
        CREATE CREATE-PRI
 
-USER U-PRI 1 CELLS USER-ALLOC
+USER USER-PRI 1 CELLS USER-ALLOC
 
 VOCABULARY VOC-PRI
 
@@ -27,7 +27,7 @@ DEFER DEFER-PRI
 
 0 VALUE VALUE-PRI
 
-: WRITE-VALUE BASE @ >R DUP DECIMAL . ." , 0x" H.8 R> BASE ! ;
+: WRITE-VALUE BASE @ >R DUP DECIMAL . ." , H# " H.8 R> BASE ! ;
 
 : CHECK-PRIMITIVE (S xt -- flag )
   DUP >R
@@ -51,7 +51,7 @@ DEFER DEFER-PRI
     [ ' 2C-PRI @ ] LITERAL OF
       ." 2CONSTANT( " R@ EXECUTE D. ." )" TRUE
     ENDOF
-    [ ' U-PRI @ ] LITERAL OF
+    [ ' USER-PRI @ ] LITERAL OF
       ." USER( " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
     [ ' VOC-PRI @ ] LITERAL OF
@@ -63,14 +63,14 @@ DEFER DEFER-PRI
     [ ' DEFER-PRI @ ] LITERAL OF
       ." DEFER " 
       R@ >HEAD H>#NAME TYPE SPACE
-      ." XT=0x" R@ H.8 SPACE
+      ." XT=H# " R@ H.8 SPACE
       R@ >HEAD WORD-ATTR
       R@ >BODY @ NIP
-      CR FALSE
+      CR DUP RECURSE
     ENDOF
     [ ' : @ ] LITERAL OF
-      R@ >HEAD H>#NAME TYPE SPACE
-      ." XT=0x" R@ H.8 SPACE
+      R@ >HEAD H>#NAME ?DUP IF TYPE ELSE DROP ." (noname)" THEN SPACE
+      ." XT=H# " R@ H.8 SPACE
       R@ >HEAD WORD-ATTR
       CR FALSE
     ENDOF
@@ -86,7 +86,7 @@ DEFER DEFER-PRI
   ENDCASE ;
 
 : WRITE-NEXT-ADDR (S body-addr -- body-addr1 )
-  ."  --> 0x" DUP @ H.8 CELL+ ;
+  ."  --> H# " DUP @ H.8 CELL+ ;
 
 : WRITE-LIT (S body-addr -- body-addr1 )
   BASE @ >R
@@ -95,7 +95,7 @@ DEFER DEFER-PRI
 
 : WRITE-2LIT (S body-addr -- body-addr1 )
   BASE @ >R
-  ." 2LITERAL = " DUP 2@ SWAP 2DUP DECIMAL D. ." , 0x" HEX UD. 2 CELLS+
+  ." 2LITERAL = " DUP 2@ SWAP 2DUP DECIMAL D. ." , H# " HEX UD. 2 CELLS+
   R> BASE ! ;
 
 : WRITE-STRING (S body-addr addr count -- body-addr1 )
@@ -110,33 +110,30 @@ DEFER DEFER-PRI
 : WRITE-(TYPE) (S body-addr -- body-addr1 )
   ." (TYPE)" COUNT 2DUP + -ROT WRITE-STRING ;
 
-: WRITE-POSTPONE (S body-addr -- body-addr1 )
-  ." POSTPONE " DUP @ >NAME COUNT TYPE CELL+ ;
-
 : WRITE-NAME (S body-addr -- body-addr1 )
   DUP CELL+ SWAP @
   CASE
-    [']        LIT OF WRITE-LIT  ENDOF
-    [']       2LIT OF WRITE-2LIT ENDOF
-    [']    ?BRANCH OF ." ?BRANCH" WRITE-NEXT-ADDR ENDOF
-    [']     BRANCH OF ." BRANCH " WRITE-NEXT-ADDR ENDOF
-    [']       (DO) OF ." DO     " WRITE-NEXT-ADDR ENDOF
-    [']      (?DO) OF ." ?DO    " WRITE-NEXT-ADDR ENDOF
-    [']     (LOOP) OF ." LOOP   " WRITE-NEXT-ADDR ENDOF
-    [']    (+LOOP) OF ." +LOOP  " WRITE-NEXT-ADDR ENDOF
-    [']    (ENDOF) OF ." ENDOF  " WRITE-NEXT-ADDR ENDOF
-    [']       (OF) OF ." OF     " WRITE-NEXT-ADDR ENDOF
-    [']      (<OF) OF ." <OF    " WRITE-NEXT-ADDR ENDOF
-    [']      (>OF) OF ." >OF    " WRITE-NEXT-ADDR ENDOF
-    [']     (<OF<) OF ." <OF<   " WRITE-NEXT-ADDR ENDOF
-    [']  (ENDCASE) OF ." ENDCASE" ENDOF
-    [']       (C") OF WRITE-C" ENDOF
-    [']       (S") OF WRITE-S" ENDOF
-\    ['] (POSTPONE) OF WRITE-POSTPONE ENDOF
-    [']     (DOES) OF ." DOES>" 5 + ENDOF
-    [']     (TYPE) OF WRITE-(TYPE)  ENDOF
+    [']       LIT OF WRITE-LIT  ENDOF
+    [']      2LIT OF WRITE-2LIT ENDOF
+    [']   ?BRANCH OF ." ?BRANCH" WRITE-NEXT-ADDR ENDOF
+    [']    BRANCH OF ." BRANCH " WRITE-NEXT-ADDR ENDOF
+    [']      (DO) OF ." DO     " WRITE-NEXT-ADDR ENDOF
+    [']     (?DO) OF ." ?DO    " WRITE-NEXT-ADDR ENDOF
+    [']    (LOOP) OF ." LOOP   " WRITE-NEXT-ADDR ENDOF
+    [']   (+LOOP) OF ." +LOOP  " WRITE-NEXT-ADDR ENDOF
+    [']   (ENDOF) OF ." ENDOF  " WRITE-NEXT-ADDR ENDOF
+    [']      (OF) OF ." OF     " WRITE-NEXT-ADDR ENDOF
+    [']     (<OF) OF ." <OF    " WRITE-NEXT-ADDR ENDOF
+    [']     (>OF) OF ." >OF    " WRITE-NEXT-ADDR ENDOF
+    [']    (<OF<) OF ." <OF<   " WRITE-NEXT-ADDR ENDOF
+    ['] (ENDCASE) OF ." ENDCASE" ENDOF
+    [']      (C") OF WRITE-C" ENDOF
+    [']      (S") OF WRITE-S" ENDOF
+    [']    (DOES) OF ." DOES>" 5 + ENDOF
+    [']    (TYPE) OF WRITE-(TYPE)  ENDOF
     DUP >HEAD H>#NAME TYPE 
-  ENDCASE ;
+  ENDCASE
+;
 
 : (SEE) (S xt -- )
   DUP
@@ -147,13 +144,15 @@ DEFER DEFER-PRI
   WHILE
     WRITE-NAME SPACE CR
     R> 1+ DUP >R 20 MOD 0= IF ." Press any key to continue..." KEY DROP CR THEN
-  REPEAT DROP R-DROP ;
+  REPEAT DROP R-DROP
+;
 
 : SEE (S 'name' -- )
   BL WORD DUP COUNT 0= IF EXC-EMPTY-NAME THROW THEN DROP
           DUP  FIND 0= IF EXC-UNDEFINED  THROW THEN NIP
-  (SEE) ;
+  (SEE)
+;
 
 BASE !
 
-CREATE-REPORT !
+REPORT-NEW-NAME !

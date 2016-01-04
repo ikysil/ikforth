@@ -14,7 +14,7 @@
 
 macro: exec ( assemble code to execute the cfa in eax )
                 ( -- )
-                set-postfix >r
+                /set-prefix >r
                 mov ecx , [eax] [edi]
                 add ecx , edi
                 jmp ecx
@@ -41,7 +41,7 @@ previous previous
 
 macro: next ( assemble the code to do a next )
                 ( -- )
-                set-postfix >r
+                /set-prefix >r
                 a; resolve-ofa          \ resolve the optimizer field address
                 mov eax, [esi]          \ faster version of NEXT, uses 9 more
                 add esi, # 4            \ bytes per occurance

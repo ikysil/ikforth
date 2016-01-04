@@ -36,7 +36,7 @@ subr: vcall ( the virtual call function, stack-> return addr, eax-> xt )
 end-code
 
 macro: fcall ( a macro to assemble a call to vcall )
-        set-postfix >r
+        /set-prefix >r
         mov eax, # '
         call vcall
         r> reset-syntax

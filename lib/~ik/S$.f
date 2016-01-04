@@ -6,8 +6,8 @@
 
 CR .( Loading S$ definitions )
 
-CREATE-REPORT @
-CREATE-REPORT OFF
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
 
 \ Match delimiters for string
 : (S-DELIM) ( c1 -- c2)
@@ -19,11 +19,14 @@ CREATE-REPORT OFF
     DUP                         \ use same character for all others
   ENDCASE
 ;
+
 \ run-time routine for string parsing
 : PARSE-S$ ( <char1>ccc<char2> -- addr u)
-  SOURCE >IN @ MIN +          \ address of 1st character
-  C@ (S-DELIM)                \ determine second delimiter
-    1 >IN +!                  \ bump past first  delimiter
+  >IN @
+  BL WORD COUNT DROP C@
+  SWAP >IN !
+  DUP PARSE 2DROP
+  (S-DELIM)                \ determine second delimiter
   PARSE                       \ parse to  second delimiter
 ;
 
@@ -37,4 +40,4 @@ INT/COMP: S$
   PARSE-S$ TYPE
 ; IMMEDIATE
 
-CREATE-REPORT !
+REPORT-NEW-NAME !

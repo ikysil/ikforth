@@ -15,6 +15,9 @@
 (    along with this program; if not, write to the Free Software          )
 (    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.            )
 
+\ August 28th, 2000 - 9:49 tjz
+\ added "fdivrp" and "fsubrp" for compatibility with some other assemblers
+
 ( declare the vocabularies needed )
 only forth definitions ( vocabulary assembler ) also assembler definitions
 vocabulary asm-hidden also asm-hidden definitions also assembler
@@ -401,7 +404,6 @@ unknown   32bit     index       8 asm-op  [eax*2]
 unknown   32bit     index       9 asm-op  [ecx*2]
 unknown   32bit     index      0a asm-op  [edx*2]
 unknown   32bit     index      0b asm-op  [ebx*2]
-unknown   32bit     index      0c asm-op  [esp*2]
 unknown   32bit     index      0d asm-op  [ebp*2]
 unknown   32bit     index      0e asm-op  [esi*2]
 unknown   32bit     index      0f asm-op  [edi*2]
@@ -409,7 +411,6 @@ unknown   32bit     index      10 asm-op  [eax*4]
 unknown   32bit     index      11 asm-op  [ecx*4]
 unknown   32bit     index      12 asm-op  [edx*4]
 unknown   32bit     index      13 asm-op  [ebx*4]
-unknown   32bit     index      14 asm-op  [esp*4]
 unknown   32bit     index      15 asm-op  [ebp*4]
 unknown   32bit     index      16 asm-op  [esi*4]
 unknown   32bit     index      17 asm-op  [edi*4]
@@ -417,7 +418,6 @@ unknown   32bit     index      18 asm-op  [eax*8]
 unknown   32bit     index      19 asm-op  [ecx*8]
 unknown   32bit     index      1a asm-op  [edx*8]
 unknown   32bit     index      1b asm-op  [ebx*8]
-unknown   32bit     index      1c asm-op  [esp*8]
 unknown   32bit     index      1d asm-op  [ebp*8]
 unknown   32bit     index      1e asm-op  [esi*8]
 unknown   32bit     index      1f asm-op  [edi*8]
@@ -465,6 +465,14 @@ unknown   16bit   unknown unknown asm-op     near
 unknown   32bit   unknown unknown asm-op      far
 unknown unknown immediate unknown asm-op        #
 unknown unknown   unknown unknown asm-op        ,
+
+\ As reported by Michael Glassanenko, and verified by the
+\ Intel i486 Processor Programmer's Reference Manual 1990 on page
+\ 2-21, "The ESP register cannot be used as an index register".
+\ ** REMOVED THE FOLLOWING INDEXED ADDRESSING MODES **
+\ unknown   32bit     index      0c asm-op  [esp*2]
+\ unknown   32bit     index      14 asm-op  [esp*4]
+\ unknown   32bit     index      1c asm-op  [esp*8]
 
 ( variables used for instruction coding )
 in-hidden
@@ -908,8 +916,15 @@ defer save-inst ( save the current instruction -- used in postfix mode )
 ' _save-inst is save-inst
 
 in-asm
-: postfix ['] _save-inst is save-inst ;
-: prefix ['] noop is save-inst ;
+\ : postfix ['] _save-inst is save-inst ;
+\ : prefix ['] noop is save-inst ;
+
+\ Oops!  Prefix and Postfix are reversed.  To prevent confusion, the names
+\ have been changed.            \ Thanks to Michael Gassanenko
+\                               \ Changed by rls March 3rd, 2002 - 11:10
+
+: /prefix ['] _save-inst is save-inst ;
+: /postfix ['] noop is save-inst ;
 
 in-hidden
 : _do-opcode ( create the actual opcode, or at least call the functions )
@@ -1747,6 +1762,7 @@ in-asm
     0f8 '      fxp-compile opcode fdivp
      07 ' fdiv/sub-compile opcode fdivr
     0f0 '      fxp-compile opcode fdivpr
+    0f0 '      fxp-compile opcode fdivrp    \ added for compatibility with some other assemblers
   0c0dd '    fmisc-compile opcode ffree
      00 '      fix-compile opcode fiadd
      02 '      fix-compile opcode ficom
@@ -1799,6 +1815,7 @@ in-asm
      04 ' fdiv/sub-compile opcode fsub
     0e8 '      fxp-compile opcode fsubp
     0e0 '      fxp-compile opcode fsubpr
+    0e0 '      fxp-compile opcode fsubrp    \ added for compatibility with some other assemblers
      05 ' fdiv/sub-compile opcode fsubr
   0e4d9 '            2byte opcode ftst
   0e0dd '    fmisc-compile opcode fucom
@@ -2059,25 +2076,25 @@ also forth immediate previous
         ?leave-macro exit then ; also forth immediate previous
 
 ( utility words )
-: prefix? ( are we in prefix mode? )
+: /postfix? ( are we in postfix mode? )          \ rls March 3rd, 2002 - 11:13
         ( -- flag )
         defer@ save-inst ['] noop = ;
 
-: postfix? ( are we in postfix mode? )
+: /prefix? ( are we in prefix mode? )
         ( -- flag )
-        prefix? 0= ;
+        /postfix? 0= ;
 
 ( setting and restoring the assembler syntax )
-: set-postfix ( set the assembler to postfix mode, leave a mode flag )
-        ( -- prev. mode==prefix )
-        prefix? dup if >r a; postfix r> then ;
+: /set-prefix ( set the assembler to prefix mode, leave a mode flag )
+        ( -- prev. mode==postfix )
+        /postfix? dup if >r a; /prefix r> then ;
 
-: set-prefix ( set the assembler to prefix mode, leave a mode flag )
+: /set-postfix ( set the assembler to postfix mode, leave a mode flag )
         ( -- prev. mode==prefix )
-        prefix? dup 0= if >r a; prefix r> then ;
+        /postfix? dup 0= if >r a; /postfix r> then ;
 
 : reset-syntax ( reset the assembler to the previously flagged syntax )
-        ( prev. mode==prefix -- )
-        if a; prefix else a; postfix then ;
+        ( prev. mode==postfix -- )
+        if a; /postfix else a; /prefix then ;
 
 only forth definitions base !
