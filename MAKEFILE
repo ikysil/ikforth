@@ -1,6 +1,6 @@
 #  Makefile for IKForth.
 #
-#  Copyright (C) 1999-2001 Illya Kysil
+#  Copyright (C) 1999-2002 Illya Kysil
 #
 #  Usage:   make -B         # IKForth
 #           make -B -DDEBUG # IKForth with debug info
