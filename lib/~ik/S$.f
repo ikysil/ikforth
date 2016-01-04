@@ -16,7 +16,7 @@ REPORT-NEW-NAME OFF
     [CHAR] { OF [CHAR] } ENDOF
     [CHAR] [ OF [CHAR] ] ENDOF
     [CHAR] ( OF [CHAR] ) ENDOF
-    DUP                         \ use same character for all others
+    DUP                    \ use same character for all others
   ENDCASE
 ;
 
@@ -27,7 +27,7 @@ REPORT-NEW-NAME OFF
   SWAP >IN !
   DUP PARSE 2DROP
   (S-DELIM)                \ determine second delimiter
-  PARSE                       \ parse to  second delimiter
+  PARSE                    \ parse to  second delimiter
 ;
 
 \ parse string; if compiling, compile it as a literal.
