@@ -1,0 +1,47 @@
+#
+#  Makefile for IKForth.
+#
+#  Copyright (C) 1999-2015 Illya Kysil
+#
+
+watcom = $(watcom)
+asm = wasm
+disasm = wdis
+link = wlink
+make = wmake
+
+all :   IKForth.exe IKForth.img
+
+IKForth.exe : src/FKernel.exe
+        echo Building $@
+        cp src/FKernel.exe IKForth.exe > /dev/null
+
+IKForth.img : src/FKernel.img &
+              src/*.f src/kernel/*.f src/kernel.0/*.f lib/win32/*.f &
+              lib/ansi/*.f lib/~ik/*.f lib/~js/486asm/*.F
+        echo Building $@
+        src/FKernel.exe
+
+src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
+        echo Building $@
+        cd  src/image
+        $(asm) -e2 -3ps -mf -bt=nt FKernel.asm -q
+        $(link) file FKernel.obj system nt op map op q op offset=0 name ../FKernel.img
+        $(disasm) -l=FKernel.lst ../FKernel.img
+        cd  ../..
+
+src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
+        echo Building $@
+        cd  src/loader/win32
+        $(make) -f makefile.linux $(__MAKEOPTS__)
+        cp FKernel.exe ../../FKernel.exe > /dev/null
+        cd  ../../..
+
+clean : .symbolic
+        rm -f src/image/*.obj
+        rm -f src/image/FKernel.lst
+        rm -f src/FKernel.img
+        rm -f src/FKernel.exe
+        cd  src/loader/win32
+        $(make) -f makefile.linux clean $(__MAKEOPTS__)
+        cd  ../../..

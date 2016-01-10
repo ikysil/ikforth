@@ -1,6 +1,6 @@
-#include <nt\wtypes.h>
-#include <nt\windef.h>
-#include <nt\wincon.h>
+#include <nt/wtypes.h>
+#include <nt/windef.h>
+#include <nt/wincon.h>
 
 #include "IKFunc.hpp"
 

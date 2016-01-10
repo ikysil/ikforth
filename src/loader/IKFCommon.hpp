@@ -1,8 +1,8 @@
 #ifndef _IKFCommon_
 #define _IKFCommon_
 
-#include <nt\wtypes.h>
-#include <nt\windef.h>
+#include <nt/wtypes.h>
+#include <nt/windef.h>
 
 const DWORD fFALSE = 0;
 const DWORD fTRUE  = 0xFFFFFFFF;

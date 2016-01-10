@@ -1,6 +1,6 @@
-#include <nt\wtypes.h>
-#include <nt\winnt.h>
-#include <nt\wincon.h>
+#include <nt/wtypes.h>
+#include <nt/winnt.h>
+#include <nt/wincon.h>
 
 #include "FKernel.hpp"
 

@@ -1,5 +1,5 @@
-#include <nt\wtypes.h>
-#include <nt\winnt.h>
+#include <nt/wtypes.h>
+#include <nt/winnt.h>
 
 #include "IKFUtils.hpp"
 
