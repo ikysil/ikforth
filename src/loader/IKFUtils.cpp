@@ -50,7 +50,7 @@ void StartForth(char const * ImageFileName, char const * StartFileName){
     fFileReposition(fHandle, 0, 0x200);
     ReadFile(fHandle, &IHeader, sizeof(ImageHeader), &bRead, NULL);
   }
-  if(strcmp("IKFI", IHeader.Signature) != 0){
+  if(strncmp("IKFI", IHeader.Signature, 4) != 0){
     char msg[] = " is not valid IKForth image.";
     fType(strlen(ImageFileName), ImageFileName);
     fType(strlen(msg), msg);
