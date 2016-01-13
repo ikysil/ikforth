@@ -11,6 +11,7 @@
 
 ;  6.1.0560 >IN
                         $USER   '>IN',$TOIN
+
                         CC      TOIN_VAR
 
 ;  (WORD)
@@ -19,7 +20,7 @@
                         PUSHRS  ESI
                         PUSHRS  EDI
                         MOV     EAX,EDI
-                        ADD     EAX,TOIN_VAR
+                        ADD     EAX,OFFSET TOIN_VAR
                         POPDS   EDI                     ; dest address
                         PUSHRS  EDI
                         INC     EDI
@@ -169,6 +170,7 @@ PPARSE_EXIT:
                         CW      $SQ_COMP
 
 ;  \
+
                         $DEFER  '\',,VEF_IMMEDIATE
 
                         CW      $PBSLASH

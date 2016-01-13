@@ -9,6 +9,11 @@
 ;  Primitives
 ;******************************************************************************
 
+;  (BRKP)
+                        $CODE   '(BRKP)',$PBRKPP
+
+                        $NEXT
+
 ;  ?BRANCH
 ;  Branch to address compiled next if flag on stack is zero
 ;  D: flag --
@@ -50,6 +55,7 @@ NOQBRANCH:
 
 ;  (DO-VARIABLE)
                         $VAR    '(DO-VARIABLE)'
+
                  $DOVAR LABEL   FAR
                         ADD     EAX,CELL_SIZE
                         PUSHDS  EAX
@@ -57,6 +63,7 @@ NOQBRANCH:
 
 ;  (DO-:)
                         $VAR    '(DO-:)'
+
                  $ENTER LABEL   FAR
                         PUSHRS  ESI                     ; push current IP on return stack
                         ADD     EAX,CELL_SIZE
@@ -65,12 +72,14 @@ NOQBRANCH:
 
 ;  (DO-CONSTANT)
                         $VAR    '(DO-CONSTANT)'
+
                $DOCONST LABEL   FAR
-                        PUSHDS  [EAX + CELL_SIZE]
+                        PUSHDS  <DWORD PTR [EAX + CELL_SIZE]>
                         $NEXT
 
 ;  (DO-USER)
                         $VAR    '(DO-USER)'
+
                 $DOUSER LABEL   FAR
                         MOV     EBX,DWORD PTR [EAX + CELL_SIZE]
                         ADD     EBX,EDI
@@ -79,15 +88,18 @@ NOQBRANCH:
 
 ;  (DO-DEFER)
                         $VAR    '(DO-DEFER)'
+
                $DODEFER LABEL   FAR
                         MOV     EAX,DWORD PTR [EAX + CELL_SIZE]
                         $JMP
 
 ;  (DO-INT/COMP)
                         $VAR    '(DO-INT/COMP)'
+
           $PDO_INT_COMP LABEL   FAR
                         ADD     EAX,CELL_SIZE
-                        CMP     BYTE PTR [STATE_VAR + IMAGE_BASE],F_FALSE
+                        MOV     EDX,STATE_VAR + IMAGE_BASE
+                        CMP     BYTE PTR [EDX],F_FALSE
                         JZ      PDIC_INT
                         ADD     EAX,CELL_SIZE
 PDIC_INT:

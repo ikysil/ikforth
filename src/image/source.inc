@@ -17,19 +17,21 @@
 ;   0              User input device
 ;  >0              File handle
                         $CODE   'SOURCE-ID',$SOURCE_ID,VEF_USUAL
-                        PUSHDS  [EDI + SOURCE_ID_VAR]
+
+                        PUSHDS  <DWORD PTR [EDI + SOURCE_ID_VAR]>
                         $NEXT
 
 ;  SOURCE-ID!
                         $CODE   'SOURCE-ID!',$SOURCE_ID_STORE,VEF_USUAL
-                        POPDS   [EDI + SOURCE_ID_VAR]
+
+                        POPDS   <DWORD PTR [EDI + SOURCE_ID_VAR]>
                         $NEXT
 
 ;  6.1.2216 SOURCE
 ;  c-addr is the address of, and u is the number of characters in
 ;  the input buffer. 
 ;  D: -- c-addr u
-                        $COLON  0,$_SOURCE
+                        $NONAME $_SOURCE
 
                         CW      $FILE_LINE
                         CFETCH  $HASH_FILE_LINE
@@ -41,7 +43,7 @@
                         
 ;  6.2.2125 REFILL
 ;  D: -- flag
-                        $COLON  0,$_REFILL
+                        $NONAME $_REFILL
 
                         CW      $FILE_LINE
                         CCLIT   MAX_FILE_LINE_LENGTH

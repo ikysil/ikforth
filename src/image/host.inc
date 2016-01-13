@@ -11,7 +11,7 @@
 
         CGET_LAST_ERROR MACRO   
                         MOV     EAX,DWORD PTR FS:[18H]
-                        PUSHDS  [EAX + 34H]
+                        PUSHDS  <DWORD PTR [EAX + 34H]>
                         ENDM    CGET_LAST_ERROR
 
 ;******************************************************************************

@@ -36,14 +36,13 @@
 ;******************************************************************************
 ;  Header
 ;******************************************************************************
-SIGN                    =       1000h 
                         DB      'IKFI'                  ; MAX. 15 bytes !!!
 
                         ALIGN   16
 
 DESIRED_BASE_EQU        EQU     20000000h
 
-IMAGE_BASE              =       DESIRED_BASE_EQU - SIGN
+IMAGE_BASE              =       DESIRED_BASE_EQU
 
 DESIRED_SIZE_EQU        EQU     00040000h               ; 256KB
 
@@ -84,14 +83,14 @@ DESIRED_SIZE_VAR:
 
 START:
                         POPDS   EAX
-                        POPDS   [SF_VAR + IMAGE_BASE]
-                        POPDS   [HASH_SF_VAR + IMAGE_BASE]
+                        POPDS   <[DWORD PTR SF_VAR + IMAGE_BASE]>
+                        POPDS   <[DWORD PTR HASH_SF_VAR + IMAGE_BASE]>
                         PUSHDS  EAX
-                        MOV     EAX,[MAIN_PROC_VAR + IMAGE_BASE]
+                        MOV     EAX,DWORD PTR [MAIN_PROC_VAR + IMAGE_BASE]
                         PUSHDS  EAX
                         PUSHDS  F_FALSE
                         PUSHDS  0
-                        MOV     EAX,[FUNC_TABLE + IMAGE_BASE + START_THREAD_FUNC * CELL_SIZE]
+                        MOV     EAX,DWORD PTR [FUNC_TABLE + IMAGE_BASE + START_THREAD_FUNC * CELL_SIZE]
                         CALL    EAX
                         RET
 

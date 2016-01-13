@@ -20,7 +20,7 @@
                         CW      $_READ_LINE
 
 
-                        $COLON  0,$_INCLUDED
+                        $NONAME $_INCLUDED
 
                         CW      $R_O
                         CW      $OPEN_FILE
@@ -40,7 +40,7 @@
 
                         CW      $_INCLUDE_FILE
 
-                        $COLON  0,$_INCLUDE_FILE
+                        $NONAME $_INCLUDE_FILE
 
                         CW      $INPUT_TO_R
                         CW      $RESET_INPUT
@@ -68,7 +68,7 @@ INCLUDE_FILE_EXIT:
                         CW      $THROW
                         CEXIT
 
-                        $COLON  0,$SAVE_INPUT_FILE
+                        $NONAME $SAVE_INPUT_FILE
 
                         CW      $SOURCE_ID
                         CW      $CURRENT_FILE_POSITION
@@ -78,7 +78,7 @@ INCLUDE_FILE_EXIT:
                         CCLIT   5
                         CEXIT
 
-                        $COLON  0,$RESTORE_INPUT_FILE
+                        $NONAME $RESTORE_INPUT_FILE
 
                         CW      $DROP
                         CW      $DUP
@@ -100,7 +100,7 @@ INCLUDE_FILE_EXIT:
 @@PRESTORE_FILE_INPUT_EXIT:
                         CEXIT
 
-                        $COLON  0,$RESET_INPUT_FILE
+                        $NONAME $RESET_INPUT_FILE
 
                         CW      $ZERO
                         CW      $DUP

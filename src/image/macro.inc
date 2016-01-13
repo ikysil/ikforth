@@ -58,17 +58,18 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;  +2+n+9 x                                               // PFA
 ;******************************************************************************
                    $DEF MACRO   NAME,CODE,EXECUTOR,FLAGS
+
                         LOCAL   __DEF,__PREVFLD,__LBLNAME,__CODE
 __DEF:
 LASTWORD                =       __DEF 
                         IFNB    <FLAGS>
-                          DB    FLAGS
+                          DB    &FLAGS
                         ELSE
                           DB    VEF_USUAL
                         ENDIF
 ;; NFA
                         DB      __PREVFLD - $ - 1
-                        DB      NAME
+                        DB      '&NAME'
 __PREVFLD:
                         DB      __PREVFLD - __DEF 
 ;; LFA
@@ -81,7 +82,7 @@ VOC_LINK                =       __DEF + IMAGE_BASE
                         ENDIF
 
                         IFNB    <EXECUTOR>
-                          DD      EXECUTOR + IMAGE_BASE
+                          DD      &EXECUTOR + IMAGE_BASE
                         ELSE
                           DD      __CODE   + IMAGE_BASE
                         ENDIF
@@ -93,31 +94,31 @@ __CODE:
 ;  Use this macro to compile FORTH threaded definitions
 ;******************************************************************************
                      CW MACRO   NAME
-                        DD      NAME + IMAGE_BASE
+                        DD      &NAME + IMAGE_BASE
                         ENDM
 
                   CWLIT MACRO   VALUE
                         CW      $LIT
-                        CW      VALUE
+                        CW      &VALUE
                         ENDM
 
 ;******************************************************************************
 ;  Use this macro to compile constants
 ;******************************************************************************
                      CC MACRO   VALUE
-                        DD      VALUE
+                        DD      &VALUE
                         ENDM
 
                   CCLIT MACRO   VALUE
                         CW      $LIT
-                        DD      VALUE
+                        DD      &VALUE
                         ENDM
 
 ;******************************************************************************
 ;  Compile @
 ;******************************************************************************
                  CFETCH MACRO   ADDR
-                        CW      ADDR
+                        CW      &ADDR
                         CW      $FETCH
                         ENDM
 
@@ -125,7 +126,7 @@ __CODE:
 ;  Compile !
 ;******************************************************************************
                  CSTORE MACRO   ADDR
-                        CW      ADDR
+                        CW      &ADDR
                         CW      $STORE
                         ENDM
 
@@ -134,7 +135,7 @@ __CODE:
 ;******************************************************************************
                    CQBR MACRO   VALUE
                         CW      $QBRANCH
-                        CW      VALUE
+                        CW      &VALUE
                         ENDM
 
 ;******************************************************************************
@@ -142,14 +143,14 @@ __CODE:
 ;******************************************************************************
                     CBR MACRO   VALUE
                         CW      $BRANCH
-                        CW      VALUE
+                        CW      &VALUE
                         ENDM
 
 ;******************************************************************************
 ;  Compile THROW
 ;******************************************************************************
                  CTHROW MACRO   VALUE
-                        CCLIT   VALUE
+                        CCLIT   &VALUE
                         CW      $THROW
                         ENDM
 
@@ -216,27 +217,31 @@ __CODE:
 ;
 ;******************************************************************************
                  $CONST MACRO   NAME,CODE
-                        $DEF    &NAME,&CODE,$DOCONST
+                        $DEF    '&NAME',&CODE,$DOCONST
                         ENDM
 
                    $VAR MACRO   NAME,CODE
-                        $DEF    &NAME,&CODE,$DOVAR
+                        $DEF    '&NAME',&CODE,$DOVAR
                         ENDM
 
                   $USER MACRO   NAME,CODE
-                        $DEF    &NAME,&CODE,$DOUSER
+                        $DEF    '&NAME',&CODE,$DOUSER
                         ENDM
 
                  $COLON MACRO   NAME,CODE,FLAGS
-                        $DEF    &NAME,&CODE,$ENTER,&FLAGS
+                        $DEF    '&NAME',&CODE,$ENTER,&FLAGS
+                        ENDM
+
+                $NONAME MACRO   CODE,FLAGS
+                        $DEF    '',&CODE,$ENTER,&FLAGS
                         ENDM
 
                  $DEFER MACRO   NAME,CODE,FLAGS
-                        $DEF    &NAME,&CODE,$DODEFER,&FLAGS
+                        $DEF    '&NAME',&CODE,$DODEFER,&FLAGS
                         ENDM
 
                   $CODE MACRO   NAME,CODE,FLAGS
-                        $DEF    &NAME,&CODE,"",&FLAGS
+                        $DEF    '&NAME',&CODE,'',&FLAGS
                         ENDM
 
 ;******************************************************************************
@@ -246,7 +251,7 @@ __CODE:
                         LOCAL   __S_END
                         CW      $PTYPE
                         DB      __S_END - $ - 1
-                        DB      &TEXT
+                        DB      '&TEXT'
 __S_END:
                         ENDM
 

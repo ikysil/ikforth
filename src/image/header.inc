@@ -11,39 +11,47 @@
 
 ;  REPORT-NEW-NAME
                         $VAR    'REPORT-NEW-NAME',$REPORT_NEW_NAME
+
                         CC      F_FALSE
 
 ;  REPORT-NEW-NAME-DUPLICATE
                         $VAR    'REPORT-NEW-NAME-DUPLICATE',$REPORT_NEW_NAME_DUPLICATE
+
                         CC      F_FALSE
 
 ;  MAX-NAME-LENGTH
                         $VAR    'MAX-NAME-LENGTH',$MAX_NAME_LENGTH
+
                         CC      64
 
 ;  &USUAL
 ;  D: -- VEF-USUAL
                         $CONST  '&USUAL'
+
                         CC      VEF_USUAL
 
 ;  &IMMEDIATE
 ;  D: -- VEF-IMMEDIATE
                         $CONST  '&IMMEDIATE'
+
                         CC      VEF_IMMEDIATE
 
 ;  &HIDDEN
 ;  D: -- VEF-HIDDEN
                         $CONST  '&HIDDEN'
+
                         CC      VEF_HIDDEN
 
 ;  &COMPILE-ONLY
 ;  D: -- VEF-COMPILE-ONLY
                         $CONST  '&COMPILE-ONLY'
+
                         CC      VEF_COMPILE_ONLY
 
 ;  &IMMEDIATE/COMPILE-ONLY
 ;  D: -- VEF-IMMEDIATE or VEF-COMPILE-ONLY
                         $CONST  '&IMMEDIATE/COMPILE-ONLY'
+
                         CC      VEF_IMMEDIATE_COMPILE_ONLY
 
 ;  LATEST-HEAD@
@@ -146,20 +154,27 @@ NAME_EXIT:
 
 ;  (CFA,)
 ;  Compile CFA after (HEADER,)
-;  D: executor-xt | 0 -- xt
+;  D: [ executor-xt | 0 ] -- xt
                         $COLON  '(CFA,)',$PCFA_C
 
                         CW      $DUP
+                        ;  D: [ executor-xt | 0 ] [ executor-xt | 0 ]
                         CW      $ZEROEQ
+                        ;  D: [ executor-xt | 0 ] eq-zero-flag
                         CQBR    EXECUTOR_XT
                           CW      $DROP
                           CW      $HERE
+                          ;   D: xt
                           CCLIT   CELL_SIZE
                           CW      $ADD
+                          ;   D: executor-xt
 EXECUTOR_XT:
                         CW      $HERE
+                          ;   D: executor-xt xt
                         CW      $SWAP
+                          ;   D: xt executor-xt
                         CW      $COMMA
+                          ;   D: xt
                         CEXIT
 
 ;  HEADER,

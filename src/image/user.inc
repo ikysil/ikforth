@@ -17,7 +17,7 @@ USER_AREA_SIZE          =       USER_AREA_SIZE + SIZE
                    _VAR MACRO   NAME,SIZE
 &NAME&_VAR              =       USER_AREA_SIZE
                         IFNB    <SIZE>
-                          _ALLOC  SIZE
+                          _ALLOC  &SIZE
                         ELSE
                           _ALLOC  CELL_SIZE
                         ENDIF

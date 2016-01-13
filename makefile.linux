@@ -4,7 +4,6 @@
 #  Copyright (C) 1999-2015 Illya Kysil
 #
 
-watcom = $(watcom)
 asm = wasm
 disasm = wdis
 link = wlink
@@ -20,14 +19,16 @@ IKForth.img : src/FKernel.img &
               src/*.f src/kernel/*.f src/kernel.0/*.f lib/win32/*.f &
               lib/ansi/*.f lib/~ik/*.f lib/~js/486asm/*.F
         echo Building $@
-        src/FKernel.exe
+#        WINEDEBUG=-all winedbg src/FKernel.exe
+#        WINEDEBUG=-all winedbg --file src/loader/FKernel.winedbg src/FKernel.exe
+        WINEDEBUG=-all wine src/FKernel.exe
 
 src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
         echo Building $@
         cd  src/image
-        $(asm) -e2 -3ps -mf -bt=nt FKernel.asm -q
-        $(link) file FKernel.obj system nt op map op q op offset=0 name ../FKernel.img
-        $(disasm) -l=FKernel.lst ../FKernel.img
+        $(asm) -d1 -e4 -3ps -mf -bt=nt FKernel.asm -q
+        $(link) file FKernel.o format raw bin op map op q op offset=0 name ../FKernel.img
+        $(disasm) -l=FKernel.lst FKernel.o
         cd  ../..
 
 src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
