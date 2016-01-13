@@ -3,3 +3,6 @@
 *.obj
 *.lnk
 *.map
+*.img
+*.o
+*.lst
