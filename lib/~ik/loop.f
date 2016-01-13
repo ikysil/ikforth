@@ -8,6 +8,11 @@
 \ LOOPS EXT
 \ -----------------------------------------------------------------------------
 
+CR .( Loading LOOP definitions )
+
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
+
 REQUIRES" lib\~ik\macro.f"
 
 MACRO #DO " 0 ?DO" COMPILE-ONLY
@@ -27,3 +32,5 @@ MACRO #DO " 0 ?DO" COMPILE-ONLY
 
 : U-DO POSTPONE 2DUP POSTPONE U< POSTPONE IF
        POSTPONE SWAP POSTPONE 1+ POSTPONE SWAP POSTPONE DO ; IMMEDIATE/COMPILE-ONLY
+
+REPORT-NEW-NAME !

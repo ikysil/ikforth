@@ -5,7 +5,9 @@
 \
 
 REPORT-NEW-NAME @
-\ TRUE REPORT-NEW-NAME !
+FALSE REPORT-NEW-NAME !
+
+13 EMIT 10 EMIT S" Loading PRIMITIVES definitions" TYPE
 
 \ -----------------------------------------------------------------------------
 \  [ ] ; :
@@ -110,7 +112,7 @@ BASE !
 ;
 
 : CODE \ (S "name" -- )
-  0 &USUAL PARSE-CHECK-HEADER, HERE SWAP !
+  0 &USUAL PARSE-CHECK-HEADER, DROP
 ;
 
 : END-CODE
@@ -146,7 +148,7 @@ CONSTANT (DO-CREATE)
 ;
 
 : CALL, \ ( addr -- )  \ compile call
-  0E8 B,
+  E8 B,
   HERE - 4 - ,
 ;
 

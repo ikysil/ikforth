@@ -5,7 +5,7 @@
 \
 
 REPORT-NEW-NAME @
-\ TRUE REPORT-NEW-NAME !
+FALSE REPORT-NEW-NAME !
 
 \ -----------------------------------------------------------------------------
 \  Constants to speed-up parsing

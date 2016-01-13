@@ -5,7 +5,7 @@
 \
 
 REPORT-NEW-NAME @
-\ TRUE REPORT-NEW-NAME !
+FALSE REPORT-NEW-NAME !
 
 \ -----------------------------------------------------------------------------
 \  CHAR [CHAR] PARSE) .(
@@ -23,7 +23,7 @@ REPORT-NEW-NAME @
   PARSE) TYPE
 ; IMMEDIATE
 
-.( Loading CORE definitions )
+13 EMIT 10 EMIT .( Loading CORE definitions )
 
 \ -----------------------------------------------------------------------------
 \  +! @+ !+ C+! C@+ C!+

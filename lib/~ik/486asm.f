@@ -8,6 +8,9 @@
 
 CR .( Loading 486ASM definitions )
 
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
+
 : NOOP ;
 
 VARIABLE CSP
@@ -35,3 +38,5 @@ MACRO: NEXT
   LODSD
   JMP-NEXT
 ENDM
+
+REPORT-NEW-NAME !

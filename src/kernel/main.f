@@ -23,7 +23,7 @@ REPORT-NEW-NAME OFF
 
 : .VERSION
   ." IKForth v1.0" CR
-  ." Copyright (C) 1999-2004 Illya Kysil" CR
+  ." Copyright (C) 1999-2016 Illya Kysil" CR
 ;
 
 : .PLATFORM
