@@ -1,0 +1,24 @@
+break * 0x00401790
+cont
+break * 0x200003b7
+cont
+
+; SEARCH-WORDLIST
+break * 0x20001D83
+;
+x/32b ($esi)
+
+; $CONST '0'
+break * 0x2000047B
+
+; >NUMBER
+break * 0x200023a1
+
+; (DO-CONSTANT)
+break * 0x2000047B
+; See the value of constant
+x/32b ($eax+4)
+
+; POCKET
+x/32b 0x00120549
+x/32c 0x00120549
