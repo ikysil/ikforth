@@ -26,9 +26,11 @@ IKForth.img : src/FKernel.img &
 src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
         echo Building $@
         cd  src/image
-        $(asm) -d1 -e4 -3ps -mf -bt=nt FKernel.asm -q
-        $(link) file FKernel.o format raw bin op map op q op offset=0 name ../FKernel.img
-        $(disasm) -l=FKernel.lst FKernel.o
+        fasm FKernel.asm -s FKernel.sym ../FKernel.img
+        listing FKernel.sym FKernel.lst
+#        $(asm) -d1 -e4 -3ps -mf -bt=nt FKernel.asm -q
+#        $(link) file FKernel.o format raw bin op map op q op offset=0 name ../FKernel.img
+#        $(disasm) -l=FKernel.lst FKernel.o
         cd  ../..
 
 src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
@@ -40,7 +42,7 @@ src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
 
 clean : .symbolic
         rm -f src/image/*.obj
-        rm -f src/image/FKernel.lst
+        rm -f src/image/FKernel.lst src/image/FKernel.sym
         rm -f src/FKernel.img
         rm -f src/FKernel.exe
         cd  src/loader/win32

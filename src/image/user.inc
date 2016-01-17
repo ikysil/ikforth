@@ -9,23 +9,23 @@
 ;
 ;******************************************************************************
 
-USER_AREA_SIZE          =       0
-                 _ALLOC MACRO   SIZE
-USER_AREA_SIZE          =       USER_AREA_SIZE + SIZE
-                        ENDM
+USER_HERE          =       0
+                        MACRO   _ALLOC SIZE {
+USER_HERE          =       USER_HERE + SIZE
+                        }
 
-                   _VAR MACRO   NAME,SIZE
-&NAME&_VAR              =       USER_AREA_SIZE
-                        IFNB    <SIZE>
-                          _ALLOC  &SIZE
+                        MACRO   _VAR NAME,SIZE {
+                        LABEL   VAR_#NAME DWORD AT USER_HERE
+                        IF      ~ SIZE eq
+                          _ALLOC  SIZE
                         ELSE
                           _ALLOC  CELL_SIZE
-                        ENDIF
-                        ENDM
+                        END IF
+                        }
 
-                 _ALIGN MACRO
-USER_AREA_SIZE          =       ( USER_AREA_SIZE / CELL_SIZE + 1 ) * CELL_SIZE
-                        ENDM
+                        MACRO   _ALIGN {
+USER_HERE          =       ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
+                        }
 
                         _VAR    RETURN_ADDR
                         _VAR    EDI
@@ -62,3 +62,5 @@ SQUOTE_BUFFER_SIZE      EQU     1024
                         _ALLOC  RETURN_STACK_SIZE
                         _VAR    RSTACK
 
+; keep the following definition after all _VAR declarations
+USER_AREA_SIZE          =       USER_HERE

@@ -16,7 +16,7 @@
 
                         POPDS   EBX
                         POPDS   EAX
-                        MOV     DWORD PTR [EBX],EAX
+                        MOV     DWORD [EBX],EAX
                         $NEXT
 
 ;  6.1.0650 @
@@ -25,7 +25,7 @@
                         $CODE   '@',$FETCH,VEF_USUAL
 
                         POPDS   EBX
-                        PUSHDS  <DWORD PTR [EBX]>
+                        PUSHDS  <DWORD [EBX]>
                         $NEXT
 
 ;  6.1.0310 2!
@@ -34,8 +34,8 @@
                         $CODE   '2!',$2STORE,VEF_USUAL
 
                         POPDS   EBX
-                        POPDS   <DWORD PTR [EBX]>
-                        POPDS   <DWORD PTR [EBX + CELL_SIZE]>
+                        POPDS   <DWORD [EBX]>
+                        POPDS   <DWORD [EBX + CELL_SIZE]>
                         $NEXT
 
 ;  6.1.0350 2@
@@ -44,8 +44,8 @@
                         $CODE   '2@',$2FETCH,VEF_USUAL
 
                         POPDS   EBX
-                        PUSHDS  <DWORD PTR [EBX + CELL_SIZE]>
-                        PUSHDS  <DWORD PTR [EBX]>
+                        PUSHDS  <DWORD [EBX + CELL_SIZE]>
+                        PUSHDS  <DWORD [EBX]>
                         $NEXT
 
 ;  6.1.0850 C!
@@ -55,7 +55,7 @@
 
                         POPDS   EBX
                         POPDS   EAX
-                        MOV     BYTE PTR [EBX],AL
+                        MOV     BYTE [EBX],AL
                         $NEXT
 
 ;  6.1.0870 C@
@@ -65,7 +65,7 @@
 
                         POPDS   EBX
                         XOR     EAX,EAX
-                        MOV     AL,BYTE PTR [EBX]
+                        MOV     AL,BYTE [EBX]
                         PUSHDS  EAX
                         $NEXT
 

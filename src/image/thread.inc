@@ -12,16 +12,16 @@
 ;  THREAD-EXIT
                         $CODE   'THREAD-EXIT',$THREAD_EXIT
 
-                        MOV     ESI,DWORD PTR [EDI + ESI_VAR]
-                        MOV     EBP,DWORD PTR [EDI + EBP_VAR]
-                        MOV     ESP,DWORD PTR [EDI + ESP_VAR]
-                        MOV     EBX,DWORD PTR [EDI + EBX_VAR]
+                        MOV     ESI,DWORD [EDI + VAR_ESI]
+                        MOV     EBP,DWORD [EDI + VAR_EBP]
+                        MOV     ESP,DWORD [EDI + VAR_ESP]
+                        MOV     EBX,DWORD [EDI + VAR_EBX]
 ; remove per-thread exception handler data
-                        POPDS   <DWORD PTR [FS:0]>
+                        POPDS   <DWORD [FS:0]>
                         ADD     ESP,4
 
-                        PUSHDS  <DWORD PTR [EDI + RETURN_ADDR_VAR]>
-                        MOV     EDI,DWORD PTR [EDI + EDI_VAR]
+                        PUSHDS  <DWORD [EDI + VAR_RETURN_ADDR]>
+                        MOV     EDI,DWORD [EDI + VAR_EDI]
                         RET
 
 THREAD_PROC:
@@ -30,22 +30,22 @@ THREAD_PROC:
                         POPDS   EDI                     ; user data pointer
                         POPDS   ECX                     ; xt
 
-                        MOV     DWORD PTR [EDI + RETURN_ADDR_VAR],EDX
-                        MOV     DWORD PTR [EDI + EDI_VAR],EAX
-                        MOV     DWORD PTR [EDI + ESI_VAR],ESI
-                        MOV     DWORD PTR [EDI + EBP_VAR],EBP
-                        MOV     DWORD PTR [EDI + EBX_VAR],EBX
+                        MOV     DWORD [EDI + VAR_RETURN_ADDR],EDX
+                        MOV     DWORD [EDI + VAR_EDI],EAX
+                        MOV     DWORD [EDI + VAR_ESI],ESI
+                        MOV     DWORD [EDI + VAR_EBP],EBP
+                        MOV     DWORD [EDI + VAR_EBX],EBX
 
 ; setup per-thread exception handler
-                        MOV     EAX,OFFSET SEH_HANDLER + IMAGE_BASE
+                        MOV     EAX,SEH_HANDLER + IMAGE_BASE
                         PUSHDS  EAX
-                        PUSHDS  <[FS:0]>
-                        MOV     DWORD PTR [FS:0],ESP
+                        PUSHDS  <DWORD [FS:0]>
+                        MOV     DWORD [FS:0],ESP
 
-                        LEA     EBP,DWORD PTR [EDI + RSTACK_VAR]
-                        MOV     DWORD PTR [EDI + ESP_VAR],ESP
+                        LEA     EBP,DWORD [EDI + VAR_RSTACK]
+                        MOV     DWORD [EDI + VAR_ESP],ESP
                         PUSHDS  ECX
-                        MOV     ESI,OFFSET DO_THREAD + IMAGE_BASE
+                        MOV     ESI,DO_THREAD + IMAGE_BASE
                         $NEXT
 DO_THREAD:
                         CW      $CATCH
@@ -58,20 +58,20 @@ SEH_HANDLER:
                         PUSH    EBX
                         PUSH    EDI
                         PUSH    ESI
-                        MOV     EBX,DWORD PTR [EBP + 08h] ; get pointer to ExceptionRecord
-                        MOV     EAX,DWORD PTR [EBX]       ; get exception code
-                        MOV     EBX,DWORD PTR [EBP + 10h] ; get pointer to CONTEXT
+                        MOV     EBX,DWORD [EBP + 08h] ; get pointer to ExceptionRecord
+                        MOV     EAX,DWORD [EBX]       ; get exception code
+                        MOV     EBX,DWORD [EBP + 10h] ; get pointer to CONTEXT
 ; store CONTEXT
                         MOV     ECX,0CCh
                         MOV     ESI,EBX
 ; load EDI with UDP
-                        MOV     EDI,DWORD PTR [EBX + 39 * 4]
-                        ADD     EDI,WIN32_EXCEPTION_CONTEXT_VAR
+                        MOV     EDI,DWORD [EBX + 39 * 4]
+                        ADD     EDI,VAR_WIN32_EXCEPTION_CONTEXT
                 REP     MOVSB
 ; fixup CONTEXT.EIP
-                        MOV     DWORD PTR [EBX + 46 * 4],OFFSET DO_SEH + IMAGE_BASE
+                        MOV     DWORD [EBX + 46 * 4],DO_SEH + IMAGE_BASE
 ; fixup CONTEXT.EAX (= Win32 exception code)
-                        MOV     DWORD PTR [EBX + 44 * 4],EAX
+                        MOV     DWORD [EBX + 44 * 4],EAX
 ; eax=0 reload context & continue execution
                         MOV     EAX,0                     
                         POP     ESI
@@ -82,7 +82,7 @@ SEH_HANDLER:
                         RET
 DO_SEH:
                         PUSHDS  EAX
-                        MOV     ESI,OFFSET DO_FORTH_SEH + IMAGE_BASE
+                        MOV     ESI,DO_FORTH_SEH + IMAGE_BASE
                         $NEXT
 DO_FORTH_SEH:
                         CW      $SEH_HANDLER
@@ -102,5 +102,5 @@ DO_FORTH_SEH:
 
                         $USER   'WIN32-EXCEPTION-CONTEXT',$WIN32_EXCEPTION_CONTEXT
 
-                        CC      WIN32_EXCEPTION_CONTEXT_VAR
+                        CC      VAR_WIN32_EXCEPTION_CONTEXT
 

@@ -88,7 +88,7 @@
 ;  RP0
                         $CODE   'RP0',$RP0,VEF_USUAL
 
-                        LEA     EAX,DWORD PTR [EDI + RSTACK_VAR]
+                        LEA     EAX,DWORD [EDI + VAR_RSTACK]
                         PUSHDS  EAX
                         $NEXT
 

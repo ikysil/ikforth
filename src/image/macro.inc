@@ -7,28 +7,23 @@
 ;
 ;******************************************************************************
 
-F_TRUE                  EQU     0FFFFFFFFh
-F_FALSE                 EQU     0
-
-CELL_SIZE               EQU     4
-
 ;******************************************************************************
 ;
 ;******************************************************************************
-                   $JMP MACRO   
-                        MOV     EBX,DWORD PTR [EAX]
+                        MACRO   $JMP {
+                        MOV     EBX,DWORD [EAX]
                         JMP     EBX                     ; execute
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;  Because of usage of indirect threaded code the $NEXT macro is used at the end
 ;  of each definition to perform execution of next word.
-;  Simply fetch a code pointer DWORD PTR [ESI] and jump there.
+;  Simply fetch a code pointer DWORD [ESI] and jump there.
 ;******************************************************************************
-                  $NEXT MACRO
+                        MACRO   $NEXT {
                         LODSD                           ; fetch address
                         $JMP
-                        ENDM
+                        }
 
 VOC_LINK                =       0                       ; link to previous word
 ;******************************************************************************
@@ -45,7 +40,7 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;  Parameters:
 ;    NAME       the name of the entry to be created
 ;    CODE       label of the CFA
-;    EXECUTOR   the executor of a word ( = [DWORD PTR CODE] if ommited)
+;    EXECUTOR   the executor of a word ( = [DWORD CODE] if ommited)
 ;    FLAGS      entry flags
 ;  Vocabulary entry layout
 ;  Offset Length // bytes
@@ -57,19 +52,23 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;  +2+n+5 4      address of internal interpreter          // CFA
 ;  +2+n+9 x                                               // PFA
 ;******************************************************************************
-                   $DEF MACRO   NAME,CODE,EXECUTOR,FLAGS
+                        MACRO   $DEF NAME,CODE,EXECUTOR,FLAGS {
 
                         LOCAL   __DEF,__PREVFLD,__LBLNAME,__CODE
 __DEF:
 LASTWORD                =       __DEF 
-                        IFNB    <FLAGS>
-                          DB    &FLAGS
+                        IF      ~ FLAGS eq
+                          DB    FLAGS
                         ELSE
                           DB    VEF_USUAL
-                        ENDIF
+                        END IF
 ;; NFA
                         DB      __PREVFLD - $ - 1
-                        DB      '&NAME'
+                        IF      ~ NAME eq
+                          DB      NAME
+                        ELSE
+                          DB      0
+                        END IF
 __PREVFLD:
                         DB      __PREVFLD - __DEF 
 ;; LFA
@@ -77,191 +76,192 @@ __PREVFLD:
 VOC_LINK                =       __DEF + IMAGE_BASE
 
 ;; CFA
-                        IFNB    <CODE>
-                  &CODE LABEL FAR
-                        ENDIF
+                        IF      ~ CODE eq
+                        LABEL   CW_#CODE DWORD
+                        END IF
 
-                        IFNB    <EXECUTOR>
-                          DD      &EXECUTOR + IMAGE_BASE
+                        IF      ~ EXECUTOR eq
+                          DD      CW_#EXECUTOR# + IMAGE_BASE
                         ELSE
                           DD      __CODE   + IMAGE_BASE
-                        ENDIF
+                        END IF
 __CODE:
 ;; PFA
-                        ENDM    $DEF
+                        }
 
 ;******************************************************************************
 ;  Use this macro to compile FORTH threaded definitions
 ;******************************************************************************
-                     CW MACRO   NAME
-                        DD      &NAME + IMAGE_BASE
-                        ENDM
+                        MACRO   CW NAME {
+                        DD      CW_#NAME + IMAGE_BASE
+                        }
 
-                  CWLIT MACRO   VALUE
+                        MACRO   CWLIT VALUE {
                         CW      $LIT
-                        CW      &VALUE
-                        ENDM
+                        CW      VALUE
+                        }
 
 ;******************************************************************************
 ;  Use this macro to compile constants
 ;******************************************************************************
-                     CC MACRO   VALUE
-                        DD      &VALUE
-                        ENDM
+                        MACRO   CC VALUE {
+                        DD      VALUE
+                        }
 
-                  CCLIT MACRO   VALUE
+                        MACRO   CCLIT VALUE {
                         CW      $LIT
-                        DD      &VALUE
-                        ENDM
+                        DD      VALUE
+                        }
 
 ;******************************************************************************
 ;  Compile @
 ;******************************************************************************
-                 CFETCH MACRO   ADDR
-                        CW      &ADDR
+                        MACRO   CFETCH ADDR {
+                        CW      ADDR
                         CW      $FETCH
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;  Compile !
 ;******************************************************************************
-                 CSTORE MACRO   ADDR
-                        CW      &ADDR
+                        MACRO   CSTORE ADDR {
+                        CW      ADDR
                         CW      $STORE
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;  Compile a conditional branch ?BRANCH
 ;******************************************************************************
-                   CQBR MACRO   VALUE
+                        MACRO   CQBR VALUE {
                         CW      $QBRANCH
-                        CW      &VALUE
-                        ENDM
+                        CC      VALUE + IMAGE_BASE
+                        }
 
 ;******************************************************************************
 ;  Compile an unconditional branch BRANCH
 ;******************************************************************************
-                    CBR MACRO   VALUE
+                        MACRO   CBR VALUE {
                         CW      $BRANCH
-                        CW      &VALUE
-                        ENDM
+                        CC      VALUE + IMAGE_BASE
+                        }
 
 ;******************************************************************************
 ;  Compile THROW
 ;******************************************************************************
-                 CTHROW MACRO   VALUE
-                        CCLIT   &VALUE
+                        MACRO   CTHROW VALUE {
+                        CCLIT   VALUE
                         CW      $THROW
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;  Compile EXIT
 ;******************************************************************************
-                  CEXIT MACRO   
+                        MACRO   CEXIT {
                         CW      $EXIT
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;  Push a value to return stack
 ;******************************************************************************
-                 PUSHRS MACRO   SRC
+                        MACRO   PUSHRS SRC {
                         SUB     EBP,CELL_SIZE
-                        MOV     DWORD PTR [EBP],&SRC
-                        ENDM
+                        MOV     DWORD [EBP],SRC
+                        }
 
 ;******************************************************************************
 ;  Pop a value from return stack
 ;******************************************************************************
-                  POPRS MACRO   DST
-                        MOV     &DST,DWORD PTR [EBP]
+                        MACRO   POPRS DST {
+                        MOV     DST,DWORD [EBP]
                         ADD     EBP,CELL_SIZE
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;  Fetch a value from the return stack
 ;******************************************************************************
-                FETCHRS MACRO   DST,NUM
-                        IFNB    <NUM>
-                          MOV     &DST,DWORD PTR [EBP + &NUM * CELL_SIZE]
+                        MACRO   FETCHRS DST,NUM {
+                        IF      ~ NUM eq
+                          MOV     DST,DWORD [EBP + NUM * CELL_SIZE]
                         ELSE
-                          MOV     &DST,DWORD PTR [EBP]
-                        ENDIF
-                        ENDM
+                          MOV     DST,DWORD [EBP]
+                        END IF
+                        }
 
 ;******************************************************************************
 ;  Push a value to data stack
 ;******************************************************************************
-                 PUSHDS MACRO   SRC
-                        PUSH    &SRC
-                        ENDM
+                        MACRO   PUSHDS SRC {
+                        PUSH    SRC
+                        }
 
 ;******************************************************************************
 ;  Pop a value from data stack
 ;******************************************************************************
-                  POPDS MACRO   DST
-                        POP     &DST
-                        ENDM
+                        MACRO   POPDS DST {
+                        POP     DST
+                        }
 
 ;******************************************************************************
 ;  Fetch a value from the data stack
 ;******************************************************************************
-                FETCHDS MACRO   DST,NUM
-                        IFNB    <NUM>
-                          MOV     &DST,DWORD PTR [ESP + &NUM * CELL_SIZE]
+                        MACRO   FETCHDS DST,NUM {
+                        IF      ~ NUM eq
+                          MOV     DST,DWORD [ESP + NUM * CELL_SIZE]
                         ELSE
-                          MOV     &DST,DWORD PTR [ESP]
-                        ENDIF
-                        ENDM
+                          MOV     DST,DWORD [ESP]
+                        END IF
+                        }
 
 ;******************************************************************************
 ;
 ;******************************************************************************
-                 $CONST MACRO   NAME,CODE
-                        $DEF    '&NAME',&CODE,$DOCONST
-                        ENDM
+                        MACRO   $CONST NAME,CODE {
+                        $DEF    NAME,CODE,$DOCONST
+                        }
 
-                   $VAR MACRO   NAME,CODE
-                        $DEF    '&NAME',&CODE,$DOVAR
-                        ENDM
+                        MACRO   $VAR NAME,CODE {
+                        $DEF    NAME,CODE,$DOVAR
+                        }
 
-                  $USER MACRO   NAME,CODE
-                        $DEF    '&NAME',&CODE,$DOUSER
-                        ENDM
+                        MACRO   $USER NAME,CODE {
+                        $DEF    NAME,CODE,$DOUSER
+                        }
 
-                 $COLON MACRO   NAME,CODE,FLAGS
-                        $DEF    '&NAME',&CODE,$ENTER,&FLAGS
-                        ENDM
+                        MACRO   $COLON NAME,CODE,FLAGS {
+                        $DEF    NAME,CODE,$ENTER,FLAGS
+                        }
 
-                $NONAME MACRO   CODE,FLAGS
-                        $DEF    '',&CODE,$ENTER,&FLAGS
-                        ENDM
+                        MACRO   $NONAME CODE,FLAGS {
+                        $DEF    <>,CODE,$ENTER,FLAGS
+                        }
 
-                 $DEFER MACRO   NAME,CODE,FLAGS
-                        $DEF    '&NAME',&CODE,$DODEFER,&FLAGS
-                        ENDM
+                        MACRO   $DEFER NAME,CODE,FLAGS {
+                        $DEF    NAME,CODE,$DODEFER,FLAGS
+                        }
 
-                  $CODE MACRO   NAME,CODE,FLAGS
-                        $DEF    '&NAME',&CODE,'',&FLAGS
-                        ENDM
+                        MACRO   $CODE NAME,CODE,FLAGS {
+                        $DEF    NAME,CODE,<>,FLAGS
+                        }
 
 ;******************************************************************************
 ;
 ;******************************************************************************
-                 $WRITE MACRO   TEXT
+                        MACRO   $WRITE TEXT {
+                        
                         LOCAL   __S_END
                         CW      $PTYPE
                         DB      __S_END - $ - 1
-                        DB      '&TEXT'
+                        DB      TEXT
 __S_END:
-                        ENDM
+                        }
 
 ;******************************************************************************
 ;
 ;******************************************************************************
-                    $CR MACRO   
+                        MACRO   $CR {
                         CCLIT   13
                         CW      $EMIT
                         CCLIT   10
                         CW      $EMIT
-                        ENDM
+                        }
 

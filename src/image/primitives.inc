@@ -56,7 +56,7 @@ NOQBRANCH:
 ;  (DO-VARIABLE)
                         $VAR    '(DO-VARIABLE)'
 
-                 $DOVAR LABEL   FAR
+                        LABEL   CW_$DOVAR
                         ADD     EAX,CELL_SIZE
                         PUSHDS  EAX
                         $NEXT
@@ -64,7 +64,7 @@ NOQBRANCH:
 ;  (DO-:)
                         $VAR    '(DO-:)'
 
-                 $ENTER LABEL   FAR
+                        LABEL   CW_$ENTER
                         PUSHRS  ESI                     ; push current IP on return stack
                         ADD     EAX,CELL_SIZE
                         MOV     ESI,EAX
@@ -73,15 +73,15 @@ NOQBRANCH:
 ;  (DO-CONSTANT)
                         $VAR    '(DO-CONSTANT)'
 
-               $DOCONST LABEL   FAR
-                        PUSHDS  <DWORD PTR [EAX + CELL_SIZE]>
+                        LABEL   CW_$DOCONST
+                        PUSHDS  <DWORD [EAX + CELL_SIZE]>
                         $NEXT
 
 ;  (DO-USER)
                         $VAR    '(DO-USER)'
 
-                $DOUSER LABEL   FAR
-                        MOV     EBX,DWORD PTR [EAX + CELL_SIZE]
+                        LABEL   CW_$DOUSER
+                        MOV     EBX,DWORD [EAX + CELL_SIZE]
                         ADD     EBX,EDI
                         PUSHDS  EBX
                         $NEXT
@@ -89,20 +89,19 @@ NOQBRANCH:
 ;  (DO-DEFER)
                         $VAR    '(DO-DEFER)'
 
-               $DODEFER LABEL   FAR
-                        MOV     EAX,DWORD PTR [EAX + CELL_SIZE]
+                        LABEL   CW_$DODEFER
+                        MOV     EAX,DWORD [EAX + CELL_SIZE]
                         $JMP
 
 ;  (DO-INT/COMP)
                         $VAR    '(DO-INT/COMP)'
 
-          $PDO_INT_COMP LABEL   FAR
+                        LABEL   CW_$PDO_INT_COMP
                         ADD     EAX,CELL_SIZE
-                        MOV     EDX,STATE_VAR + IMAGE_BASE
-                        CMP     BYTE PTR [EDX],F_FALSE
+                        CMP     BYTE [VAR_STATE + IMAGE_BASE],F_FALSE
                         JZ      PDIC_INT
                         ADD     EAX,CELL_SIZE
 PDIC_INT:
-                        MOV     EAX,DWORD PTR [EAX]
+                        MOV     EAX,DWORD [EAX]
                         $JMP
 

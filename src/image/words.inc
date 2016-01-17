@@ -10,7 +10,6 @@
                         INCLUDE "host.inc"
                         INCLUDE "primitives.inc"
                         INCLUDE "varconst.inc"
-                        INCLUDE "ik.inc"
                         INCLUDE "source.inc"
                         INCLUDE "thread.inc"
                         INCLUDE "int_comp.inc"
@@ -30,4 +29,5 @@
                         INCLUDE "convert.inc"
                         INCLUDE "except.inc"
                         INCLUDE "file.inc"
+                        INCLUDE "ik.inc"
 

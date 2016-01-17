@@ -12,7 +12,7 @@
 ;  >NUMBER-SIGNED
                         $USER   '>NUMBER-SIGNED',$TONUMBER_SIGNED
 
-                        CC      TONUMBER_SIGNED_VAR
+                        CC      VAR_TONUMBER_SIGNED
 
 ;  DO-INT-DEFINED
                         $COLON  'DO-INT-DEFINED',$DO_INT_DEFINED

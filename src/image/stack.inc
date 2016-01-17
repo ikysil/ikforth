@@ -185,7 +185,7 @@ QDUPZERO:
 ;  SP0
                         $CODE   'SP0',$SP0,VEF_USUAL
 
-                        PUSHDS  <DWORD PTR [EDI + ESP_VAR]>
+                        PUSHDS  <DWORD [EDI + VAR_ESP]>
                         $NEXT
 
 ;  SP@

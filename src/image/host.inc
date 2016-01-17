@@ -9,10 +9,10 @@
 ;  Contains words, provided by hosting application.
 ;******************************************************************************
 
-        CGET_LAST_ERROR MACRO   
-                        MOV     EAX,DWORD PTR FS:[18H]
-                        PUSHDS  <DWORD PTR [EAX + 34H]>
-                        ENDM    CGET_LAST_ERROR
+                        MACRO   CGET_LAST_ERROR {
+                        MOV     EAX,DWORD [FS:18H]
+                        PUSHDS  <DWORD [EAX + 34H]>
+                        }
 
 ;******************************************************************************
 ;  FACILITY words
@@ -21,7 +21,7 @@
 ;  (BYE)
                         $CODE   '(BYE)',$PBYE
 
-                        $CALL   BYE_FUNC
+                        $CALL   BYE
                         $NEXT
 
 ;******************************************************************************
@@ -37,20 +37,20 @@
 ;  (LoadLibrary)
                         $CODE   '(LoadLibrary)'
 
-                        $CALL   LOAD_LIBRARY_FUNC
+                        $CALL   LOAD_LIBRARY
                         PUSHDS  EAX
                         $NEXT
 
 ;  FreeLibrary
                         $CODE   'FreeLibrary'
 
-                        $CALL   FREE_LIBRARY_FUNC
+                        $CALL   FREE_LIBRARY
                         $NEXT
 
 ;  (GetProcAddress)
                         $CODE   '(GetProcAddress)'
 
-                        $CALL   GET_PROC_ADDRESS_FUNC
+                        $CALL   GET_PROC_ADDRESS
                         PUSHDS  EAX
                         $NEXT
 
@@ -60,20 +60,20 @@
 
                         $CODE   'CLOSE-FILE',$CLOSE_FILE
 
-                        $CALL   FILE_CLOSE_FUNC
+                        $CALL   FILE_CLOSE
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'CREATE-FILE',$CREATE_FILE
 
-                        $CALL   FILE_CREATE_FUNC
+                        $CALL   FILE_CREATE
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'FILE-POSITION',$FILE_POSITION
 
-                        $CALL   FILE_POSITION_FUNC
+                        $CALL   FILE_POSITION
                         PUSHDS  EAX
                         PUSHDS  EDX
                         CGET_LAST_ERROR
@@ -81,20 +81,20 @@
 
                         $CODE   'OPEN-FILE',$OPEN_FILE
 
-                        $CALL   FILE_OPEN_FUNC
+                        $CALL   FILE_OPEN
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'REPOSITION-FILE',$REPOSITION_FILE
 
-                        $CALL   FILE_REPOSITION_FUNC
+                        $CALL   FILE_REPOSITION
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   0,$_READ_LINE
 
-                        $CALL   FILE_READ_LINE_FUNC
+                        $CALL   FILE_READ_LINE
                         PUSHDS  EAX
                         PUSHDS  EDX
                         CGET_LAST_ERROR
@@ -105,7 +105,7 @@
 ;  D: char --
                         $CODE   'EMIT',$EMIT
 
-                        $CALL   EMIT_FUNC
+                        $CALL   EMIT
                         $NEXT
 
 ;  6.1.2310 TYPE
@@ -113,7 +113,7 @@
 ;  D: addr n --
                         $CODE   'TYPE',$TYPE
 
-                        $CALL   TYPE_FUNC
+                        $CALL   TYPE
                         $NEXT
 
 ;******************************************************************************
@@ -124,7 +124,7 @@
                         $CODE   'THREAD',$THREAD
 
                         PUSHDS  EDI
-                        $CALL   START_THREAD_FUNC
+                        $CALL   START_THREAD
                         PUSHDS  EAX
                         $NEXT
 
@@ -134,20 +134,20 @@
 
                         $CODE   'ALLOCATE'
 
-                        $CALL   ALLOCATE_FUNC
+                        $CALL   ALLOCATE
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'FREE'
 
-                        $CALL   FREE_FUNC
+                        $CALL   FREE
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'RESIZE'
 
-                        $CALL   REALLOCATE_FUNC
+                        $CALL   REALLOCATE
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT

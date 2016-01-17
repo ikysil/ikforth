@@ -6,3 +6,5 @@
 *.img
 *.o
 *.lst
+*.sym
+

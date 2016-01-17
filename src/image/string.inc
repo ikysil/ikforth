@@ -60,7 +60,7 @@ CMOVEGR_EXIT:
                         $CODE   'COUNT',$COUNT
 
                         POPDS   EBX
-                        MOVZX   EAX,BYTE PTR [EBX]
+                        MOVZX   EAX,byte [EBX]
                         INC     EBX
                         PUSHDS  EBX
                         PUSHDS  EAX

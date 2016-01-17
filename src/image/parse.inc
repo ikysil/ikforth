@@ -12,7 +12,7 @@
 ;  6.1.0560 >IN
                         $USER   '>IN',$TOIN
 
-                        CC      TOIN_VAR
+                        CC      VAR_TOIN
 
 ;  (WORD)
                         $CODE   '(WORD)',$PWORD
@@ -20,7 +20,7 @@
                         PUSHRS  ESI
                         PUSHRS  EDI
                         MOV     EAX,EDI
-                        ADD     EAX,OFFSET TOIN_VAR
+                        ADD     EAX,VAR_TOIN
                         POPDS   EDI                     ; dest address
                         PUSHRS  EDI
                         INC     EDI
@@ -35,7 +35,7 @@ PWORD_LOOP:
                         DEC     ECX
                         JS      SHORT PWORD_EXIT
                         LODSB
-                        INC     DWORD PTR [EBP]         ; inc >IN
+                        INC     DWORD [EBP]         ; inc >IN
                         OR      AL,AL
                         JZ      SHORT PWORD_EXIT
                         OR      AH,AH
@@ -57,10 +57,10 @@ PWORD_NOT_IN_WORD:
                         JMP     SHORT PWORD_ADDCHAR
 PWORD_EXIT:
                         POPDS   EBP
-                        MOV     BYTE PTR [EDI],32       ; store space
+                        MOV     BYTE [EDI],32       ; store space
                         POPRS   EDI
                         PUSHDS  EDI
-                        MOV     BYTE PTR [EDI],BL       ; store length
+                        MOV     BYTE [EDI],BL       ; store length
                         POPRS   EDI
                         POPRS   ESI
                         $NEXT
@@ -92,7 +92,7 @@ PPARSE_LOOP:
                         DEC     ECX
                         JS      SHORT PPARSE_EXIT
                         LODSB
-                        INC     DWORD PTR [EDI + TOIN_VAR]
+                        INC     DWORD [EDI + VAR_TOIN]
                         OR      AL,AL
                         JZ      SHORT PPARSE_EXIT
                         CMP     AL,DL

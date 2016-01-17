@@ -24,21 +24,11 @@
 ;
 ;******************************************************************************
 
-                        .386P
-                        .MODEL  FLAT
+                        format  binary
 
-                   MAIN SEGMENT USE32
+                        USE32
 
-                        ASSUME  CS:MAIN,DS:MAIN,ES:MAIN
-
-                        ORG     0h
-
-;******************************************************************************
-;  Header
-;******************************************************************************
-                        DB      'IKFI'                  ; MAX. 15 bytes !!!
-
-                        ALIGN   16
+                        ORG     0
 
 DESIRED_BASE_EQU        EQU     20000000h
 
@@ -51,16 +41,26 @@ RETURN_STACK_SIZE       EQU     00004000h               ; 16KB
 
 USER_AREA_SIZE0         EQU     00020000h               ; 128KB
 
+F_TRUE                  EQU     0FFFFFFFFh
+F_FALSE                 EQU     0
+
+CELL_SIZE               EQU     4
+
+;******************************************************************************
+;  Header
+;******************************************************************************
+                        DB      'IKFI'                  ; MAX. 15 bytes !!!
+
+                        ALIGN   16
+
                         DD      DESIRED_BASE_EQU
-DESIRED_SIZE_VAR:
+CW_DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
                         DD      START       + IMAGE_BASE
                         DD      THREAD_PROC + IMAGE_BASE
                         DD      FUNC_TABLE  + IMAGE_BASE
                         DD      USER_AREA_SIZE0 + USER_AREA_SIZE
                         DD      DATA_STACK_SIZE
-
-                        INCLUDE "macro.inc"
 
 ;******************************************************************************
 ;  Include functions table
@@ -79,18 +79,20 @@ DESIRED_SIZE_VAR:
 ;******************************************************************************
 ;                        ALIGN   16
 
+                        INCLUDE "macro.inc"
+
                         INCLUDE "words.inc"
 
 START:
                         POPDS   EAX
-                        POPDS   <[DWORD PTR SF_VAR + IMAGE_BASE]>
-                        POPDS   <[DWORD PTR HASH_SF_VAR + IMAGE_BASE]>
+                        POPDS   <DWORD [SF_VAR + IMAGE_BASE]>
+                        POPDS   <DWORD [HASH_SF_VAR + IMAGE_BASE]>
                         PUSHDS  EAX
-                        MOV     EAX,DWORD PTR [MAIN_PROC_VAR + IMAGE_BASE]
+                        MOV     EAX,DWORD [MAIN_PROC_VAR + IMAGE_BASE]
                         PUSHDS  EAX
                         PUSHDS  F_FALSE
                         PUSHDS  0
-                        MOV     EAX,DWORD PTR [FUNC_TABLE + IMAGE_BASE + START_THREAD_FUNC * CELL_SIZE]
+                        MOV     EAX,DWORD [FUNC_TABLE + IMAGE_BASE + FUNC_START_THREAD * CELL_SIZE]
                         CALL    EAX
                         RET
 
@@ -103,19 +105,19 @@ START:
                         CW      $CATCH
                         CQBR    DO_FORTH_NO_EXCEPTIONS
                         $CR
-                        $WRITE  <Exception caught while INCLUDing [>
+                        $WRITE  'Exception caught while INCLUDing ['
                         CFETCH  $SF
                         CFETCH  $HASH_SF
                         CW      $TYPE
-                        $WRITE  <]>
+                        $WRITE  ']'
                         CW      $2DROP
                         $CR
-                        $WRITE  <Latest word searched: >
+                        $WRITE  'Latest word searched: '
                         CW      $POCKET
                         CW      $COUNT
                         CW      $TYPE
                         $CR
-                        $WRITE  <Latest vocabulary entry: >
+                        $WRITE  'Latest vocabulary entry: '
                         CW      $LATEST_HEAD_FETCH
                         CW      $H_TO_HASH_NAME
                         CW      $DUP
@@ -125,15 +127,11 @@ START:
                         CBR     DO_CR
 NO_TYPE:
                         CW      $2DROP
-                        $WRITE  <(nonamed)>
+                        $WRITE  '(nonamed)'
 DO_CR:
                         $CR
 DO_FORTH_NO_EXCEPTIONS:
                         CW      $PBYE
 
 LATEST_WORD             = VOC_LINK
-HERE:
-
-                   MAIN ENDS
-                        END     START
-
+CW_HERE:

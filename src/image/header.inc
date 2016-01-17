@@ -59,8 +59,8 @@
 ;  D: -- addr
                         $CODE   'LATEST-HEAD@',$LATEST_HEAD_FETCH
 
-                        MOV     EAX,DWORD PTR [EDI + CURRENT_VAR]       ; get CURRENT wid
-                        PUSHDS  [EAX]
+                        MOV     EAX,DWORD [EDI + VAR_CURRENT]       ; get CURRENT wid
+                        PUSHDS  <DWORD [EAX]>
                         $NEXT
 
 ;  LATEST-HEAD!
@@ -68,8 +68,8 @@
 ;  D: addr --
                         $CODE   'LATEST-HEAD!',$LATEST_HEAD_STORE
 
-                        MOV     EAX,DWORD PTR [EDI + CURRENT_VAR]       ; get CURRENT wid
-                        POPDS   [EAX]
+                        MOV     EAX,DWORD [EDI + VAR_CURRENT]       ; get CURRENT wid
+                        POPDS   <DWORD [EAX]>
                         $NEXT
 
 ;  CHECK-NAME
@@ -97,7 +97,7 @@ NAME_OK:
                         CQBR    NO_REPORT
                           CW      $2DUP
                           CW      $TYPE
-                          $WRITE  < >
+                          $WRITE  ' '
 NO_REPORT:
                         CFETCH  $REPORT_NEW_NAME_DUPLICATE
                         CQBR    CDN_OK
@@ -107,10 +107,10 @@ NO_REPORT:
                         CW      $ZERONOEQ
                         CQBR    CDN_OK
                           CW      $DROP
-                          $WRITE  <Redefinition of >
+                          $WRITE  'Redefinition of '
                           CW      $2DUP
                           CW      $TYPE                 
-                          $WRITE  < >
+                          $WRITE  ' '
 CDN_OK:
                         CEXIT
 
@@ -272,7 +272,7 @@ EXECUTOR_XT:
                         POPDS   EAX
                         SUB     EAX,5
                         XOR     EBX,EBX
-                        MOV     BL,BYTE PTR [EAX]
+                        MOV     BL,BYTE [EAX]
                         SUB     EAX,EBX
                         PUSHDS  EAX
                         $NEXT
@@ -285,7 +285,7 @@ EXECUTOR_XT:
                         POPDS   EAX
                         INC     EAX
                         XOR     EBX,EBX
-                        MOV     BL,BYTE PTR [EAX]
+                        MOV     BL,BYTE [EAX]
                         ADD     EAX,EBX
                         ADD     EAX,6
                         PUSHDS  EAX

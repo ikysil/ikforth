@@ -21,7 +21,7 @@
                         $CODE   '>NUMBER',$TONUMBER
 
                         PUSHRS  EDI
-                        MOV     EBX,DWORD PTR [EDI + BASE_VAR]
+                        MOV     EBX,DWORD [EDI + VAR_BASE]
                         POPDS   ECX                     ; u1
                         POPDS   EDI                     ; c-addr1
                         POPDS   EDX                     ; ud1
@@ -30,7 +30,7 @@ TN_LOOP:
                         OR      ECX,ECX
                         JZ      SHORT TN_STOP
                         PUSHRS  EAX
-                        MOV     AL,BYTE PTR [EDI]
+                        MOV     AL,BYTE [EDI]
                         CMP     AL,'a'
                         JB      SHORT TN_CONT           ; jump if AL < 'a'
                         CMP     AL,'z'
@@ -39,14 +39,14 @@ TN_LOOP:
 TN_CONT:
                         PUSHDS  EDI
                         PUSHDS  ECX
-                        MOV     EDI,OFFSET DIGITS_TABLE + IMAGE_BASE
+                        MOV     EDI,DIGITS_TABLE + IMAGE_BASE
                         MOV     ECX,EBX
                         INC     ECX
                   REPNE SCASB
                         JNZ     SHORT TN_CONT2
                         DEC     EDI
                         DEC     EDI
-                        SUB     EDI,OFFSET DIGITS_TABLE + IMAGE_BASE
+                        SUB     EDI,DIGITS_TABLE + IMAGE_BASE
                         CMP     EDI,EBX
                         JGE     SHORT TN_CONT2
                         CMP     ECX,0
@@ -85,7 +85,7 @@ TN_STOP:
 ;  DIGITS
                         $CONST  'DIGITS',$DIGITS
 
-                        CW      DIGITS_TABLE
+                        CC      DIGITS_TABLE + IMAGE_BASE
 DIGITS_TABLE:
                         DB      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',0
 

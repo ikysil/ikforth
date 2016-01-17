@@ -18,13 +18,13 @@
 ;  >0              File handle
                         $CODE   'SOURCE-ID',$SOURCE_ID,VEF_USUAL
 
-                        PUSHDS  <DWORD PTR [EDI + SOURCE_ID_VAR]>
+                        PUSHDS  <DWORD [EDI + VAR_SOURCE_ID]>
                         $NEXT
 
 ;  SOURCE-ID!
                         $CODE   'SOURCE-ID!',$SOURCE_ID_STORE,VEF_USUAL
 
-                        POPDS   <DWORD PTR [EDI + SOURCE_ID_VAR]>
+                        POPDS   <DWORD [EDI + VAR_SOURCE_ID]>
                         $NEXT
 
 ;  6.1.2216 SOURCE
