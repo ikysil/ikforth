@@ -1,7 +1,7 @@
 \
 \  winconsole.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading WINCONSOLE definitions )
@@ -183,6 +183,8 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
   SWAP R> 2DROP
 ;
 
+VARIABLE WIN-PAGE-lpNumberOfCharsWritten
+
 \ 10.6.1.2005 PAGE 
 \ (S -- )
 \ Move to another page for output. Actual function depends on the output device.
@@ -190,7 +192,8 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
 \ On a printer, PAGE performs a form feed. 
 : WIN-PAGE (S -- )
   CSBI STDOUT GetConsoleScreenBufferInfo DROP
-  0 0 CSBI CONSOLE_SCREEN_BUFFER_INFO.dwSize DUP COORD.X W@ SWAP COORD.Y W@ *
+  WIN-PAGE-lpNumberOfCharsWritten 0
+  CSBI CONSOLE_SCREEN_BUFFER_INFO.dwSize DUP COORD.X W@ SWAP COORD.Y W@ *
   BL STDOUT FillConsoleOutputCharacter DROP
   0 0 AT-XY
 ;

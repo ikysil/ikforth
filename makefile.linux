@@ -9,7 +9,20 @@ disasm = wdis
 link = wlink
 make = wmake
 
-all :   IKForth.exe IKForth.img
+all : .symbolic IKForth.exe IKForth.img
+
+clean : .symbolic
+        rm -f src/image/*.obj
+        rm -f src/image/FKernel.lst src/image/FKernel.sym
+        rm -f src/FKernel.img
+        rm -f src/FKernel.exe
+        rm -f IKForth.exe IKForth.img
+        cd  src/loader/win32
+        $(make) -f makefile.linux clean $(__MAKEOPTS__)
+        cd  ../../..
+
+run : .symbolic all
+        WINEDEBUG=-all wineconsole IKForth.exe
 
 IKForth.exe : src/FKernel.exe
         echo Building $@
@@ -38,13 +51,4 @@ src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
         cd  src/loader/win32
         $(make) -f makefile.linux $(__MAKEOPTS__)
         cp FKernel.exe ../../FKernel.exe > /dev/null
-        cd  ../../..
-
-clean : .symbolic
-        rm -f src/image/*.obj
-        rm -f src/image/FKernel.lst src/image/FKernel.sym
-        rm -f src/FKernel.img
-        rm -f src/FKernel.exe
-        cd  src/loader/win32
-        $(make) -f makefile.linux clean $(__MAKEOPTS__)
         cd  ../../..
