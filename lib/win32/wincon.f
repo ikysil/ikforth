@@ -15,7 +15,7 @@ REPORT-NEW-NAME OFF
 
 USER CONST-VALUE 1 CELLS USER-ALLOC
 
-DLLImport WINCON.DLL "wincon.dll"
+DLLImport WINCON.DLL "lib/win32/wincon.dll"
 
 Int32DLLEntry FindWin32Constant WINCON.DLL FindWin32Constant
 
