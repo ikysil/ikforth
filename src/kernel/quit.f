@@ -1,7 +1,7 @@
 \
 \  quit.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading QUIT definitions )
@@ -81,7 +81,10 @@ EXC-INVALID-NUM-ARGUMENT (EXCEPTION)
 \ -25 CONSTANT EXC-RSTACK-IMBALANCE               \ return stack imbalance
 \ -26 CONSTANT EXC-LOOP-NOT-AVAILABLE             \ loop parameters unavailable
 \ -27 CONSTANT EXC-INVALID-RECURSE                \ invalid recursion
-\ -28 CONSTANT EXC-USER-INTERRUPT                 \ user interrupt
+
+S" User interrupt"
+EXC-USER-INTERRUPT (EXCEPTION)
+
 \ -29 CONSTANT EXC-COMPILER-NESTING               \ compiler nesting
 \ -30 CONSTANT EXC-OBSOLESCENT                    \ obsolescent feature
 \ -31 CONSTANT EXC-NOT-CREATED                    \ >BODY used on non-CREATEd definition
@@ -146,25 +149,34 @@ DEFER .INPUT-PROMPT-INFO
   .INPUT-PROMPT-INFO ." [C]> "
 ; IS .INPUT-PROMPT-COMPILE
 
+: .INPUT-PROMPT
+  STATE @ INVERT
+  IF
+    CR .INPUT-PROMPT-INTERPRET
+  ELSE
+       .INPUT-PROMPT-COMPILE
+  THEN
+;
+
 : .OK STATE @ INVERT IF ."  OK" THEN ;
 
 : (QUIT) POSTPONE [
   RESET-INPUT
   RP0 RP!
   BEGIN
-    STATE @ INVERT
-    IF
-      CR .INPUT-PROMPT-INTERPRET
-    ELSE
-         .INPUT-PROMPT-COMPILE
-    THEN
-    REFILL CR
+    BEGIN
+      .INPUT-PROMPT
+      ['] REFILL CATCH ?DUP
+      CR
+    WHILE
+      .EXCEPTION CR
+    REPEAT
   WHILE
     ['] INTERPRET CATCH
     CHECK-STACK
     ?DUP
     IF
-      .EXCEPTION POSTPONE [
+      .EXCEPTION CR
     ELSE
       .OK
     THEN

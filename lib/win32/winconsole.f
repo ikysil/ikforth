@@ -164,7 +164,10 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
         THEN
         FALSE
       ENDOF
-      8 OF                 \ backspace
+      4 OF                 \ Ctrl+D
+        EXC-USER-INTERRUPT THROW
+      ENDOF
+      8 OF                 \ Ctrl+H or Backspace
         DROP DUP
         0>
         IF
@@ -173,7 +176,7 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
         THEN
         FALSE
       ENDOF
-      13 OF                \ enter
+      13 OF                \ Ctrl+M or Enter
         DROP
         TRUE
       ENDOF
