@@ -1,7 +1,7 @@
 \
 \  main.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading MAIN definitions )
@@ -47,7 +47,6 @@ REPORT-NEW-NAME OFF
   IF
     1 TO GLOBAL-INIT-FLAG
     STARTUP-CHAIN CHAIN.EXECUTE>
-    GetCommandLine DUP lstrlen CMD-LINE 2!
     CR ." Loading startup include" CR
     CATCH( SF @ #SF @ INCLUDED )CATCH
     CASE

@@ -1,7 +1,7 @@
 \
 \  misc.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading MISC definitions )
@@ -80,8 +80,6 @@ DECIMAL
   (.ENV-INFO-NUM) STACK-CELLS        8 U.R ."  cells/data stack"     CR
   (.ENV-INFO-NUM) RETURN-STACK-CELLS 8 U.R ."  cells/return stack"   CR
 ;
-
-2VARIABLE CMD-LINE
 
 : MONTH>STR
   DUP 1 13 WITHIN INVERT IF EXC-INVALID-NUM-ARGUMENT THROW THEN

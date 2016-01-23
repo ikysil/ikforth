@@ -1,7 +1,7 @@
 \
 \  _kernel0.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 S" src\kernel.0\primitives.f"   INCLUDED
