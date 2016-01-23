@@ -84,6 +84,18 @@ HASH_SF_VAR:
 SF_VAR:
                         CC      0
 
+                        $CONST  'ARGC'
+ARGC_VAR:
+                        CC      0
+
+                        $CONST  'ARGV'
+ARGV_VAR:
+                        CC      0
+
+                        $CONST  'ENVP'
+ENVP_VAR:
+                        CC      0
+
 ;  DATA-AREA-BASE
                         $CONST  'DATA-AREA-BASE'
 
@@ -124,7 +136,7 @@ VAR_STATE:
 ;  D: -- char
                         $CONST  'BL',$BL
 
-                        CC      20h ;' '
+                        CC      ' '
 
 ;  MAIN
 ;  First Forth word to EXECUTE

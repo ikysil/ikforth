@@ -1,6 +1,4 @@
-#include <nt/wtypes.h>
-#include <nt/winnt.h>
-#include <nt/wincon.h>
+#include <stdio.h>
 
 #include "FKernel.hpp"
 
@@ -18,15 +16,15 @@ void ChangeFileExt(char * fName, char * fExt){
 }
 
 #pragma off(unreferenced)
-int PASCAL WinMain(HINSTANCE this_inst, HINSTANCE prev_inst, LPSTR cmdline, int cmdshow){
+int main(int const argc, char const * argv[]) {
   char * ImageFileName = (char *)fAlloc(MAX_FILE_PATH);
   char * StartFileName = (char *)fAlloc(MAX_FILE_PATH);
-  GetModuleFileName(this_inst, StartFileName, MAX_FILE_PATH);
+  strcpy(StartFileName, argv[0]);
   strcpy(ImageFileName, StartFileName);
   ChangeFileExt(StartFileName, ".f");
   ChangeFileExt(ImageFileName, ".img");
-  StartForth(ImageFileName, StartFileName);
+  int returnCode = StartForth(argc, argv, (char const **)environ, ImageFileName, StartFileName);
   fFree(StartFileName);
   fFree(ImageFileName);
-  return 0;
+  return returnCode;
 }

@@ -9,7 +9,7 @@ const DWORD fTRUE  = 0xFFFFFFFF;
 
 const int MAX_FILE_PATH = 1024;
 
-typedef void __stdcall (* MainProc)(char const *, int);
+typedef void __stdcall (* MainProc)(int const, char const **, char const **, char const *, int);
 typedef void __stdcall (* ForthThreadProc)(void *, DWORD);
 
 typedef struct _FuncTable{

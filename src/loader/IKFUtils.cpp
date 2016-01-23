@@ -37,12 +37,12 @@ void SetFuncTable(ImageHeader const * Header){
   ft->fReAlloc        = &fReAlloc;
 }
 
-void StartForth(char const * ImageFileName, char const * StartFileName){
+int StartForth(int const argc, char const * argv[], char const * envp[], char const * ImageFileName, char const * StartFileName) {
   hOut = GetStdHandle(STD_OUTPUT_HANDLE);
   HANDLE fHandle = fFileOpen(0, strlen(ImageFileName), ImageFileName);
   if(fHandle == INVALID_HANDLE_VALUE){
     ShowLastError("Cannot open image file.");
-    return;
+    return 1;
   }
   DWORD bRead = 0;
   ReadFile(fHandle, &IHeader, sizeof(ImageHeader), &bRead, NULL);
@@ -55,7 +55,7 @@ void StartForth(char const * ImageFileName, char const * StartFileName){
     fType(strlen(ImageFileName), ImageFileName);
     fType(strlen(msg), msg);
     fFileClose(fHandle);
-    return;
+    return 1;
   }
   ImageHeader * lHeader = (ImageHeader *)VirtualAlloc(IHeader.DesiredBase, IHeader.DesiredSize,
                                                       MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
@@ -63,16 +63,17 @@ void StartForth(char const * ImageFileName, char const * StartFileName){
     char msg[] = "Cannot allocate memory by VirtualAlloc.";
     fType(strlen(msg), msg);
     fFileClose(fHandle);
-    return;
+    return 1;
   }
   __int64 fPosition = fFilePosition(fHandle) - sizeof(ImageHeader);
   fFileReposition(fHandle, (DWORD)(fPosition >> 32), (DWORD)(fPosition & 0xFFFFFFFF));
   ReadFile(fHandle, lHeader, IHeader.DesiredSize, &bRead, NULL);
   fFileClose(fHandle);
   SetFuncTable(lHeader);
-  IHeader.MainProcAddr(StartFileName, strlen(StartFileName));
+  IHeader.MainProcAddr(argc, argv, envp, StartFileName, strlen(StartFileName));
   while (!CanExit) Sleep(100);
   VirtualFree(lHeader, IHeader.DesiredSize, MEM_DECOMMIT);
   VirtualFree(lHeader, 0, MEM_RELEASE);
   fFileClose(hOut);
+  return 0;
 }
