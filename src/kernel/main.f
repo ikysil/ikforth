@@ -38,7 +38,45 @@ REPORT-NEW-NAME OFF
   ." Bye..." CR
 ; SHUTDOWN-CHAIN CHAIN.ADD
 
-0 VALUE GLOBAL-INIT-FLAG 
+0 VALUE GLOBAL-INIT-FLAG
+
+: STARTUP-INCLUDED
+  CR ." Loading startup include" CR
+  CATCH( SF @ #SF @ 2DUP TYPE CR INCLUDED )CATCH
+  CASE
+    0 OF
+\ no errors
+    ENDOF
+\    2 OF
+\ ignore file not found exception
+\    ENDOF
+    DUP .EXCEPTION
+  ENDCASE
+;
+
+: PROCESS-ARGS
+  ARGC 1 =
+  IF
+    STARTUP-INCLUDED
+  ELSE
+    BEGIN
+      SHIFT-ARG
+      NEXT-ARG
+    WHILE
+      CR ." Evaluating argument: " CR 2DUP TYPE CR
+      CATCH( EVALUATE )CATCH
+      CASE
+        0 OF
+\ no errors
+        ENDOF
+\        2 OF
+\ ignore file not found exception
+\        ENDOF
+        DUP .EXCEPTION
+      ENDCASE
+    REPEAT
+  THEN
+;
 
 :NONAME
   INIT-USER
@@ -47,17 +85,7 @@ REPORT-NEW-NAME OFF
   IF
     1 TO GLOBAL-INIT-FLAG
     STARTUP-CHAIN CHAIN.EXECUTE>
-    CR ." Loading startup include" CR
-    CATCH( SF @ #SF @ INCLUDED )CATCH
-    CASE
-      0 OF
-\ no errors
-      ENDOF
-\      2 OF
-\ ignore file not found exception
-\      ENDOF
-      DUP .EXCEPTION 
-    ENDCASE
+    PROCESS-ARGS
   THEN
   DECIMAL
   QUIT
