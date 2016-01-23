@@ -84,13 +84,14 @@ CW_DESIRED_SIZE_VAR:
                         INCLUDE "words.inc"
 
 START:
-; typedef void __stdcall (* MainProc)(int const, char const **, char const **, char const *, int);
+; typedef void __stdcall (* MainProc)(int const, char const **, char const **, char const *, int, int *);
                         POPDS   EAX
                         POPDS   <DWORD [ARGC_VAR + IMAGE_BASE]>
                         POPDS   <DWORD [ARGV_VAR + IMAGE_BASE]>
                         POPDS   <DWORD [ENVP_VAR + IMAGE_BASE]>
                         POPDS   <DWORD [SF_VAR + IMAGE_BASE]>
                         POPDS   <DWORD [HASH_SF_VAR + IMAGE_BASE]>
+                        POPDS   <DWORD [EXIT_CODE_VAR + IMAGE_BASE]>
                         PUSHDS  EAX
                         MOV     EAX,DWORD [MAIN_PROC_VAR + IMAGE_BASE]
                         PUSHDS  EAX

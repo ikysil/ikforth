@@ -70,10 +70,11 @@ int StartForth(int const argc, char const * argv[], char const * envp[], char co
   ReadFile(fHandle, lHeader, IHeader.DesiredSize, &bRead, NULL);
   fFileClose(fHandle);
   SetFuncTable(lHeader);
-  IHeader.MainProcAddr(argc, argv, envp, StartFileName, strlen(StartFileName));
+  int exitCode = 0;
+  IHeader.MainProcAddr(argc, argv, envp, StartFileName, strlen(StartFileName), &exitCode);
   while (!CanExit) Sleep(100);
   VirtualFree(lHeader, IHeader.DesiredSize, MEM_DECOMMIT);
   VirtualFree(lHeader, 0, MEM_RELEASE);
   fFileClose(hOut);
-  return 0;
+  return exitCode;
 }

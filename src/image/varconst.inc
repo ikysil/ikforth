@@ -84,6 +84,10 @@ HASH_SF_VAR:
 SF_VAR:
                         CC      0
 
+                        $CONST  'EXIT-CODE'
+EXIT_CODE_VAR:
+                        CC      0
+
                         $CONST  'ARGC'
 ARGC_VAR:
                         CC      0
