@@ -25,6 +25,7 @@ S" src\kernel\exception-ext.f"  INCLUDED
 S" src\kernel\search-order.f"   INCLUDED
 S" src\kernel\string.f"         INCLUDED
 S" src\kernel\zchar.f"          INCLUDED
+S" src/kernel/args.4th"         INCLUDED
 S" src\kernel\required.f"       INCLUDED
 S" src\kernel\environment.f"    INCLUDED
 S" src\kernel\platform.f"       INCLUDED
