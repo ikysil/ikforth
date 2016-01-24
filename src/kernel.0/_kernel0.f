@@ -29,6 +29,7 @@ S" src\kernel\string.f"         INCLUDED
 S" src\kernel\required.f"       INCLUDED
 S" src\kernel\environment.f"    INCLUDED
 S" src\kernel\platform.f"       INCLUDED
+S" src/kernel/hostenv.4th"      INCLUDED
 S" src\kernel\quit.f"           INCLUDED
 
 S" src\kernel\fetchstore-ext.f" INCLUDED
