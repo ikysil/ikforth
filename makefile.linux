@@ -24,13 +24,18 @@ clean : .symbolic
 run : .symbolic all
         WINEDEBUG=-all wineconsole IKForth.exe
 
+debug : .symbolic all
+        WINEDEBUG=-all wine IKForth.exe 'S" IKForth.F" INCLUDED CR CR BYE'
+
 IKForth.exe : src/FKernel.exe
         echo Building $@
         cp src/FKernel.exe IKForth.exe > /dev/null
 
 IKForth.img : src/FKernel.img &
               src/*.f src/kernel/*.f src/kernel.0/*.f lib/win32/*.f &
-              lib/ansi/*.f lib/~ik/*.f lib/~js/486asm/*.F
+              src/*.4th src/kernel/*.4th src/kernel.0/*.4th lib/win32/*.4th &
+              lib/ansi/*.f lib/~ik/*.f lib/~js/486asm/*.F &
+              lib/ansi/*.4th lib/~ik/*.4th lib/~js/486asm/*.4th
         echo Building $@
 #        WINEDEBUG=-all winedbg src/FKernel.exe
 #        WINEDEBUG=-all winedbg --file src/loader/FKernel.winedbg src/FKernel.exe
