@@ -33,7 +33,7 @@ USER BLOCK-DATA    BLOCK-SIZE 1 + CHARS USER-ALLOC
 
 : MAKE-BLOCK-FILE-NAME (S block-num -- c-addr count )
   BASE @ >R HEX
-  S>D <# 8 0 DO # LOOP S" blocks\" S"HOLD #>
+  S>D <# 8 0 DO # LOOP S" blocks\" HOLDS #>
   R> BASE !
 ;
 
