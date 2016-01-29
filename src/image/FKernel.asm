@@ -108,6 +108,9 @@ START:
                         CFETCH  $HASH_SF
                         CWLIT   $INCLUDED
                         CW      $CATCH
+                        CW      $DUP
+                        CW      $EXIT_CODE
+                        CW      $STORE
                         CQBR    DO_FORTH_NO_EXCEPTIONS
                         $CR
                         $WRITE  'Exception caught while INCLUDing ['

@@ -84,7 +84,7 @@ HASH_SF_VAR:
 SF_VAR:
                         CC      0
 
-                        $CONST  'EXIT-CODE'
+                        $CONST  'EXIT-CODE',$EXIT_CODE
 EXIT_CODE_VAR:
                         CC      0
 
