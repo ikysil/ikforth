@@ -1,7 +1,7 @@
 \
 \  core.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 REPORT-NEW-NAME @
@@ -231,32 +231,56 @@ USER ABORT"-MESSAGE 2 CELLS USER-ALLOC
 : ABORT" POSTPONE S" POSTPONE (ABORT") ; IMMEDIATE/COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
-\  DEFER IS DEFER@ DEFER@-EXECUTE DEFER@-CATCH
+\  DEFER DEFER! DEFER@ IS ACTION-OF [ACTION-OF] DEFERRED
 \ -----------------------------------------------------------------------------
 
 :NONAME
   TRUE ABORT" un-initialized DEFER"
 ; CONSTANT (DEFAULT-DEFER)
 
+\ 6.2.1173
+\ DEFER
 : DEFER \ (S "name" -- )
   (DO-DEFER) &USUAL PARSE-CHECK-HEADER, DROP (DEFAULT-DEFER) COMPILE,
 ;
 
-:NONAME ' >BODY ! ;
-:NONAME ' >BODY POSTPONE LITERAL POSTPONE ! ;
+\ 6.2.1175
+\ DEFER!
+: DEFER! \ (S xt2 xt1 -- ) 
+  >BODY ! ;
+
+\ 6.2.1177
+\ DEFER@
+: DEFER@ \ (S xt1 -- xt2 )
+  >BODY @ ;
+
+\ 6.2.1725
+\ IS
+:NONAME ' DEFER! ;
+:NONAME POSTPONE ['] POSTPONE DEFER! ;
 INT/COMP: IS
 
-:NONAME ' >BODY @ ;
-:NONAME ' >BODY POSTPONE LITERAL POSTPONE @ ;
-INT/COMP: DEFER@
+\ 6.2.0698
+\ ACTION-OF
+:NONAME ' DEFER@ ;
+:NONAME POSTPONE ['] POSTPONE DEFER@ ;
+INT/COMP: ACTION-OF
 
-:NONAME ' >BODY @ EXECUTE ;
-:NONAME ' >BODY @ POSTPONE LITERAL POSTPONE EXECUTE ;
-INT/COMP: DEFER@-EXECUTE
+: [ACTION-OF]
+  \ (S "<spaces>name" -- ) \ compiling
+  \ (S -- xt )             \ executing
+  \ (G xt is the present execution token that name is set to execute. )
+  \ (G I.e., this produces static binding as if name was not deferred. )
+  ' DEFER@ POSTPONE LITERAL
+; IMMEDIATE/COMPILE-ONLY
 
-:NONAME ' >BODY @ CATCH ;
-:NONAME ' >BODY @ POSTPONE LITERAL POSTPONE CATCH ;
-INT/COMP: DEFER@-CATCH
+: DEFERRED 
+  \ (S "<spaces>name" -- ) \ compiling
+  \ (S ... -- ... )        \ executing
+  \ (G Compile the execution of the present execution token that name is set to execute. )
+  \ (G I.e., this produces static binding as if name was not deferred. )
+  POSTPONE [ACTION-OF] POSTPONE EXECUTE
+; IMMEDIATE/COMPILE-ONLY
 
 :NONAME - IF EXC-CONTROL-MISMATCH THROW THEN ; IS ?PAIRS
 
@@ -379,7 +403,7 @@ INT/COMP: DEFER@-CATCH
 \ -----------------------------------------------------------------------------
 
 \ -----------------------------------------------------------------------------
-\  (S (R (C
+\  (S (R (C (G)
 \ -----------------------------------------------------------------------------
 
 DEFER (S IMMEDIATE ' ( IS (S
@@ -387,6 +411,8 @@ DEFER (S IMMEDIATE ' ( IS (S
 DEFER (R IMMEDIATE ' ( IS (R
 
 DEFER (C IMMEDIATE ' ( IS (C
+
+DEFER (G IMMEDIATE ' ( IS (G
 
 \ -----------------------------------------------------------------------------
 

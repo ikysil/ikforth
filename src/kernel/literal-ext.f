@@ -1,7 +1,7 @@
 \
 \  literal-ext.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading LITERAL-EXT definitions )
@@ -187,7 +187,7 @@ REPORT-NEW-NAME OFF
     R> BASE !
     IF EXIT THEN
   THEN
-  DEFER@-EXECUTE INTERPRET-WORD-NOT-FOUND
+  DEFERRED INTERPRET-WORD-NOT-FOUND
 ; IS INTERPRET-WORD-NOT-FOUND
 
 REPORT-NEW-NAME !

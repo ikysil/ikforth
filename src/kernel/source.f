@@ -1,7 +1,7 @@
 \
 \  source.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading SOURCE definitions )
@@ -25,7 +25,7 @@ USER #EVAL 1 CELLS USER-ALLOC
   SOURCE-ID 0> IF
                  FILE-LINE #FILE-LINE @ EXIT
                THEN
-  DEFER@-EXECUTE SOURCE
+  DEFERRED SOURCE
 ; IS SOURCE
 
 \ 6.2.2125 REFILL
@@ -37,7 +37,7 @@ USER #EVAL 1 CELLS USER-ALLOC
   SOURCE-ID 0> IF
                  FILE-LINE MAX-FILE-LINE-LENGTH SOURCE-ID READ-LINE THROW SWAP #FILE-LINE ! 0 >IN ! EXIT
                THEN
-  DEFER@-EXECUTE REFILL
+  DEFERRED REFILL
 ; IS REFILL
 
 : EVALUATE

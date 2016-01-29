@@ -1,7 +1,7 @@
 \
 \  search-order.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  SEARCH-ORDER and SEARCH-ORDER-EXT wordsets
 \
@@ -35,7 +35,7 @@ USER CONTEXT MAX-ORDER-COUNT 1+ CELLS USER-ALLOC
                     THEN
                                                 \ not found S: c-addr
                                                 \ try to search FORTH-WORDLIST
-               DEFER@-EXECUTE FIND
+               DEFERRED FIND
 ; IS FIND
 
 \ ' FIND-ORDER IS FIND

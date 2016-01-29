@@ -1,7 +1,7 @@
 \
 \  required.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading REQUIRED definitions )
@@ -40,7 +40,7 @@ TRACK-INCLUDED ON
 :NONAME (S c-addr count -- )
   ?REPORT-INCLUDED
   2DUP S">Z" >R
-  DEFER@-CATCH INCLUDED
+  [ACTION-OF] INCLUDED CATCH
   R> OVER 0= IF DUP ZCOUNT INCLUDED, THEN FREE THROW THROW
 ; IS INCLUDED
 

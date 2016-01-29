@@ -1,7 +1,7 @@
 \
 \  wincon.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  An interface to WINCON.DLL
 \
@@ -28,7 +28,7 @@ Int32DLLEntry FindWin32Constant WINCON.DLL FindWin32Constant
   IF
     NIP NIP DO-LIT
   ELSE
-    DEFER@-EXECUTE INTERPRET-WORD-NOT-FOUND
+    DEFERRED INTERPRET-WORD-NOT-FOUND
   THEN
 ; IS INTERPRET-WORD-NOT-FOUND
 
