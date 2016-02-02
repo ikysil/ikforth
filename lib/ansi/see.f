@@ -1,7 +1,7 @@
 \
 \  see.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading SEE definitions )
@@ -28,6 +28,11 @@ DEFER DEFER-PRI
 0 VALUE VALUE-PRI
 
 : WRITE-VALUE BASE @ >R DUP DECIMAL . ." , H# " H.8 R> BASE ! ;
+
+: ?DOES> (S xt -- flag ) \ check if xt points to runtime semantics of DOES>
+  DUP  @ CELL- @ ['] (DOES) =
+  SWAP @ C@ H# E8 = AND
+;
 
 : CHECK-PRIMITIVE (S xt -- flag )
   DUP >R
@@ -74,7 +79,17 @@ DEFER DEFER-PRI
       R@ >HEAD WORD-ATTR
       CR FALSE
     ENDOF
-    ." Unknown executor" TRUE SWAP
+    R@ ?DOES>
+    IF
+      R@ >HEAD H>#NAME ?DUP IF TYPE ELSE DROP ." (noname)" THEN SPACE
+      ." XT=H# " R@ H.8 SPACE
+      R@ >HEAD WORD-ATTR
+      ." DOES> " CR
+      FALSE
+    ELSE
+      ." Unknown executor XT=H# " DUP H.8 TRUE
+    THEN
+    SWAP
   ENDCASE R-DROP
 ;
 
@@ -136,10 +151,16 @@ DEFER DEFER-PRI
   ENDCASE
 ;
 
+: (XT>BODY) (S xt -- addr )
+  (G convert xt to threaded code body address with special handling for CREATE ... DOES> )
+  DUP ?DOES> IF @ 5 + ELSE >BODY THEN
+;
+
 : (SEE) (S xt -- )
   DUP
   CHECK-PRIMITIVE IF DROP EXIT THEN
-  >BODY 0 >R
+  (XT>BODY)
+  0 >R
   BEGIN
     DUP DUP H.8 SPACE CHECK-EXIT INVERT
   WHILE
