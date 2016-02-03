@@ -38,11 +38,17 @@ FALSE REPORT-NEW-NAME !
 ;
 
 \ -----------------------------------------------------------------------------
-\  IMMEDIATE COMPILE-ONLY IMMEDIATE/COMPILE-ONLY
+\  IMMEDIATE IMMEDIATE? COMPILE-ONLY IMMEDIATE/COMPILE-ONLY
 \ -----------------------------------------------------------------------------
 
 : IMMEDIATE
   &IMMEDIATE SET-HFLAGS!
+;
+
+: IMMEDIATE?
+  \ (S xt -- flag )
+  \ (G Check if word identified by xt is an immediate word. )
+  >HEAD HFLAGS@ &IMMEDIATE AND 0<>
 ;
 
 : COMPILE-ONLY

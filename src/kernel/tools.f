@@ -191,4 +191,25 @@ DEFER CS-PICK ' PICK IS CS-PICK
 
 DEFER CS-ROLL ' ROLL IS CS-ROLL
 
+\ -----------------------------------------------------------------------------
+\  ALIAS SYNONYM
+\ -----------------------------------------------------------------------------
+: ALIAS
+  \ (S xt "<spaces>name" -- )
+  \ (S ... -- ... )  \ executing
+  \ (G Create a name with an execution semantics of xt. )
+  CREATE ,
+  DOES> @ EXECUTE
+;
+
+: SYNONYM
+  \ (S "<spaces>newname" "<spaces>oldname" -- )
+  \ (G Create a new definition which redirects to an existing one. )
+  CREATE IMMEDIATE
+    HIDE ' , REVEAL
+  DOES>
+    @ STATE @ 0= OVER IMMEDIATE? OR
+    IF EXECUTE ELSE COMPILE, THEN
+;
+
 REPORT-NEW-NAME !

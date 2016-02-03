@@ -64,7 +64,7 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 \  [COMPILE]
 \ -----------------------------------------------------------------------------
-                                                                               
+
 : [COMPILE] \ (S "name" -- )
   COMP' DROP COMPILE,
 ; IMMEDIATE
@@ -96,7 +96,7 @@ CREATE CR-STR 2 C, 13 C, 10 C,
   OVER CHAR+ ALLOT \ c-addr count here
   OVER SWAP        \ c-addr count count here
   C!+              \ c-addr count here+char
-  SWAP             \ 
+  SWAP             \
   CMOVE
 ;
 
@@ -112,7 +112,7 @@ CREATE CR-STR 2 C, 13 C, 10 C,
   OVER CELL+ ALLOT \ c-addr count here
   OVER SWAP        \ c-addr count count here
   !+               \ c-addr count here+cell
-  SWAP             \ 
+  SWAP             \
   CMOVE
 ;
 
@@ -246,7 +246,7 @@ USER ABORT"-MESSAGE 2 CELLS USER-ALLOC
 
 \ 6.2.1175
 \ DEFER!
-: DEFER! \ (S xt2 xt1 -- ) 
+: DEFER! \ (S xt2 xt1 -- )
   >BODY ! ;
 
 \ 6.2.1177
@@ -274,7 +274,7 @@ INT/COMP: ACTION-OF
   ' DEFER@ POSTPONE LITERAL
 ; IMMEDIATE/COMPILE-ONLY
 
-: DEFERRED 
+: DEFERRED
   \ (S "<spaces>name" -- ) \ compiling
   \ (S ... -- ... )        \ executing
   \ (G Compile the execution of the present execution token that name is set to execute. )
@@ -389,7 +389,7 @@ INT/COMP: ACTION-OF
 
 : DEPTH SP0 SP@ - [ 1 CELLS ] LITERAL / 1- ;
 
-: NDROP \ (S xn ... x1 n -- ) 
+: NDROP \ (S xn ... x1 n -- )
 \ Take n off the data stack. Remove n items from the data stack.
 \ If n is zero, just remove n.
   DUP 0>=
