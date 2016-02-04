@@ -162,6 +162,21 @@ DECIMAL
   FALSE
 ;
 
+: STRIP-PREFIX-CHAR (S c-addr u -- c-addr u flag )
+\ <cnum>:='<char>'
+  2DUP 3 <> IF DROP FALSE EXIT THEN
+  DUP 2 CHARS +
+  C@ [CHAR] ' =
+  SWAP
+  C@ [CHAR] ' =
+  AND
+  IF
+    DROP CHAR+ 1 TRUE
+  ELSE
+    FALSE
+  THEN
+;
+
 : INTERPRET-LITERAL-IN-BASE (S c-addr u n -- flag )
   BASE DUP @ >R !
   INTERPRET-LITERAL
@@ -171,6 +186,11 @@ DECIMAL
 DECIMAL
 
 :NONAME (S c-addr u -- )
+  STRIP-PREFIX-CHAR
+  IF
+    DROP C@ DO-LIT
+    EXIT
+  THEN
   STRIP-PREFIX-BINARY
   IF
     2 INTERPRET-LITERAL-IN-BASE
