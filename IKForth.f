@@ -59,3 +59,6 @@ requires" lib\~ik\peimage.f"
 
 \ : a create , does> ? ;
 \ 123 a b
+
+requires" lib/~ik/locals.4th"
+requires" lib/~ik/locals-test.4th"
