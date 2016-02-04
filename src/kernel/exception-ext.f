@@ -1,7 +1,7 @@
 \
 \  exception-ext.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading EXCEPTION-EXT definitions )
@@ -10,11 +10,11 @@ REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
 : (TRY) (S handler-addr -- )
-  R> SWAP >R EXC-PUSH >R 
+  R> SWAP >R (EXC-PUSH) >R
 ;
 
 : ()CATCH)
-  R> EXC-DROP R> DROP >R 0
+  R> (EXC-POP-CATCH) R> DROP >R 0
 ;
 
 HERE CONSTANT CATCH(-PAIRS

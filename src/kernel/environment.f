@@ -1,7 +1,7 @@
 \
 \  environment.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  ENVIRONMENT? queries support
 \
@@ -63,6 +63,8 @@ FFFFFFFFFFFFFFFF. 2CONSTANT MAX-UD
 DECIMAL
           RS-SIZE  CONSTANT RETURN-STACK-CELLS
           DS-SIZE  CONSTANT STACK-CELLS
+        EXCS-SIZE  1 CELLS /
+                   CONSTANT EXCEPTION-STACK-CELLS
 
              4096  CONSTANT WORDLISTS
 

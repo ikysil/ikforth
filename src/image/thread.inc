@@ -42,7 +42,12 @@ THREAD_PROC:
                         PUSHDS  <DWORD [FS:0]>
                         MOV     DWORD [FS:0],ESP
 
+; setup exception stack
+                        LEA     EAX,DWORD [EDI + VAR_EXC_STACK]
+                        MOV     DWORD [EDI + VAR_EXCP],EAX
+; setup return stack
                         LEA     EBP,DWORD [EDI + VAR_RSTACK]
+
                         MOV     DWORD [EDI + VAR_ESP],ESP
                         PUSHDS  ECX
                         MOV     ESI,DO_THREAD + IMAGE_BASE

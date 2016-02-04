@@ -3,7 +3,7 @@
 ;  user.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;
@@ -42,13 +42,16 @@ USER_HERE          =       ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
                         _VAR    CURR_FILE_POS
                         _ALLOC  CELL_SIZE
 
-MAX_FILE_LINE_LENGTH    EQU    1024
+MAX_FILE_LINE_LENGTH    EQU     1024
                         _VAR    HASH_FILE_LINE
                         _VAR    FILE_LINE,MAX_FILE_LINE_LENGTH
 
                         _VAR    CURRENT
 
                         _VAR    EXCEPTION_HANDLER
+                        _VAR    EXCP
+                        _ALLOC  EXCEPTION_STACK_SIZE
+                        _VAR    EXC_STACK
 
                         _VAR    WIN32_EXCEPTION_CONTEXT,256
 

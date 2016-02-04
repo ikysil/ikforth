@@ -79,6 +79,7 @@ DECIMAL
   UNUSED 1KB /                       8 U.R ." KBytes free/data area" CR
   (.ENV-INFO-NUM) STACK-CELLS        8 U.R ."  cells/data stack"     CR
   (.ENV-INFO-NUM) RETURN-STACK-CELLS 8 U.R ."  cells/return stack"   CR
+  (.ENV-INFO-NUM) EXCEPTION-STACK-CELLS 8 U.R ."  cells/exception stack"   CR
 ;
 
 : MONTH>STR
