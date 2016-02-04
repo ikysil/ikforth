@@ -36,8 +36,8 @@ IMAGE_BASE              =       DESIRED_BASE_EQU
 
 DESIRED_SIZE_EQU        EQU     00040000h               ; 256KB
 
-DATA_STACK_SIZE         EQU     00004000h               ; 16KB
-RETURN_STACK_SIZE       EQU     00004000h               ; 16KB
+DATA_STACK_SIZE         EQU     00001000h               ; 4KB
+RETURN_STACK_SIZE       EQU     00001000h               ; 4KB
 EXCEPTION_STACK_SIZE    EQU     00001000h               ; 4KB
 
 USER_AREA_SIZE0         EQU     00020000h               ; 128KB
