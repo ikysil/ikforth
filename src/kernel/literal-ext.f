@@ -20,29 +20,33 @@ REPORT-NEW-NAME OFF
 \  B# O# D# H#
 \ -----------------------------------------------------------------------------
 
-: B# \ parse word and interpret as binary number
-  BASE @ >R BINARY
-  BL WORD INTERPRET-WORD
-  R> BASE !
-; IMMEDIATE
+: PARSE-IN-BASE
+  (G Define a word with semantics to parse the next word )
+  (G as literal in specified BASE )
+  CREATE
+  (S base -- )
+    IMMEDIATE
+    ,
+    LATEST-HEAD@
+    ,
+  DOES>
+  (S "literal" -- )
+    DUP CELL+ @ >R @ \ S: base R: head
+    BASE DUP @ >R !
+    BL WORD COUNT INTERPRET-LITERAL
+    R> BASE !
+    INVERT IF EXC-INVALID-LITERAL R> (COMP-THROW) ELSE R> DROP THEN
+;
 
-: O# \ parse word and interpret as octal number
-  BASE @ >R OCTAL
-  BL WORD INTERPRET-WORD
-  R> BASE !
-; IMMEDIATE
+DECIMAL
 
-: D# \ parse word and interpret as decimal number
-  BASE @ >R DECIMAL
-  BL WORD INTERPRET-WORD
-  R> BASE !
-; IMMEDIATE
+ 2 PARSE-IN-BASE B#
 
-: H# \ parse word and interpret as hexadecimal number
-  BASE @ >R HEX
-  BL WORD INTERPRET-WORD
-  R> BASE !
-; IMMEDIATE
+ 8 PARSE-IN-BASE O#
+
+10 PARSE-IN-BASE D#
+
+16 PARSE-IN-BASE H#
 
 : STRIP-PREFIX-BINARY (S c-addr u -- c-addr u flag )
 \ check for 1 char prefixes
@@ -158,33 +162,33 @@ REPORT-NEW-NAME OFF
   FALSE
 ;
 
+: INTERPRET-LITERAL-IN-BASE (S c-addr u n -- flag )
+  BASE DUP @ >R !
+  INTERPRET-LITERAL
+  R> BASE !
+;
+
+DECIMAL
+
 :NONAME (S c-addr u -- )
   STRIP-PREFIX-BINARY
   IF
-    BASE @ >R BINARY
-    INTERPRET-LITERAL
-    R> BASE !
+    2 INTERPRET-LITERAL-IN-BASE
     IF EXIT THEN
   THEN
   STRIP-PREFIX-OCTAL
   IF
-    BASE @ >R OCTAL
-    INTERPRET-LITERAL
-    R> BASE !
+    8 INTERPRET-LITERAL-IN-BASE
     IF EXIT THEN
   THEN
   STRIP-PREFIX-DECIMAL
   IF
-    BASE @ >R DECIMAL
-    INTERPRET-LITERAL
-    R> BASE !
+    10 INTERPRET-LITERAL-IN-BASE
     IF EXIT THEN
   THEN
-  STRIP-PREFIX-HEX 
+  STRIP-PREFIX-HEX
   IF
-    BASE @ >R HEX
-    INTERPRET-LITERAL
-    R> BASE !
+    16 INTERPRET-LITERAL-IN-BASE
     IF EXIT THEN
   THEN
   DEFERRED INTERPRET-WORD-NOT-FOUND

@@ -55,10 +55,10 @@ EXC-COMPILE-ONLY (EXCEPTION-XT)
 
 S" Attempt to use zero-length string as a name"
 EXC-EMPTY-NAME (EXCEPTION)
-         
+
 S" Pictured numeric output string overflow"
 EXC-HLD-OVERFLOW (EXCEPTION)
-         
+
 \ -18 CONSTANT EXC-PARSE-OVERFLOW                 \ parsed string overflow
 
 :NONAME ." Definition name too long, only " MAX-NAME-LENGTH @ .
@@ -120,7 +120,7 @@ EXC-SEARCH-ORDER-UNDERFLOW (EXCEPTION)
 
 \ -51 CONSTANT EXC-WORDLIST-CHANGED               \ compilation word list changed
 \ -52 CONSTANT EXC-CSTACK-OVERFLOW                \ control-flow stack overflow
-\ -53 CONSTANT EXC-ESTACK-VERFLOW                 \ exception stack overflow
+\ -53 CONSTANT EXC-ESTACK-OVERFLOW                \ exception stack overflow
 \ -54 CONSTANT EXC-FLOAT-UNDERFLOW                \ floating-point underflow
 \ -55 CONSTANT EXC-FLOAT-FAULT                    \ floating-point unidentified fault
 
@@ -130,6 +130,9 @@ EXC-QUIT (EXCEPTION-XT)
 \ -57 CONSTANT EXC-COMMUNICATION                  \ exception in sending or receiving a character
 \ -58 CONSTANT EXC-[IF]                           \ [IF], [ELSE], or [THEN] exception
 
+:NONAME ." Invalid literal " POCKET COUNT TYPE ;
+EXC-INVALID-LITERAL (EXCEPTION-XT)
+
 : CHECK-STACK
   DEPTH 1 < IF SP0 SP! EXC-STACK-UNDERFLOW THEN ;
 
@@ -138,7 +141,7 @@ DEFER .INPUT-PROMPT-COMPILE
 DEFER .INPUT-PROMPT-INFO
 
 :NONAME
- BASE @ >R DECIMAL DEPTH . ." (" R@ 2 .R ." )" R> BASE ! 
+ BASE @ >R DECIMAL DEPTH . ." (" R@ 2 .R ." )" R> BASE !
 ; IS .INPUT-PROMPT-INFO
 
 :NONAME
@@ -163,6 +166,7 @@ DEFER .INPUT-PROMPT-INFO
 : (QUIT) POSTPONE [
   RESET-INPUT
   RP0 RP!
+  SP0 SP!
   BEGIN
     BEGIN
       .INPUT-PROMPT

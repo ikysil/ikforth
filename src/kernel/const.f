@@ -1,7 +1,7 @@
 \
 \  const.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 REPORT-NEW-NAME @
@@ -12,7 +12,7 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 
   -2 CONSTANT -2
- 
+
   -1 CONSTANT -1
 
    1 CONSTANT  1
@@ -33,7 +33,7 @@ FALSE REPORT-NEW-NAME !
 \  ANSI Forth exception codes
 \ -----------------------------------------------------------------------------
 
-  -1 CONSTANT EXC-ABORT                          \ ABORT  
+  -1 CONSTANT EXC-ABORT                          \ ABORT
   -2 CONSTANT EXC-ABORT"                         \ ABORT"
   -3 CONSTANT EXC-STACK-OVERFLOW                 \ stack overflow
   -4 CONSTANT EXC-STACK-UNDERFLOW                \ stack underflow
@@ -85,12 +85,19 @@ FALSE REPORT-NEW-NAME !
  -50 CONSTANT EXC-SEARCH-ORDER-UNDERFLOW         \ search-order underflow
  -51 CONSTANT EXC-WORDLIST-CHANGED               \ compilation word list changed
  -52 CONSTANT EXC-CSTACK-OVERFLOW                \ control-flow stack overflow
- -53 CONSTANT EXC-ESTACK-VERFLOW                 \ exception stack overflow
+ -53 CONSTANT EXC-ESTACK-OVERFLOW                \ exception stack overflow
  -54 CONSTANT EXC-FLOAT-UNDERFLOW                \ floating-point underflow
  -55 CONSTANT EXC-FLOAT-FAULT                    \ floating-point unidentified fault
  -56 CONSTANT EXC-QUIT                           \ QUIT
  -57 CONSTANT EXC-COMMUNICATION                  \ exception in sending or receiving a character
  -58 CONSTANT EXC-[IF]                           \ [IF], [ELSE], or [THEN] exception
+
+\ The THROW values {-255...-1} shall be used only as assigned by this standard.
+\ The values {-4095...-256} shall be used only as assigned by a system.
+-256 CONSTANT EXC-INVALID-LITERAL                \ Invalid literal
+
+\ The first exception id allocated dynamically by word EXCEPTION
+-1024 CONSTANT EXC-DYNAMIC-ID
 
  256 CONSTANT HLD-SIZE
 1024 CONSTANT PAD-SIZE
