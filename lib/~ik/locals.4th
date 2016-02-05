@@ -91,6 +91,20 @@ DEFER (L IMMEDIATE ' ( IS (L
   LP!
 ;
 
+: L@ (S -- x ) (L x -- x ) \ copy item from locals stack to data stack
+  LP@ @
+;
+
+: LDROP (S -- ) (L x -- ) \ drop top item from locals stack
+  LP@
+  CELL+ LP0 MIN
+  LP!
+;
+
+: LSWAP (S -- ) (L x1 x2 -- x2 x1 ) \ swap two items on locals stack
+  L> L> SWAP >L >L
+;
+
 : LOCALS-ALLOC (S n -- ) \ allocate locals frame for n cells
   LP@ OVER CELLS - LP!
   >EXC
