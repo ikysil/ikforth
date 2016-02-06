@@ -25,7 +25,10 @@ run : .symbolic all
         WINEDEBUG=-all wineconsole IKForth.exe
 
 debug : .symbolic all
-        WINEDEBUG=-all wine IKForth.exe 'S" IKForth.F" INCLUDED CR CR BYE'
+        WINEDEBUG=-all wine IKForth.exe
+
+test : .symbolic all
+        WINEDEBUG=-all wine IKForth.exe 'S" IKForth-test.4th" INCLUDED'
 
 IKForth.exe : src/FKernel.exe
         echo Building $@
