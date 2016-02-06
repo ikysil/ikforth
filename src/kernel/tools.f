@@ -38,13 +38,34 @@ USER .S-PRINT-XT 1 CELLS USER-ALLOC
   DUP BL < IF DROP [CHAR] . THEN
 ;
 
-: DUMP
-  OVER BASE @ HEX 2SWAP + ROT
-  DO I <#
-    0 15 DO DUP I + C@ >PRINTABLE HOLD -1 +LOOP
-    0 15 DO BL HOLD DUP I + @ 0 # # 2DROP -1 +LOOP
-    BL HOLD BL HOLD 0 # # # # # # # # #> TYPE CR
-  16 +LOOP
+VARIABLE DUMP/LINE
+
+8 DUMP/LINE !
+
+: #DUMP-HEX (S addr len -- )
+  OVER + 1-
+  DO BL HOLD I C@ 0 # # 2DROP -1 +LOOP
+;
+
+: #DUMP-CHAR (S addr len -- )
+  OVER + 1-
+  DO I C@ >PRINTABLE HOLD -1 +LOOP
+;
+
+: DUMP (S addr len -- )
+  BASE @ HEX
+  DUMP/LINE  @ 4 MAX 16 MIN
+  2SWAP \ addr len base dump/line -- base dump/line addr len
+  OVER + SWAP
+  DO <#
+    I OVER 2DUP
+    S"  |" HOLDS
+    #DUMP-CHAR
+    S" | " HOLDS
+    #DUMP-HEX
+    I BL HOLD BL HOLD 0 # # # # # # # # #> TYPE CR
+  DUP +LOOP
+  DROP
   BASE !
 ;
 
