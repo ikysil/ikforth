@@ -6,6 +6,8 @@
 
 CR .( Loading LOCALS-TEST definitions )
 
+REQUIRES" lib/~ik/locals.4th"
+
 REPORT-NEW-NAME @
 REPORT-NEW-NAME ON
 
