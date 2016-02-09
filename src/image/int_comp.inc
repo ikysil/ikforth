@@ -12,7 +12,7 @@
 ;  IS-INT/COMP?
                         $COLON  'IS-INT/COMP?',$IS_INT_COMPQ
 
-                        CW      $FETCH
+                        CW      $CFAFETCH
                         CWLIT   $PDO_INT_COMP
                         CW      $EQ
                         CEXIT

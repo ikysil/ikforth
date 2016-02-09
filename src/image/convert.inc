@@ -3,19 +3,11 @@
 ;  convert.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Misc convertion words
 ;******************************************************************************
-
-;  6.1.0550 >BODY
-;  Convert CFA to PFA
-;  D: CFA -- PFA
-                        $COLON  '>BODY',$TOBODY
-
-                        CW      $CELLADD
-                        CEXIT
 
 ;  6.1.0570 >NUMBER
                         $CODE   '>NUMBER',$TONUMBER

@@ -92,7 +92,7 @@
                         CGET_LAST_ERROR
                         $NEXT
 
-                        $CODE   0,$_READ_LINE
+                        $CODE   <>,$_READ_LINE
 
                         $CALL   FILE_READ_LINE
                         PUSHDS  EAX

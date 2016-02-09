@@ -16,7 +16,7 @@
 ;  * ESP - DSP data stack pointer
 ;  * EBP - RSP return stack pointer
 ;
-;    EBX - W pointer
+;    EAX - W pointer
 ;
 ;  * - register should remain unchanged in low-level primitives
 ;
@@ -55,7 +55,7 @@ CELL_SIZE               EQU     4
                         ALIGN   16
 
                         DD      DESIRED_BASE_EQU
-CW_DESIRED_SIZE_VAR:
+CFA_DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
                         DD      START       + IMAGE_BASE
                         DD      THREAD_PROC + IMAGE_BASE
@@ -71,7 +71,7 @@ CW_DESIRED_SIZE_VAR:
                         INCLUDE "ftable.inc"
 
 ;******************************************************************************
-;  Include user area variables. These variables are unique to any thread.
+;  Include user area variables. These variables are unique for each thread.
 ;******************************************************************************
                         INCLUDE "user.inc"
 
@@ -81,6 +81,18 @@ CW_DESIRED_SIZE_VAR:
 ;                        ALIGN   16
 
                         INCLUDE "macro.inc"
+
+                        IF      ~ DEFINED CODE_THREADING
+                CODE_THREADING  EQU DTC
+                        END IF
+
+                        MATCH   =DTC, CODE_THREADING {
+                        INCLUDE "dtc-system.asm"
+                        }
+
+                        MATCH   =ITC, CODE_THREADING {
+                        INCLUDE "itc-system.asm"
+                        }
 
                         INCLUDE "words.inc"
 
@@ -143,4 +155,4 @@ DO_FORTH_NO_EXCEPTIONS:
                         CW      $PBYE
 
 LATEST_WORD             = VOC_LINK
-CW_HERE:
+CFA_HERE:

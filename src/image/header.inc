@@ -3,7 +3,7 @@
 ;  header.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  HEADER & support words
@@ -53,6 +53,37 @@
                         $CONST  '&IMMEDIATE/COMPILE-ONLY'
 
                         CC      VEF_IMMEDIATE_COMPILE_ONLY
+
+;  CFA-SIZE
+;  Size of CFA field
+;  D: -- n
+                        $CONST  'CFA-SIZE',$CFA_SIZE
+
+                        CC      CFA_SIZE
+
+;  $NEXT-CODE-SIZE
+                        $VAR   '$NEXT-CODE',$NEXT_CODE
+NEXT_CODE_START:
+                        $NEXT
+NEXT_CODE_END:
+
+NEXT_CODE_SIZE          EQU     NEXT_CODE_END - NEXT_CODE_START
+
+;  $NEXT-CODE-SIZE
+;  Size of CFA field
+;  D: -- n
+                        $CONST  '$NEXT-CODE-SIZE',$NEXT_CODE_SIZE
+                        CC      NEXT_CODE_SIZE
+
+;  $NEXT!
+;  Compile the machine code for $NEXT primitive of inner interpreter at addr address.
+;  D: addr --
+                        $COLON  '$NEXT!',$NEXTSTORE
+                        CW      $NEXT_CODE
+                        CW      $SWAP
+                        CW      $NEXT_CODE_SIZE
+                        CW      $CMOVE
+                        CEXIT
 
 ;  LATEST-HEAD@
 ;  addr is the link address of the last compiled word in compilation wordlist.
@@ -154,31 +185,35 @@ NAME_EXIT:
 
 ;  (CFA,)
 ;  Compile CFA after (HEADER,)
-;  D: [ executor-xt | 0 ] -- xt
+;  D: [ code-addr | 0 ] -- xt
                         $COLON  '(CFA,)',$PCFA_C
 
                         CW      $DUP
-                        ;  D: [ executor-xt | 0 ] [ executor-xt | 0 ]
+                        ;  D: [ code-addr | 0 ] [ code-addr | 0 ]
                         CW      $ZEROEQ
-                        ;  D: [ executor-xt | 0 ] eq-zero-flag
-                        CQBR    EXECUTOR_XT
+                        ;  D: [ code-addr | 0 ] eq-zero-flag
+                        CQBR    HAS_CODE_ADDR
                           CW      $DROP
                           CW      $HERE
                           ;   D: xt
-                          CCLIT   CELL_SIZE
+                          CCLIT   CFA_SIZE
                           CW      $ADD
-                          ;   D: executor-xt
-EXECUTOR_XT:
+                          ;   D: code-addr
+HAS_CODE_ADDR:
                         CW      $HERE
-                          ;   D: executor-xt xt
+                          ;   D: code-addr xt
+                        CCLIT   CFA_SIZE
+                        CW      $ALLOT
+                          ;   D: code-addr xt
                         CW      $SWAP
-                          ;   D: xt executor-xt
-                        CW      $COMMA
+                        CW      $OVER
+                          ;   D: xt code-addr xt
+                        CW      $CODE_ADDRESS_STORE
                           ;   D: xt
                         CEXIT
 
 ;  HEADER,
-;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
+;  D: [ code-addr | 0 ] [ 0 0 | c-addr count ] flags -- xt
                         $COLON  'HEADER,',$HEADERC
 
                         CW      $PHEADERC

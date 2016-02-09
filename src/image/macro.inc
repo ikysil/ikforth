@@ -3,27 +3,9 @@
 ;  macro.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
-
-;******************************************************************************
-;
-;******************************************************************************
-                        MACRO   $JMP {
-                        MOV     EBX,DWORD [EAX]
-                        JMP     EBX                     ; execute
-                        }
-
-;******************************************************************************
-;  Because of usage of indirect threaded code the $NEXT macro is used at the end
-;  of each definition to perform execution of next word.
-;  Simply fetch a code pointer DWORD [ESI] and jump there.
-;******************************************************************************
-                        MACRO   $NEXT {
-                        LODSD                           ; fetch address
-                        $JMP
-                        }
 
 VOC_LINK                =       0                       ; link to previous word
 ;******************************************************************************
@@ -39,20 +21,22 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;  Macro $DEF defines a vocabulary entry.
 ;  Parameters:
 ;    NAME       the name of the entry to be created
-;    CODE       label of the CFA
-;    EXECUTOR   the executor of a word ( = [DWORD CODE] if ommited)
+;    CFA_NAME   label of the CFA
+;    CODE       the code address of a word ( = [DWORD CFA_NAME] if ommited)
 ;    FLAGS      entry flags
 ;  Vocabulary entry layout
-;  Offset Length // bytes
-;  +0     1      FLAGS (VEF_XXX)
-;  +1     1      name length (or 0)                       // NFA
-;  +2     n      name (in OEM codepage)
-;  +2+n   1      n + 2
-;  +2+n+1 4      link to previous word or 0 if first word // LFA
-;  +2+n+5 4      address of internal interpreter          // CFA
-;  +2+n+9 x                                               // PFA
+;  Offset   Length // bytes
+;  +0       1      FLAGS (VEF_XXX)
+;  +1       1      name length (or 0)                       // NFA
+;  +2       n      name (in OEM codepage)
+;  +2+n     1      n + 2
+;  +5+n     4      link to previous word or 0 if first word // LFA
+;  +7+n     m      address of internal interpreter          // CFA
+;                  code address in ITC
+;                  machine code JMP to code address in DTC
+;  +7+n+m   x                                               // PFA
 ;******************************************************************************
-                        MACRO   $DEF NAME,CODE,EXECUTOR,FLAGS {
+                        MACRO   $DEF NAME,CFA_NAME,CODE,FLAGS {
 
                         LOCAL   __DEF,__PREVFLD,__LBLNAME,__CODE
 __DEF:
@@ -76,14 +60,10 @@ __PREVFLD:
 VOC_LINK                =       __DEF + IMAGE_BASE
 
 ;; CFA
-                        IF      ~ CODE eq
-                        LABEL   CW_#CODE DWORD
-                        END IF
-
-                        IF      ~ EXECUTOR eq
-                          DD      CW_#EXECUTOR# + IMAGE_BASE
+                        IF      CODE eq
+                          $CFA    __CODE,CFA_NAME
                         ELSE
-                          DD      __CODE   + IMAGE_BASE
+                          $CFA    CFA_#CODE,CFA_NAME
                         END IF
 __CODE:
 ;; PFA
@@ -92,8 +72,8 @@ __CODE:
 ;******************************************************************************
 ;  Use this macro to compile FORTH threaded definitions
 ;******************************************************************************
-                        MACRO   CW NAME {
-                        DD      CW_#NAME + IMAGE_BASE
+                        MACRO   CW CFA_NAME {
+                        DD      CFA_#CFA_NAME# + IMAGE_BASE
                         }
 
                         MACRO   CWLIT VALUE {
@@ -215,32 +195,32 @@ __CODE:
 ;******************************************************************************
 ;
 ;******************************************************************************
-                        MACRO   $CONST NAME,CODE {
-                        $DEF    NAME,CODE,$DOCONST
+                        MACRO   $CONST NAME,CFA_NAME {
+                        $DEF    NAME,CFA_NAME,$DOCONST
                         }
 
-                        MACRO   $VAR NAME,CODE {
-                        $DEF    NAME,CODE,$DOVAR
+                        MACRO   $VAR NAME,CFA_NAME {
+                        $DEF    NAME,CFA_NAME,$DOVAR
                         }
 
-                        MACRO   $USER NAME,CODE {
-                        $DEF    NAME,CODE,$DOUSER
+                        MACRO   $USER NAME,CFA_NAME {
+                        $DEF    NAME,CFA_NAME,$DOUSER
                         }
 
-                        MACRO   $COLON NAME,CODE,FLAGS {
-                        $DEF    NAME,CODE,$ENTER,FLAGS
+                        MACRO   $COLON NAME,CFA_NAME,FLAGS {
+                        $DEF    NAME,CFA_NAME,$ENTER,FLAGS
                         }
 
-                        MACRO   $NONAME CODE,FLAGS {
-                        $DEF    <>,CODE,$ENTER,FLAGS
+                        MACRO   $NONAME CFA_NAME,FLAGS {
+                        $DEF    <>,CFA_NAME,$ENTER,FLAGS
                         }
 
-                        MACRO   $DEFER NAME,CODE,FLAGS {
-                        $DEF    NAME,CODE,$DODEFER,FLAGS
+                        MACRO   $DEFER NAME,CFA_NAME,FLAGS {
+                        $DEF    NAME,CFA_NAME,$DODEFER,FLAGS
                         }
 
-                        MACRO   $CODE NAME,CODE,FLAGS {
-                        $DEF    NAME,CODE,<>,FLAGS
+                        MACRO   $CODE NAME,CFA_NAME,FLAGS {
+                        $DEF    NAME,CFA_NAME,<>,FLAGS
                         }
 
 ;******************************************************************************

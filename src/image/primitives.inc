@@ -3,7 +3,7 @@
 ;  primitives.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Primitives
@@ -56,32 +56,32 @@ NOQBRANCH:
 ;  (DO-VARIABLE)
                         $VAR    '(DO-VARIABLE)'
 
-                        LABEL   CW_$DOVAR
-                        ADD     EAX,CELL_SIZE
+                        LABEL   CFA_$DOVAR
+                        ADD     EAX,CFA_SIZE
                         PUSHDS  EAX
                         $NEXT
 
 ;  (DO-:)
                         $VAR    '(DO-:)'
 
-                        LABEL   CW_$ENTER
+                        LABEL   CFA_$ENTER
                         PUSHRS  ESI                     ; push current IP on return stack
-                        ADD     EAX,CELL_SIZE
+                        ADD     EAX,CFA_SIZE
                         MOV     ESI,EAX
                         $NEXT                           ; fetch next word address and execute it
 
 ;  (DO-CONSTANT)
                         $VAR    '(DO-CONSTANT)'
 
-                        LABEL   CW_$DOCONST
-                        PUSHDS  <DWORD [EAX + CELL_SIZE]>
+                        LABEL   CFA_$DOCONST
+                        PUSHDS  <DWORD [EAX + CFA_SIZE]>
                         $NEXT
 
 ;  (DO-USER)
                         $VAR    '(DO-USER)'
 
-                        LABEL   CW_$DOUSER
-                        MOV     EBX,DWORD [EAX + CELL_SIZE]
+                        LABEL   CFA_$DOUSER
+                        MOV     EBX,DWORD [EAX + CFA_SIZE]
                         ADD     EBX,EDI
                         PUSHDS  EBX
                         $NEXT
@@ -89,15 +89,15 @@ NOQBRANCH:
 ;  (DO-DEFER)
                         $VAR    '(DO-DEFER)'
 
-                        LABEL   CW_$DODEFER
-                        MOV     EAX,DWORD [EAX + CELL_SIZE]
+                        LABEL   CFA_$DODEFER
+                        MOV     EAX,DWORD [EAX + CFA_SIZE]
                         $JMP
 
 ;  (DO-INT/COMP)
                         $VAR    '(DO-INT/COMP)'
 
-                        LABEL   CW_$PDO_INT_COMP
-                        ADD     EAX,CELL_SIZE
+                        LABEL   CFA_$PDO_INT_COMP
+                        ADD     EAX,CFA_SIZE
                         CMP     BYTE [VAR_STATE + IMAGE_BASE],F_FALSE
                         JZ      PDIC_INT
                         ADD     EAX,CELL_SIZE
