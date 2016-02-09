@@ -1,4 +1,4 @@
-requires" lib/~ik/locals-test.4th"
+: TEST-LOCALS requires" lib/~ik/locals-test.4th" ;
 
 : TEST-DUMP
   CR
@@ -11,4 +11,15 @@ requires" lib/~ik/locals-test.4th"
   DROP
 ;
 
-TEST-DUMP
+: TEST-WORDS S" lib\test\wordstest.f" INCLUDED ;
+
+: TEST-ANSI94 REPORT-NEW-NAME @ >R REPORT-NEW-NAME off
+       S" lib\test\ANSITest.f" ['] included catch
+       R> REPORT-NEW-NAME ! throw ;
+
+CODE A
+    POP EAX
+    INC EAX
+    PUSH EAX
+    NEXT
+END-CODE

@@ -6,8 +6,6 @@ REPORT-NEW-NAME OFF
 
 : load_chess s" app\~ik\chess.f" included ;
 
-: WT S" lib\test\wordstest.f" INCLUDED ;
-
 \ : a1 >r rp@ 1 type r> drop ;
 
 \ USER TYPE-RESULT 1 CELLS USER-ALLOC
@@ -20,10 +18,6 @@ REPORT-NEW-NAME OFF
 \   STDOUT
 \   WriteConsole \ ( hOut, PChar( S ), Length( S ), Result, nil );
 \ ;
-
-: test REPORT-NEW-NAME @ >R REPORT-NEW-NAME off
-       S" lib\test\ANSITest.f" ['] included catch
-       R> REPORT-NEW-NAME ! throw ;
 
 : NTHROW (S exc-id -- )
   >R 0 0 0 R> RaiseException ;
