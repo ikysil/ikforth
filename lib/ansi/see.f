@@ -30,42 +30,42 @@ DEFER DEFER-PRI
 : WRITE-VALUE BASE @ >R DUP DECIMAL . ." , H# " H.8 R> BASE ! ;
 
 : ?DOES> (S xt -- flag ) \ check if xt points to runtime semantics of DOES>
-  DUP  @ CELL- @ ['] (DOES) =
-  SWAP @ C@ H# E8 = AND
+  DUP  CFA@ CELL- @ ['] (DOES) =
+  SWAP CFA@ C@ H# E8 = AND
 ;
 
 : CHECK-PRIMITIVE (S xt -- flag )
   DUP >R
-  @
+  CFA@
   CASE
     OVER >BODY OF
       ." Low-level primitive" TRUE
     ENDOF
-    [ ' CREATE-PRI @ ] LITERAL OF
+    [ ' CREATE-PRI CFA@ ] LITERAL OF
       ." CREATE " TRUE
     ENDOF
-    [ ' V-PRI @ ] LITERAL OF
+    [ ' V-PRI CFA@ ] LITERAL OF
       ." VARIABLE( " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
-    [ ' C-PRI @ ] LITERAL OF
+    [ ' C-PRI CFA@ ] LITERAL OF
       ." CONSTANT( " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
-    [ ' 2V-PRI @ ] LITERAL OF
+    [ ' 2V-PRI CFA@ ] LITERAL OF
       ." 2VARIABLE( " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
-    [ ' 2C-PRI @ ] LITERAL OF
+    [ ' 2C-PRI CFA@ ] LITERAL OF
       ." 2CONSTANT( " R@ EXECUTE D. ." )" TRUE
     ENDOF
-    [ ' USER-PRI @ ] LITERAL OF
+    [ ' USER-PRI CFA@ ] LITERAL OF
       ." USER( " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
-    [ ' VOC-PRI @ ] LITERAL OF
+    [ ' VOC-PRI CFA@ ] LITERAL OF
       ." VOCABULARY( " R@ >BODY @ .WORDLIST-NAME ." )" TRUE
     ENDOF
-    [ ' VALUE-PRI @ ] LITERAL OF
+    [ ' VALUE-PRI CFA@ ] LITERAL OF
       ." VALUE( " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
-    [ ' DEFER-PRI @ ] LITERAL OF
+    [ ' DEFER-PRI CFA@ ] LITERAL OF
       ." DEFER " 
       R@ >HEAD H>#NAME TYPE SPACE
       ." XT=H# " R@ H.8 SPACE
@@ -73,7 +73,7 @@ DEFER DEFER-PRI
       R@ >BODY @ NIP
       CR DUP RECURSE
     ENDOF
-    [ ' : @ ] LITERAL OF
+    [ ' : CFA@ ] LITERAL OF
       R@ >HEAD H>#NAME ?DUP IF TYPE ELSE DROP ." (noname)" THEN SPACE
       ." XT=H# " R@ H.8 SPACE
       R@ >HEAD WORD-ATTR
@@ -153,7 +153,7 @@ DEFER DEFER-PRI
 
 : (XT>BODY) (S xt -- addr )
   (G convert xt to threaded code body address with special handling for CREATE ... DOES> )
-  DUP ?DOES> IF @ 5 + ELSE >BODY THEN
+  DUP ?DOES> IF CFA@ 5 + ELSE >BODY THEN
 ;
 
 : (SEE) (S xt -- )

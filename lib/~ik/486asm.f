@@ -33,10 +33,29 @@ DEFER EXIT-ASSEMBLER    ' NOOP IS EXIT-ASSEMBLER
 
 REQUIRES" lib\~js\486asm\486asm.f"
 
+ALSO ASSEMBLER ALSO ASM-HIDDEN DEFINITIONS
+
+:NONAME ( start a native code definition )
+  code-header 0 (CFA,) hide !csp init-asm
+; IS CODE
+
+HOST-ITC? [IF]
+
 MACRO: JMP-NEXT
   MOV     EBX , [EAX]
   JMP     EBX
 ENDM
+
+[THEN]
+
+HOST-DTC? [IF]
+
+MACRO: JMP-NEXT
+  MOV     EBX , EAX
+  JMP     EBX
+ENDM
+
+[THEN]
 
 \  Last word in CODE definitions
 MACRO: NEXT

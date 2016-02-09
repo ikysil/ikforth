@@ -1,7 +1,7 @@
 \
 \  Kernel.f
 \
-\  Copyright (C) 1999-2004 Illia Kysil
+\  Copyright (C) 1999-2004 Illya Kysil
 \
 \  IKForth kernel
 \
@@ -87,7 +87,7 @@ PARA-ALIGN
 \    ESP - DSP data stack pointer
 \    EBP - RSP return stack pointer
 \
-\    EBX - W pointer
+\    EAX - W pointer
 \
 \  All other registers have no special meaning.
 \

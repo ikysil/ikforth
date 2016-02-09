@@ -1,7 +1,7 @@
 \
 \  dllintf.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  An interface to DLLs
 \
@@ -64,12 +64,12 @@ HEX
 : (VoidDLLEntry) (S 'Name' -- )
   CREATE 0 , 
   ;CODE
-  83 B, ED B, 04 B, \ SUB     EBP,4
-  89 B, 7D B, 00 B, \ MOV     [DWORD PTR EBP],EDI
-  8B B, 58 B, 04 B, \ MOV     EBX,[DWORD PTR EAX+4]
-  FF B, D3 B,       \ CALL    EBX
-  8B B, 7D B, 00 B, \ MOV     EDI,[DWORD PTR EBP]
-  83 B, C5 B, 04 B, \ ADD     EBP,4
+  83 B, ED B, 04 B,       \ SUB     EBP,4
+  89 B, 7D B, 00 B,       \ MOV     [DWORD PTR EBP],EDI
+  8B B, 58 B, CFA-SIZE B, \ MOV     EBX,[DWORD PTR EAX+CFA-SIZE]
+  FF B, D3 B,             \ CALL    EBX
+  8B B, 7D B, 00 B,       \ MOV     EDI,[DWORD PTR EBP]
+  83 B, C5 B, 04 B,       \ ADD     EBP,4
   $NEXT
 
 : VoidDLLEntry (S 'Name' 'DLL' 'DLLName' -- )
@@ -79,13 +79,13 @@ HEX
 : (Int32DLLEntry) (S 'Name' -- )
   CREATE 0 , 
   ;CODE
-  83 B, ED B, 04 B, \ SUB     EBP,4
-  89 B, 7D B, 00 B, \ MOV     [DWORD PTR EBP],EDI
-  8B B, 58 B, 04 B, \ MOV     EBX,[DWORD PTR EAX+4]
-  FF B, D3 B,       \ CALL    EBX
-  50 B,             \ PUSH    EAX
-  8B B, 7D B, 00 B, \ MOV     EDI,[DWORD PTR EBP]
-  83 B, C5 B, 04 B, \ ADD     EBP,4
+  83 B, ED B, 04 B,       \ SUB     EBP,4
+  89 B, 7D B, 00 B,       \ MOV     [DWORD PTR EBP],EDI
+  8B B, 58 B, CFA-SIZE B, \ MOV     EBX,[DWORD PTR EAX+CFA-SIZE]
+  FF B, D3 B,             \ CALL    EBX
+  50 B,                   \ PUSH    EAX
+  8B B, 7D B, 00 B,       \ MOV     EDI,[DWORD PTR EBP]
+  83 B, C5 B, 04 B,       \ ADD     EBP,4
   $NEXT
 
 : Int32DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
@@ -95,14 +95,14 @@ HEX
 : (Int64DLLEntry) (S 'Name' -- )
   CREATE 0 ,
   ;CODE
-  83 B, ED B, 04 B, \ SUB     EBP,4
-  89 B, 7D B, 00 B, \ MOV     [DWORD PTR EBP],EDI
-  8B B, 58 B, 04 B, \ MOV     EBX,[DWORD PTR EAX+4]
-  FF B, D3 B,       \ CALL    EBX
-  50 B,             \ PUSH    EAX
-  52 B,             \ PUSH    EDX
-  8B B, 7D B, 00 B, \ MOV     EDI,[DWORD PTR EBP]
-  83 B, C5 B, 04 B, \ ADD     EBP,4
+  83 B, ED B, 04 B,       \ SUB     EBP,4
+  89 B, 7D B, 00 B,       \ MOV     [DWORD PTR EBP],EDI
+  8B B, 58 B, CFA-SIZE B, \ MOV     EBX,[DWORD PTR EAX+CFA-SIZE]
+  FF B, D3 B,             \ CALL    EBX
+  50 B,                   \ PUSH    EAX
+  52 B,                   \ PUSH    EDX
+  8B B, 7D B, 00 B,       \ MOV     EDI,[DWORD PTR EBP]
+  83 B, C5 B, 04 B,       \ ADD     EBP,4
   $NEXT
 
 : Int64DLLEntry (S 'Name' 'DLL' 'DLLName' -- )

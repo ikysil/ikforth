@@ -1,7 +1,7 @@
 \
 \  primitives.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 REPORT-NEW-NAME @
@@ -88,9 +88,8 @@ BASE @
 16 BASE !
 
 : $NEXT
-  AD B,                    \ LODSD
-  8B B, 18 B,              \ MOV     EBX,[DWORD PTR EAX]
-  FF B, E3 B,              \ JMP     [DWORD PTR EBX]
+  \ Compile $NEXT primitive of inner interpreter at HERE
+  HERE $NEXT-CODE-SIZE ALLOT $NEXT!
 ;
 
 BASE !
@@ -125,7 +124,7 @@ BASE !
 ; IMMEDIATE \ do nothing
 
 : (;CODE)
-  R> LATEST-HEAD@ HEAD> !
+  R> LATEST-HEAD@ HEAD> CFA!
 ;
 
 : ;CODE
@@ -140,7 +139,7 @@ BASE @
 ;
 
 HERE
-  83 B, C0 B, 1 CELLS B,   \ ADD     EAX,CELL_SIZE
+  83 B, C0 B, CFA-SIZE B,  \ ADD     EAX,CFA-SIZE
   50 B,                    \ PUSH    EAX
   $NEXT
 CONSTANT (DO-CREATE)
@@ -150,7 +149,7 @@ CONSTANT (DO-CREATE)
 ;
 
 : (DOES)
-  R> LATEST-HEAD@ HEAD> !
+  R> LATEST-HEAD@ HEAD> CFA!
 ;
 
 : CALL, \ ( addr -- )  \ compile call
@@ -165,7 +164,7 @@ HERE
   83 B, ED B, 1 CELLS B,   \ SUB     EBP,CELL_SIZE
   89 B, 75 B, 00 B,        \ MOV     [DWORD PTR EBP],ESI
   5E B,                    \ POP     ESI
-  83 B, C0 B, 1 CELLS B,   \ ADD     EAX,CELL_SIZE
+  83 B, C0 B, CFA-SIZE B,  \ ADD     EAX,CFA-SIZE
   50 B,                    \ PUSH    EAX
   $NEXT
 END-CODE

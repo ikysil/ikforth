@@ -70,16 +70,23 @@ DECIMAL
   DATA-AREA-SIZE @ HERE DATA-AREA-BASE - -
 ;
 
-: (.ENV-INFO-NUM) 
+: (.ENV-INFO-NUM)
   BL PARSE ENVIRONMENT? DROP POSTPONE LITERAL
 ; IMMEDIATE/COMPILE-ONLY
 
+: .HOST-CODE-THREADING
+  HOST-ITC? IF ." Host code: ITC (Indirect Threaded Code)" THEN
+  HOST-DTC? IF ." Host code: DTC (Direct Threaded Code)"   THEN
+;
+
 : .ENV-INFO
-  ." Environment information:" CR
-  UNUSED 1KB /                          8 U.R ." KBytes free/data area" CR
-  (.ENV-INFO-NUM) STACK-CELLS           8 U.R ."  cells/data stack"     CR
-  (.ENV-INFO-NUM) RETURN-STACK-CELLS    8 U.R ."  cells/return stack"   CR
-  (.ENV-INFO-NUM) EXCEPTION-STACK-CELLS 8 U.R ."  cells/exception stack"   CR
+  CR ." Environment information:"
+  CR UNUSED 1KB /                          8 U.R ." KBytes free/data area"
+  CR (.ENV-INFO-NUM) STACK-CELLS           8 U.R ."  cells/data stack"
+  CR (.ENV-INFO-NUM) RETURN-STACK-CELLS    8 U.R ."  cells/return stack"
+  CR (.ENV-INFO-NUM) EXCEPTION-STACK-CELLS 8 U.R ."  cells/exception stack"
+  CR CR .HOST-CODE-THREADING
+  CR
 ;
 
 : MONTH>STR
@@ -98,7 +105,7 @@ BASE !
   &USUAL (HEADER,)
 ;
 
-USER PAD PAD-SIZE USER-ALLOC 
+USER PAD PAD-SIZE USER-ALLOC
 
 \ ?EXIT "question-exit"
 \ ( true -- ) ( I: ra ip -- ra )

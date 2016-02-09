@@ -22,8 +22,6 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
   16 LSHIFT OR STDOUT SetConsoleCursorPosition DROP
 ;
 
-USER NumberOfConsoleInputEvents 1 CELLS USER-ALLOC
-
 \ 10.6.2.1307 EKEY? ( -- flag )
 \ If a keyboard event is available, return true. Otherwise return false.
 \ The event shall be returned by the next execution of EKEY. 
@@ -31,8 +29,8 @@ USER NumberOfConsoleInputEvents 1 CELLS USER-ALLOC
 \ After EKEY? returns with a value of true, subsequent executions of EKEY?
 \ prior to the execution of KEY, KEY? or EKEY also return true, referring to the same event. 
 : WIN-CONSOLE-EKEY? ( -- flag )
-  NumberOfConsoleInputEvents STDIN GetNumberOfConsoleInputEvents DROP
-  NumberOfConsoleInputEvents @ 0<>
+  0 SP@ STDIN GetNumberOfConsoleInputEvents DROP
+  0<>
 ;
 
 USER INPUT_RECORD 20 ( /INPUT_RECORD) USER-ALLOC
@@ -49,8 +47,6 @@ USER INPUT_RECORD 20 ( /INPUT_RECORD) USER-ALLOC
   SWAP 0xFF000000 AND 0<>
 ;
 
-USER NumberOfRecordsRead 1 CELLS USER-ALLOC
-
 \ 10.6.2.1305 EKEY ( -- u )
 \ Receive one keyboard event u.
 \ The encoding of keyboard events is implementation defined. 
@@ -60,7 +56,8 @@ USER NumberOfRecordsRead 1 CELLS USER-ALLOC
 \    2  ScanCod
 \    3  KeyDownFlag
 : WIN-CONSOLE-EKEY ( -- u ) \ 93 FACILITY EXT
-  NumberOfRecordsRead 1 INPUT_RECORD STDIN ReadConsoleInput DROP INPUT_RECORD
+  0 SP@ 1 INPUT_RECORD STDIN ReadConsoleInput DROP DROP
+  INPUT_RECORD
   DUP  ( EventType ) W@ KEY_EVENT <> IF DROP 0 EXIT THEN
   DUP  ( Event AsciiChar       ) 14 + W@
   OVER ( Event wVirtualScanCode) 12 + W@  16 LSHIFT OR
@@ -186,8 +183,6 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
   SWAP R> 2DROP
 ;
 
-VARIABLE WIN-PAGE-lpNumberOfCharsWritten
-
 \ 10.6.1.2005 PAGE 
 \ (S -- )
 \ Move to another page for output. Actual function depends on the output device.
@@ -195,9 +190,9 @@ VARIABLE WIN-PAGE-lpNumberOfCharsWritten
 \ On a printer, PAGE performs a form feed. 
 : WIN-PAGE (S -- )
   CSBI STDOUT GetConsoleScreenBufferInfo DROP
-  WIN-PAGE-lpNumberOfCharsWritten 0
+  0 SP@ 0
   CSBI CONSOLE_SCREEN_BUFFER_INFO.dwSize DUP COORD.X W@ SWAP COORD.Y W@ *
-  BL STDOUT FillConsoleOutputCharacter DROP
+  BL STDOUT FillConsoleOutputCharacter DROP DROP
   0 0 AT-XY
 ;
 
