@@ -52,8 +52,6 @@ LASTWORD                =       __DEF
                         DB      __PREVFLD - $ - 1
                         IF      ~ NAME eq
                           DB      NAME
-                        ELSE
-                          DB      0
                         END IF
 __PREVFLD:
                         DB      __PREVFLD - __DEF 
