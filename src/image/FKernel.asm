@@ -9,20 +9,6 @@
 ;  Minimal IKForth kernel, which supports compilation from files.
 ;
 ;******************************************************************************
-;
-;  Register usage:
-;  * EDI - UDP user data area pointer
-;  * ESI - IP  instruction pointer
-;  * ESP - DSP data stack pointer
-;  * EBP - RSP return stack pointer
-;
-;    EAX - W pointer
-;
-;  * - register should remain unchanged in low-level primitives
-;
-;  All other registers have no special meaning.
-;
-;******************************************************************************
 
                         format  binary
 
@@ -80,18 +66,21 @@ CFA_DESIRED_SIZE_VAR:
 ;******************************************************************************
 ;                        ALIGN   16
 
-                        INCLUDE "macro.inc"
+                        INCLUDE "wordlist-def.asm"
+                        INCLUDE "tc-def.asm"
+                        INCLUDE "tc-trace.asm"
+                        INCLUDE "forth-vm.asm"
 
                         IF      ~ DEFINED CODE_THREADING
                 CODE_THREADING  EQU DTC
                         END IF
 
                         MATCH   =DTC, CODE_THREADING {
-                        INCLUDE "dtc-system.asm"
+                        INCLUDE "forth-vm-dtc.asm"
                         }
 
                         MATCH   =ITC, CODE_THREADING {
-                        INCLUDE "itc-system.asm"
+                        INCLUDE "forth-vm-itc.asm"
                         }
 
                         INCLUDE "words.inc"
