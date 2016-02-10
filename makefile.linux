@@ -1,22 +1,22 @@
 #
 #  Makefile for IKForth.
 #
-#  Copyright (C) 1999-2015 Illya Kysil
+#  Copyright (C) 1999-2016 Illya Kysil
 #
 
-asm = wasm
-disasm = wdis
+asm = fasm
+asml = listing
 link = wlink
 make = wmake
 
 all : .symbolic IKForth.exe IKForth.img
 
 clean : .symbolic
-        rm -f src/image/*.obj
-        rm -f src/image/FKernel.lst src/image/FKernel.sym
-        rm -f src/FKernel.img
-        rm -f src/FKernel.exe
-        rm -f IKForth.exe IKForth.img
+        rm -f  src/image/*.obj
+        rm -rf src/image/target
+        rm -f  src/FKernel.img
+        rm -f  src/FKernel.exe
+        rm -f  IKForth.exe IKForth.img
         cd  src/loader/win32
         $(make) -f makefile.linux clean $(__MAKEOPTS__)
         cd  ../../..
@@ -47,11 +47,9 @@ IKForth.img : src/FKernel.img &
 src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
         echo Building $@
         cd  src/image
-        fasm FKernel.asm -s FKernel.sym ../FKernel.img
-        listing FKernel.sym FKernel.lst
-#        $(asm) -d1 -e4 -3ps -mf -bt=nt FKernel.asm -q
-#        $(link) file FKernel.o format raw bin op map op q op offset=0 name ../FKernel.img
-#        $(disasm) -l=FKernel.lst FKernel.o
+        mkdir -p target
+        $(asm) FKernel.asm -s target/FKernel.sym ../FKernel.img
+        $(asml) target/FKernel.sym target/FKernel.lst
         cd  ../..
 
 src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
