@@ -39,6 +39,9 @@ void    __stdcall fEmit(char c){
 }
 
 void    __stdcall fType(int sLen, char const * sAddr){
+  if (sLen < 1) {
+    return;
+  }
   DWORD written = 0;
   WriteConsole(hOut, sAddr, sLen, &written, NULL);
 }
@@ -78,28 +81,58 @@ void    __stdcall fFileReposition(HANDLE fileId, LONG HWord, LONG LWord){
   SetFilePointer(fileId, LWord, &HWord, FILE_BEGIN);
 }
 
-__int64 __stdcall fFileReadLine(HANDLE fileId, int cLen, char * cAddr){
+__int64 __stdcall fFileReadLine(HANDLE fileId, int cLen, char * cAddr) {
   char c;
   bool eof = false;
   int flag = 0;
   int i = 0;
-  while (i < cLen){
+  int skipped = 0;
+  bool crSeen = false;
+  bool lfSeen = false;
+  int rewind = 0;
+  while (i + skipped < cLen) {
     DWORD res = 0;
-    if(!ReadFile(fileId, &c, sizeof(c), &res, NULL))
+    if (!ReadFile(fileId, &c, sizeof(c), &res, NULL)) {
       res = -1;
-    if(res <= 0){
+    }
+    if (res <= 0) {
       eof = true;
       break;
     }
-    *(cAddr++) = c;
-    if((c == '\n') || (c == '\r'))
+    if (lfSeen) {
+      if (c != 0x0D) {
+        rewind += res;
+      }
       break;
+    }
+    if (crSeen) {
+      if (c != 0x0A) {
+        rewind += res;
+      }
+      break;
+    }
+    *(cAddr++) = c;
+    if (c == 0x0A) {
+      lfSeen = true;
+      skipped++;
+      continue;
+    }
+    if (c == 0x0D) {
+      crSeen = true;
+      skipped++;
+      continue;
+    }
     i++;
   }
-  if(eof && (i == 0))
+  if (rewind > 0) {
+    SetFilePointer(fileId, -rewind, NULL, FILE_CURRENT);
+  }
+  if(eof && (i == 0)) {
     flag = 0;
-  else
+  }
+  else {
     flag = -1;
+  }
   return ((__int64)flag << 32) | i;
 }
 
