@@ -36,7 +36,7 @@ USER #EVAL 1 CELLS USER-ALLOC
                THEN
   SOURCE-ID 0> IF
                  FILE-LINE MAX-FILE-LINE-LENGTH SOURCE-ID READ-LINE THROW SWAP #FILE-LINE ! 0 >IN !
-                 SOURCE REFILL-SOURCE 2!
+                 REPORT-SOURCE!
                  \DEBUG CR ." REFILL: " REPORT-SOURCE
                  EXIT
                THEN
