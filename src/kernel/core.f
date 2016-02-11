@@ -415,6 +415,18 @@ DEFER (C IMMEDIATE ' ( IS (C
 DEFER (G IMMEDIATE ' ( IS (G
 
 \ -----------------------------------------------------------------------------
+\  \DEBUG-ON \DEBUG-OFF
+\ -----------------------------------------------------------------------------
+
+\ \DEBUG-ON makes \DEBUG an empty operation thus
+\ all the code in the line after \DEBUG will be interpreted
+: \DEBUG-ON  ['] EXIT IS \DEBUG ;
+
+\ \DEBUG-OFF makes \DEBUG equivalent to \ thus
+\ all the code in the line after \DEBUG will be ignored
+: \DEBUG-OFF ['] \ IS \DEBUG ;
+
+\ -----------------------------------------------------------------------------
 
 : ON TRUE SWAP ! ;
 

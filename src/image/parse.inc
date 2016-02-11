@@ -182,3 +182,11 @@ PPARSE_EXIT:
                         CW      $2DROP
                         CEXIT
 
+                        $COLON  'NOOP',$NOOP,VEF_IMMEDIATE
+                        CEXIT
+
+                        $DEFER  '\DEBUG',,VEF_IMMEDIATE
+                        MATCH   =TRUE, DEBUG {
+                        CW      $NOOP
+                        }
+                        CW      $PBSLASH
