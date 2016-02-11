@@ -17,6 +17,8 @@
        S" lib\test\ANSITest.f" ['] included catch
        R> REPORT-NEW-NAME ! throw ;
 
+: TEST-STRING requires" test/string-test.4th" ;
+
 CODE A
     POP EAX
     INC EAX

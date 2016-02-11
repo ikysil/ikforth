@@ -102,4 +102,55 @@ REPORT-NEW-NAME OFF
   BL SKIP
 ;
 
+USER KEY-VALUE?-RESULT 2 CELLS USER-ALLOC
+USER KEY-VALUE?-SEP    1 CHARS USER-ALLOC
+
+: STRING-PREFIX?
+  (S c-addr1 u1 c-addr2 u2 -- flag )
+  (G Is c-addr1 u1 a prefix of c-addr2 u2 )
+  DUP 3 PICK \ S: c-addr1 u1 c-addr2 u2 u2 u1
+  < IF 2DROP 2DROP FALSE EXIT THEN
+  2 PICK MIN
+  COMPARE 0=
+;
+
+: KEY-VALUE?
+  (S c-addr1 count1 c-addr2 count2 separator-char -- c-addr1 count1 FALSE | c-addr-v count-v TRUE )
+  (G Extract value from string in format "key<separator-char>value" )
+  (G Key is represented by c-addr1 and count1 )
+  (G c-addr-v and count-v represent address and length of the value, if key matches )
+  0. KEY-VALUE?-RESULT 2!
+  KEY-VALUE?-SEP C!
+  2OVER 2OVER
+  STRING-PREFIX?
+  \ S: c-addr1 count1 c-addr2 count2 prefix-flag
+  INVERT IF 2DROP FALSE EXIT THEN
+  2 PICK 2 PICK + C@
+  KEY-VALUE?-SEP C@ =
+  IF
+    \ S: c-addr1 count1 c-addr2 count2
+    2>R NIP 2R>
+    \ S: count1 c-addr2 count2
+    ROT SWAP OVER
+    \ S: c-addr2 count1 count2 count1
+    - [ 1 CHARS ] LITERAL -
+    >R
+    + CHAR+
+    R> 2DUP
+    KEY-VALUE?-RESULT 2!
+    TRUE
+  ELSE
+    2DROP
+    FALSE
+  THEN
+;
+
+: KEY=VALUE?
+  (S c-addr1 count1 c-addr2 count2 -- c-addr1 count1 FALSE | c-addr-v count-v TRUE )
+  (G Extract value from string in format "key=value" represented by c-addr2 and count2 )
+  (G Key is represented by c-addr1 and count1 )
+  (G c-addr-v and count-v represent address and length of the value, if key matches )
+  [CHAR] = KEY-VALUE?
+;
+
 REPORT-NEW-NAME !
