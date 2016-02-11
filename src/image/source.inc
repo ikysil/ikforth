@@ -3,14 +3,14 @@
 ;  source.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
-;  
+;
 ;******************************************************************************
 
 ;  6.2.2218 SOURCE-ID
-;  Identifies the input source as follows: 
+;  Identifies the input source as follows:
 ;
 ;  SOURCE-ID       Input source
 ;  -1              String (via EVALUATE)
@@ -29,7 +29,7 @@
 
 ;  6.1.2216 SOURCE
 ;  c-addr is the address of, and u is the number of characters in
-;  the input buffer. 
+;  the input buffer.
 ;  D: -- c-addr u
                         $NONAME $_SOURCE
 
@@ -40,7 +40,17 @@
                         $DEFER  'SOURCE',$SOURCE
 
                         CW      $_SOURCE
-                        
+
+                        $COLON  'REPORT-SOURCE',$REPORT_SOURCE
+                        CW      $REFILL_SOURCE
+                        CW      $2FETCH
+                        CW      $2DUP
+                        CW      $HOUT8
+                        $WRITE  '  '
+                        CW      $HOUT8
+                        $WRITE  '  '
+                        CW      $TYPE
+                        CEXIT
 ;  6.2.2125 REFILL
 ;  D: -- flag
                         $NONAME $_REFILL
@@ -54,11 +64,22 @@
                         CSTORE  $HASH_FILE_LINE
                         CW      $ZERO
                         CSTORE  $TOIN
+
+                        CW      $SOURCE
+                        CW      $REFILL_SOURCE
+                        CW      $2STORE
+
+                        MATCH   =TRUE, DEBUG {
+                        $CR
+                        $WRITE  'REFILL: '
+                        CW      $REPORT_SOURCE
+                        }
+
                         CEXIT
 
                         $DEFER  'REFILL',$REFILL
 
-                        CW      $_REFILL 
+                        CW      $_REFILL
 
                         $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT
 

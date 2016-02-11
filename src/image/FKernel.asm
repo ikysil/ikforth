@@ -166,6 +166,9 @@ NO_TYPE:
                         $WRITE  '(nonamed)'
 DO_CR:
                         $CR
+                        $WRITE  'SOURCE: '
+                        CW      $REPORT_SOURCE
+                        $CR
 DO_FORTH_NO_EXCEPTIONS:
                         CW      $PBYE
 

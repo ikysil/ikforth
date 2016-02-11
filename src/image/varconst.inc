@@ -25,6 +25,10 @@
 
                         CC      VAR_CURR_FILE_POS
 
+;  c-addr and length of last REFILL
+                        $USER   'REFILL-SOURCE',$REFILL_SOURCE
+                        CC      VAR_REFILL_SOURCE
+
 ;  FILE-LINE
 ;  Line address for INCLUDED
                         $USER   'FILE-LINE',$FILE_LINE

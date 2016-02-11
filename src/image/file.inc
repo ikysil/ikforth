@@ -95,8 +95,7 @@ INCLUDE_FILE_EXIT:
                           CW      $2FETCH
                           CW      $SOURCE_ID
                           CW      $REPOSITION_FILE
-                          CW      $REFILL
-                          CW      $2DROP
+                          CW      $DROP
 @@PRESTORE_FILE_INPUT_EXIT:
                         CEXIT
 
