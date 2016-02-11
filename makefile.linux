@@ -5,9 +5,15 @@
 #
 
 asm = fasm
+asm_opts =
 asml = listing
 link = wlink
 make = wmake
+wine = wineconsole
+
+.BEFORE
+        set wine=$(wine)
+        set asm_opts=$(asm_opts)
 
 all : .symbolic IKForth.exe IKForth.img
 
@@ -22,16 +28,20 @@ clean : .symbolic
         cd  ../../..
 
 run : .symbolic all
-        WINEDEBUG=-all wineconsole IKForth.exe
-
-debug : .symbolic all
-        WINEDEBUG=-all wine IKForth.exe
+        WINEDEBUG=-all $(%wine) IKForth.exe
 
 test : .symbolic all
-        WINEDEBUG=-all wine IKForth.exe 'S" IKForth-test.4th" INCLUDED'
+        WINEDEBUG=-all $(%wine) IKForth.exe 'S" IKForth-test.4th" INCLUDED'
 
 test-stdin : .symbolic all
-        WINEDEBUG=-all echo 'S" fine!" TYPE' | wine IKForth.exe 'S" test/stdin-test.4th" INCLUDED'
+        echo 'S" fine!" TYPE' | WINEDEBUG=-all $(%wine) IKForth.exe 'S" test/stdin-test.4th" INCLUDED'
+
+debug : .symbolic
+        echo Setting DEBUG options
+        set asm_opts="-DDEBUG=TRUE $(asm_opts)"
+
+term : .symbolic
+        set wine=wine
 
 IKForth.exe : src/FKernel.exe
         echo Building $@
@@ -51,7 +61,7 @@ src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
         echo Building $@
         cd  src/image
         mkdir -p target
-        $(asm) FKernel.asm -s target/FKernel.sym ../FKernel.img
+        $(asm) $(%asm_opts) FKernel.asm -s target/FKernel.sym ../FKernel.img
         $(asml) target/FKernel.sym target/FKernel.lst
         cd  ../..
 
