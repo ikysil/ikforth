@@ -31,7 +31,7 @@ test : .symbolic all
         WINEDEBUG=-all wine IKForth.exe 'S" IKForth-test.4th" INCLUDED'
 
 test-stdin : .symbolic all
-        WINEDEBUG=-all echo 'S" fine!" TYPE' | wine IKForth.exe 'S" test/stdin.4th" INCLUDED'
+        WINEDEBUG=-all echo 'S" fine!" TYPE' | wine IKForth.exe 'S" test/stdin-test.4th" INCLUDED'
 
 IKForth.exe : src/FKernel.exe
         echo Building $@
