@@ -131,6 +131,7 @@ START:
                         CW      $DUP
                         CW      $EXIT_CODE
                         CW      $STORE
+                        CW      $QDUP
                         CQBR    DO_FORTH_NO_EXCEPTIONS
                         $CR
                         $WRITE  'Exception caught while INCLUDing ['
@@ -138,7 +139,14 @@ START:
                         CFETCH  $HASH_SF
                         CW      $TYPE
                         $WRITE  ']'
+                        $CR
+                        $WRITE  'Exception: H# '
+                        CW      $HOUT8
+                        $CR
                         CW      $2DROP
+                        $WRITE  'HERE:      H# '
+                        CW      $HERE
+                        CW      $HOUT8
                         $CR
                         $WRITE  'Latest word searched: '
                         CW      $POCKET

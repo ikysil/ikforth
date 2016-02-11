@@ -17,7 +17,7 @@
                         POPDS   ECX                     ; u1
                         POPDS   EDI                     ; c-addr1
                         POPDS   EDX                     ; ud1
-                        POPDS   EAX                     
+                        POPDS   EAX
 TN_LOOP:
                         OR      ECX,ECX
                         JZ      SHORT TN_STOP
@@ -92,3 +92,54 @@ DIGITS_TABLE:
                         PUSHDS  EDX
                         $NEXT
 
+;  Convert a byte to hex characters so that B>H EMIT EMIT sequence
+;  will print the representation of the value.
+;  S: a -- ca cb
+                        $CODE   'B>H',$BTOH
+                        LEA     EDX,[DIGITS_TABLE + IMAGE_BASE]
+                        POPDS   EAX
+                        XOR     ECX,ECX
+                        MOV     EBX,EAX
+                        AND     EBX,0x0F
+                        MOV     CL,BYTE [EDX + EBX]
+                        PUSHDS  ECX
+                        SHR     EAX,4
+                        MOV     EBX,EAX
+                        AND     EBX,0x0F
+                        MOV     CL,BYTE [EDX + EBX]
+                        PUSHDS  ECX
+                        $NEXT
+
+;  Split TOS into 4 bytes with most significant byte at TOS.
+;  S: a -- e d c b
+                        $CODE   'SPLIT-8',$SPLIT8
+                        POPDS   EAX
+                        XOR     ECX,ECX
+                        MOV     CL,AL
+                        PUSH    ECX
+                        MOV     CL,AH
+                        PUSH    ECX
+                        SHR     EAX,16
+                        MOV     CL,AL
+                        PUSH    ECX
+                        MOV     CL,AH
+                        PUSH    ECX
+                        $NEXT
+
+;  Output the byte on the top of the data stack in hexadecimal representation.
+;  S: a --
+                        $COLON  'H.2',$HOUT2
+                        CW      $BTOH
+                        CW      $EMIT
+                        CW      $EMIT
+                        CEXIT
+
+;  Output the value on the top of the data stack in hexadecimal representation.
+;  S: a --
+                        $COLON  'H.8',$HOUT8
+                        CW      $SPLIT8
+                        CW      $HOUT2
+                        CW      $HOUT2
+                        CW      $HOUT2
+                        CW      $HOUT2
+                        CEXIT
