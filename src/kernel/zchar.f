@@ -46,7 +46,7 @@ REPORT-NEW-NAME OFF
   2DUP +           \ c-addr count here here+count
   >R
   SWAP CMOVE
-  0 R> C!+
+  0 R> C!
 ;
 
 \ compile zstring separated by "
