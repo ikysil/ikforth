@@ -71,10 +71,6 @@ CFA_DESIRED_SIZE_VAR:
                         INCLUDE "tc-trace.asm"
                         INCLUDE "forth-vm.asm"
 
-                        IF      ~ DEFINED CODE_THREADING
-                CODE_THREADING  EQU DTC
-                        END IF
-
                         MATCH   =DTC, CODE_THREADING {
                         INCLUDE "forth-vm-dtc.asm"
                         }
