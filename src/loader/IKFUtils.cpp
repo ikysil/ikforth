@@ -37,7 +37,8 @@ void SetFuncTable(ImageHeader const * Header){
   ft->fReAlloc        = &fReAlloc;
 }
 
-int StartForth(int const argc, char const * argv[], char const * envp[], char const * ImageFileName, char const * StartFileName) {
+int StartForth(int const argc, char const * argv[], char const * envp[],
+               char const * ImageFileName, char const * StartFileName) {
   hOut = GetStdHandle(STD_OUTPUT_HANDLE);
   HANDLE fHandle = fFileOpen(0, strlen(ImageFileName), ImageFileName);
   if(fHandle == INVALID_HANDLE_VALUE){
@@ -71,7 +72,14 @@ int StartForth(int const argc, char const * argv[], char const * envp[], char co
   fFileClose(fHandle);
   SetFuncTable(lHeader);
   int exitCode = 0;
-  IHeader.MainProcAddr(argc, argv, envp, StartFileName, strlen(StartFileName), &exitCode);
+  MainProcContext mainProcCtx;
+  mainProcCtx.argc = argc;
+  mainProcCtx.argv = argv;
+  mainProcCtx.envp = envp;
+  mainProcCtx.startFileName = StartFileName;
+  mainProcCtx.startFileNameLength = strlen(StartFileName);
+  mainProcCtx.exitCode = &exitCode;
+  IHeader.MainProcAddr(&mainProcCtx);
   while (!CanExit) Sleep(100);
   VirtualFree(lHeader, IHeader.DesiredSize, MEM_DECOMMIT);
   VirtualFree(lHeader, 0, MEM_RELEASE);

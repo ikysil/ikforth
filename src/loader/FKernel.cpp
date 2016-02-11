@@ -23,7 +23,8 @@ int main(int const argc, char const * argv[]) {
   strcpy(ImageFileName, StartFileName);
   ChangeFileExt(StartFileName, ".f");
   ChangeFileExt(ImageFileName, ".img");
-  int returnCode = StartForth(argc, argv, (char const **)environ, ImageFileName, StartFileName);
+  int returnCode = StartForth(argc, argv, (char const **)environ,
+                              ImageFileName, StartFileName);
   fFree(StartFileName);
   fFree(ImageFileName);
   return returnCode;

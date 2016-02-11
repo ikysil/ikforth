@@ -86,19 +86,37 @@ CFA_DESIRED_SIZE_VAR:
                         INCLUDE "words.inc"
 
 START:
-; typedef void __stdcall (* MainProc)(int const, char const **, char const **, char const *, int, int *);
-                        POPDS   EAX
-                        POPDS   <DWORD [ARGC_VAR + IMAGE_BASE]>
-                        POPDS   <DWORD [ARGV_VAR + IMAGE_BASE]>
-                        POPDS   <DWORD [ENVP_VAR + IMAGE_BASE]>
-                        POPDS   <DWORD [SF_VAR + IMAGE_BASE]>
-                        POPDS   <DWORD [HASH_SF_VAR + IMAGE_BASE]>
-                        POPDS   <DWORD [EXIT_CODE_VAR + IMAGE_BASE]>
-                        PUSHDS  EAX
+; typedef struct _MainProcContext {
+;     int           argc;
+;     char const ** argv;
+;     char const ** envp;
+;     char const *  startFileName;
+;     int           startFileNameLength;
+;     int  const *  exitCode;
+; } MainProcContext;
+;
+; typedef void __stdcall (* MainProc)(MainProcContext *);
+                        POP     EAX     ; move return address away
+                        POP     ESI     ; get address of MainProcContext
+                        PUSH    EAX
+                        MOV     EBX,IMAGE_BASE
+                        CLD
+                        LEA     EDI,[EBX + ARGC_VAR]
+                        MOVSD
+                        LEA     EDI,[EBX + ARGV_VAR]
+                        MOVSD
+                        LEA     EDI,[EBX + ENVP_VAR]
+                        MOVSD
+                        LEA     EDI,[EBX + SF_VAR]
+                        MOVSD
+                        LEA     EDI,[EBX + HASH_SF_VAR]
+                        MOVSD
+                        LEA     EDI,[EBX + EXIT_CODE_VAR]
+                        MOVSD
                         MOV     EAX,DWORD [MAIN_PROC_VAR + IMAGE_BASE]
-                        PUSHDS  EAX
-                        PUSHDS  F_FALSE
-                        PUSHDS  0
+                        PUSH    EAX
+                        PUSH    F_FALSE
+                        PUSH    0
                         MOV     EAX,DWORD [FUNC_TABLE + IMAGE_BASE + FUNC_START_THREAD * CELL_SIZE]
                         CALL    EAX
                         RET

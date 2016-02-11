@@ -9,7 +9,16 @@ const DWORD fTRUE  = 0xFFFFFFFF;
 
 const int MAX_FILE_PATH = 1024;
 
-typedef void __stdcall (* MainProc)(int const, char const **, char const **, char const *, int, int *);
+typedef struct _MainProcContext {
+    int           argc;
+    char const ** argv;
+    char const ** envp;
+    char const *  startFileName;
+    int           startFileNameLength;
+    int  const *  exitCode;
+} MainProcContext;
+
+typedef void __stdcall (* MainProc)(MainProcContext *);
 typedef void __stdcall (* ForthThreadProc)(void *, DWORD);
 
 typedef struct _FuncTable{
@@ -33,8 +42,7 @@ typedef struct _FuncTable{
 } FuncTable;
 
 typedef struct _ImageHeader{
-  char              Signature[15];
-  char              EndOfSignature;
+  char              Signature[16];
   void *            DesiredBase;
   DWORD             DesiredSize;
   MainProc          MainProcAddr;
