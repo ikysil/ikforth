@@ -37,6 +37,8 @@ USER_HERE          =       ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
                         _VAR    TOIN
                         _VAR    SOURCE_ID
                         _VAR    REFILL_SOURCE,CELL_SIZE * 2
+                        _VAR    INCLUDE_LINE_NUM
+                        _VAR    ERROR_LINE_NUM
                         _VAR    CASE_SENSITIVE
                         _VAR    TONUMBER_SIGNED
 

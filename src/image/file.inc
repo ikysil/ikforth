@@ -3,7 +3,7 @@
 ;  file.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  FILE access words
@@ -74,13 +74,16 @@ INCLUDE_FILE_EXIT:
                         CW      $CURRENT_FILE_POSITION
                         CW      $2FETCH
                         CFETCH  $TOIN
+                        CFETCH  $INCLUDE_LINE_NUM
+                        CW      $1SUB
                         CWLIT   $RESTORE_INPUT_FILE
-                        CCLIT   5
+                        CCLIT   6
                         CEXIT
 
                         $NONAME $RESTORE_INPUT_FILE
 
                         CW      $DROP
+                        CSTORE  $INCLUDE_LINE_NUM
                         CW      $DUP
                         CSTORE  $TOIN
                         CW      $STOD
@@ -106,6 +109,10 @@ INCLUDE_FILE_EXIT:
                         CSTORE  $TOIN
                         CW      $DUP
                         CW      $SOURCE_ID_STORE
+                        CW      $DUP
+                        CSTORE  $INCLUDE_LINE_NUM
+                        CW      $DUP
+                        CSTORE  $ERROR_LINE_NUM
                         CW      $STOD
                         CW      $CURRENT_FILE_POSITION
                         CW      $2STORE

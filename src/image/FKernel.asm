@@ -134,6 +134,7 @@ START:
                         CW      $QDUP
                         CQBR    DO_FORTH_NO_EXCEPTIONS
                         $CR
+                        $CR
                         $WRITE  'Exception caught while INCLUDing ['
                         CFETCH  $SF
                         CFETCH  $HASH_SF
@@ -166,8 +167,9 @@ NO_TYPE:
                         $WRITE  '(nonamed)'
 DO_CR:
                         $CR
-                        $WRITE  'SOURCE: '
+                        $WRITE  'Error in: '
                         CW      $REPORT_SOURCE
+                        $CR
                         $CR
 DO_FORTH_NO_EXCEPTIONS:
                         CW      $PBYE

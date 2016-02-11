@@ -29,6 +29,12 @@
                         $USER   'REFILL-SOURCE',$REFILL_SOURCE
                         CC      VAR_REFILL_SOURCE
 
+                        $USER   'INCLUDE-LINE#',$INCLUDE_LINE_NUM
+                        CC      VAR_INCLUDE_LINE_NUM
+
+                        $USER   'ERROR-LINE#',$ERROR_LINE_NUM
+                        CC      VAR_ERROR_LINE_NUM
+
 ;  FILE-LINE
 ;  Line address for INCLUDED
                         $USER   'FILE-LINE',$FILE_LINE

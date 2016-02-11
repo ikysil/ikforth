@@ -42,15 +42,26 @@
                         CW      $_SOURCE
 
                         $COLON  'REPORT-SOURCE',$REPORT_SOURCE
+                        $WRITE  'LINE# H# '
+                        CFETCH  $ERROR_LINE_NUM
+                        CW      $HOUT8
+                        $WRITE  '  '
                         CW      $REFILL_SOURCE
                         CW      $2FETCH
-                        CW      $2DUP
-                        CW      $HOUT8
-                        $WRITE  '  '
-                        CW      $HOUT8
-                        $WRITE  '  '
                         CW      $TYPE
                         CEXIT
+
+                        $COLON  'REPORT-SOURCE!',$REPORT_SOURCE_STORE
+                        CW      $SOURCE
+                        CW      $REFILL_SOURCE
+                        CW      $2STORE
+                        CFETCH  $INCLUDE_LINE_NUM
+                        CW      $1ADD
+                        CW      $DUP
+                        CSTORE  $INCLUDE_LINE_NUM
+                        CSTORE  $ERROR_LINE_NUM
+                        CEXIT
+
 ;  6.2.2125 REFILL
 ;  D: -- flag
                         $NONAME $_REFILL
@@ -65,9 +76,7 @@
                         CW      $ZERO
                         CSTORE  $TOIN
 
-                        CW      $SOURCE
-                        CW      $REFILL_SOURCE
-                        CW      $2STORE
+                        CW      $REPORT_SOURCE_STORE
 
                         MATCH   =TRUE, DEBUG {
                         $CR
