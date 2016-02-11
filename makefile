@@ -11,11 +11,29 @@ link = wlink
 make = wmake
 wine = wineconsole
 
+!ifdef __LINUX__
+loader_makefile=makefile.linux
+!else
+loader_makefile=makefile
+!endif
+
+code_threading = -d CODE_THREADING=DTC
+
 .BEFORE
         set wine=$(wine)
         set asm_opts=$(asm_opts)
+        set code_threading=$(code_threading)
 
-all : .symbolic IKForth.exe IKForth.img
+launcher : .symbolic
+!ifdef __LINUX__
+        set btlauncher=WINEDEBUG=-all wine
+        set rtlauncher=WINEDEBUG=-all $(%wine)
+!else
+        set btlauncher=
+        set rtlauncher=
+!endif
+
+all : .symbolic IKForth.exe launcher IKForth.img
 
 clean : .symbolic
         rm -f  src/image/*.obj
@@ -24,21 +42,29 @@ clean : .symbolic
         rm -f  src/FKernel.exe
         rm -f  IKForth.exe IKForth.img
         cd  src/loader/win32
-        $(make) -f makefile.linux clean $(__MAKEOPTS__)
+        $(make) -f $(loader_makefile) clean $(__MAKEOPTS__)
         cd  ../../..
 
 run : .symbolic all
-        WINEDEBUG=-all $(%wine) IKForth.exe
+        $(%rtlauncher) IKForth.exe
 
 test : .symbolic all
-        WINEDEBUG=-all $(%wine) IKForth.exe 'S" IKForth-test.4th" INCLUDED'
+        $(%rtlauncher) IKForth.exe 'S" IKForth-test.4th" INCLUDED'
 
 test-stdin : .symbolic all
-        echo 'S" fine!" TYPE' | WINEDEBUG=-all $(%wine) IKForth.exe 'S" test/stdin-test.4th" INCLUDED'
+        echo 'S" fine!" TYPE' | $(%rtlauncher) IKForth.exe 'S" test/stdin-test.4th" INCLUDED'
 
 debug : .symbolic
         echo Setting DEBUG options
-        set asm_opts="-DDEBUG=TRUE $(asm_opts)"
+        set asm_opts=-d DEBUG=TRUE $(%asm_opts)
+
+dtc : .symbolic
+        echo CODE_THREADING=DTC
+        set code_threading=-d CODE_THREADING=DTC
+
+itc : .symbolic
+        echo CODE_THREADING=ITC
+        set code_threading=-d CODE_THREADING=ITC
 
 term : .symbolic
         set wine=wine
@@ -55,19 +81,19 @@ IKForth.img : src/FKernel.img &
         echo Building $@
 #        WINEDEBUG=-all winedbg src/FKernel.exe
 #        WINEDEBUG=-all winedbg --file src/loader/FKernel.winedbg src/FKernel.exe
-        WINEDEBUG=-all wine src/FKernel.exe
+        $(%btlauncher) src/FKernel.exe
 
 src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
         echo Building $@
         cd  src/image
         mkdir -p target
-        $(asm) $(%asm_opts) FKernel.asm -s target/FKernel.sym ../FKernel.img
+        $(asm) $(%asm_opts) $(%code_threading) FKernel.asm -s target/FKernel.sym ../FKernel.img
         $(asml) target/FKernel.sym target/FKernel.lst
         cd  ../..
 
 src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
         echo Building $@
         cd  src/loader/win32
-        $(make) -f makefile.linux $(__MAKEOPTS__)
+        $(make) -f $(loader_makefile) $(__MAKEOPTS__)
         cp FKernel.exe ../../FKernel.exe > /dev/null
         cd  ../../..
