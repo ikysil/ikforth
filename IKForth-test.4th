@@ -19,6 +19,8 @@
 
 : TEST-STRING requires" test/string-test.4th" ;
 
+: TEST-HOSTENV requires" test/hostenv-test.4th" ;
+
 CODE A
     POP EAX
     INC EAX

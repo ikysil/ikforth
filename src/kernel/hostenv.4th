@@ -9,37 +9,48 @@ CR .( Loading HOSTENV definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-: ENVP? (S c-addr1 count1 -- c-addr2 count2 true | false ) \ seach host environment variable and return value as counted string
+USER XT?-ENVP-XT 1 CELLS USER-ALLOC
+
+: XT?-ENVP (S x*i xt -- x*j )
+  \ execute xt for each entry in ENVP
+  \ xt stack effect: S: x*i -- x*j flag
+  \ return flag FALSE to stop enumeration
+  XT?-ENVP-XT !
   ENVP >R
   BEGIN
-    R@ @ ?DUP
-  WHILE
-    ZCOUNT
-    \ S: c-addr1 count1 c-addr-envp count-envp
-    2OVER 2OVER 2 PICK MIN 
-    \ S: c-addr1 count1 c-addr-envp count-envp c-addr1 count1 c-addr-env MIN(count1, count-env)
-    COMPARE
-    0= IF
-      2 PICK 2 PICK + C@
-      [CHAR] = = IF
-        \ S: c-addr1 count1 c-addr-envp count-envp
-        DROP
-        + CHAR+ NIP
-        ZCOUNT
-        TRUE
-        R> DROP
-        EXIT
-      ELSE
-        2DROP
-      THEN
-    ELSE
-      2DROP
+    R@ @ DUP
+    IF
+      ZCOUNT
+      XT?-ENVP-XT @ EXECUTE
     THEN
+  WHILE
     R> CELL+ >R
   REPEAT
-  2DROP
   R> DROP
-  FALSE
+;
+
+: .S-HOSTENV (S c-addr count -- true )
+  TYPE CR
+  TRUE
+;
+
+: .HOSTENV
+  (G Print host environment variables )
+  ['] .S-HOSTENV XT?-ENVP
+;
+
+: ENVP?=VALUE?
+  KEY=VALUE? INVERT
+;
+
+: ENVP? (S c-addr1 count1 -- c-addr2 count2 true | false )
+  (G seach host environment variable and return value as counted string )
+  ['] ENVP?=VALUE? XT?-ENVP
+  2DROP
+  KEY-VALUE?-RESULT 2@
+  OVER
+  \ S: c-addr count c-addr
+  IF TRUE ELSE 2DROP FALSE THEN
 ;
 
 REPORT-NEW-NAME !
