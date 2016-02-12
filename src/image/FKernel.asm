@@ -70,6 +70,7 @@ CFA_DESIRED_SIZE_VAR:
                         INCLUDE "tc-def.asm"
                         INCLUDE "tc-trace.asm"
                         INCLUDE "forth-vm.asm"
+                        INCLUDE "forth-vm-notc.asm"
 
                         MATCH   =DTC, CODE_THREADING {
                         INCLUDE "forth-vm-dtc.asm"
