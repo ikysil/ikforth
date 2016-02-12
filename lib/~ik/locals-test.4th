@@ -4,9 +4,9 @@
 \  Copyright (C) 2016 Illya Kysil
 \ ------------------------------------------------------------------------------
 
-CR .( Loading LOCALS-TEST definitions )
-
 REQUIRES" lib/~ik/locals.4th"
+
+CR .( Loading LOCALS-TEST definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME ON

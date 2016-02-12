@@ -6,7 +6,7 @@
 \  Win32 Portable Executable utils
 \
 
-REQUIRES" src\kernel\struct.f"
+REQUIRES" src/kernel/struct.f"
 
 CR .( Loading PEIMAGE definitions )
 

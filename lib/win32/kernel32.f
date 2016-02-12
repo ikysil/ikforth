@@ -1,8 +1,11 @@
 \
 \  kernel32.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
+
+REQUIRES" lib/win32/dllintf.f"
+REQUIRES" lib/win32/wincon.f"
 
 CR .( Loading KERNEL32 definitions )
 

@@ -4,12 +4,12 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
+REQUIRES" src/kernel/file.f"
+
 CR .( Loading BLOCK definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
-
-S" src\kernel\file.f" REQUIRED
 
 <ENV
              TRUE  CONSTANT BLOCK

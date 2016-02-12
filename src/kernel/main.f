@@ -4,6 +4,8 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
+REQUIRES" src/kernel/quit.f"
+
 CR .( Loading MAIN definitions )
 
 REPORT-NEW-NAME @

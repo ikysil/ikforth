@@ -2,9 +2,9 @@ REPORT-NEW-NAME OFF
 
 : marker create does> drop ;
 
-: debugger s" lib\~jp\debugger.f" included ;
+: debugger s" lib/~jp/debugger.f" included ;
 
-: load_chess s" app\~ik\chess.f" included ;
+: load_chess s" app/~ik/chess.f" included ;
 
 \ : a1 >r rp@ 1 type r> drop ;
 
@@ -46,8 +46,8 @@ REPORT-NEW-NAME OFF
 
 \ st
 
-requires" lib\~ik\open-interpreter.f"
-requires" lib\~ik\peimage.f"
+requires" lib/~ik/open-interpreter.f"
+requires" lib/~ik/peimage.f"
 
 \ : a ['] ST RUSH ." test" ;
 

@@ -1,7 +1,7 @@
 \
 \  win32.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  Win32 specific definitions
 \
@@ -12,10 +12,10 @@
 
 ENV>
 
-S" lib\win32\dllintf.f"         INCLUDED
-S" lib\win32\wincon.f"          INCLUDED
-S" lib\win32\kernel32.f"        INCLUDED
-S" lib\win32\winexception.f"    INCLUDED
-S" lib\win32\winconsole.f"      INCLUDED
-S" lib\win32\winfile.f"         INCLUDED
-S" lib\win32\winmisc.f"         INCLUDED
+REQUIRES" lib/win32/dllintf.f"
+REQUIRES" lib/win32/wincon.f"
+REQUIRES" lib/win32/kernel32.f"
+REQUIRES" lib/win32/winexception.f"
+REQUIRES" lib/win32/winconsole.4th"
+REQUIRES" lib/win32/winfile.f"
+REQUIRES" lib/win32/winmisc.f"

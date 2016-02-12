@@ -8,12 +8,12 @@
 \ LOOPS EXT
 \ -----------------------------------------------------------------------------
 
+REQUIRES" lib/~ik/macro.f"
+
 CR .( Loading LOOP definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
-
-REQUIRES" lib\~ik\macro.f"
 
 MACRO #DO " 0 ?DO" COMPILE-ONLY
 
