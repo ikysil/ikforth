@@ -26,14 +26,19 @@ ALSO ANSITERM-PRIVATE DEFINITIONS
 : CSI-HOLD '[' HOLD CSI0 HOLD
 ;
 
+\ Execute #S with BASE set to decimal 10
+: D#S (S d -- d )
+  ['] #S 10 BASE-EXECUTE
+;
+
 : .ANSI-CUP (S x y -- )
   SWAP
   <#
   'H' HOLD
-  S>D #S
+  1+ S>D D#S
   2DROP
   ';' HOLD
-  S>D #S
+  1+ S>D D#S
   CSI-HOLD
   #> TYPE
 ;
@@ -49,7 +54,7 @@ ALSO ANSITERM-PRIVATE DEFINITIONS
 : .ANSI-ED (S n -- )
   <#
   'J' HOLD
-  0 #
+  0 D#S
   CSI-HOLD
   #> TYPE
 ;
@@ -94,7 +99,7 @@ USER DSR-PAD /DSR-PAD CHARS USER-ALLOC
   IF
     BL SWAP C!
     DSR-PAD /DSR-PAD ['] EVALUATE D# 10 BASE-EXECUTE
-    SWAP
+    1- SWAP 1-
   ELSE
     0 DUP
   THEN
