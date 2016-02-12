@@ -4,6 +4,9 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
+REQUIRES" src/kernel/console.4th"
+REQUIRES" lib/win32/kernel32.f"
+
 CR .( Loading WINCONSOLE definitions )
 
 REPORT-NEW-NAME @
@@ -168,7 +171,7 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
         DROP DUP
         0>
         IF
-          WIN-ERASE-CHAR
+          CONSOLE-BACKSPACE
           1- SWAP [ 1 CHARS ] LITERAL - SWAP
         THEN
         FALSE
@@ -176,6 +179,20 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
       13 OF                \ Ctrl+M or Enter
         DROP
         TRUE
+      ENDOF
+      27 OF
+        DROP
+        BEGIN
+          \ drop all characters till the end of ESCape sequence
+          KEY >R
+          \DEBUG R@ H.2 SPACE
+          R@ 'z' <=
+          R@ 'a' >= AND
+          R@ 'Z' <=
+          R@ 'A' >= AND
+          OR R> DROP
+        UNTIL
+        FALSE
       ENDOF
       FALSE SWAP
     ENDCASE
@@ -205,14 +222,23 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
   TRUE
 ;
 
-' WIN-AT-XY             IS AT-XY
-' WIN-CONSOLE-EKEY?     IS EKEY?
-' WIN-CONSOLE-EKEY      IS EKEY
-' WIN-CONSOLE-EKEY>CHAR IS EKEY>CHAR
-' WIN-CONSOLE-KEY?      IS KEY?
-' WIN-CONSOLE-KEY       IS KEY
-' WIN-ACCEPT            IS ACCEPT
-' WIN-PAGE              IS PAGE
-' WIN-EMIT?             IS EMIT?
+: WINCONSOLE-INIT
+  ['] WIN-ERASE-CHAR        IS CONSOLE-BACKSPACE
+  ['] WIN-AT-XY             IS AT-XY
+  ['] WIN-CONSOLE-EKEY?     IS EKEY?
+  ['] WIN-CONSOLE-EKEY      IS EKEY
+  ['] WIN-CONSOLE-EKEY>CHAR IS EKEY>CHAR
+  ['] WIN-CONSOLE-KEY?      IS KEY?
+  ['] WIN-CONSOLE-KEY       IS KEY
+  ['] WIN-ACCEPT            IS ACCEPT
+  ['] WIN-PAGE              IS PAGE
+  ['] WIN-EMIT?             IS EMIT?
+;
+
+ONLY TERMINIT DEFINITIONS
+
+SYNONYM WINCONSOLE-INIT WINCONSOLE-INIT
+
+ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !

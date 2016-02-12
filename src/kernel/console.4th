@@ -1,5 +1,5 @@
 \
-\  console.f
+\  console.4th
 \
 \  Copyright (C) 1999-2016 Illya Kysil
 \
@@ -8,6 +8,8 @@ REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
 CR .( Loading CONSOLE definitions )
+
+VOCABULARY TERMINIT
 
 \ -----------------------------------------------------------------------------
 
@@ -54,6 +56,9 @@ DEFER PAGE
 \
 \ +n2 is the length of the string stored at c-addr. 
 DEFER ACCEPT
+
+\ Erase character before cursor position and move cursor there
+DEFER CONSOLE-BACKSPACE
 
 1024 CONSTANT MAX-TIB-LENGTH
 

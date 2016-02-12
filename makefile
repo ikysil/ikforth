@@ -23,11 +23,13 @@ code_threading = -d CODE_THREADING=DTC
         set wine=$(wine)
         set asm_opts=$(asm_opts)
         set code_threading=$(code_threading)
+        set IKFORTH-TERMINIT=WINCONSOLE-INIT
 
 launcher : .symbolic
 !ifdef __LINUX__
-        set btlauncher=WINEDEBUG=-all wine
-        set rtlauncher=WINEDEBUG=-all $(%wine)
+        set WINEDEBUG=-all
+        set btlauncher=wine
+        set rtlauncher=$(%wine)
 !else
         set btlauncher=
         set rtlauncher=
@@ -67,6 +69,12 @@ itc : .symbolic
         set code_threading=-d CODE_THREADING=ITC
 
 term : .symbolic
+!ifdef __LINUX__
+        set IKFORTH-TERMINIT=ANSITERM-INIT
+!endif
+!ifdef __WINDOWS__
+        set IKFORTH-TERMINIT=WINCONSOLE-INIT
+!endif
         set wine=wine
 
 IKForth.exe : src/FKernel.exe

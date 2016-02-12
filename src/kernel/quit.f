@@ -4,6 +4,8 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
+REQUIRES" src/kernel/console.4th"
+
 CR .( Loading QUIT definitions )
 
 REPORT-NEW-NAME @
@@ -193,6 +195,18 @@ DEFER .INPUT-PROMPT-INFO
 : BYE
   SHUTDOWN-CHAIN CHAIN.EXECUTE< (BYE)
 ;
+
+:NONAME
+  TERMINIT GET-ORDER
+  1- SWAP >R
+  S" IKFORTH-TERMINIT" ENVP? INVERT
+  IF S" WINCONSOLE-INIT" THEN
+  \DEBUG CR ." Initializing terminal with: " 2DUP TYPE
+  R> SEARCH-WORDLIST
+  IF   CATCH   ELSE   TRUE   THEN
+  IF CR ." ERROR: Can not initialize terminal" BYE THEN
+  SET-ORDER
+; STARTUP-CHAIN CHAIN.ADD
 
 BASE !
 

@@ -44,6 +44,8 @@ S" lib/ansi/see.f"              INCLUDED
 
 S" src/win32.f"                 INCLUDED
 
+S" lib/term/ansiterm.4th"       INCLUDED
+
 S" src/kernel/main.f"           INCLUDED
 S" lib/~ik/macro.f"             INCLUDED
 S" lib/~ik/loop.f"              INCLUDED

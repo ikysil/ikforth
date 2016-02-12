@@ -486,4 +486,12 @@ DEFER (G IMMEDIATE ' ( IS (G
 
 : [HEX]     HEX     ; IMMEDIATE
 
+\ execute word while specified BASE is active
+: BASE-EXECUTE (S i*x xt u -- j*x )
+  BASE DUP @ >R !
+  CATCH
+  R> BASE !
+  THROW
+;
+
 REPORT-NEW-NAME !

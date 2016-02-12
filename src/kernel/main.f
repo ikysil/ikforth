@@ -12,7 +12,7 @@ REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
 : .COMPILED
-  ." Compiled: "
+  CR ." Compiled: "
   [
     TIME&DATE DECIMAL
     <# 5 ROLL S>D # # 2DROP CHAR : HOLD
@@ -24,12 +24,12 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-  ." IKForth v1.0" CR
-  ." Copyright (C) 1999-2016 Illya Kysil" CR
+  CR ." IKForth v1.0"
+  CR ." Copyright (C) 1999-2016 Illya Kysil"
 ;
 
 : .PLATFORM
-  ." Platform: " PLATFORM? TYPE
+  CR ." Platform: " PLATFORM? TYPE
 ;
 
 :NONAME
@@ -37,7 +37,7 @@ REPORT-NEW-NAME OFF
 ; STARTUP-CHAIN CHAIN.ADD
 
 :NONAME
-  ." Bye..." CR
+  CR ." Bye..." CR
 ; SHUTDOWN-CHAIN CHAIN.ADD
 
 0 VALUE GLOBAL-INIT-FLAG
