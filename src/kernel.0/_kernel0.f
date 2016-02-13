@@ -47,6 +47,7 @@ S" src/win32.f"                 INCLUDED
 S" lib/term/ansiterm.4th"       INCLUDED
 
 S" src/kernel/main.f"           INCLUDED
+requires" lib/~ik/locate.4th"
 S" lib/~ik/macro.f"             INCLUDED
 S" lib/~ik/loop.f"              INCLUDED
 S" lib/~ik/486asm.f"            INCLUDED

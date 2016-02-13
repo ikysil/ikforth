@@ -23,25 +23,40 @@ TRACK-INCLUDED ON
   REPORT-INCLUDED @ IF CR ." Including " 2DUP TYPE SPACE THEN
 ;
 
-: INCLUDED, (S c-addr count -- )
+: INCLUDED, (S c-addr count -- xt | 0 )
   TRACK-INCLUDED @ 
   IF
     2>R
     GET-CURRENT GET-ORDER
     INCLUDED-WORDLIST SET-CURRENT
     0 2R> &USUAL HEADER,
-    DROP
+    >R
     SET-ORDER SET-CURRENT
+    R>
   ELSE
-    2DROP
+    2DROP 0
   THEN
+;
+
+: MARK-INCLUDE, \ S: -- addr
+  \ Reserve a cell in data space for INCLUDE mark and return the value of previous INCLUDE mark
+  HERE INCLUDE-MARK DUP @ -ROT ! 0 ,
+;
+
+: RESOLVE-INCLUDE \ S: xt addr --
+  \ xt of the word whose name provides included file name
+  \ addr if the value of the previous INCLUDE mark
+  SWAP INCLUDE-MARK @ ! \ store xt at current INCLUDE mark
+  INCLUDE-MARK !        \ restore previous INCLUDE mark
 ;
 
 :NONAME (S c-addr count -- )
   ?REPORT-INCLUDED
+  MARK-INCLUDE, >R
   2DUP S">Z" >R
   [ACTION-OF] INCLUDED CATCH
-  R> OVER 0= IF DUP ZCOUNT INCLUDED, THEN FREE THROW THROW
+  R> OVER 0= IF   DUP ZCOUNT INCLUDED, R> RESOLVE-INCLUDE   ELSE   R> DROP   THEN
+  FREE THROW THROW
 ; IS INCLUDED
 
 : REQUIRED? (S c-addr count -- c-addr count flag )
