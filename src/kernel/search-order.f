@@ -173,6 +173,25 @@ INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
   REPEAT DROP
 ;
 
+: SCAN-WORDLIST (S addr wid -- c-addr u TRUE | FALSE )
+  \ Find element of word list wid which follows addr.
+  \ Return file name c-addr u and flag TRUE if found.
+  \ Return FALSE if not found.
+  WL>LATEST @
+  BEGIN
+    DUP DUP 0<> \ S: addr h-id1 h-id1 flag
+    IF
+      H>NEXT>H
+      DUP 0<>   \ S: addr h-id1 h-id2 flag
+    THEN
+  WHILE
+    2 PICK <
+    IF   NIP H>#NAME TRUE EXIT   THEN
+    H>NEXT>H
+  REPEAT
+  2DROP DROP FALSE
+;
+
 FORTH-WORDLIST (VOCABULARY) FORTH
 
 REPORT-NEW-NAME !
