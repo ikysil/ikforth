@@ -14,9 +14,10 @@ VOC_LINK                =       0                       ; link to previous word
 ;  Vocabulary entry flags
 ;******************************************************************************
 VEF_USUAL               EQU     00h
-VEF_IMMEDIATE           EQU     01h                     ; IMMEDIATE entry
-VEF_HIDDEN              EQU     02h                     ; hidden word
-VEF_COMPILE_ONLY        EQU     04h                     ; compile only mode
+VEF_IMMEDIATE           EQU     01h  ; IMMEDIATE entry
+VEF_HIDDEN              EQU     02h  ; hidden word
+VEF_COMPILE_ONLY        EQU     04h  ; compile only mode
+VEF_LOCATE              EQU     08h  ; LOCATE information is present
 VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 
 ;******************************************************************************

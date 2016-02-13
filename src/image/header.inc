@@ -24,6 +24,10 @@
 
                         CC      64
 
+;  USE-LOCATE
+                        $VAR    'USE-LOCATE',$USE_LOCATE
+                        CC      F_TRUE
+
 ;  &USUAL
 ;  D: -- VEF-USUAL
                         $CONST  '&USUAL'
@@ -47,6 +51,11 @@
                         $CONST  '&COMPILE-ONLY'
 
                         CC      VEF_COMPILE_ONLY
+
+;  &LOCATE
+;  D: -- VEF-LOCATE
+                        $CONST  '&LOCATE',$AMPLOCATE
+                        CC      VEF_LOCATE
 
 ;  &IMMEDIATE/COMPILE-ONLY
 ;  D: -- VEF-IMMEDIATE or VEF-COMPILE-ONLY
@@ -151,11 +160,28 @@ CDN_OK:
 
                         CW      $PREPORT_NAME
 
+;  (LOCATE,)
+;  S: flags1 -- flags2
+;  Compile information for LOCATE and set &LOCATE in flags if enabled.
+                        $COLON  '(LOCATE,)',$PLOCATEC
+                        CFETCH  $USE_LOCATE
+                        CQBR    NO_LOCATE
+                        CFETCH  $INCLUDE_MARK
+                        XT_$COMMA
+                        CFETCH  $TOIN
+                        XT_$COMMA
+                        CFETCH  $INCLUDE_LINE_NUM
+                        XT_$COMMA
+                        XT_$AMPLOCATE
+                        XT_$OR
+NO_LOCATE:
+                        XT_$EXIT
+
 ;  (HEADER,)
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                         $COLON  '(HEADER,)',$PHEADERC
-
+                        XT_$PLOCATEC
                         CW      $HERE
                         CW      $TOR
                         CW      $CCOMMA                 ; compile flags

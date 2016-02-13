@@ -35,6 +35,11 @@
                         $USER   'ERROR-LINE#',$ERROR_LINE_NUM
                         CC      VAR_ERROR_LINE_NUM
 
+;  addr of the latest INCLUDE mark
+;  INCLUDE mark is an xt of the word whose name provides included file name
+                        $USER   'INCLUDE-MARK',$INCLUDE_MARK
+                        CC      VAR_INCLUDE_MARK
+
 ;  FILE-LINE
 ;  Line address for INCLUDED
                         $USER   'FILE-LINE',$FILE_LINE
