@@ -131,6 +131,16 @@ FORTH-WORDLIST LAST-WORDLIST !
   WORDLIST (VOCABULARY)
 ;
 
+: VOC>WL (S xt -- wid )
+  \ Return wordlist id of the vocabulary identified by xt.
+  >BODY @
+;
+
+:NONAME ' VOC>WL ;
+:NONAME ' VOC>WL POSTPONE LITERAL ;
+INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
+\ Parse name of the vocabulary and return the wordlist ID.
+
 : .WORDLIST-NAME (S wid -- )
   DUP ." H# " H.8 SPACE WL>VOC @ ?DUP
   IF
