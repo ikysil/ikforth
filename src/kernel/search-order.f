@@ -156,10 +156,11 @@ INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
 
 : ORDER
   (GET-ORDER)
-  DUP . ." wordlist" DUP 1 <> IF ." s" THEN ."  in search order" CR 
+  DUP . ." wordlist" DUP 1 <> IF ." s" THEN ."  in search order"
   0 ?DO
-      .WORDLIST-NAME CR
+      CR .WORDLIST-NAME
     LOOP
+  CR ." Current: " CR CURRENT @ .WORDLIST-NAME
 ;
 
 : WORDLISTS
