@@ -38,17 +38,27 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;                  machine code JMP to code address in DTC
 ;  +7+n+m   x                                               // PFA
 ;******************************************************************************
+                        MACRO   $DEFLABEL PFX,CFA_NAME {
+                        IF      ~ CFA_NAME EQ
+                        LABEL   PFX#_#CFA_NAME DWORD
+                        END IF
+                        }
+
                         MACRO   $DEF NAME,CFA_NAME,CODE,FLAGS {
+
+                        $XTDEF  NAME,CFA_NAME
 
                         LOCAL   __DEF,__PREVFLD,__LBLNAME,__CODE
 __DEF:
 LASTWORD                =       __DEF 
+                        $DEFLABEL HEAD,CFA_NAME
                         IF      ~ FLAGS eq
                           DB    FLAGS
                         ELSE
                           DB    VEF_USUAL
                         END IF
 ;; NFA
+                        $DEFLABEL NFA,CFA_NAME
                         DB      __PREVFLD - $ - 1
                         IF      ~ NAME eq
                           DB      NAME
@@ -56,6 +66,7 @@ LASTWORD                =       __DEF
 __PREVFLD:
                         DB      __PREVFLD - __DEF 
 ;; LFA
+                        $DEFLABEL LFA,CFA_NAME
                         DD      VOC_LINK
 VOC_LINK                =       __DEF + IMAGE_BASE
 
@@ -66,6 +77,7 @@ VOC_LINK                =       __DEF + IMAGE_BASE
                           $CFA    CFA_#CODE,CFA_NAME
                         END IF
 __CODE:
+                        $DEFLABEL PFA,CFA_NAME
 ;; PFA
                         }
 

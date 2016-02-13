@@ -229,7 +229,7 @@ IW_EXIT:
                         $COLON  'INTERPRET',$INTERPRET
 
 INT_LOOP:
-                        CW      $BL
+                        XT_$BL
                         CW      $WORD                   ; c-addr
                         CW      $DUP                    ; c-addr c-addr
                         CW      $COUNT                  ; c-addr c-addr1 count
@@ -239,5 +239,4 @@ INT_LOOP:
                         CBR     INT_LOOP
 INT_EXIT:
                         CW      $DROP
-                        CEXIT
-
+                        XT_$EXIT
