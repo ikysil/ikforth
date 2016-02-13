@@ -135,7 +135,7 @@ PPARSE_EXIT:
 ;  S"-COMP
                         $COLON  'S"-COMP',$SQ_COMP
 
-                        CCLIT   22h ;'"'
+                        CCLIT   '"'
                         CW      $PARSE
                         CWLIT   $PSQUOTE
                         CW      $COMPILEC
@@ -148,45 +148,64 @@ PPARSE_EXIT:
                         CW      $CMOVE
                         CEXIT
 
+;  +S"BUFFER
+;  S: -- c-addr
+;  Return address of next buffer to use by S" and family.
+;  Size of the buffer is provided by /S"BUFFER
+                        $COLON  '+S"BUFFER',$PLSQBUFFER
+                        CFETCH  $SQINDEX
+                        XT_$1ADD
+                        XT_$SQINDEX_MASK
+                        XT_$AND
+                        XT_$DUP
+                        CSTORE  $SQINDEX
+                        XT_$SLSQBUFFER
+                        XT_$MUL
+                        XT_$SQBUFFER
+                        XT_$ADD
+                        XT_$EXIT
+
+;  >S"BUFFER
+;  S: c-addr1 u1 -- c-addr2 u2
+;  Copy string from c-addr1 to a temporary buffer and return it's address c-addr2.
+;  u2 is the actual number of characters copied.
+                        $COLON  '>S"BUFFER',$TOSQBUFFER
+                        XT_$PLSQBUFFER
+                        XT_$SWAP
+                        XT_$2DUP
+                        XT_$2TOR
+                        XT_$CMOVE
+                        XT_$2RFROM
+                        XT_$EXIT
+
 ;  S"-INT
                         $COLON  'S"-INT',$SQ_INT
-
-                        CCLIT   22h ;'"'
-                        CW      $PARSE
-                        CW      $2DUP
-                        CW      $SQUOTE_BUFFER
-                        CW      $SWAP
-                        CW      $CMOVE
-                        CW      $NIP
-                        CW      $SQUOTE_BUFFER
-                        CW      $SWAP
-                        CEXIT
+                        CCLIT   '"'
+                        XT_$PARSE
+                        XT_$TOSQBUFFER
+                        XT_$EXIT
 
 ;     6.1.2165 S"
 ;  11.6.1.2165 S"
                         $DEF    'S"',$SQUOTE,$PDO_INT_COMP,VEF_IMMEDIATE
+                        XT_$SQ_INT
+                        XT_$SQ_COMP
 
-                        CW      $SQ_INT
-                        CW      $SQ_COMP
-
-;  \
+;  \ (filler text)
+                        $COLON  '(\)',$PBSLASH,VEF_IMMEDIATE
+                        XT_$ZERO
+                        XT_$PARSE
+                        XT_$2DROP
+                        XT_$EXIT
 
                         $DEFER  '\',,VEF_IMMEDIATE
-
-                        CW      $PBSLASH
-
-                        $COLON  '(\)',$PBSLASH,VEF_IMMEDIATE
-
-                        CW      $ZERO
-                        CW      $PARSE
-                        CW      $2DROP
-                        CEXIT
+                        XT_$PBSLASH
 
                         $COLON  'NOOP',$NOOP,VEF_IMMEDIATE
-                        CEXIT
+                        XT_$EXIT
 
                         $DEFER  '\DEBUG',,VEF_IMMEDIATE
                         MATCH   =TRUE, DEBUG {
-                        CW      $NOOP
+                        XT_$NOOP
                         }
-                        CW      $PBSLASH
+                        XT_$PBSLASH

@@ -3,7 +3,7 @@
 ;  varconst.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Variables & constants
@@ -61,15 +61,25 @@
 
                         CC      VAR_EXCEPTION_HANDLER
 
-;  S"-BUFFER
-                        $USER   'S"-BUFFER',$SQUOTE_BUFFER
+;  S"INDEX
+                        $VAR    'S"INDEX',$SQINDEX
+                        CC      0
 
-                        CC      VAR_SQUOTE_BUFFER
+;  /S"INDEX
+                        $CONST  '/S"INDEX',$SLSQINDEX
+                        CC      SLSQINDEX
 
-;  S"-BUFFER-SIZE
-                        $CONST  'S"-BUFFER-SIZE'
+;  S"INDEX-MASK
+                        $CONST  'S"INDEX-MASK',$SQINDEX_MASK
+                        CC      SLSQINDEX - 1
 
-                        CC      SQUOTE_BUFFER_SIZE
+;  S"BUFFER
+                        $USER   'S"BUFFER',$SQBUFFER
+                        CC      VAR_SQBUFFER
+
+;  /S"BUFFER
+                        $CONST  '/S"BUFFER',$SLSQBUFFER
+                        CC      SLSQBUFFER
 
 ;  POCKET
                         $USER   'POCKET',$POCKET

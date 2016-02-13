@@ -42,10 +42,8 @@ USER_HERE          =       ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
                         _VAR    CASE_SENSITIVE
                         _VAR    TONUMBER_SIGNED
 
-                        _VAR    CURR_FILE_POS
-                        _ALLOC  CELL_SIZE
+                        _VAR    CURR_FILE_POS,CELL_SIZE * 2
 
-MAX_FILE_LINE_LENGTH    EQU     1024
                         _VAR    HASH_FILE_LINE
                         _VAR    FILE_LINE,MAX_FILE_LINE_LENGTH
 
@@ -53,18 +51,22 @@ MAX_FILE_LINE_LENGTH    EQU     1024
 
                         _VAR    EXCEPTION_HANDLER
                         _VAR    EXCP
+
+                        _ALIGN
                         _ALLOC  EXCEPTION_STACK_SIZE
                         _VAR    EXC_STACK
 
+                        _ALIGN
                         _VAR    WIN32_EXCEPTION_CONTEXT,256
 
-SQUOTE_BUFFER_SIZE      EQU     1024
-                        _VAR    SQUOTE_BUFFER,SQUOTE_BUFFER_SIZE
-
-                        _VAR    POCKET,256
+;  Buffers for S"
+                        _ALIGN
+                        _VAR    SQBUFFER,SLSQBUFFER * SLSQINDEX
 
                         _ALIGN
+                        _VAR    POCKET,SLPOCKET
 
+                        _ALIGN
                         _ALLOC  RETURN_STACK_SIZE
                         _VAR    RSTACK
 

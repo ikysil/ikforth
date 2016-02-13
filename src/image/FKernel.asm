@@ -33,10 +33,27 @@ F_FALSE                 EQU     0
 
 CELL_SIZE               EQU     4
 
+MAX_FILE_LINE_LENGTH    EQU     1024
+
+;  Number of buffers supported by S"
+;  !!! SLSQINDEX MUST be power of 2 !!!
+SLSQINDEX               EQU     8
+
+                        IF      SLSQINDEX AND (SLSQINDEX - 1) <> 0
+                        DISPLAY "ERROR: SLSQINDEX MUST be power of 2"
+                        ERR
+                        END IF
+
+;  Size of a buffer supported by S"
+SLSQBUFFER              EQU     1024
+
+;  Size of POCKET
+SLPOCKET                EQU     256
+
 ;******************************************************************************
 ;  Header
 ;******************************************************************************
-                        DB      'IKFI'                  ; MAX. 15 bytes !!!
+                        DB      'IKFI'                  ; MAX. 16 bytes !!!
 
                         ALIGN   16
 

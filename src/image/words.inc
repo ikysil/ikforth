@@ -3,7 +3,7 @@
 ;  words.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 
@@ -22,9 +22,9 @@
                         INCLUDE "memory.inc"
                         INCLUDE "search.inc"
                         INCLUDE "fcontrol.inc"
+                        INCLUDE "string.inc"
                         INCLUDE "parse.inc"
                         INCLUDE "data.inc"
-                        INCLUDE "string.inc"
                         INCLUDE "double.inc"
                         INCLUDE "convert.inc"
                         INCLUDE "except.inc"
