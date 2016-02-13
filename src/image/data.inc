@@ -3,7 +3,7 @@
 ;  data.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Data space
@@ -44,12 +44,6 @@
                         MOV     EBX,DWORD [VAR_DP + IMAGE_BASE]
                         MOV     BYTE [EBX],AL
                         INC     DWORD [VAR_DP + IMAGE_BASE]
-                        $NEXT
-
-;  (;)
-                        $CODE   '(;)',$EXIT,VEF_COMPILE_ONLY
-
-                        POPRS   ESI                     ; pop previous IP from return stack
                         $NEXT
 
 ;  6.1.1780 LITERAL

@@ -70,6 +70,12 @@ NOQBRANCH:
                         MOV     ESI,EAX
                         $NEXT                           ; fetch next word address and execute it
 
+;  (;)
+                        $CODE   '(;)',$EXIT,VEF_COMPILE_ONLY
+
+                        POPRS   ESI                     ; pop previous IP from return stack
+                        $NEXT
+
 ;  (DO-CONSTANT)
                         $VAR    '(DO-CONSTANT)'
 
