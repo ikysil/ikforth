@@ -35,7 +35,7 @@ launcher : .symbolic
         set rtlauncher=
 !endif
 
-all : .symbolic IKForth.exe launcher IKForth.img
+all : .symbolic compiler IKForth.exe launcher IKForth.img
 
 clean : .symbolic
         rm -f  src/image/*.obj
@@ -77,11 +77,11 @@ term : .symbolic
 !endif
         set wine=wine
 
-IKForth.exe : src/FKernel.exe
+IKForth.exe : loader
         echo Building $@
         cp src/FKernel.exe IKForth.exe > /dev/null
 
-IKForth.img : src/FKernel.img &
+IKForth.img : compiler &
               src/*.f src/kernel/*.f src/kernel.0/*.f lib/win32/*.f &
               src/*.4th src/kernel/*.4th src/kernel.0/*.4th lib/win32/*.4th &
               lib/ansi/*.f lib/~ik/*.f lib/~js/486asm/*.F &
@@ -90,6 +90,10 @@ IKForth.img : src/FKernel.img &
 #        WINEDEBUG=-all winedbg src/FKernel.exe
 #        WINEDEBUG=-all winedbg --file src/loader/FKernel.winedbg src/FKernel.exe
         $(%btlauncher) src/FKernel.exe
+
+compiler : .symbolic src/FKernel.img loader
+
+loader : .symbolic src/FKernel.exe
 
 src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
         echo Building $@
