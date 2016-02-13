@@ -39,9 +39,20 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;                  machine code JMP to code address in DTC
 ;  +7+n+m   x                                               // PFA
 ;******************************************************************************
-                        MACRO   $DEFLABEL PFX,CFA_NAME {
+                        MACRO   $REPORT_UNUSED NAME {
+                            IF      ~ NAME EQ
+                                IF      ~ USED NAME
+                                      DISPLAY `NAME # " not used.",13,10
+                                END IF
+                            END IF
+                        }
+
+                        MACRO   $DEFLABEL PFX,CFA_NAME,REPORT_UNUSED {
                         IF      ~ CFA_NAME EQ
-                        LABEL   PFX#_#CFA_NAME DWORD
+                            LABEL   PFX#_#CFA_NAME DWORD
+                            IF      REPORT_UNUSED EQ TRUE
+                                $REPORT_UNUSED PFX#_#CFA_NAME
+                            END IF
                         END IF
                         }
 

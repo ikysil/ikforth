@@ -37,9 +37,7 @@
 ;******************************************************************************
                         MACRO   $CFA CODE,START_LBL {
 
-                        IF      ~ START_LBL eq
-                        LABEL   CFA_#START_LBL DWORD
-                        END IF
+                        $DEFLABEL   CFA,START_LBL,DEBUG
 
                         DD      CODE + IMAGE_BASE
                         }

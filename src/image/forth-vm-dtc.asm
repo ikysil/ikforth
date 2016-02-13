@@ -47,9 +47,7 @@
 ;
 ;******************************************************************************
                         MACRO   $CFA CODE,START_LBL,CODE_ADDR_END_LBL,END_LBL {
-                        IF      ~ START_LBL eq
-                        LABEL   CFA_#START_LBL DWORD
-                        END IF
+                        $DEFLABEL   CFA,START_LBL,DEBUG
 
                         MOV     EBX,DWORD CODE + IMAGE_BASE
 
