@@ -78,4 +78,14 @@ INT/COMP: REQUIRES  (S x*i "name" -- y*j )
 :NONAME PARSE" POSTPONE SLITERAL POSTPONE (REQUIRES) ;
 INT/COMP: REQUIRES" (S x*i "name" -- y*j )
 
+: REQUIRE \ S: <name> <path> --
+  \ Check if name is available using FIND, and include path if not
+  BL WORD FIND NIP
+  IF
+    POSTPONE \
+  ELSE
+    BL WORD COUNT (REQUIRES)
+  THEN
+;
+
 REPORT-NEW-NAME !
