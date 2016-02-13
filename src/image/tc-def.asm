@@ -23,11 +23,11 @@
 ;******************************************************************************
 ;  Use this macro to compile FORTH threaded code definitions
 ;******************************************************************************
-                        MACRO   CW CFA_NAME {
+                        MACRO   CW [CFA_NAME] {
                         DD      CFA_#CFA_NAME + IMAGE_BASE
                         }
 
-                        MACRO   CWLIT VALUE {
+                        MACRO   CWLIT [VALUE] {
                         CW      $LIT
                         CW      VALUE
                         }
@@ -35,11 +35,11 @@
 ;******************************************************************************
 ;  Use this macro to compile constants
 ;******************************************************************************
-                        MACRO   CC VALUE {
+                        MACRO   CC [VALUE] {
                         DD      VALUE
                         }
 
-                        MACRO   CCLIT VALUE {
+                        MACRO   CCLIT [VALUE] {
                         CW      $LIT
                         DD      VALUE
                         }
@@ -47,7 +47,7 @@
 ;******************************************************************************
 ;  Compile @
 ;******************************************************************************
-                        MACRO   CFETCH ADDR {
+                        MACRO   CFETCH [ADDR] {
                         CW      ADDR
                         CW      $FETCH
                         }
@@ -55,7 +55,7 @@
 ;******************************************************************************
 ;  Compile !
 ;******************************************************************************
-                        MACRO   CSTORE ADDR {
+                        MACRO   CSTORE [ADDR] {
                         CW      ADDR
                         CW      $STORE
                         }
