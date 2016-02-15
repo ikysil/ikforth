@@ -1,0 +1,62 @@
+\
+\  quotations.4th
+\
+\  Copyright (C) 1999-2016 Illya Kysil
+\
+
+CR .( Loading QUOTATIONS definitions )
+
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
+
+ONLY FORTH DEFINITIONS
+
+VOCABULARY QUOTATIONS-PRIVATE
+
+DEFER SAVE-DEFINITION-STATE
+
+DEFER RESTORE-DEFINITION-STATE
+
+ALSO QUOTATIONS-PRIVATE DEFINITIONS
+
+\ private definitions go here
+
+:NONAME
+  USE-LOCATE @
+  RECURSE-XT @
+  LATEST-HEAD@
+; IS SAVE-DEFINITION-STATE
+
+:NONAME
+  LATEST-HEAD!
+  RECURSE-XT !
+  USE-LOCATE !
+; IS RESTORE-DEFINITION-STATE
+
+ONLY FORTH DEFINITIONS ALSO QUOTATIONS-PRIVATE
+
+\ public definitions go here
+\ private definitions are available for use
+
+: ([:)
+;
+
+: (;])
+;
+
+: [:
+  \ C: -- quotation-sys \ compile time
+  POSTPONE AHEAD POSTPONE ([:) SAVE-DEFINITION-STATE
+  FALSE USE-LOCATE ! :NONAME
+; IMMEDIATE/COMPILE-ONLY
+
+: ;]
+  \ C: quotation-sys -- \ compile time
+  \ S: -- xt            \ run time
+  POSTPONE EXIT POSTPONE (;]) >R RESTORE-DEFINITION-STATE
+  POSTPONE THEN R> POSTPONE LITERAL
+; IMMEDIATE/COMPILE-ONLY
+
+ONLY FORTH DEFINITIONS
+
+REPORT-NEW-NAME !
