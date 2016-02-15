@@ -7,7 +7,7 @@
 REPORT-NEW-NAME @
 FALSE REPORT-NEW-NAME !
 
-13 EMIT 10 EMIT S" Loading PRIMITIVES definitions" TYPE
+13 EMIT 10 EMIT S" Loading PRIMITIVES definitions " TYPE
 
 \ -----------------------------------------------------------------------------
 \  [ ] ; :
