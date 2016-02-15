@@ -34,6 +34,12 @@ DEFER DEFER-PRI
   SWAP CFA@ C@ H# E8 = AND
 ;
 
+: .WORD-NAME
+  \ S: xt --
+  \ Print the name of the word or (noname)
+  >HEAD H>#NAME ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
+;
+
 : CHECK-PRIMITIVE (S xt -- flag )
   DUP >R
   CFA@
@@ -74,14 +80,14 @@ DEFER DEFER-PRI
       CR DUP RECURSE
     ENDOF
     [ ' : CFA@ ] LITERAL OF
-      R@ >HEAD H>#NAME ?DUP IF TYPE ELSE DROP ." (noname)" THEN SPACE
+      R@ .WORD-NAME SPACE
       ." XT=H# " R@ H.8 SPACE
       R@ >HEAD WORD-ATTR
       CR FALSE
     ENDOF
     R@ ?DOES>
     IF
-      R@ >HEAD H>#NAME ?DUP IF TYPE ELSE DROP ." (noname)" THEN SPACE
+      R@ .WORD-NAME SPACE
       ." XT=H# " R@ H.8 SPACE
       R@ >HEAD WORD-ATTR
       ." DOES> " CR
@@ -147,7 +153,9 @@ DEFER DEFER-PRI
     [']      (S") OF WRITE-S" ENDOF
     [']    (DOES) OF ." DOES>" 5 + ENDOF
     [']    (TYPE) OF WRITE-(TYPE)  ENDOF
-    DUP >HEAD H>#NAME TYPE 
+    [']      ([:) OF ." [: XT=H# " HEAD> DUP H.8 >BODY ENDOF
+    [']      (;]) OF ." ;]" ENDOF
+    DUP .WORD-NAME
   ENDCASE
 ;
 
@@ -162,7 +170,10 @@ DEFER DEFER-PRI
   (XT>BODY)
   0 >R
   BEGIN
-    DUP DUP H.8 SPACE CHECK-EXIT INVERT
+    DUP
+    DUP   H.8 SPACE SPACE
+    DUP @ H.8 SPACE SPACE
+    CHECK-EXIT INVERT
   WHILE
     WRITE-NAME SPACE CR
     R> 1+ DUP >R 20 MOD 0= IF ." Press any key to continue..." KEY DROP CR THEN
