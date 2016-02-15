@@ -15,6 +15,14 @@
                         POPDS   EAX                     ; pop new IP from data stack
                         $JMP
 
+;  EXECUTE-IP
+;  S: token-addr --
+;  Execute a list of tokens starting at token-addr.
+                        $CODE   'EXECUTE-IP'
+                        PUSHRS  ESI                     ; push current IP on return stack
+                        POPDS   ESI                     ; pop new IP from data stack
+                        $NEXT                           ; fetch next word address and execute it
+
 ;******************************************************************************
 ;  Loop support words
 ;******************************************************************************
