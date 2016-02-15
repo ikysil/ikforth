@@ -81,9 +81,7 @@
                         $NEXT
 
 ;  RS-SIZE
-                        $CONST  'RS-SIZE'
-
-                        CC      RETURN_STACK_SIZE
+                        $CONST  'RS-SIZE',,RETURN_STACK_SIZE
 
 ;  RP0
                         $CODE   'RP0',$RP0,VEF_USUAL

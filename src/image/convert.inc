@@ -75,9 +75,7 @@ TN_STOP:
                         $NEXT
 
 ;  DIGITS
-                        $CONST  'DIGITS',$DIGITS
-
-                        CC      DIGITS_TABLE + IMAGE_BASE
+                        $CREATE 'DIGITS',$DIGITS
 DIGITS_TABLE:
                         DB      '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',0
 

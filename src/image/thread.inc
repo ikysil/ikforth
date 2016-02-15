@@ -101,11 +101,7 @@ DO_FORTH_SEH:
 
 ;  SEH-HANDLER
 ;  D: win32-exc-id -- exc-id
-                        $DEFER  'SEH-HANDLER',$SEH_HANDLER
+                        $DEFER  'SEH-HANDLER',$SEH_HANDLER,$PSEH_HANDLER
 
-                        CW      $PSEH_HANDLER
-
-                        $USER   'WIN32-EXCEPTION-CONTEXT',$WIN32_EXCEPTION_CONTEXT
-
-                        CC      VAR_WIN32_EXCEPTION_CONTEXT
+                        $USER   'WIN32-EXCEPTION-CONTEXT',$WIN32_EXCEPTION_CONTEXT,VAR_WIN32_EXCEPTION_CONTEXT
 

@@ -37,9 +37,7 @@
                         CFETCH  $HASH_FILE_LINE
                         CEXIT
 
-                        $DEFER  'SOURCE',$SOURCE
-
-                        CW      $_SOURCE
+                        $DEFER  'SOURCE',$SOURCE,$_SOURCE
 
                         $COLON  'REPORT-SOURCE',$REPORT_SOURCE
                         $WRITE  'LINE# H# '
@@ -86,13 +84,9 @@
 
                         CEXIT
 
-                        $DEFER  'REFILL',$REFILL
+                        $DEFER  'REFILL',$REFILL,$_REFILL
 
-                        CW      $_REFILL
-
-                        $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT
-
-                        CW      $SAVE_INPUT_FILE
+                        $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT,$SAVE_INPUT_FILE
 
                         $COLON  'SAVE-INPUT',$SAVE_INPUT
 
@@ -107,9 +101,7 @@
                         CW      $FALSE
                         CEXIT
 
-                        $DEFER  '(RESET-INPUT)',$PRESET_INPUT
-
-                        CW      $RESET_INPUT_FILE
+                        $DEFER  '(RESET-INPUT)',$PRESET_INPUT,$RESET_INPUT_FILE
 
                         $COLON  'RESET-INPUT',$RESET_INPUT
 

@@ -10,9 +10,7 @@
 ;******************************************************************************
 
 ;  >NUMBER-SIGNED
-                        $USER   '>NUMBER-SIGNED',$TONUMBER_SIGNED
-
-                        CC      VAR_TONUMBER_SIGNED
+                        $USER   '>NUMBER-SIGNED',$TONUMBER_SIGNED,VAR_TONUMBER_SIGNED
 
 ;  DO-INT-DEFINED
                         $COLON  'DO-INT-DEFINED',$DO_INT_DEFINED
@@ -221,9 +219,7 @@ IW_EXIT:
 
 ;  INTERPRET-WORD-NOT-FOUND
 ;  D: c-addr u -- 
-                        $DEFER  'INTERPRET-WORD-NOT-FOUND',$INTERPRET_WORD_NOT_FOUND
-
-                        CW      $PINTERPRET_WORD_NOT_FOUND
+                        $DEFER  'INTERPRET-WORD-NOT-FOUND',$INTERPRET_WORD_NOT_FOUND,$PINTERPRET_WORD_NOT_FOUND
 
 ;  INTERPRET
                         $COLON  'INTERPRET',$INTERPRET

@@ -10,9 +10,7 @@
 ;******************************************************************************
 
 ;  6.1.0560 >IN
-                        $USER   '>IN',$TOIN
-
-                        CC      VAR_TOIN
+                        $USER   '>IN',$TOIN,VAR_TOIN
 
 ;  (WORD)
                         $CODE   '(WORD)',$PWORD
@@ -198,14 +196,15 @@ PPARSE_EXIT:
                         XT_$2DROP
                         XT_$EXIT
 
-                        $DEFER  '\',,VEF_IMMEDIATE
-                        XT_$PBSLASH
+                        $DEFER  '\',,$PBSLASH,VEF_IMMEDIATE
 
                         $COLON  'NOOP',$NOOP,VEF_IMMEDIATE
                         XT_$EXIT
 
-                        $DEFER  '\DEBUG',,VEF_IMMEDIATE
                         MATCH   =TRUE, DEBUG {
-                        XT_$NOOP
+                        $DEFER  '\DEBUG',$SLDEBUG,$NOOP,VEF_IMMEDIATE
                         }
-                        XT_$PBSLASH
+
+                        IF      ~ DEFINED CFA_$SLDEBUG
+                        $DEFER  '\DEBUG',,$PBSLASH,VEF_IMMEDIATE
+                        END IF

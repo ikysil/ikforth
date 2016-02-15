@@ -96,16 +96,23 @@ __CODE:
 ;******************************************************************************
 ;
 ;******************************************************************************
-                        MACRO   $CONST NAME,CFA_NAME {
+                        MACRO   $CONST NAME,CFA_NAME,VALUE {
                         $DEF    NAME,CFA_NAME,$DOCONST
+                        CC      VALUE
                         }
 
-                        MACRO   $VAR NAME,CFA_NAME {
+                        MACRO   $VAR NAME,CFA_NAME,VALUE {
                         $DEF    NAME,CFA_NAME,$DOVAR
+                        CC      VALUE
                         }
 
-                        MACRO   $USER NAME,CFA_NAME {
+                        MACRO   $CREATE NAME,CFA_NAME {
+                        $DEF    NAME,CFA_NAME,$DOCREATE
+                        }
+
+                        MACRO   $USER NAME,CFA_NAME,VALUE {
                         $DEF    NAME,CFA_NAME,$DOUSER
+                        CC      VALUE
                         }
 
                         MACRO   $COLON NAME,CFA_NAME,FLAGS {
@@ -116,8 +123,9 @@ __CODE:
                         $DEF    <>,CFA_NAME,$ENTER,FLAGS
                         }
 
-                        MACRO   $DEFER NAME,CFA_NAME,FLAGS {
+                        MACRO   $DEFER NAME,CFA_NAME,VALUE,FLAGS {
                         $DEF    NAME,CFA_NAME,$DODEFER,FLAGS
+                        CW      VALUE
                         }
 
                         MACRO   $CODE NAME,CFA_NAME,FLAGS {

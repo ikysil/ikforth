@@ -53,17 +53,22 @@ NOQBRANCH:
                         PUSHDS  EAX
                         $NEXT
 
-;  (DO-VARIABLE)
-                        $VAR    '(DO-VARIABLE)'
+;  (DO-CREATE)
+                        $CREATE '(DO-CREATE)'
+                        LABEL   CFA_$DOCREATE
+                        ADD     EAX,CFA_SIZE
+                        PUSHDS  EAX
+                        $NEXT
 
+;  (DO-VARIABLE)
+                        $CREATE '(DO-VARIABLE)'
                         LABEL   CFA_$DOVAR
                         ADD     EAX,CFA_SIZE
                         PUSHDS  EAX
                         $NEXT
 
 ;  (DO-:)
-                        $VAR    '(DO-:)'
-
+                        $CREATE '(DO-:)'
                         LABEL   CFA_$ENTER
                         PUSHRS  ESI                     ; push current IP on return stack
                         ADD     EAX,CFA_SIZE
@@ -77,15 +82,13 @@ NOQBRANCH:
                         $NEXT
 
 ;  (DO-CONSTANT)
-                        $VAR    '(DO-CONSTANT)'
-
+                        $CREATE '(DO-CONSTANT)'
                         LABEL   CFA_$DOCONST
                         PUSHDS  <DWORD [EAX + CFA_SIZE]>
                         $NEXT
 
 ;  (DO-USER)
-                        $VAR    '(DO-USER)'
-
+                        $CREATE '(DO-USER)'
                         LABEL   CFA_$DOUSER
                         MOV     EBX,DWORD [EAX + CFA_SIZE]
                         ADD     EBX,EDI
@@ -93,21 +96,7 @@ NOQBRANCH:
                         $NEXT
 
 ;  (DO-DEFER)
-                        $VAR    '(DO-DEFER)'
-
+                        $CREATE '(DO-DEFER)'
                         LABEL   CFA_$DODEFER
                         MOV     EAX,DWORD [EAX + CFA_SIZE]
                         $JMP
-
-;  (DO-INT/COMP)
-                        $VAR    '(DO-INT/COMP)'
-
-                        LABEL   CFA_$PDO_INT_COMP
-                        ADD     EAX,CFA_SIZE
-                        CMP     BYTE [VAR_STATE + IMAGE_BASE],F_FALSE
-                        JZ      PDIC_INT
-                        ADD     EAX,CELL_SIZE
-PDIC_INT:
-                        MOV     EAX,DWORD [EAX]
-                        $JMP
-

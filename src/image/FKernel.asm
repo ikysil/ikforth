@@ -58,7 +58,7 @@ SLPOCKET                EQU     256
                         ALIGN   16
 
                         DD      DESIRED_BASE_EQU
-CFA_DESIRED_SIZE_VAR:
+DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
                         DD      START       + IMAGE_BASE
                         DD      THREAD_PROC + IMAGE_BASE
@@ -189,4 +189,4 @@ DO_FORTH_NO_EXCEPTIONS:
                         CW      $PBYE
 
 LATEST_WORD             = VOC_LINK
-CFA_HERE:
+HERE:

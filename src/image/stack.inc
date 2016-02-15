@@ -178,9 +178,7 @@ QDUPZERO:
                         $NEXT
 
 ;  DS-SIZE
-                        $CONST  'DS-SIZE'
-
-                        CC      DATA_STACK_SIZE
+                        $CONST  'DS-SIZE',,DATA_STACK_SIZE
 
 ;  SP0
                         $CODE   'SP0',$SP0,VEF_USUAL

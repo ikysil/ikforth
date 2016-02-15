@@ -10,9 +10,7 @@
 ;******************************************************************************
 
 ;  EXCS-SIZE
-                        $CONST  'EXCS-SIZE'
-
-                        CC      EXCEPTION_STACK_SIZE
+                        $CONST  'EXCS-SIZE',,EXCEPTION_STACK_SIZE
 
 ;  EXCP0
                         $CODE   'EXCP0',$EXCP0,VEF_USUAL
@@ -21,8 +19,7 @@
                         PUSHDS  EAX
                         $NEXT
 
-                        $USER   'EXCP',$EXCP
-                        CC      VAR_EXCP
+                        $USER   'EXCP',$EXCP,VAR_EXCP
 
 ;  EXCP@
                         $COLON  'EXCP@',$EXCPFETCH,VEF_USUAL
@@ -90,8 +87,7 @@
                         CW      $DROP
                         CEXIT
 
-                        $DEFER  'EXC-FRAME-PUSH',$EXC_FRAME_PUSH
-                        CW      $PEXC_FRAME_PUSH
+                        $DEFER  'EXC-FRAME-PUSH',$EXC_FRAME_PUSH,$PEXC_FRAME_PUSH
 
                         $COLON  '(EXC-FRAME-PUSH)',$PEXC_FRAME_PUSH
                         CEXIT

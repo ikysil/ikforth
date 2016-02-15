@@ -9,6 +9,17 @@
 ;  Interpretation/compilation time helper words
 ;******************************************************************************
 
+;  (DO-INT/COMP)
+                        $CREATE '(DO-INT/COMP)'
+                        LABEL   CFA_$PDO_INT_COMP
+                        ADD     EAX,CFA_SIZE
+                        CMP     BYTE [VAR_STATE + IMAGE_BASE],F_FALSE
+                        JZ      PDIC_INT
+                        ADD     EAX,CELL_SIZE
+PDIC_INT:
+                        MOV     EAX,DWORD [EAX]
+                        $JMP
+
 ;  IS-INT/COMP?
                         $COLON  'IS-INT/COMP?',$IS_INT_COMPQ
 

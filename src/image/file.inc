@@ -9,15 +9,11 @@
 ;  FILE access words
 ;******************************************************************************
 
-                        $CONST  'R/O',$R_O
-
-                        CC      0
+                        $CONST  'R/O',$R_O,0
 
 ;  11.6.1.2090 READ-LINE 
 ;  (S c-addr u1 fileid -- u2 flag ior )
-                        $DEFER  'READ-LINE',$READ_LINE
-
-                        CW      $_READ_LINE
+                        $DEFER  'READ-LINE',$READ_LINE,$_READ_LINE
 
 
                         $NONAME $_INCLUDED
@@ -30,15 +26,11 @@
 
 ;  11.6.1.1718 INCLUDED
 ;  D: c-addr count --
-                        $DEFER  'INCLUDED',$INCLUDED
-
-                        CW      $_INCLUDED
+                        $DEFER  'INCLUDED',$INCLUDED,$_INCLUDED
 
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
-                        $DEFER  'INCLUDE-FILE',$INCLUDE_FILE
-
-                        CW      $_INCLUDE_FILE
+                        $DEFER  'INCLUDE-FILE',$INCLUDE_FILE,$_INCLUDE_FILE
 
                         $NONAME $_INCLUDE_FILE
 

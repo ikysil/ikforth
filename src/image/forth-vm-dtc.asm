@@ -114,8 +114,6 @@ CFA_SIZE                EQU     CFA_TMPLT_END - CFA_TMPLT_START
                         CW      $ADD
                         CEXIT
 
-                        $CONST  'HOST-ITC?'
-                        CC      F_FALSE
+                        $CONST  'HOST-ITC?',,F_FALSE
 
-                        $CONST  'HOST-DTC?'
-                        CC      F_TRUE
+                        $CONST  'HOST-DTC?',,F_TRUE

@@ -79,8 +79,6 @@ CFA_SIZE                EQU     CELL_SIZE
                         CW      $ADD
                         CEXIT
 
-                        $CONST  'HOST-ITC?'
-                        CC      F_TRUE
+                        $CONST  'HOST-ITC?',,F_TRUE
 
-                        $CONST  'HOST-DTC?'
-                        CC      F_FALSE
+                        $CONST  'HOST-DTC?',,F_FALSE

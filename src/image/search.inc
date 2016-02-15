@@ -10,8 +10,7 @@
 ;******************************************************************************
 
 ;  16.6.1.1595 FORTH-WORDLIST
-                        $VAR    'FORTH-WORDLIST',$FORTH_WORDLIST
-
+                        $CREATE    'FORTH-WORDLIST',$FORTH_WORDLIST
 FORTH_WORDLIST_EQU:
                         DD      LATEST_WORD             ; last word in a list
                         CC      0                       ; wordlist name
@@ -126,7 +125,5 @@ FF_EXIT:
 
 ;  6.1.1550 FIND
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
-                        $DEFER  'FIND',$FIND
-
-                        CW      $FIND_FORTH
+                        $DEFER  'FIND',$FIND,$FIND_FORTH
 

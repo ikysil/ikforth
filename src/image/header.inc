@@ -10,68 +10,48 @@
 ;******************************************************************************
 
 ;  REPORT-NEW-NAME
-                        $VAR    'REPORT-NEW-NAME',$REPORT_NEW_NAME
-
-                        CC      F_FALSE
+                        $VAR    'REPORT-NEW-NAME',$REPORT_NEW_NAME,F_FALSE
 
 ;  REPORT-NEW-NAME-DUPLICATE
-                        $VAR    'REPORT-NEW-NAME-DUPLICATE',$REPORT_NEW_NAME_DUPLICATE
-
-                        CC      F_FALSE
+                        $VAR    'REPORT-NEW-NAME-DUPLICATE',$REPORT_NEW_NAME_DUPLICATE,F_FALSE
 
 ;  MAX-NAME-LENGTH
-                        $VAR    'MAX-NAME-LENGTH',$MAX_NAME_LENGTH
-
-                        CC      64
+                        $VAR    'MAX-NAME-LENGTH',$MAX_NAME_LENGTH,64
 
 ;  USE-LOCATE
-                        $VAR    'USE-LOCATE',$USE_LOCATE
-                        CC      F_TRUE
+                        $VAR    'USE-LOCATE',$USE_LOCATE,F_TRUE
 
 ;  &USUAL
 ;  D: -- VEF-USUAL
-                        $CONST  '&USUAL'
-
-                        CC      VEF_USUAL
+                        $CONST  '&USUAL',,VEF_USUAL
 
 ;  &IMMEDIATE
 ;  D: -- VEF-IMMEDIATE
-                        $CONST  '&IMMEDIATE'
-
-                        CC      VEF_IMMEDIATE
+                        $CONST  '&IMMEDIATE',,VEF_IMMEDIATE
 
 ;  &HIDDEN
 ;  D: -- VEF-HIDDEN
-                        $CONST  '&HIDDEN'
-
-                        CC      VEF_HIDDEN
+                        $CONST  '&HIDDEN',,VEF_HIDDEN
 
 ;  &COMPILE-ONLY
 ;  D: -- VEF-COMPILE-ONLY
-                        $CONST  '&COMPILE-ONLY'
-
-                        CC      VEF_COMPILE_ONLY
+                        $CONST  '&COMPILE-ONLY',,VEF_COMPILE_ONLY
 
 ;  &LOCATE
 ;  D: -- VEF-LOCATE
-                        $CONST  '&LOCATE',$AMPLOCATE
-                        CC      VEF_LOCATE
+                        $CONST  '&LOCATE',$AMPLOCATE,VEF_LOCATE
 
 ;  &IMMEDIATE/COMPILE-ONLY
 ;  D: -- VEF-IMMEDIATE or VEF-COMPILE-ONLY
-                        $CONST  '&IMMEDIATE/COMPILE-ONLY'
-
-                        CC      VEF_IMMEDIATE_COMPILE_ONLY
+                        $CONST  '&IMMEDIATE/COMPILE-ONLY',,VEF_IMMEDIATE_COMPILE_ONLY
 
 ;  CFA-SIZE
 ;  Size of CFA field
 ;  D: -- n
-                        $CONST  'CFA-SIZE',$CFA_SIZE
-
-                        CC      CFA_SIZE
+                        $CONST  'CFA-SIZE',$CFA_SIZE,CFA_SIZE
 
 ;  $NEXT-CODE-SIZE
-                        $VAR   '$NEXT-CODE',$NEXT_CODE
+                        $CREATE '$NEXT-CODE',$NEXT_CODE
 NEXT_CODE_START:
                         $NEXT
 NEXT_CODE_END:
@@ -81,8 +61,7 @@ NEXT_CODE_SIZE          EQU     NEXT_CODE_END - NEXT_CODE_START
 ;  $NEXT-CODE-SIZE
 ;  Size of CFA field
 ;  D: -- n
-                        $CONST  '$NEXT-CODE-SIZE',$NEXT_CODE_SIZE
-                        CC      NEXT_CODE_SIZE
+                        $CONST  '$NEXT-CODE-SIZE',$NEXT_CODE_SIZE,NEXT_CODE_SIZE
 
 ;  $NEXT!
 ;  Compile the machine code for $NEXT primitive of inner interpreter at addr address.
@@ -156,9 +135,7 @@ CDN_OK:
 
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
-                        $DEFER  'REPORT-NAME',$REPORT_NAME
-
-                        CW      $PREPORT_NAME
+                        $DEFER  'REPORT-NAME',$REPORT_NAME,$PREPORT_NAME
 
 ;  (LOCATE,)
 ;  S: flags1 -- flags2
