@@ -127,17 +127,17 @@ DIGITS_TABLE:
 ;  Output the byte on the top of the data stack in hexadecimal representation.
 ;  S: a --
                         $COLON  'H.2',$HOUT2
-                        CW      $BTOH
-                        CW      $EMIT
-                        CW      $EMIT
-                        CEXIT
+                        XT_$BTOH
+                        XT_$EMIT
+                        XT_$EMIT
+                        XT_$EXIT
 
 ;  Output the value on the top of the data stack in hexadecimal representation.
 ;  S: a --
                         $COLON  'H.8',$HOUT8
-                        CW      $SPLIT8
-                        CW      $HOUT2
-                        CW      $HOUT2
-                        CW      $HOUT2
-                        CW      $HOUT2
-                        CEXIT
+                        XT_$SPLIT8
+                        XT_$HOUT2
+                        XT_$HOUT2
+                        XT_$HOUT2
+                        XT_$HOUT2
+                        XT_$EXIT

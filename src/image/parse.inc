@@ -66,16 +66,16 @@ PWORD_EXIT:
 ;  6.1.2450 WORD
                         $COLON  'WORD',$WORD
 
-                        CW      $SOURCE                 ; c c-addr u
+                        XT_$SOURCE                 ; c c-addr u
                         CFETCH  $TOIN
-                        CW      $SUB
-                        CW      $SWAP                   ; c u c-addr
+                        XT_$SUB
+                        XT_$SWAP                   ; c u c-addr
                         CFETCH  $TOIN                   ; c u c-addr offset
-                        CW      $ADD                    ; c u c-addr
-                        CW      $SWAP                   ; c c-addr u
-                        CW      $POCKET                 ; c c-addr u dest-addr
-                        CW      $PWORD
-                        CEXIT
+                        XT_$ADD                    ; c u c-addr
+                        XT_$SWAP                   ; c c-addr u
+                        XT_$POCKET                 ; c c-addr u dest-addr
+                        XT_$PWORD
+                        XT_$EXIT
 
 ;  (PARSE)
                         $CODE   '(PARSE)',$PPARSE
@@ -105,46 +105,46 @@ PPARSE_EXIT:
 ;  6.2.2008 PARSE
                         $COLON  'PARSE',$PARSE
 
-                        CW      $SOURCE                 ; c c-addr u
+                        XT_$SOURCE                 ; c c-addr u
                         CFETCH  $TOIN
-                        CW      $SUB
-                        CW      $SWAP                   ; c u c-addr
+                        XT_$SUB
+                        XT_$SWAP                   ; c u c-addr
                         CFETCH  $TOIN                   ; c u c-addr offset
-                        CW      $ADD                    ; c u c-addr
-                        CW      $SWAP                   ; c c-addr u
-                        CW      $PPARSE                 ; c-addr u
-                        CEXIT
+                        XT_$ADD                    ; c u c-addr
+                        XT_$SWAP                   ; c c-addr u
+                        XT_$PPARSE                 ; c-addr u
+                        XT_$EXIT
 
 ;  (S")
 ;  -- c-addr count
                         $COLON  '(S")',$PSQUOTE
 
-                        CW      $RFROM
-                        CW      $DUP
-                        CW      $FETCH
-                        CW      $SWAP
-                        CW      $CELLADD
-                        CW      $2DUP
-                        CW      $ADD
-                        CW      $TOR
-                        CW      $SWAP
-                        CEXIT
+                        XT_$RFROM
+                        XT_$DUP
+                        XT_$FETCH
+                        XT_$SWAP
+                        XT_$CELLADD
+                        XT_$2DUP
+                        XT_$ADD
+                        XT_$TOR
+                        XT_$SWAP
+                        XT_$EXIT
 
 ;  S"-COMP
                         $COLON  'S"-COMP',$SQ_COMP
 
                         CCLIT   '"'
-                        CW      $PARSE
+                        XT_$PARSE
                         CWLIT   $PSQUOTE
-                        CW      $COMPILEC
-                        CW      $DUP
-                        CW      $COMMA
-                        CW      $HERE
-                        CW      $OVER
-                        CW      $ALLOT
-                        CW      $SWAP
-                        CW      $CMOVE
-                        CEXIT
+                        XT_$COMPILEC
+                        XT_$DUP
+                        XT_$COMMA
+                        XT_$HERE
+                        XT_$OVER
+                        XT_$ALLOT
+                        XT_$SWAP
+                        XT_$CMOVE
+                        XT_$EXIT
 
 ;  +S"BUFFER
 ;  S: -- c-addr

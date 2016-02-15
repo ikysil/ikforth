@@ -67,11 +67,11 @@ NEXT_CODE_SIZE          EQU     NEXT_CODE_END - NEXT_CODE_START
 ;  Compile the machine code for $NEXT primitive of inner interpreter at addr address.
 ;  D: addr --
                         $COLON  '$NEXT!',$NEXTSTORE
-                        CW      $NEXT_CODE
-                        CW      $SWAP
-                        CW      $NEXT_CODE_SIZE
-                        CW      $CMOVE
-                        CEXIT
+                        XT_$NEXT_CODE
+                        XT_$SWAP
+                        XT_$NEXT_CODE_SIZE
+                        XT_$CMOVE
+                        XT_$EXIT
 
 ;  LATEST-HEAD@
 ;  addr is the link address of the last compiled word in compilation wordlist.
@@ -95,18 +95,18 @@ NEXT_CODE_SIZE          EQU     NEXT_CODE_END - NEXT_CODE_START
 ;  D: c-addr count -- c-addr count
                         $COLON  'CHECK-NAME',$CHECK_NAME
 
-                        CW      $DUP
-                        CW      $ZEROEQ
+                        XT_$DUP
+                        XT_$ZEROEQ
                         CQBR    NAME_ZEROGR
                           CTHROW  -16
 NAME_ZEROGR:
-                        CW      $DUP
+                        XT_$DUP
                         CFETCH  $MAX_NAME_LENGTH
-                        CW      $GR
+                        XT_$GR
                         CQBR    NAME_OK
                           CTHROW  -19
 NAME_OK:
-                        CEXIT
+                        XT_$EXIT
 
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
@@ -114,24 +114,24 @@ NAME_OK:
 
                         CFETCH  $REPORT_NEW_NAME
                         CQBR    NO_REPORT
-                          CW      $2DUP
-                          CW      $TYPE
+                          XT_$2DUP
+                          XT_$TYPE
                           $WRITE  ' '
 NO_REPORT:
                         CFETCH  $REPORT_NEW_NAME_DUPLICATE
                         CQBR    CDN_OK
-                        CW      $2DUP
+                        XT_$2DUP
                         CFETCH  $CURRENT
-                        CW      $SEARCH_WORDLIST        ; c-addr u 0 | c-addr u xt +/-1
-                        CW      $ZERONOEQ
+                        XT_$SEARCH_WORDLIST        ; c-addr u 0 | c-addr u xt +/-1
+                        XT_$ZERONOEQ
                         CQBR    CDN_OK
-                          CW      $DROP
+                          XT_$DROP
                           $WRITE  'Redefinition of '
-                          CW      $2DUP
-                          CW      $TYPE                 
+                          XT_$2DUP
+                          XT_$TYPE
                           $WRITE  ' '
 CDN_OK:
-                        CEXIT
+                        XT_$EXIT
 
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
@@ -159,148 +159,148 @@ NO_LOCATE:
 ;  D: [ 0 0 | c-addr count ] flags --
                         $COLON  '(HEADER,)',$PHEADERC
                         XT_$PLOCATEC
-                        CW      $HERE
-                        CW      $TOR
-                        CW      $CCOMMA                 ; compile flags
-                        CW      $SWAP                   ; count c-addr
-                        CW      $OVER                   ; count c-addr count
-                        CW      $DUP
-                        CW      $CCOMMA                 ; compile length
-                        CW      $QDUP
+                        XT_$HERE
+                        XT_$TOR
+                        XT_$CCOMMA                 ; compile flags
+                        XT_$SWAP                   ; count c-addr
+                        XT_$OVER                   ; count c-addr count
+                        XT_$DUP
+                        XT_$CCOMMA                 ; compile length
+                        XT_$QDUP
                         CQBR    NO_NAME
-                          CW      $HERE                   ; count c-addr count here
-                          CW      $SWAP                   ; count c-addr here count
-                          CW      $DUP
-                          CW      $ALLOT
-                          CW      $CMOVE                  ; put name
+                          XT_$HERE                   ; count c-addr count here
+                          XT_$SWAP                   ; count c-addr here count
+                          XT_$DUP
+                          XT_$ALLOT
+                          XT_$CMOVE                  ; put name
                         CBR     NAME_EXIT
 NO_NAME:
-                          CW      $DROP
+                          XT_$DROP
 NAME_EXIT:
                         CCLIT   2
-                        CW      $ADD
-                        CW      $CCOMMA                 ; compile (length + 2)
-                        CW      $LATEST_HEAD_FETCH
-                        CW      $COMMA
-                        CW      $RFROM
-                        CW      $LATEST_HEAD_STORE
-                        CEXIT
+                        XT_$ADD
+                        XT_$CCOMMA                 ; compile (length + 2)
+                        XT_$LATEST_HEAD_FETCH
+                        XT_$COMMA
+                        XT_$RFROM
+                        XT_$LATEST_HEAD_STORE
+                        XT_$EXIT
 
 ;  (CFA,)
 ;  Compile CFA after (HEADER,)
 ;  D: [ code-addr | 0 ] -- xt
                         $COLON  '(CFA,)',$PCFA_C
 
-                        CW      $DUP
+                        XT_$DUP
                         ;  D: [ code-addr | 0 ] [ code-addr | 0 ]
-                        CW      $ZEROEQ
+                        XT_$ZEROEQ
                         ;  D: [ code-addr | 0 ] eq-zero-flag
                         CQBR    HAS_CODE_ADDR
-                          CW      $DROP
-                          CW      $HERE
+                          XT_$DROP
+                          XT_$HERE
                           ;   D: xt
                           CCLIT   CFA_SIZE
-                          CW      $ADD
+                          XT_$ADD
                           ;   D: code-addr
 HAS_CODE_ADDR:
-                        CW      $HERE
+                        XT_$HERE
                           ;   D: code-addr xt
                         CCLIT   CFA_SIZE
-                        CW      $ALLOT
+                        XT_$ALLOT
                           ;   D: code-addr xt
-                        CW      $SWAP
-                        CW      $OVER
+                        XT_$SWAP
+                        XT_$OVER
                           ;   D: xt code-addr xt
-                        CW      $CODE_ADDRESS_STORE
+                        XT_$CODE_ADDRESS_STORE
                           ;   D: xt
-                        CEXIT
+                        XT_$EXIT
 
 ;  HEADER,
 ;  D: [ code-addr | 0 ] [ 0 0 | c-addr count ] flags -- xt
                         $COLON  'HEADER,',$HEADERC
 
-                        CW      $PHEADERC
-                        CW      $PCFA_C
-                        CEXIT
+                        XT_$PHEADERC
+                        XT_$PCFA_C
+                        XT_$EXIT
 
 ;  CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
                         $COLON  'CHECK-HEADER,',$CHECK_HEADERC
 
-                        CW      $TOR
-                        CW      $CHECK_NAME
-                        CW      $REPORT_NAME
-                        CW      $RFROM
-                        CW      $HEADERC
-                        CEXIT
+                        XT_$TOR
+                        XT_$CHECK_NAME
+                        XT_$REPORT_NAME
+                        XT_$RFROM
+                        XT_$HEADERC
+                        XT_$EXIT
 
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
                         $COLON  'PARSE-CHECK-HEADER,',$PARSE_CHECK_HEADERC
 
-                        CW      $TOR
-                        CW      $BL
-                        CW      $WORD
-                        CW      $COUNT
-                        CW      $RFROM
-                        CW      $CHECK_HEADERC
-                        CEXIT
+                        XT_$TOR
+                        XT_$BL
+                        XT_$WORD
+                        XT_$COUNT
+                        XT_$RFROM
+                        XT_$CHECK_HEADERC
+                        XT_$EXIT
 
 ;  HFLAGS!
 ;  D: x h-id --
 ;  Store flags specified by x to the flags field of the header
                         $COLON  'HFLAGS!',$HFLAGS_STORE
 
-                        CW      $CSTORE
-                        CEXIT
+                        XT_$CSTORE
+                        XT_$EXIT
 
 ;  HFLAGS@
 ;  D: h-id -- x
 ;  Get flags from the flags field of the header
                         $COLON  'HFLAGS@',$HFLAGS_FETCH
 
-                        CW      $CFETCH
-                        CEXIT
+                        XT_$CFETCH
+                        XT_$EXIT
 
 ;  SET-HFLAGS!
 ;  D: flags --
                         $COLON  'SET-HFLAGS!'
 
-                        CW      $LATEST_HEAD_FETCH
-                        CW      $DUP
-                        CW      $HFLAGS_FETCH
-                        CW      $ROT
-                        CW      $OR
-                        CW      $SWAP
-                        CW      $HFLAGS_STORE
-                        CEXIT
+                        XT_$LATEST_HEAD_FETCH
+                        XT_$DUP
+                        XT_$HFLAGS_FETCH
+                        XT_$ROT
+                        XT_$OR
+                        XT_$SWAP
+                        XT_$HFLAGS_STORE
+                        XT_$EXIT
 
 ;  RESET-HFLAGS!
 ;  D: flags --
                         $COLON  'RESET-HFLAGS!'
 
-                        CW      $LATEST_HEAD_FETCH
-                        CW      $DUP
-                        CW      $HFLAGS_FETCH
-                        CW      $ROT
-                        CW      $INVERT
-                        CW      $AND
-                        CW      $SWAP
-                        CW      $HFLAGS_STORE
-                        CEXIT
+                        XT_$LATEST_HEAD_FETCH
+                        XT_$DUP
+                        XT_$HFLAGS_FETCH
+                        XT_$ROT
+                        XT_$INVERT
+                        XT_$AND
+                        XT_$SWAP
+                        XT_$HFLAGS_STORE
+                        XT_$EXIT
 
 ;  INVERT-HFLAGS!
 ;  D: flags --
                         $COLON  'INVERT-HFLAGS!'
 
-                        CW      $LATEST_HEAD_FETCH
-                        CW      $DUP
-                        CW      $HFLAGS_FETCH
-                        CW      $ROT
-                        CW      $XOR
-                        CW      $SWAP
-                        CW      $HFLAGS_STORE
-                        CEXIT
+                        XT_$LATEST_HEAD_FETCH
+                        XT_$DUP
+                        XT_$HFLAGS_FETCH
+                        XT_$ROT
+                        XT_$XOR
+                        XT_$SWAP
+                        XT_$HFLAGS_STORE
+                        XT_$EXIT
 
 ;  >HEAD
 ;  D: xt -- h-id
@@ -332,64 +332,64 @@ HAS_CODE_ADDR:
 ;  HEAD>NAME
                         $COLON  'HEAD>NAME',$HEAD_TO_NAME
 
-                        CW      $1ADD
-                        CEXIT
+                        XT_$1ADD
+                        XT_$EXIT
 
 ;  NAME>HEAD
                         $COLON  'NAME>HEAD',$NAME_TO_HEAD
 
-                        CW      $1SUB
-                        CEXIT
+                        XT_$1SUB
+                        XT_$EXIT
 
 ;  >NAME
 ;  D: xt -- name-addr
                         $COLON  '>NAME',$TO_NAME
 
-                        CW      $TO_HEAD
-                        CW      $HEAD_TO_NAME
-                        CEXIT
+                        XT_$TO_HEAD
+                        XT_$HEAD_TO_NAME
+                        XT_$EXIT
 
 ;  NAME>
 ;  D: name-addr -- xt
                         $COLON  'NAME>',$NAME_FROM
 
-                        CW      $NAME_TO_HEAD
-                        CW      $HEAD_FROM
-                        CEXIT
+                        XT_$NAME_TO_HEAD
+                        XT_$HEAD_FROM
+                        XT_$EXIT
 
 ;  >LINK
 ;  D: CFA -- LFA
                         $COLON  '>LINK',$TO_LINK
 
                         CCLIT   CELL_SIZE
-                        CW      $SUB
-                        CEXIT
+                        XT_$SUB
+                        XT_$EXIT
 
 ;  LINK>
 ;  D: LFA -- CFA
                         $COLON  'LINK>',$LINK_FROM
 
                         CCLIT   CELL_SIZE
-                        CW      $ADD
-                        CEXIT
+                        XT_$ADD
+                        XT_$EXIT
 
 ;  H>NEXT>H
 ;  D: h-id -- prev_h-id | 0
                         $COLON  'H>NEXT>H',$H_TO_NEXT_TO_H
 
-                        CW      $HEAD_FROM
-                        CW      $TO_LINK
-                        CW      $FETCH
-                        CEXIT
+                        XT_$HEAD_FROM
+                        XT_$TO_LINK
+                        XT_$FETCH
+                        XT_$EXIT
 
 ;  H>#NAME
 ;  D: h-id -- addr len
                         $COLON  'H>#NAME',$H_TO_HASH_NAME
 
-                        CW      $HEAD_TO_NAME
-                        CW      $DUP
-                        CW      $1ADD
-                        CW      $SWAP
-                        CW      $CFETCH
-                        CEXIT
+                        XT_$HEAD_TO_NAME
+                        XT_$DUP
+                        XT_$1ADD
+                        XT_$SWAP
+                        XT_$CFETCH
+                        XT_$EXIT
 

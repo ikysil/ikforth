@@ -62,58 +62,12 @@
                         END IF
                         }
 
-;******************************************************************************
-;  HEADER & support words - implementation for DTC (Direct Threaded Code)
-;******************************************************************************
+                        MACRO   INCLUDE_HEADER_TC {
+                        INCLUDE "header-dtc.asm"
+                        }
 
-                        $CFA    -IMAGE_BASE,TMPLT_START,TMPLT_CODE_ADDR_END,TMPLT_END
-
-CFA_EXECUTOR_OFFSET     EQU     CFA_TMPLT_CODE_ADDR_END - CFA_TMPLT_START - 4
-CFA_SIZE                EQU     CFA_TMPLT_END - CFA_TMPLT_START
-
-;  CFA@
-;  D: xt -- code-addr
-;  code-addr is the code address of the word xt
-                        $COLON  'CFA@',$CFAFETCH
-                        CCLIT   CFA_EXECUTOR_OFFSET
-                        CW      $ADD
-                        CW      $FETCH
-                        CEXIT
-
-;  CFA!
-;  D: code-addr xt --
-;  Change a code address of the word xt to code-addr
-                        $COLON  'CFA!',$CFASTORE
-                        CCLIT   CFA_EXECUTOR_OFFSET
-                        CW      $ADD
-                        CW      $STORE
-                        CEXIT
-
-;  CODE-ADDRESS!
-;  D: code-addr xt --
-;  Create a code field with code address code-addr at xt
-                        $COLON  'CODE-ADDRESS!',$CODE_ADDRESS_STORE
-                        CW      $DUP
-                        ; D: code-addr xt xt
-                        CWLIT   TMPLT_START
-                        ; D: code-addr xt xt CFA_START
-                        CW      $SWAP
-                        ; D: code-addr xt CFA_START xt
-                        CW      $CFA_SIZE
-                        ; D: code-addr xt CFA_START xt CFA_SIZE
-                        CW      $CMOVE
-                        ; D: code-addr xt
-                        CW      $CFASTORE
-                        CEXIT
-
-;  6.1.0550 >BODY
-;  Convert CFA to PFA
-;  D: CFA -- PFA
-                        $COLON  '>BODY',$TOBODY
-                        CCLIT   CFA_SIZE
-                        CW      $ADD
-                        CEXIT
-
-                        $CONST  'HOST-ITC?',,F_FALSE
-
-                        $CONST  'HOST-DTC?',,F_TRUE
+                        VIRTUAL AT 0
+                        $CFA    0,VTMPLT_START,VTMPLT_CODE_ADDR_END,VTMPLT_END
+CFA_EXECUTOR_OFFSET     EQU     CFA_VTMPLT_CODE_ADDR_END - CFA_VTMPLT_START - 4
+CFA_SIZE                EQU     CFA_VTMPLT_END - CFA_VTMPLT_START
+                        END VIRTUAL

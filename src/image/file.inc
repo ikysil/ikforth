@@ -11,103 +11,98 @@
 
                         $CONST  'R/O',$R_O,0
 
-;  11.6.1.2090 READ-LINE 
-;  (S c-addr u1 fileid -- u2 flag ior )
-                        $DEFER  'READ-LINE',$READ_LINE,$_READ_LINE
-
-
-                        $NONAME $_INCLUDED
-
-                        CW      $R_O
-                        CW      $OPEN_FILE
-                        CW      $THROW
-                        CW      $INCLUDE_FILE
-                        CEXIT
-
-;  11.6.1.1718 INCLUDED
-;  D: c-addr count --
-                        $DEFER  'INCLUDED',$INCLUDED,$_INCLUDED
-
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
                         $DEFER  'INCLUDE-FILE',$INCLUDE_FILE,$_INCLUDE_FILE
 
                         $NONAME $_INCLUDE_FILE
 
-                        CW      $INPUT_TO_R
-                        CW      $RESET_INPUT
-                        CW      $SOURCE_ID_STORE
+                        XT_$INPUT_TO_R
+                        XT_$RESET_INPUT
+                        XT_$SOURCE_ID_STORE
 INCLUDE_FILE_LOOP:
-                        CW      $SOURCE_ID
-                        CW      $FILE_POSITION
-                        CW      $DROP
-                        CW      $CURRENT_FILE_POSITION
-                        CW      $2STORE
+                        XT_$SOURCE_ID
+                        XT_$FILE_POSITION
+                        XT_$DROP
+                        XT_$CURRENT_FILE_POSITION
+                        XT_$2STORE
 
-                        CW      $ZERO                   ; FOR THROW
-                        CW      $REFILL
+                        XT_$ZERO                   ; FOR THROW
+                        XT_$REFILL
                         CQBR    INCLUDE_FILE_EXIT
-                          CW      $DROP
+                          XT_$DROP
                           CWLIT   $INTERPRET
-                          CW      $CATCH
-                          CW      $QDUP
+                          XT_$CATCH
+                          XT_$QDUP
                         CQBR    INCLUDE_FILE_LOOP
 INCLUDE_FILE_EXIT:
-                        CW      $SOURCE_ID
-                        CW      $CLOSE_FILE
-                        CW      $DROP
-                        CW      $R_TO_INPUT
-                        CW      $THROW
-                        CEXIT
+                        XT_$SOURCE_ID
+                        XT_$CLOSE_FILE
+                        XT_$DROP
+                        XT_$R_TO_INPUT
+                        XT_$THROW
+                        XT_$EXIT
+
+                        $NONAME $_INCLUDED
+
+                        XT_$R_O
+                        XT_$OPEN_FILE
+                        XT_$THROW
+                        XT_$INCLUDE_FILE
+                        XT_$EXIT
+
+;  11.6.1.1718 INCLUDED
+;  D: c-addr count --
+                        $DEFER  'INCLUDED',$INCLUDED,$_INCLUDED
 
                         $NONAME $SAVE_INPUT_FILE
 
-                        CW      $SOURCE_ID
-                        CW      $CURRENT_FILE_POSITION
-                        CW      $2FETCH
+                        XT_$SOURCE_ID
+                        XT_$CURRENT_FILE_POSITION
+                        XT_$2FETCH
                         CFETCH  $TOIN
                         CFETCH  $INCLUDE_LINE_NUM
-                        CW      $1SUB
+                        XT_$1SUB
                         CWLIT   $RESTORE_INPUT_FILE
                         CCLIT   6
-                        CEXIT
+                        XT_$EXIT
 
                         $NONAME $RESTORE_INPUT_FILE
 
-                        CW      $DROP
+                        XT_$DROP
                         CSTORE  $INCLUDE_LINE_NUM
-                        CW      $DUP
+                        XT_$DUP
                         CSTORE  $TOIN
-                        CW      $STOD
-                        CW      $DADD
-                        CW      $CURRENT_FILE_POSITION
-                        CW      $2STORE
-                        CW      $DUP
-                        CW      $SOURCE_ID_STORE
-                        CW      $ZEROGR
+                        XT_$STOD
+                        XT_$DADD
+                        XT_$CURRENT_FILE_POSITION
+                        XT_$2STORE
+                        XT_$DUP
+                        XT_$SOURCE_ID_STORE
+                        XT_$ZEROGR
                         CQBR    @@PRESTORE_FILE_INPUT_EXIT
-                          CW      $CURRENT_FILE_POSITION
-                          CW      $2FETCH
-                          CW      $SOURCE_ID
-                          CW      $REPOSITION_FILE
-                          CW      $DROP
+                          XT_$CURRENT_FILE_POSITION
+                          XT_$2FETCH
+                          XT_$SOURCE_ID
+                          XT_$REPOSITION_FILE
+                          XT_$DROP
 @@PRESTORE_FILE_INPUT_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
                         $NONAME $RESET_INPUT_FILE
 
-                        CW      $ZERO
-                        CW      $DUP
+                        XT_$ZERO
+                        XT_$DUP
                         CSTORE  $TOIN
-                        CW      $DUP
-                        CW      $SOURCE_ID_STORE
-                        CW      $DUP
+                        XT_$DUP
+                        XT_$SOURCE_ID_STORE
+                        XT_$DUP
                         CSTORE  $INCLUDE_LINE_NUM
-                        CW      $DUP
+                        XT_$DUP
                         CSTORE  $ERROR_LINE_NUM
-                        CW      $STOD
-                        CW      $CURRENT_FILE_POSITION
-                        CW      $2STORE
-                        CEXIT
+                        XT_$STOD
+                        XT_$CURRENT_FILE_POSITION
+                        XT_$2STORE
+                        XT_$EXIT
 
                         

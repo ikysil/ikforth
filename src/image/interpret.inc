@@ -3,7 +3,7 @@
 ;  interpret.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  INTERPRET support
@@ -15,224 +15,224 @@
 ;  DO-INT-DEFINED
                         $COLON  'DO-INT-DEFINED',$DO_INT_DEFINED
 
-                        CW      $OVER
-                        CW      $TO_HEAD
-                        CW      $HFLAGS_FETCH
+                        XT_$OVER
+                        XT_$TO_HEAD
+                        XT_$HFLAGS_FETCH
                         CCLIT   VEF_COMPILE_ONLY
-                        CW      $AND
-                        CW      $ZERONOEQ
+                        XT_$AND
+                        XT_$ZERONOEQ
                         CQBR    DID_INTERPRET
                           CTHROW  -14
 DID_INTERPRET:
-                        CW      $DROP
-                        CW      $EXECUTE
-                        CEXIT
+                        XT_$DROP
+                        XT_$EXECUTE
+                        XT_$EXIT
 
 ;  DO-COMP-DEFINED
                         $COLON  'DO-COMP-DEFINED',$DO_COMP_DEFINED
 
-                        CW      $ZEROGR
+                        XT_$ZEROGR
                         CQBR    DCD_NOT_IMMEDIATE
-                          CW      $EXECUTE
+                          XT_$EXECUTE
                         CBR     DCD_EXIT
 DCD_NOT_IMMEDIATE:
-                          CW      $COMPILEC
+                          XT_$COMPILEC
 DCD_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  DO-DEFINED
                         $COLON  'DO-DEFINED',$DO_DEFINED
 
                         CFETCH  $STATE
                         CQBR    DD_INTERPRETATION
-                          CW      $DO_COMP_DEFINED
+                          XT_$DO_COMP_DEFINED
                         CBR     DD_EXIT
 DD_INTERPRETATION:
-                          CW      $DO_INT_DEFINED
+                          XT_$DO_INT_DEFINED
 DD_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  IL-CHECK-SIGN
 ;  ( C-ADDR U -- C-ADDR U )
                         $COLON  'IL-CHECK-SIGN',$ILCS
 
-                        CW      $FALSE
+                        XT_$FALSE
                         CSTORE  $TONUMBER_SIGNED
-                        CW      $OVER
-                        CW      $CFETCH
-                        CW      $DUP
+                        XT_$OVER
+                        XT_$CFETCH
+                        XT_$DUP
                         CCLIT   45 ;'-'
-                        CW      $NOEQ
+                        XT_$NOEQ
                         CQBR    ILCS_SIGNED
                         CCLIT   43 ;'+'
-                        CW      $NOEQ
+                        XT_$NOEQ
                         CQBR    ILCS_UNSIGNED
                         CBR     ILCS_EXIT
 ILCS_SIGNED:
-                        CW      $DROP
-                        CW      $TRUE
+                        XT_$DROP
+                        XT_$TRUE
                         CSTORE  $TONUMBER_SIGNED
 ILCS_UNSIGNED:
-                        CW      $SWAP
-                        CW      $CHARADD
-                        CW      $SWAP
-                        CW      $1SUB
+                        XT_$SWAP
+                        XT_$CHARADD
+                        XT_$SWAP
+                        XT_$1SUB
 ILCS_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  IL-CHECK-LIT
 ;  ( C-ADDR U - N TRUE | C-ADDR U FALSE )
                         $COLON  'IL-CHECK-LIT',$ILCL
 
-                        CW      $ZERO
-                        CW      $DUP
-                        CW      $2SWAP
-                        CW      $TONUMBER
-                        CW      $DUP
-                        CW      $ZEROEQ
+                        XT_$ZERO
+                        XT_$DUP
+                        XT_$2SWAP
+                        XT_$TONUMBER
+                        XT_$DUP
+                        XT_$ZEROEQ
                         CQBR    ILCL_NO
-                          CW      $2DROP
-                          CW      $DROP
+                          XT_$2DROP
+                          XT_$DROP
                           CFETCH  $TONUMBER_SIGNED
                           CQBR    ILCL_UNSIGNED
-                            CW      $NEGATE
+                            XT_$NEGATE
 ILCL_UNSIGNED:
-                          CW      $TRUE
+                          XT_$TRUE
                         CBR     ILCL_EXIT
 ILCL_NO:
-                          CW      $FALSE
+                          XT_$FALSE
 ILCL_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  DO-LIT
                         $COLON  'DO-LIT',$DO_LIT
 
                         CFETCH  $STATE
                         CQBR    DL_EXIT
-                          CW      $LITERAL
+                          XT_$LITERAL
 DL_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  IL-CHECK-2LIT
 ;  ( D C-ADDR U - D TRUE | FALSE )
                         $COLON  'IL-CHECK-2LIT',$ILC2L
 
-                        CW      $1SUB
-                        CW      $ZEROEQ
+                        XT_$1SUB
+                        XT_$ZEROEQ
                         CQBR    ILC2L_EXIT2
-                        CW      $CFETCH
+                        XT_$CFETCH
                         CCLIT   46 ;'.'
-                        CW      $EQ
+                        XT_$EQ
                         CQBR    ILC2L_EXIT1
                         CFETCH  $TONUMBER_SIGNED
                         CQBR    ILC2L_UNSIGNED
-                        CW      $DNEGATE
+                        XT_$DNEGATE
 ILC2L_UNSIGNED:
-                        CW      $TRUE
+                        XT_$TRUE
                         CBR     ILC2L_EXIT
 ILC2L_EXIT2:
-                        CW      $DROP
+                        XT_$DROP
 ILC2L_EXIT1:
-                        CW      $2DROP
-                        CW      $FALSE
+                        XT_$2DROP
+                        XT_$FALSE
 ILC2L_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  DO-2LIT
                         $COLON  'DO-2LIT',$DO_2LIT
 
                         CFETCH  $STATE
                         CQBR    D2L_EXIT
-                          CW      $2LITERAL
+                          XT_$2LITERAL
 D2L_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  INTERPRET-LITERAL
 ;  ( C-ADDR U -- flag )
                         $COLON  'INTERPRET-LITERAL',$INTERPRET_LITERAL
 
-                        CW      $DUP
-                        CW      $ZERO
-                        CW      $NOEQ
+                        XT_$DUP
+                        XT_$ZERO
+                        XT_$NOEQ
                         CQBR    IL_UNKNOWN
-                        CW      $ILCS           ; c-addr u
-                        CW      $DUP            ; c-addr u u
+                        XT_$ILCS           ; c-addr u
+                        XT_$DUP            ; c-addr u u
                         CCLIT   1
-                        CW      $EQ
+                        XT_$EQ
                         CQBR    IL_OK1          ; branch if u <> 1
-                        CW      $OVER           ; c-addr u c-addr
-                        CW      $CFETCH
+                        XT_$OVER           ; c-addr u c-addr
+                        XT_$CFETCH
                         CCLIT   46 ;'.'
-                        CW      $EQ
+                        XT_$EQ
                         CQBR    IL_OK1          ; branch if c-addr @ <> '.'
-                        CW      $2DROP
+                        XT_$2DROP
                         CBR     IL_UNKNOWN
 IL_OK1:
-                        CW      $ILCL
+                        XT_$ILCL
                         CQBR    IL_CHECK_2LIT
-                          CW      $DO_LIT
-                          CW      $TRUE
+                          XT_$DO_LIT
+                          XT_$TRUE
                           CBR     IL_EXIT
 IL_CHECK_2LIT:
-                        CW      $ILC2L
+                        XT_$ILC2L
                         CQBR    IL_UNKNOWN
-                          CW      $DO_2LIT
-                          CW      $TRUE
+                          XT_$DO_2LIT
+                          XT_$TRUE
                           CBR     IL_EXIT
 IL_UNKNOWN:
-                        CW      $FALSE
+                        XT_$FALSE
 IL_EXIT:
-                        CEXIT
+                        XT_$EXIT
+
+;  D: c-addr u --
+                        $NONAME $PINTERPRET_WORD_NOT_FOUND
+
+                        XT_$2DROP
+                        CTHROW  -13
+                        XT_$EXIT
+
+;  INTERPRET-WORD-NOT-FOUND
+;  D: c-addr u --
+                        $DEFER  'INTERPRET-WORD-NOT-FOUND',$INTERPRET_WORD_NOT_FOUND,$PINTERPRET_WORD_NOT_FOUND
 
 ;  INTERPRET-WORD
 ;  ( C-ADDR -- )
                         $COLON  'INTERPRET-WORD',$INTERPRET_WORD
 
-                        CW      $FIND
-                        CW      $QDUP
+                        XT_$FIND
+                        XT_$QDUP
                         CQBR    IW_NOT_FOUND
-                          CW      $DO_DEFINED
+                          XT_$DO_DEFINED
                         CBR     IW_EXIT
 IW_NOT_FOUND:
-                          CW      $DUP
-                          CW      $TOR
-                          CW      $COUNT
-                          CW      $INTERPRET_LITERAL
-                          CW      $INVERT
+                          XT_$DUP
+                          XT_$TOR
+                          XT_$COUNT
+                          XT_$INTERPRET_LITERAL
+                          XT_$INVERT
                           CQBR    IW_EXIT_1
-                            CW      $RFROM
-                            CW      $COUNT
-                            CW      $INTERPRET_WORD_NOT_FOUND
+                            XT_$RFROM
+                            XT_$COUNT
+                            XT_$INTERPRET_WORD_NOT_FOUND
                           CBR     IW_EXIT
 IW_EXIT_1:
-                        CW      $RFROM
-                        CW      $DROP
+                        XT_$RFROM
+                        XT_$DROP
 IW_EXIT:
-                        CEXIT
-
-;  D: c-addr u -- 
-                        $NONAME $PINTERPRET_WORD_NOT_FOUND
-
-                        CW      $2DROP
-                        CTHROW  -13
-                        CEXIT
-
-;  INTERPRET-WORD-NOT-FOUND
-;  D: c-addr u -- 
-                        $DEFER  'INTERPRET-WORD-NOT-FOUND',$INTERPRET_WORD_NOT_FOUND,$PINTERPRET_WORD_NOT_FOUND
+                        XT_$EXIT
 
 ;  INTERPRET
                         $COLON  'INTERPRET',$INTERPRET
 
 INT_LOOP:
                         XT_$BL
-                        CW      $WORD                   ; c-addr
-                        CW      $DUP                    ; c-addr c-addr
-                        CW      $COUNT                  ; c-addr c-addr1 count
-                        CW      $NIP                    ; c-addr count
+                        XT_$WORD                   ; c-addr
+                        XT_$DUP                    ; c-addr c-addr
+                        XT_$COUNT                  ; c-addr c-addr1 count
+                        XT_$NIP                    ; c-addr count
                         CQBR    INT_EXIT                ; exit loop if parse area is exhausted
-                          CW      $INTERPRET_WORD
+                          XT_$INTERPRET_WORD
                         CBR     INT_LOOP
 INT_EXIT:
-                        CW      $DROP
+                        XT_$DROP
                         XT_$EXIT

@@ -3,7 +3,7 @@
 ;  int_comp.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Interpretation/compilation time helper words
@@ -23,67 +23,67 @@ PDIC_INT:
 ;  IS-INT/COMP?
                         $COLON  'IS-INT/COMP?',$IS_INT_COMPQ
 
-                        CW      $CFAFETCH
+                        XT_$CFAFETCH
                         CWLIT   $PDO_INT_COMP
-                        CW      $EQ
-                        CEXIT
+                        XT_$EQ
+                        XT_$EXIT
 
 ;  INT/COMP>INT
                         $COLON  'INT/COMP>INT',$INT_COMP_TO_INT
 
-                        CW      $TOBODY
-                        CW      $FETCH
-                        CEXIT
+                        XT_$TOBODY
+                        XT_$FETCH
+                        XT_$EXIT
 
 ;  INT/COMP>COMP
                         $COLON  'INT/COMP>COMP',$INT_COMP_TO_COMP
 
-                        CW      $TOBODY
-                        CW      $CELLADD
-                        CW      $FETCH
-                        CEXIT
+                        XT_$TOBODY
+                        XT_$CELLADD
+                        XT_$FETCH
+                        XT_$EXIT
 
 ;  COMP'
                         $COLON  'COMP''',$COMP_TICK
 
-                        CW      $BL
-                        CW      $WORD
-                        CW      $FIND
-                        CW      $DUP
-                        CW      $ZEROEQ
+                        XT_$BL
+                        XT_$WORD
+                        XT_$FIND
+                        XT_$DUP
+                        XT_$ZEROEQ
                         CQBR    CT_FOUND
                           CTHROW  -13
 CT_FOUND:
-                        CW      $OVER
-                        CW      $IS_INT_COMPQ
-                        CW      $TRUE
-                        CW      $EQ
+                        XT_$OVER
+                        XT_$IS_INT_COMPQ
+                        XT_$TRUE
+                        XT_$EQ
                         CQBR    CT_NO_I_C
-                          CW      $SWAP
-                          CW      $INT_COMP_TO_COMP
-                          CW      $SWAP
+                          XT_$SWAP
+                          XT_$INT_COMP_TO_COMP
+                          XT_$SWAP
 CT_NO_I_C:
-                        CW      $ZEROLE
+                        XT_$ZEROLE
                         CQBR    CT_IMM
                           CWLIT   $COMPILEC
                           CBR     CT_EXIT
 CT_IMM:
                           CWLIT   $EXECUTE
 CT_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  POSTPONE,
                         $COLON  'POSTPONE,',$POSTPONEC
 
-                        CW      $SWAP
-                        CW      $LITERAL
-                        CW      $COMPILEC
-                        CEXIT
+                        XT_$SWAP
+                        XT_$LITERAL
+                        XT_$COMPILEC
+                        XT_$EXIT
 
 ;  POSTPONE
                         $COLON  'POSTPONE',,VEF_IMMEDIATE
 
-                        CW      $COMP_TICK
-                        CW      $POSTPONEC
-                        CEXIT
+                        XT_$COMP_TICK
+                        XT_$POSTPONEC
+                        XT_$EXIT
 

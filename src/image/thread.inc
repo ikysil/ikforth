@@ -3,7 +3,7 @@
 ;  thread.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  THREAD & support words
@@ -53,9 +53,13 @@ THREAD_PROC:
                         MOV     ESI,DO_THREAD + IMAGE_BASE
                         $NEXT
 DO_THREAD:
-                        CW      $CATCH
-                        CW      $DROP
-                        CW      $THREAD_EXIT
+                        XT_$CATCH
+                        XT_$DROP
+                        XT_$THREAD_EXIT
+
+;  SEH-HANDLER
+;  D: win32-exc-id -- exc-id
+                        $DEFER  'SEH-HANDLER',$SEH_HANDLER,$PSEH_HANDLER
 
 SEH_HANDLER:
                         PUSH    EBP
@@ -90,18 +94,13 @@ DO_SEH:
                         MOV     ESI,DO_FORTH_SEH + IMAGE_BASE
                         $NEXT
 DO_FORTH_SEH:
-                        CW      $SEH_HANDLER
-                        CW      $THROW
+                        XT_$SEH_HANDLER
+                        XT_$THROW
 
 ;  (SEH-HANDLER)
 ;  D: win32-exc-id -- exc-id
                         $COLON  '(SEH-HANDLER)',$PSEH_HANDLER,VEF_USUAL
-
-                        CEXIT
-
-;  SEH-HANDLER
-;  D: win32-exc-id -- exc-id
-                        $DEFER  'SEH-HANDLER',$SEH_HANDLER,$PSEH_HANDLER
+                        XT_$EXIT
 
                         $USER   'WIN32-EXCEPTION-CONTEXT',$WIN32_EXCEPTION_CONTEXT,VAR_WIN32_EXCEPTION_CONTEXT
 

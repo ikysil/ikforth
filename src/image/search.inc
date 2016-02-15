@@ -106,22 +106,22 @@ SW_NOT_FOUND:
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
                         $COLON  'FIND-FORTH',$FIND_FORTH
 
-                        CW      $DUP
-                        CW      $TOR
-                        CW      $COUNT
-                        CW      $FORTH_WORDLIST
-                        CW      $SEARCH_WORDLIST
-                        CW      $DUP
-                        CW      $ZEROEQ
+                        XT_$DUP
+                        XT_$TOR
+                        XT_$COUNT
+                        XT_$FORTH_WORDLIST
+                        XT_$SEARCH_WORDLIST
+                        XT_$DUP
+                        XT_$ZEROEQ
                         CQBR    FF_FOUND
-                          CW      $RFROM
-                          CW      $SWAP
+                          XT_$RFROM
+                          XT_$SWAP
                         CBR     FF_EXIT
 FF_FOUND:
-                          CW      $RFROM
-                          CW      $DROP
+                          XT_$RFROM
+                          XT_$DROP
 FF_EXIT:
-                        CEXIT
+                        XT_$EXIT
 
 ;  6.1.1550 FIND
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )

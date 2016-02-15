@@ -13,7 +13,6 @@
 ;  Reserve one cell of data space and store x in the cell
 ;  D: x --
                         $CODE   ',',$COMMA
-
                         POPDS   EAX
                         MOV     EBX,DWORD [VAR_DP + IMAGE_BASE]
                         MOV     DWORD [EBX],EAX
@@ -22,9 +21,8 @@
 
 ;  COMPILE,
                         $COLON  'COMPILE,',$COMPILEC,VEF_COMPILE_ONLY
-
-                        CW      $COMMA
-                        CEXIT
+                        XT_$COMMA
+                        XT_$EXIT
 
 ;  6.1.0710 ALLOT
 ;  Allocates n memory cells on the top of vocabulary
@@ -48,17 +46,15 @@
 
 ;  6.1.1780 LITERAL
                         $COLON  'LITERAL',$LITERAL,VEF_IMMEDIATE_COMPILE_ONLY
-
                         CWLIT   $LIT
-                        CW      $COMPILEC
-                        CW      $COMMA
-                        CEXIT
+                        XT_$COMPILEC
+                        XT_$COMMA
+                        XT_$EXIT
 
 ;  6.1.1650 HERE
 ;  addr is the data-space pointer.
 ;  D: -- addr
                         $COLON  'HERE',$HERE
-
                         CFETCH  $DP
-                        CEXIT
+                        XT_$EXIT
 
