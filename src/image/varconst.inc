@@ -96,6 +96,11 @@
 
                         CC      VAR_CURRENT
 
+;  RECURSE-XT
+;  Stores the xt of the word to be compiled by RECURSE
+                        $USER   'RECURSE-XT'
+                        CC      VAR_RECURSE_XT
+
 ;  Start file name
 ;  #SF
                         $VAR    '#SF',$HASH_SF

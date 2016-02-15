@@ -195,10 +195,15 @@ VARIABLE DO-PAIRS
 : D>LOOP R> SWAP >R SWAP >R SWAP >R >R ; COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
-\  RECURSE
-\ -----------------------------------------------------------------------------
-
-: RECURSE LATEST-HEAD@ HEAD> COMPILE, ; IMMEDIATE/COMPILE-ONLY
+\  6.1.2120 RECURSE
+\  Interpretation:
+\  Interpretation semantics for this word are undefined.
+\  Compilation: ( -- )
+\  Append the execution semantics of the current definition to the current definition.
+\  An ambiguous condition exists if RECURSE appears in a definition after DOES>.
+: RECURSE
+  RECURSE-XT @ ?DUP IF   COMPILE,   ELSE   EXC-INVALID-RECURSE THROW   THEN
+; IMMEDIATE/COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
 \  ' [']
