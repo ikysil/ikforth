@@ -22,7 +22,7 @@ typedef struct _MainProcContext {
 typedef void __stdcall (* MainProc)(MainProcContext *);
 typedef void __stdcall (* ForthThreadProc)(void *, DWORD);
 
-typedef struct _ImageHeader{
+typedef struct _ImageHeader {
   char              Signature[16];
   void *            DesiredBase;
   DWORD             DesiredSize;

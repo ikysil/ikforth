@@ -7,11 +7,12 @@ bool CanExit = false;
 ImageHeader IHeader;
 HANDLE hOut;
 
-void ChangeFileExt(char * fName, char * fExt){
+void ChangeFileExt(char * fName, char * fExt) {
   char * dIndex = strrchr(fName, '.');
   char * sIndex = strrchr(fName, '\\');
-  if(dIndex > sIndex)
+  if (dIndex > sIndex) {
     *dIndex = '\0';
+  }
   strcat(fName, fExt);
 }
 
