@@ -3,7 +3,7 @@
 ;  host.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Contains words, provided by hosting application.
@@ -20,8 +20,7 @@
 
 ;  (BYE)
                         $CODE   '(BYE)',$PBYE
-
-                        $CALL   BYE
+                        $FSYSCALL BYE
                         $NEXT
 
 ;******************************************************************************
@@ -30,27 +29,23 @@
 
 ;  GetLastError
                         $CODE   'GetLastError'
-
                         CGET_LAST_ERROR
                         $NEXT
 
 ;  (LoadLibrary)
                         $CODE   '(LoadLibrary)'
-
-                        $CALL   LOAD_LIBRARY
+                        $FSYSCALL LOAD_LIBRARY
                         PUSHDS  EAX
                         $NEXT
 
 ;  FreeLibrary
                         $CODE   'FreeLibrary'
-
-                        $CALL   FREE_LIBRARY
+                        $FSYSCALL FREE_LIBRARY
                         $NEXT
 
 ;  (GetProcAddress)
                         $CODE   '(GetProcAddress)'
-
-                        $CALL   GET_PROC_ADDRESS
+                        $FSYSCALL GET_PROC_ADDRESS
                         PUSHDS  EAX
                         $NEXT
 
@@ -59,42 +54,36 @@
 ;******************************************************************************
 
                         $CODE   'CLOSE-FILE',$CLOSE_FILE
-
-                        $CALL   FILE_CLOSE
+                        $FSYSCALL FILE_CLOSE
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'CREATE-FILE',$CREATE_FILE
-
-                        $CALL   FILE_CREATE
+                        $FSYSCALL FILE_CREATE
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'FILE-POSITION',$FILE_POSITION
-
-                        $CALL   FILE_POSITION
+                        $FSYSCALL FILE_POSITION
                         PUSHDS  EAX
                         PUSHDS  EDX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'OPEN-FILE',$OPEN_FILE
-
-                        $CALL   FILE_OPEN
+                        $FSYSCALL FILE_OPEN
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'REPOSITION-FILE',$REPOSITION_FILE
-
-                        $CALL   FILE_REPOSITION
+                        $FSYSCALL FILE_REPOSITION
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   <>,$_READ_LINE
-
-                        $CALL   FILE_READ_LINE
+                        $FSYSCALL FILE_READ_LINE
                         PUSHDS  EAX
                         PUSHDS  EDX
                         CGET_LAST_ERROR
@@ -104,16 +93,14 @@
 ;  Emit a char to output
 ;  D: char --
                         $CODE   'EMIT',$EMIT
-
-                        $CALL   EMIT
+                        $FSYSCALL EMIT
                         $NEXT
 
 ;  6.1.2310 TYPE
 ;  Display the character string specified by addr and length n
 ;  D: addr n --
                         $CODE   'TYPE',$TYPE
-
-                        $CALL   TYPE
+                        $FSYSCALL TYPE
                         $NEXT
 
 ;******************************************************************************
@@ -122,9 +109,8 @@
 
 ;  THREAD
                         $CODE   'THREAD',$THREAD
-
                         PUSHDS  EDI
-                        $CALL   START_THREAD
+                        $FSYSCALL START_THREAD
                         PUSHDS  EAX
                         $NEXT
 
@@ -133,21 +119,18 @@
 ;******************************************************************************
 
                         $CODE   'ALLOCATE'
-
-                        $CALL   ALLOCATE
+                        $FSYSCALL ALLOCATE
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'FREE'
-
-                        $CALL   FREE
+                        $FSYSCALL FREE
                         CGET_LAST_ERROR
                         $NEXT
 
                         $CODE   'RESIZE'
-
-                        $CALL   REALLOCATE
+                        $FSYSCALL REALLOCATE
                         PUSHDS  EAX
                         CGET_LAST_ERROR
                         $NEXT

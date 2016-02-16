@@ -62,7 +62,6 @@ DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
                         DD      START       + IMAGE_BASE
                         DD      THREAD_PROC + IMAGE_BASE
-                        DD      FUNC_TABLE  + IMAGE_BASE
                         DD      USER_AREA_SIZE0 + USER_AREA_SIZE
                         DD      DATA_STACK_SIZE
 
@@ -107,6 +106,7 @@ START:
 ;     char const *  startFileName;
 ;     int           startFileNameLength;
 ;     int  const *  exitCode;
+;     void const ** sysfunctions;
 ; } MainProcContext;
 ;
 ; typedef void __stdcall (* MainProc)(MainProcContext *);
@@ -127,12 +127,13 @@ START:
                         MOVSD
                         LEA     EDI,[EBX + EXIT_CODE_VAR]
                         MOVSD
-                        MOV     EAX,DWORD [MAIN_PROC_VAR + IMAGE_BASE]
+                        LEA     EDI,[EBX + FUNC_TABLE_VAR]
+                        MOVSD
+                        MOV     EAX,DWORD [EBX + MAIN_PROC_VAR]
                         PUSH    EAX
                         PUSH    F_FALSE
                         PUSH    0
-                        MOV     EAX,DWORD [FUNC_TABLE + IMAGE_BASE + FUNC_START_THREAD * CELL_SIZE]
-                        CALL    EAX
+                        $CSYSCALL START_THREAD
                         RET
 
                         $COLON  'DO-FORTH',$DO_FORTH,VEF_HIDDEN

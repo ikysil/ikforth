@@ -3,7 +3,7 @@
 ;  ftable.inc
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Functions provided by loader.
@@ -13,7 +13,7 @@
 ;******************************************************************************
 FUNC_NUM                =       0
                         MACRO   FUNC_ALLOC SIZE {
-                        DD      0
+                        ;DD      0
 FUNC_NUM                =       FUNC_NUM + SIZE
                         }
 
@@ -26,14 +26,20 @@ FUNC_NUM                =       FUNC_NUM + SIZE
 FUNC_NUM                =       ( FUNC_NUM / CELL_SIZE + 1 ) * CELL_SIZE
                         }
 
-                        MACRO   $CALL NAME {
-                        PUSHRS  EDI
-                        MOV     EAX,DWORD [FUNC_TABLE + IMAGE_BASE + FUNC_#NAME * CELL_SIZE]
+                        MACRO   $CSYSCALL NAME {
+                        MOV     EAX,DWORD [FUNC_TABLE_VAR + IMAGE_BASE]
+                        MOV     EAX,DWORD [EAX + FUNC_#NAME * CELL_SIZE]
                         CALL    EAX
+                        }
+
+                        MACRO   $FSYSCALL NAME {
+                        PUSHRS  EDI
+                        $CSYSCALL NAME
                         POPRS   EDI
                         }
 
-FUNC_TABLE:
+FUNC_TABLE_VAR:
+                        DD      0
                         $FUNC   LOAD_LIBRARY
                         $FUNC   FREE_LIBRARY
                         $FUNC   GET_PROC_ADDRESS

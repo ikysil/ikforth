@@ -16,27 +16,6 @@ void ShowLastError(char * where){
   LocalFree(HLOCAL(errMessage));
 }
 
-void SetFuncTable(ImageHeader const * Header){
-  FuncTable * ft = Header->FuncTableAddr;
-  ZeroMemory(ft, sizeof(FuncTable));
-  ft->fLoadLibrary    = &fLoadLibrary;
-  ft->fFreeLibrary    = &fFreeLibrary;
-  ft->fGetProcAddress = &fGetProcAddress;
-  ft->fBye            = &fBye;
-  ft->fEmit           = &fEmit;
-  ft->fType           = &fType;
-  ft->fFileClose      = &fFileClose;
-  ft->fFileCreate     = &fFileCreate;
-  ft->fFilePosition   = &fFilePosition;
-  ft->fFileOpen       = &fFileOpen;
-  ft->fFileReposition = &fFileReposition;
-  ft->fFileReadLine   = &fFileReadLine;
-  ft->fStartThread    = &fStartThread;
-  ft->fAlloc          = &fAlloc;
-  ft->fFree           = &fFree;
-  ft->fReAlloc        = &fReAlloc;
-}
-
 int StartForth(int const argc, char const * argv[], char const * envp[],
                char const * ImageFileName, char const * StartFileName) {
   hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -70,7 +49,6 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
   fFileReposition(fHandle, (DWORD)(fPosition >> 32), (DWORD)(fPosition & 0xFFFFFFFF));
   ReadFile(fHandle, lHeader, IHeader.DesiredSize, &bRead, NULL);
   fFileClose(fHandle);
-  SetFuncTable(lHeader);
   int exitCode = 0;
   MainProcContext mainProcCtx;
   mainProcCtx.argc = argc;
@@ -79,6 +57,7 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
   mainProcCtx.startFileName = StartFileName;
   mainProcCtx.startFileNameLength = strlen(StartFileName);
   mainProcCtx.exitCode = &exitCode;
+  mainProcCtx.sysfunctions = sysfunctions;
   IHeader.MainProcAddr(&mainProcCtx);
   while (!CanExit) Sleep(100);
   VirtualFree(lHeader, IHeader.DesiredSize, MEM_DECOMMIT);

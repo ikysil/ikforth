@@ -4,6 +4,26 @@
 
 #include "IKFunc.hpp"
 
+void const * sysfunctions[] = {
+// order MUST be the same as in ftable.inc FUNC_TABLE
+  fLoadLibrary,
+  fFreeLibrary,
+  fGetProcAddress,
+  fBye,
+  fEmit,
+  fType,
+  fFileClose,
+  fFileCreate,
+  fFilePosition,
+  fFileOpen,
+  fFileReposition,
+  fFileReadLine,
+  fStartThread,
+  fAlloc,
+  fFree,
+  fReAlloc
+};
+
 HMODULE __stdcall fLoadLibrary(int nameLen, char const * nameAddr){
   char libName[MAX_FILE_PATH];
   ZeroMemory(libName, sizeof(char) * MAX_FILE_PATH);
