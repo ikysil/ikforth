@@ -11,12 +11,6 @@ link = wlink
 make = wmake
 wine = wineconsole
 
-!ifdef __LINUX__
-loader_makefile=makefile.linux
-!else
-loader_makefile=makefile
-!endif
-
 code_threading = -d CODE_THREADING=DTC
 
 .BEFORE
@@ -44,7 +38,7 @@ clean : .symbolic
         rm -f  src/FKernel.exe
         rm -f  IKForth.exe IKForth.img
         cd  src/loader/win32
-        $(make) -f $(loader_makefile) clean $(__MAKEOPTS__)
+        $(make) clean $(__MAKEOPTS__)
         cd  ../../..
 
 run : .symbolic all
@@ -106,6 +100,6 @@ src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
 src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
         echo Building $@
         cd  src/loader/win32
-        $(make) -f $(loader_makefile) $(__MAKEOPTS__)
+        $(make) $(__MAKEOPTS__)
         cp FKernel.exe ../../FKernel.exe > /dev/null
         cd  ../../..

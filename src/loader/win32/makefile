@@ -1,15 +1,23 @@
-platform = Win32
-CC = wpp386
-CFLAGS = -bt=nt -w4 -e25 -zq -os -5r -mf
+wcl = wcl386
+CLFLAGS = -bc -w4 -e25 -zq -os -5s -mf
+CLFLAGS += -I"$(%WATCOM)/h" -I"$(%WATCOM)/h/nt"
+CLFLAGS += -zq -oaxt -d0 -w4 -l=nt -k4k
 
-name = FKernel
-LNK = $(name).lnk
-lnk_dependencies = makefile master.mif
+FKernel.exe : ../*.cpp ../*.hpp
+    $(wcl) $(CLFLAGS) -fe=FKernel.exe -fm=FKernel.map ../*.cpp
 
-OBJS = FKernel.obj IKFunc.obj IKFUtils.obj
-
-!include master.mif
-
-linkit : .PROCEDURE
-    @%append $(LNK) system nt
-    @%append $(LNK) option stack=64k
+clean: .symbolic
+!ifdef __LINUX__
+    rm -f *.obj *.err *.exe *.lnk *.res *.rex *.lib *.sym *.map
+    rm -f *.lk1 *.mk1 *.mk
+!endif
+!ifdef __WINDOWS__
+    @erase *.obj
+    @erase *.err
+    @erase *.exe
+    @erase *.lnk
+    @erase *.res
+    @erase *.rex
+    @erase *.lib
+    @erase *.map
+!endif
