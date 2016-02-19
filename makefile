@@ -100,6 +100,6 @@ src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
 src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
         echo Building $@
         cd  src/loader/win32
-        $(make) $(__MAKEOPTS__)
+        $(make) $(__MAKEOPTS__) FKernel.exe
         cp FKernel.exe ../../FKernel.exe > /dev/null
         cd  ../../..
