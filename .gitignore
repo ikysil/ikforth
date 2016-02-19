@@ -7,4 +7,5 @@
 *.o
 *.lst
 *.sym
+.sconsign.dblite
 
