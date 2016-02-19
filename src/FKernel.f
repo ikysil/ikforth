@@ -1,7 +1,7 @@
 \
 \  FKernel.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 HERE
@@ -12,7 +12,7 @@ REPORT-NEW-NAME @
 TRUE REPORT-NEW-NAME-DUPLICATE !
 FALSE REPORT-NEW-NAME !
 
-S" src\kernel.0\_kernel0.f" INCLUDED
+S" src/kernel.0/_kernel0.f" INCLUDED
 
 \ ' _READ-LINE     IS READ-LINE
 \ ' _INCLUDED      IS INCLUDED
