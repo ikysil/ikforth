@@ -1,3 +1,5 @@
+# loader-win32
+
 Import('env')
 senv = env.Clone()
 
@@ -8,6 +10,9 @@ senv['LINK'] = 'wcl386'
 senv['LINKFLAGS'] = '-zq -oaxt -d0 -w4 -l=nt -k4k'
 senv['LINKCOM'] = '$LINK -fe=$TARGET $LINKFLAGS $__RPATH $SOURCES $_LIBDIRFLAGS $_LIBFLAGS'
 
+senv.Alias('loader', ['FKernel.exe'])
+
 senv.Program('FKernel.exe',
-        Glob('../*.cpp'),
+        senv.Glob('*.cpp'),
         CPPPATH = ['.', '$WATCOM/h', '$WATCOM/h/nt'])
+
