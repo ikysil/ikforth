@@ -373,6 +373,15 @@ INT/COMP: ACTION-OF
   THEN
 ; IMMEDIATE
 
+\ Ignore from this line until the end of stream
+: \EOF  ( -- )
+  SOURCE-ID 0>
+  IF
+    BEGIN REFILL INVERT UNTIL
+  THEN
+  POSTPONE \
+;
+
 : SPACE BL EMIT ;
 
 : SPACES BEGIN DUP 0> WHILE SPACE 1- REPEAT DROP ;
