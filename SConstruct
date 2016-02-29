@@ -4,6 +4,9 @@ env = Environment(ENV = os.environ)
 env.SConscriptChdir(1)
 env['WATCOM'] = os.environ['WATCOM']
 
+env.SConscript('SConstruct-config',
+        exports = ['env'])
+
 env.SConscript(dirs = ['src/loader'],
         exports = ['env'],
         variant_dir = 'build/loader', duplicate = 1)

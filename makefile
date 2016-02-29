@@ -4,19 +4,17 @@
 #  Copyright (C) 1999-2016 Illya Kysil
 #
 
-asm = fasm
-asm_opts =
-asml = listing
 link = wlink
 make = wmake
 wine = wineconsole
 
-code_threading = -d CODE_THREADING=DTC
+code_threading_target = dtc
+debug_target =
 
 .BEFORE
         set wine=$(wine)
-        set asm_opts=$(asm_opts)
-        set code_threading=$(code_threading)
+        set code_threading_target=$(code_threading_target)
+        set debug_target=$(debug_target)
         set IKFORTH-TERMINIT=WINCONSOLE-INIT
 
 launcher : .symbolic
@@ -32,14 +30,13 @@ launcher : .symbolic
 all : .symbolic compiler IKForth.exe launcher IKForth.img
 
 clean : .symbolic
+        scons -u -c
         rm -f  src/image/*.obj
         rm -rf src/image/target
         rm -f  src/FKernel.img
         rm -f  src/FKernel.exe
         rm -f  IKForth.exe IKForth.img
-        cd  src/loader/win32
-        $(make) clean $(__MAKEOPTS__)
-        cd  ../../..
+        rm -rf build
 
 run : .symbolic all
         $(%rtlauncher) IKForth.exe
@@ -52,15 +49,15 @@ test-stdin : .symbolic all
 
 debug : .symbolic
         echo Setting DEBUG options
-        set asm_opts=-d DEBUG=TRUE $(%asm_opts)
+        set debug_target=debug
 
 dtc : .symbolic
         echo CODE_THREADING=DTC
-        set code_threading=-d CODE_THREADING=DTC
+        set code_threading_target=dtc
 
 itc : .symbolic
         echo CODE_THREADING=ITC
-        set code_threading=-d CODE_THREADING=ITC
+        set code_threading_target=itc
 
 term : .symbolic
 !ifdef __LINUX__
@@ -85,21 +82,18 @@ IKForth.img : compiler &
 #        WINEDEBUG=-all winedbg --file src/loader/FKernel.winedbg src/FKernel.exe
         $(%btlauncher) src/FKernel.exe
 
-compiler : .symbolic src/FKernel.img loader
+compiler : .symbolic image loader
 
 loader : .symbolic src/FKernel.exe
 
-src/FKernel.img : src/FKernel.exe src/image/*.asm src/image/*.inc
-        echo Building $@
-        cd  src/image
-        mkdir -p target
-        $(asm) $(%asm_opts) $(%code_threading) FKernel.asm -s target/FKernel.sym ../FKernel.img
-        $(asml) target/FKernel.sym target/FKernel.lst
-        cd  ../..
+image : .symbolic src/FKernel.img
 
-src/FKernel.exe : src/loader/*.cpp src/loader/*.hpp
+src/FKernel.img : .symbolic
         echo Building $@
-        cd  src/loader/win32
-        $(make) $(__MAKEOPTS__) FKernel.exe
-        cp FKernel.exe ../../FKernel.exe > /dev/null
-        cd  ../../..
+        scons -u $(%code_threading_target) $(%debug_target) image
+        cp build/image/FKernel.img src/FKernel.img
+
+src/FKernel.exe : .symbolic
+        echo Building $@
+        scons -u $(%debug_target) loader
+        cp build/loader/FKernel.exe src/FKernel.exe

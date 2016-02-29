@@ -3,21 +3,9 @@
 Import('env')
 senv = env.Clone()
 
-senv['CTT'] = ['DTC']
-
-def setDTC(target, source, env):
-        senv.Replace(CTT = 'DTC')
-
-def setITC(target, source, env):
-        senv.Replace(CTT = 'ITC')
-
-senv.Alias('dtc', [], setDTC)
-senv.Alias('itc', [], setITC)
-senv.AlwaysBuild(['itc', 'dtc'])
-
 senv.Command('FKernel.img',
         senv.Glob('*.asm') + senv.Glob('*.inc'),
-        'fasm -d CODE_THREADING=${CTT} $SOURCE -s ${TARGET.dir}/FKernel.sym $TARGET')
+        'fasm -d CODE_THREADING=${CODE_THREADING_TYPE} -d DEBUG=${DEBUG} $SOURCE -s ${TARGET.dir}/FKernel.sym $TARGET')
 
 senv.Command('FKernel.lst',
         ['FKernel.sym', 'FKernel.img'],
