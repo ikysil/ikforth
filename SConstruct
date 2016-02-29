@@ -9,11 +9,11 @@ env.SConscript('SConstruct-config',
 
 env.SConscript(dirs = ['src/loader'],
         exports = ['env'],
-        variant_dir = 'build/loader', duplicate = 1)
+        variant_dir = 'build/loader', duplicate = 0)
 
 env.SConscript(dirs = ['src/image'],
         exports = ['env'],
-        variant_dir = 'build/image', duplicate = 1)
+        variant_dir = 'build/image', duplicate = 0)
 
 env.Alias('all', ['loader', 'image'])
 env.Default('all')
