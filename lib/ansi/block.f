@@ -101,7 +101,7 @@ USER BLOCK-DATA    BLOCK-SIZE 1 + CHARS USER-ALLOC
 
 \ 6.1.2216 SOURCE
 \ c-addr is the address of, and u is the number of characters in
-\ the input buffer. 
+\ the input buffer.
 \ D: -- c-addr u
 :NONAME
   BLK @ IF BLK @ BLOCK BLOCK-SIZE EXIT THEN
