@@ -43,7 +43,7 @@ S" lib/ansi/block.f"            INCLUDED
 requires" lib/~ik/quotations.4th"
 S" lib/ansi/see.f"              INCLUDED
 
-S" src/win32.f"                 INCLUDED
+S" src/kernel.0/win32.f"        INCLUDED
 
 S" lib/term/ansiterm.4th"       INCLUDED
 

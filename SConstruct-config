@@ -1,7 +1,6 @@
-Import('env')
+import platform
 
-env.SetDefault(DEBUG = 'FALSE')
-env.SetDefault(CODE_THREADING_TYPE = 'DTC')
+Import('env')
 
 if 'debug' in BUILD_TARGETS:
         env.Replace(DEBUG = 'TRUE')
@@ -12,6 +11,22 @@ if 'dtc' in BUILD_TARGETS:
 if 'itc' in BUILD_TARGETS:
         env.Replace(CODE_THREADING_TYPE = 'ITC')
 
+if 'term' in BUILD_TARGETS:
+        env.Replace(RUN_LAUNCHER = 'WINEDEBUG=-all wine')
+        if platform.system() == 'Linux':
+            env.Replace(TERMINIT = 'ANSITERM-INIT')
+        if platform.system() == 'Windows':
+            env.Replace(TERMINIT = 'WINCONSOLE-INIT')
+
+if platform.system() == 'Linux':
+        env.SetDefault(BUILD_LAUNCHER = 'WINEDEBUG=-all wine')
+        env.SetDefault(RUN_LAUNCHER = 'WINEDEBUG=-all wineconsole')
+
+env.SetDefault(DEBUG = 'FALSE')
+env.SetDefault(CODE_THREADING_TYPE = 'DTC')
+env.SetDefault(TERMINIT = 'WINCONSOLE-INIT')
+
+env.Alias('term')
 env.Alias('debug')
 env.Alias('dtc')
 env.Alias('itc')

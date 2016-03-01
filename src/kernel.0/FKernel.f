@@ -25,16 +25,18 @@ DECIMAL
 
 0x00800000 DATA-AREA-SIZE !
 
-CR .( Writing IKForth.img )
-S" IKForth.img" W/O CREATE-FILE THROW
+1 ARGV? INVERT [IF]   S" IKForth.img"   [THEN]
+2DUP CR .( Writing ) TYPE
+
+W/O CREATE-FILE THROW
 DATA-AREA-BASE HERE OVER - 256 ( Page size ) TUCK / 1+ * 2 PICK WRITE-FILE THROW
 CLOSE-FILE THROW
 
-.( OK ) CR
+CR .( OK )
 
-.( Total data area size  ) DATA-AREA-SIZE @       16 U.R .(  bytes ) CR
-.( Unused data area size ) UNUSED                 16 U.R .(  bytes ) CR
-.( Compiled              ) HERE SWAP -            16 U.R .(  bytes ) CR
-.( New vocabulary size   ) HERE DATA-AREA-BASE -  16 U.R .(  bytes ) CR
+CR .( Total data area size  ) DATA-AREA-SIZE @       16 U.R .(  bytes )
+CR .( Unused data area size ) UNUSED                 16 U.R .(  bytes )
+CR .( Compiled              ) HERE SWAP -            16 U.R .(  bytes )
+CR .( New vocabulary size   ) HERE DATA-AREA-BASE -  16 U.R .(  bytes )
 
 BYE
