@@ -196,15 +196,45 @@ DEFER .INPUT-PROMPT-INFO
   SHUTDOWN-CHAIN CHAIN.EXECUTE< (BYE)
 ;
 
+DEFER TERMINIT-DEFAULT
+
+:NONAME
+   S" WINCONSOLE-INIT"
+; IS TERMINIT-DEFAULT
+
+: TERMINIT-ENV?
+   (S -- c-addr count true | false )
+   (G Seach host environment for IKFORTHTERMINIT variable )
+   (G and return value as counted string )
+   (G Return true if found, false otherwise )
+   S" IKFORTHTERMINIT" ENVP?
+;
+
+: TERMINIT-WORD
+   (S -- c-addr count )
+   (G Return name of the word used ot initialize console/terminal integration )
+   \ Capture word from environment variable during TERMINIT-WORD execution
+   TERMINIT-ENV? INVERT
+   IF
+      [
+      \ Capture word from environment variable during TERMINIT-WORD compilation
+      TERMINIT-ENV? INVERT
+      [IF]
+         \ Default
+         TERMINIT-DEFAULT
+      [THEN]
+      ] SLITERAL
+   THEN
+;
+
 :NONAME
   TERMINIT GET-ORDER
   1- SWAP >R
-  S" IKFORTHTERMINIT" ENVP? INVERT
-  IF S" WINCONSOLE-INIT" THEN
+  TERMINIT-WORD
   \DEBUG CR ." Initializing terminal with: " 2DUP TYPE
   R> SEARCH-WORDLIST
   IF   CATCH   ELSE   TRUE   THEN
-  IF CR ." ERROR: Can not initialize terminal" BYE THEN
+  IF   CR ." ERROR: Can not initialize terminal" BYE   THEN
   SET-ORDER
 ; STARTUP-CHAIN CHAIN.ADD
 

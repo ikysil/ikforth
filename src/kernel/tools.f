@@ -1,10 +1,12 @@
 \
 \  tools.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  TOOLS and TOOLS-EXT wordsets
 \
+
+REQUIRES" src/kernel/console.4th"
 
 CR .( Loading TOOLS definitions )
 
@@ -121,9 +123,9 @@ VARIABLE DUMP/LINE
 
 : WORDLIST-WORDS (S wid -- )
   DUP ." Wordlist: " .WORDLIST-NAME CR CR
-  WL>LATEST @  
+  WL>LATEST @
   0 SWAP
-  BEGIN 
+  BEGIN
     ?DUP 0<>
   WHILE
     DUP H>#NAME DUP 0<>
@@ -156,7 +158,7 @@ VARIABLE DUMP/LINE
 ;
 
 : (WORDS-COUNT) (S wid -- word count in wordlist )
-  WL>LATEST @  
+  WL>LATEST @
   0 SWAP
   BEGIN
     DUP 0<>

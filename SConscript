@@ -2,7 +2,7 @@
 
 Import('env')
 senv = env.Clone()
-senv.Replace(RUN_CMD = 'IKFORTHTERMINIT=${TERMINIT} ${RUN_LAUNCHER} IKForth.exe')
+senv.Replace(RUN_CMD = '${RUN_LAUNCHER} IKForth.exe')
 
 def run(source, target, env):
     env.Execute('${RUN_CMD}')
@@ -13,8 +13,13 @@ def test(source, target, env):
 def test_stdin(source, target, env):
     env.Execute('echo \'S\" fine!\" TYPE\' | ${RUN_CMD} \'S\" test/stdin-test.4th\" INCLUDED\'')
 
-senv.Command('IKForth.img', 'build/kernel.0/IKForth.img', Copy('$TARGET', '$SOURCE'))
-senv.Command('IKForth.exe', 'build/kernel.0/FKernel.exe', Copy('$TARGET', '$SOURCE'))
+if 'term' in BUILD_TARGETS:
+    source_dir = '#build/ikforth-ansiterm'
+else:
+    source_dir = '#build/ikforth-winconsole'
+
+senv.Command('IKForth.img', source_dir + '/IKForth.img', Copy('$TARGET', '$SOURCE'))
+senv.Command('IKForth.exe', '#build/loader/FKernel.exe', Copy('$TARGET', '$SOURCE'))
 
 senv.Alias('ikforth', ['IKForth.img', 'IKForth.exe'])
 
