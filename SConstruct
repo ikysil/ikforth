@@ -28,5 +28,4 @@ env.SConscript(dirs = ['src/kernel.0'],
 env.SConscript('SConscript',
         exports = ['env'])
 
-env.Alias('all', ['build/ikforth-ansiterm/IKForth.img', 'build/ikforth-winconsole/IKForth.img', 'ikforth'])
 env.Default('all')

@@ -23,12 +23,16 @@ senv.Command('IKForth.exe', '#build/loader/FKernel.exe', Copy('$TARGET', '$SOURC
 
 senv.Alias('ikforth', ['IKForth.img', 'IKForth.exe'])
 
+senv.Alias('all', 'ikforth')
+senv.Depends('all', ['build/ikforth-ansiterm/IKForth.img', 'build/ikforth-winconsole/IKForth.img'])
+senv.Clean('all', ['#build'])
+
 senv.Alias('run', [], run)
 senv.Alias('test', [], test)
 senv.Alias('test-stdin', [], test_stdin)
 
-senv.Depends('run',        ['ikforth'])
-senv.Depends('test',       ['ikforth'])
-senv.Depends('test-stdin', ['ikforth'])
+senv.Depends('run',        ['all'])
+senv.Depends('test',       ['all'])
+senv.Depends('test-stdin', ['all'])
 
 senv.AlwaysBuild('run', 'test', 'test-stdin')
