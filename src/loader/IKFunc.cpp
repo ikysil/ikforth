@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <nt/wtypes.h>
 #include <nt/windef.h>
 #include <nt/wincon.h>
@@ -24,10 +25,20 @@ void const * sysfunctions[] = {
   fReAlloc
 };
 
+void initName(char * buffer, int bufferSize, char const * value, int valueSize) {
+    if (bufferSize < 1) {
+        perror("IKFE001: Invalid buffer size in initName");
+        abort();
+    }
+    ZeroMemory(buffer, sizeof(char) * bufferSize);
+    strncpy(buffer, value, min(bufferSize, max(0, valueSize)));
+    // make sure buffer ALWAYS ends with \0
+    buffer[bufferSize - 1] = '\0';
+}
+
 HMODULE __stdcall fLoadLibrary(int nameLen, char const * nameAddr) {
   char libName[MAX_FILE_PATH];
-  ZeroMemory(libName, sizeof(char) * MAX_FILE_PATH);
-  strncpy(libName, nameAddr, nameLen);
+  initName(libName, MAX_FILE_PATH, nameAddr, nameLen);
   HMODULE result = LoadLibrary(libName);
   if (result != 0) {
     SetLastError(0);
@@ -41,8 +52,7 @@ void    __stdcall fFreeLibrary(HMODULE libId) {
 
 FARPROC __stdcall fGetProcAddress(HMODULE libId, int nameLen, char const * nameAddr) {
   char procName[MAX_FILE_PATH];
-  ZeroMemory(procName, sizeof(char) * MAX_FILE_PATH);
-  strncpy(procName, nameAddr, nameLen);
+  initName(procName, MAX_FILE_PATH, nameAddr, nameLen);
   SetLastError(0);
   return GetProcAddress(libId, procName);
 }
@@ -75,8 +85,7 @@ const int accessMethod[3] = {GENERIC_READ, GENERIC_WRITE, GENERIC_READ | GENERIC
 
 HANDLE  __stdcall fFileCreate(int fileAccessMethod, int nameLen, char const * nameAddr) {
   char fileName[MAX_FILE_PATH];
-  ZeroMemory(fileName, sizeof(char) * MAX_FILE_PATH);
-  strncpy(fileName, nameAddr, nameLen);
+  initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
   HANDLE result = CreateFile(fileName, accessMethod[fileAccessMethod & 3], 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
   if (result != INVALID_HANDLE_VALUE) {
     SetLastError(0);
@@ -93,8 +102,7 @@ __int64 __stdcall fFilePosition(HANDLE fileId) {
 
 HANDLE  __stdcall fFileOpen(int fileAccessMethod, int nameLen, char const * nameAddr) {
   char fileName[MAX_FILE_PATH];
-  ZeroMemory(fileName, sizeof(char) * MAX_FILE_PATH);
-  strncpy(fileName, nameAddr, nameLen);
+  initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
   HANDLE result = CreateFile(fileName, accessMethod[fileAccessMethod & 3], 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
   return result;
 }
