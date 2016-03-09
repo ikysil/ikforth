@@ -3,19 +3,20 @@
 Import('env')
 senv = env.Clone()
 
-senv['OS_TARGET'] = 'nt'
+senv['LSYS'] = 'nt'
+#senv['LSYS'] = 'linux'
 
-senv['CXX'] = 'owcc'
-senv['CCFLAGS'] = '-mconsole -mregparm=0 -Wall -zq -O3 -mtune=586 -mcmodel=f -D__USE_MISC'
+if senv['LSYS'] == 'nt':
+    senv.Replace(tools = ['mingw'])
+    senv.Replace(CXX  = 'mingw32-g++')
+    senv.Replace(LINK = 'mingw32-g++')
+    senv.Alias('loader', ['FKernel.exe'])
 
-senv['LINKFLAGS'] = '-b $OS_TARGET -k4k -g0 -s'
-
-senv.Alias('loader', ['FKernel.exe'])
+senv.Append(CPPFLAGS  = '-mconsole -mregparm=0 -Wall -zq -O3 -mtune=i586 -m32 -fpermissive')
+senv.Append(LINKFLAGS = '-g0 -s')
 
 loader_src = senv.Glob('*.cpp')
-loader_src.extend(senv.Glob('sys$OS_TARGET/*.cpp'))
+loader_src.extend(senv.Glob('sys' + senv['LSYS'] + '/*.cpp'))
 
-senv.Program('FKernel.exe',
-        loader_src,
-        CPPPATH = ['.', '$WATCOM/h', '$WATCOM/h/nt', '$WATCOM/lh'])
+senv.Program('FKernel.exe', loader_src)
 

@@ -1,5 +1,5 @@
-#include <nt/wtypes.h>
-#include <nt/winnt.h>
+#include <wtypes.h>
+#include <winnt.h>
 #include "../dictmem.hpp"
 
 void * AllocateDictionaryAddressSpace(void * addr, size_t size) {

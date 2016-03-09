@@ -7,7 +7,7 @@ bool CanExit = false;
 ImageHeader IHeader;
 HANDLE hOut;
 
-void ChangeFileExt(char * fName, char * fExt) {
+void ChangeFileExt(char * fName, char const * fExt) {
   char * dIndex = strrchr(fName, '.');
   char * sIndex = strrchr(fName, '\\');
   if (dIndex > sIndex) {

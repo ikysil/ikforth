@@ -1,8 +1,11 @@
 #ifndef _IKFCommon_
 #define _IKFCommon_
 
-#include <nt/wtypes.h>
-#include <nt/windef.h>
+#include <wtypes.h>
+#include <windef.h>
+
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
 
 const DWORD fFALSE = 0;
 const DWORD fTRUE  = 0xFFFFFFFF;

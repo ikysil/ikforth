@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <nt/wtypes.h>
-#include <nt/windef.h>
-#include <nt/wincon.h>
+#include <wtypes.h>
+#include <windef.h>
+#include <wincon.h>
 
 #include "IKFunc.hpp"
 
@@ -31,7 +31,7 @@ void initName(char * buffer, int bufferSize, char const * value, int valueSize) 
         abort();
     }
     ZeroMemory(buffer, sizeof(char) * bufferSize);
-    strncpy(buffer, value, min(bufferSize, max(0, valueSize)));
+    strncpy(buffer, value, MIN(bufferSize, MAX(0, valueSize)));
     // make sure buffer ALWAYS ends with \0
     buffer[bufferSize - 1] = '\0';
 }
@@ -81,7 +81,7 @@ void    __stdcall fFileClose(HANDLE fileId) {
   CloseHandle(fileId);
 }
 
-const int accessMethod[3] = {GENERIC_READ, GENERIC_WRITE, GENERIC_READ | GENERIC_WRITE};
+const long unsigned int accessMethod[3] = {GENERIC_READ, GENERIC_WRITE, GENERIC_READ | GENERIC_WRITE};
 
 HANDLE  __stdcall fFileCreate(int fileAccessMethod, int nameLen, char const * nameAddr) {
   char fileName[MAX_FILE_PATH];

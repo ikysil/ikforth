@@ -1,10 +1,10 @@
-#include <nt/wtypes.h>
-#include <nt/winnt.h>
+#include <wtypes.h>
+#include <winnt.h>
 
 #include "IKFUtils.hpp"
 #include "dictmem.hpp"
 
-void ShowLastError(char * where) {
+void ShowLastError(char const * where) {
   DWORD err = GetLastError();
   char * errMessage;
   FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
@@ -14,6 +14,7 @@ void ShowLastError(char * where) {
     fType(2, "\n\r");
   }
   fType(strlen(errMessage), errMessage);
+  fType(2, "\n\r");
   LocalFree(HLOCAL(errMessage));
 }
 
@@ -35,6 +36,7 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
     char msg[] = " is not valid IKForth image.";
     fType(strlen(ImageFileName), ImageFileName);
     fType(strlen(msg), msg);
+    fType(2, "\n\r");
     fFileClose(fHandle);
     return 1;
   }
@@ -42,6 +44,7 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
   if (lHeader != IHeader.DesiredBase) {
     char msg[] = "Cannot allocate memory by VirtualAlloc.";
     fType(strlen(msg), msg);
+    fType(2, "\n\r");
     fFileClose(fHandle);
     return 1;
   }

@@ -1,7 +1,6 @@
 import os
 
 env = Environment(ENV = os.environ)
-env['WATCOM'] = os.environ['WATCOM']
 
 env.SConscriptChdir(0)
 env.SConscript('SConstruct-config',
