@@ -4,6 +4,8 @@
 #include "IKFCommon.hpp"
 #include "IKFunc.hpp"
 
+void ShowLastError(char const * where);
+
 int StartForth(int const argc, char const * argv[], char const * envp[],
                char const * ImageFileName, char const * StartFileName);
 

@@ -19,7 +19,7 @@ else:
     source_dir = '#build/ikforth-winconsole'
 
 senv.Command('IKForth.img', source_dir + '/IKForth.img', Copy('$TARGET', '$SOURCE'))
-senv.Command('IKForth.exe', '#build/loader/FKernel.exe', Copy('$TARGET', '$SOURCE'))
+senv.Command('IKForth.exe', '#build/loader-nt/FKernel.exe', Copy('$TARGET', '$SOURCE'))
 
 senv.Alias('ikforth', ['IKForth.img', 'IKForth.exe'])
 

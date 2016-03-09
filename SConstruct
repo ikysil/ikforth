@@ -6,9 +6,15 @@ env.SConscriptChdir(0)
 env.SConscript('SConstruct-config',
         exports = ['env'])
 
+env = env.Clone(LSYS = 'nt')
 env.SConscript(dirs = ['src/loader'],
         exports = ['env'],
-        variant_dir = 'build/loader', duplicate = 0)
+        variant_dir = 'build/loader-nt', duplicate = 0)
+
+env = env.Clone(LSYS = 'linux')
+env.SConscript(dirs = ['src/loader'],
+        exports = ['env'],
+        variant_dir = 'build/loader-linux', duplicate = 0)
 
 env.SConscript(dirs = ['src/image'],
         exports = ['env'],

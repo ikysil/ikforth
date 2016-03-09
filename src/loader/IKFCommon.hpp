@@ -1,14 +1,32 @@
 #ifndef _IKFCommon_
 #define _IKFCommon_
 
-#include <wtypes.h>
-#include <windef.h>
+#include <stdint.h>
 
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
 
-const DWORD fFALSE = 0;
-const DWORD fTRUE  = 0xFFFFFFFF;
+typedef uint32_t CELL;
+
+#ifdef WIN32
+#include <wtypes.h>
+#include <windef.h>
+#else
+#define HANDLE  CELL
+#define HMODULE CELL
+#define FARPROC CELL
+#define DWORD   CELL
+#define LONG    uint64_t
+#define __int64 uint64_t
+#define HLOCAL(x) (x)
+#endif
+
+#ifndef __stdcall
+#define __stdcall __attribute__((stdcall))
+#endif
+
+const CELL fFALSE = 0;
+const CELL fTRUE  = 0xFFFFFFFF;
 
 const int MAX_FILE_PATH = 1024;
 
@@ -23,22 +41,26 @@ typedef struct _MainProcContext {
 } MainProcContext;
 
 typedef void __stdcall (* MainProc)(MainProcContext *);
-typedef void __stdcall (* ForthThreadProc)(void *, DWORD);
+typedef void __stdcall (* ForthThreadProc)(void *, CELL);
 
 typedef struct _ImageHeader {
-  char              Signature[16];
-  void *            DesiredBase;
-  DWORD             DesiredSize;
-  MainProc          MainProcAddr;
-  ForthThreadProc   ThreadProcAddr;
-  DWORD             UserDataAreaSize;
-  DWORD             DataStackSize;
+    char              Signature[16];
+    void *            DesiredBase;
+    CELL              DesiredSize;
+    MainProc          MainProcAddr;
+    ForthThreadProc   ThreadProcAddr;
+    CELL              UserDataAreaSize;
+    CELL              DataStackSize;
 } ImageHeader;
+
+typedef struct _ForthThreadParams {
+    void *  UserDataAreaAddr;
+    CELL    ExecutionToken;
+} ForthThreadParams;
 
 extern bool CanExit;
 
 extern ImageHeader IHeader;
-extern HANDLE hOut;
 
 extern void const * sysfunctions[];
 

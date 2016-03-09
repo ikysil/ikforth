@@ -1,11 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "FKernel.hpp"
 
 bool CanExit = false;
 
 ImageHeader IHeader;
-HANDLE hOut;
 
 void ChangeFileExt(char * fName, char const * fExt) {
   char * dIndex = strrchr(fName, '.');
@@ -16,15 +16,14 @@ void ChangeFileExt(char * fName, char const * fExt) {
   strcat(fName, fExt);
 }
 
-#pragma off(unreferenced)
-int main(int const argc, char const * argv[]) {
+int main(int const argc, char const ** argv, char const ** envp) {
   char * ImageFileName = (char *)fAlloc(MAX_FILE_PATH);
   char * StartFileName = (char *)fAlloc(MAX_FILE_PATH);
   strcpy(StartFileName, argv[0]);
   strcpy(ImageFileName, StartFileName);
   ChangeFileExt(StartFileName, ".f");
   ChangeFileExt(ImageFileName, ".img");
-  int returnCode = StartForth(argc, argv, (char const **)environ,
+  int returnCode = StartForth(argc, argv, envp,
                               ImageFileName, StartFileName);
   fFree(StartFileName);
   fFree(ImageFileName);

@@ -3,20 +3,22 @@
 Import('env')
 senv = env.Clone()
 
-senv['LSYS'] = 'nt'
-#senv['LSYS'] = 'linux'
-
-if senv['LSYS'] == 'nt':
-    senv.Replace(tools = ['mingw'])
-    senv.Replace(CXX  = 'mingw32-g++')
-    senv.Replace(LINK = 'mingw32-g++')
-    senv.Alias('loader', ['FKernel.exe'])
-
-senv.Append(CPPFLAGS  = '-mconsole -mregparm=0 -Wall -zq -O3 -mtune=i586 -m32 -fpermissive')
 senv.Append(LINKFLAGS = '-g0 -s')
 
 loader_src = senv.Glob('*.cpp')
 loader_src.extend(senv.Glob('sys' + senv['LSYS'] + '/*.cpp'))
 
-senv.Program('FKernel.exe', loader_src)
+senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-O3', '-mtune=i586', '-m32', '-fpermissive'])
+
+if senv['LSYS'] == 'nt':
+    senv.Replace(tools = ['mingw'])
+    senv.Replace(CXX  = 'mingw32-g++')
+    senv.Replace(LINK = 'mingw32-g++')
+    senv.Append(CPPFLAGS = ['-mconsole'])
+    senv.Program('FKernel.exe', loader_src)
+    senv.Alias('loader-nt', ['FKernel.exe'])
+
+if senv['LSYS'] == 'linux':
+    senv.Program('fkernel', loader_src)
+    senv.Alias('loader-linux', ['fkernel'])
 

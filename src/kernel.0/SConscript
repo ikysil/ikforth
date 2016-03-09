@@ -4,7 +4,7 @@ Import('env')
 senv = env.Clone()
 
 senv.Command('FKernel.img', '#build/image/FKernel.img',  Copy('$TARGET', '$SOURCE'))
-senv.Command('FKernel.exe', '#build/loader/FKernel.exe', Copy('$TARGET', '$SOURCE'))
+senv.Command('FKernel.exe', '#build/loader-nt/FKernel.exe', Copy('$TARGET', '$SOURCE'))
 
 kernel_0_src = senv.Glob('#src/*.f')
 kernel_0_src.extend(senv.Glob('#src/*.4th'))
