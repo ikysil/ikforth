@@ -3,16 +3,19 @@
 Import('env')
 senv = env.Clone()
 
-senv['CXX'] = 'owcc'
-senv['CCFLAGS'] = '-mconsole -mregparm=0 -Wall -zq -O3 -mtune=i586 -mcmodel=f'
+senv['OS_TARGET'] = 'nt'
 
-senv['LINK'] = 'wcl386'
-senv['LINKFLAGS'] = '-zq -oaxt -d0 -w4 -l=nt -k4k'
-senv['LINKCOM'] = '$LINK -fe=$TARGET $LINKFLAGS $__RPATH $SOURCES $_LIBDIRFLAGS $_LIBFLAGS'
+senv['CXX'] = 'owcc'
+senv['CCFLAGS'] = '-mconsole -mregparm=0 -Wall -zq -O3 -mtune=586 -mcmodel=f -D__USE_MISC'
+
+senv['LINKFLAGS'] = '-b $OS_TARGET -k4k -g0 -s'
 
 senv.Alias('loader', ['FKernel.exe'])
 
+loader_src = senv.Glob('*.cpp')
+loader_src.extend(senv.Glob('sys$OS_TARGET/*.cpp'))
+
 senv.Program('FKernel.exe',
-        senv.Glob('*.cpp'),
-        CPPPATH = ['.', '$WATCOM/h', '$WATCOM/h/nt'])
+        loader_src,
+        CPPPATH = ['.', '$WATCOM/h', '$WATCOM/h/nt', '$WATCOM/lh'])
 

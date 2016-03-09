@@ -2,6 +2,7 @@
 #include <nt/winnt.h>
 
 #include "IKFUtils.hpp"
+#include "dictmem.hpp"
 
 void ShowLastError(char * where) {
   DWORD err = GetLastError();
@@ -37,14 +38,14 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
     fFileClose(fHandle);
     return 1;
   }
-  ImageHeader * lHeader = (ImageHeader *)VirtualAlloc(IHeader.DesiredBase, IHeader.DesiredSize,
-                                                      MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+  ImageHeader * lHeader = (ImageHeader *) AllocateDictionaryAddressSpace(IHeader.DesiredBase, IHeader.DesiredSize);
   if (lHeader != IHeader.DesiredBase) {
     char msg[] = "Cannot allocate memory by VirtualAlloc.";
     fType(strlen(msg), msg);
     fFileClose(fHandle);
     return 1;
   }
+  lHeader = (ImageHeader *) CommitDictionaryMemory(lHeader, IHeader.DesiredSize);
   __int64 fPosition = fFilePosition(fHandle) - sizeof(ImageHeader);
   fFileReposition(fHandle, (DWORD)(fPosition >> 32), (DWORD)(fPosition & 0xFFFFFFFF));
   ReadFile(fHandle, lHeader, IHeader.DesiredSize, &bRead, NULL);
@@ -60,8 +61,8 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
   mainProcCtx.sysfunctions = sysfunctions;
   IHeader.MainProcAddr(&mainProcCtx);
   while (!CanExit) { Sleep(100); }
-  VirtualFree(lHeader, IHeader.DesiredSize, MEM_DECOMMIT);
-  VirtualFree(lHeader, 0, MEM_RELEASE);
+  DecommitDictionaryMemory(lHeader, IHeader.DesiredSize);
+  FreeDictionaryAddressSpace(lHeader, IHeader.DesiredSize);
   fFileClose(hOut);
   return exitCode;
 }
