@@ -3,7 +3,9 @@
 Import('env')
 senv = env.Clone()
 
-senv.Append(LINKFLAGS = '-g0 -s')
+senv.Append(LINKFLAGS = ['-m32'])
+senv.Append(LINKFLAGS = ['-gall'])
+#senv.Append(LINKFLAGS = ['-s', '-g0'])
 
 loader_src = senv.Glob('*.cpp')
 loader_src.extend(senv.Glob('sys' + senv['LSYS'] + '/*.cpp'))
@@ -19,6 +21,8 @@ if senv['LSYS'] == 'nt':
     senv.Alias('loader-nt', ['FKernel.exe'])
 
 if senv['LSYS'] == 'linux':
+    senv.Append(CPPFLAGS = ['-pthread'])
+    senv.Append(LINKFLAGS = ['-ldl', '-pthread'])
     senv.Program('fkernel', loader_src)
     senv.Alias('loader-linux', ['fkernel'])
 
