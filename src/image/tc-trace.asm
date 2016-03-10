@@ -44,3 +44,20 @@ __S_END:
                         END IF
                         $CR
                         }
+
+;******************************************************************************
+;  Output the content of the stack
+;******************************************************************************
+                        MACRO   $TRACE_STACK LBL,CNT {
+                            $CR
+                            $WRITE LBL
+                            REPT CNT C:0 \{
+                            REVERSE
+                            CCLIT   C
+                            XT_$PICK
+                            XT_$HOUT8
+                            $WRITE ' '
+                            \}
+                            $CR
+                        }
+

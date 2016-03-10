@@ -10,8 +10,9 @@
 void sys_initIo() {
 }
 
-void sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD * lpNumberOfBytesRead) {
+bool sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD * lpNumberOfBytesRead) {
     *lpNumberOfBytesRead = read(hFile, lpBuffer, nNumberOfBytesToRead);
+    return lpNumberOfBytesRead > 0;
 }
 
 void __stdcall fEmit(char c) {
@@ -47,63 +48,61 @@ HANDLE __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * nam
     return open(fileName, accessMethod[fileAccessMethod & 3]);
 }
 
-void    __stdcall fFileReposition(HANDLE fileId, LONG HWord, LONG LWord) {
-    lseek64(fileId, HWord << 32 | LWord, SEEK_SET);
+void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
+    lseek64(fileId, ((__int64) HWord << 32) | LWord, SEEK_SET);
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
-    perror("Not implemented: fFileReadLine");
-    abort();
-    //~ char c;
-    //~ bool eof = false;
-    //~ int flag = 0;
-    //~ CELL i = 0;
-    //~ CELL skipped = 0;
-    //~ bool crSeen = false;
-    //~ bool lfSeen = false;
-    //~ int rewind = 0;
-    //~ while (i + skipped < cLen) {
-        //~ DWORD res = 0;
-        //~ if (!ReadFile(fileId, &c, sizeof(c), &res, NULL)) {
-            //~ res = -1;
-        //~ }
-        //~ if (res <= 0) {
-            //~ eof = true;
-            //~ break;
-        //~ }
-        //~ if (lfSeen) {
-            //~ if (c != 0x0D) {
-                //~ rewind += res;
-            //~ }
-            //~ break;
-        //~ }
-        //~ if (crSeen) {
-            //~ if (c != 0x0A) {
-                //~ rewind += res;
-            //~ }
-            //~ break;
-        //~ }
-        //~ *(cAddr++) = c;
-        //~ if (c == 0x0A) {
-            //~ lfSeen = true;
-            //~ skipped++;
-            //~ continue;
-        //~ }
-        //~ if (c == 0x0D) {
-            //~ crSeen = true;
-            //~ skipped++;
-            //~ continue;
-        //~ }
-        //~ i++;
-    //~ }
-    //~ if (rewind > 0) {
-        //~ SetFilePointer(fileId, -rewind, NULL, FILE_CURRENT);
-    //~ }
-    //~ if (eof && (i == 0)) {
-        //~ flag = 0;
-    //~ }
-    //~ else {
-        //~ flag = -1;
-    //~ }
-    //~ return ((__int64)flag << 32) | i;
+    char c;
+    bool eof = false;
+    int flag = 0;
+    CELL i = 0;
+    CELL skipped = 0;
+    bool crSeen = false;
+    bool lfSeen = false;
+    int rewind = 0;
+    while (i + skipped < cLen) {
+        DWORD res = 0;
+        if (!sys_ReadFile(fileId, &c, sizeof(c), &res)) {
+            res = -1;
+        }
+        if (res <= 0) {
+            eof = true;
+            break;
+        }
+        if (lfSeen) {
+            if (c != 0x0D) {
+                rewind += res;
+            }
+            break;
+        }
+        if (crSeen) {
+            if (c != 0x0A) {
+                rewind += res;
+            }
+            break;
+        }
+        *(cAddr++) = c;
+        if (c == 0x0A) {
+            lfSeen = true;
+            skipped++;
+            continue;
+        }
+        if (c == 0x0D) {
+            crSeen = true;
+            skipped++;
+            continue;
+        }
+        i++;
+    }
+    if (rewind > 0) {
+        lseek64(fileId, -rewind, SEEK_CUR);
+    }
+    if (eof && (i == 0)) {
+        flag = 0;
+    }
+    else {
+        flag = fTRUE;
+    }
+    return ((__int64)flag << 32) | i;
 }

@@ -13,7 +13,6 @@
 ;******************************************************************************
 FUNC_NUM                =       0
                         MACRO   FUNC_ALLOC SIZE {
-                        ;DD      0
 FUNC_NUM                =       FUNC_NUM + SIZE
                         }
 
@@ -40,6 +39,7 @@ FUNC_NUM                =       ( FUNC_NUM / CELL_SIZE + 1 ) * CELL_SIZE
 
 FUNC_TABLE_VAR:
                         DD      0
+                        $FUNC   GET_LAST_ERROR
                         $FUNC   LOAD_LIBRARY
                         $FUNC   FREE_LIBRARY
                         $FUNC   GET_PROC_ADDRESS
@@ -56,4 +56,3 @@ FUNC_TABLE_VAR:
                         $FUNC   ALLOCATE
                         $FUNC   FREE
                         $FUNC   REALLOCATE
-

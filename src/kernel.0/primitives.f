@@ -76,7 +76,7 @@ FALSE REPORT-NEW-NAME !
 \ B,
 \ Reserve one byte of data space and store x in the byte
 \ Used to compile machine code
-: B, \ (S x -- ) 
+: B, \ (S x -- )
   DP @ TUCK ! 1+ DP !
 ;
 
@@ -108,7 +108,7 @@ BASE !
   (DO-VARIABLE) &USUAL PARSE-CHECK-HEADER, DROP 0 ,
 ;
 
-: USER       \ "name" -- 
+: USER       \ "name" --
   (DO-USER) &USUAL PARSE-CHECK-HEADER, DROP USER-SIZE-VAR @ ,
 ;
 
@@ -205,7 +205,7 @@ BASE @
 \ Interpretation: Interpretation semantics for this word are undefined.
 \ Execution: ( -- ) ( R: loop-sys -- )
 \ Discard the current loop control parameters. An ambiguous condition exists if they are unavailable.
-\ Continue execution immediately following the innermost syntactically enclosing DO ... LOOP or DO ... +LOOP. 
+\ Continue execution immediately following the innermost syntactically enclosing DO ... LOOP or DO ... +LOOP.
 CODE LEAVE
   83 B, C5 B, 2 CELLS B,   \ ADD     EBP,CELL_SIZE*2
   8B B, 75 B, 00 B,        \ MOV     ESI,[DWORD PTR EBP]
@@ -217,7 +217,7 @@ END-CODE COMPILE-ONLY
 \ Interpretation: Interpretation semantics for this word are undefined.
 \ Execution: ( -- n|u ) ( R:  loop-sys -- loop-sys )
 \ n|u is a copy of the current (innermost) loop index.
-\ An ambiguous condition exists if the loop control parameters are unavailable. 
+\ An ambiguous condition exists if the loop control parameters are unavailable.
 CODE I
   8B B, 45 B, 00 B,        \ MOV     EAX,[DWORD PTR EBP]
   50 B,                    \ PUSH    EAX
@@ -228,7 +228,7 @@ END-CODE COMPILE-ONLY
 \ Interpretation: Interpretation semantics for this word are undefined.
 \ Execution: ( -- n|u ) ( R: loop-sys1 loop-sys2 -- loop-sys1 loop-sys2 )
 \ n|u is a copy of the next-outer loop index.
-\ An ambiguous condition exists if the loop control parameters of the next-outer loop, loop-sys1, are unavailable. 
+\ An ambiguous condition exists if the loop control parameters of the next-outer loop, loop-sys1, are unavailable.
 CODE J
   8B B, 45 B, 3 CELLS B,   \ MOV     EAX,[DWORD PTR EBP + 3 * CELL_SIZE]
   50 B,                    \ PUSH    EAX
@@ -239,7 +239,7 @@ END-CODE COMPILE-ONLY
 \ Interpretation: Interpretation semantics for this word are undefined.
 \ Execution: ( -- n|u ) ( R:  loop-sys -- loop-sys )
 \ n|u is a copy of the current (innermost) loop limit.
-\ An ambiguous condition exists if the loop control parameters are unavailable. 
+\ An ambiguous condition exists if the loop control parameters are unavailable.
 CODE I'
   8B B, 45 B, 1 CELLS B,   \ MOV     EAX,[DWORD PTR EBP + 1 * CELL_SIZE]
   50 B,                    \ PUSH    EAX

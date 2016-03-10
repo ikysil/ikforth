@@ -29,6 +29,7 @@
                         INCLUDE "header.inc"
                         INCLUDE "interpret.inc"
                         INCLUDE "int_comp.inc"
-                        INCLUDE "thread.inc"
+                        INCLUDE "sysnt-thread.asm"
+                        INCLUDE "syslinux-thread.asm"
                         INCLUDE "ik.inc"
 

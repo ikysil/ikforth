@@ -3,7 +3,7 @@
 
 DWORD WINAPI fThreadFunc(LPVOID lpParameter) {
     ForthThreadParams * ftp = (ForthThreadParams *) lpParameter;
-    IHeader.ThreadProcAddr(ftp->UserDataAreaAddr, ftp->ExecutionToken);
+    IHeader.Win32ThreadProcAddr(ftp->UserDataAreaAddr, ftp->ExecutionToken);
     fFree(ftp->UserDataAreaAddr);
     fFree(ftp);
     return 0;

@@ -7,7 +7,7 @@
 
 void * fThreadFunc(void * lpParameter) {
     ForthThreadParams * ftp = (ForthThreadParams *) lpParameter;
-    IHeader.ThreadProcAddr(ftp->UserDataAreaAddr, ftp->ExecutionToken);
+    IHeader.LinuxThreadProcAddr(ftp->UserDataAreaAddr, ftp->ExecutionToken);
     fFree(ftp->UserDataAreaAddr);
     fFree(ftp);
     return 0;

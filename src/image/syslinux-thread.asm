@@ -1,6 +1,6 @@
 ;******************************************************************************
 ;
-;  thread.inc
+;  syslinux-thread.inc
 ;  IKForth
 ;
 ;  Copyright (C) 1999-2016 Illya Kysil
@@ -9,22 +9,22 @@
 ;  THREAD & support words
 ;******************************************************************************
 
-;  THREAD-EXIT
-                        $CODE   'THREAD-EXIT',$THREAD_EXIT
+;  LINUX-THREAD-EXIT
+                        $CODE   'LINUX-THREAD-EXIT',$LINUX_THREAD_EXIT
 
                         MOV     ESI,DWORD [EDI + VAR_ESI]
                         MOV     EBP,DWORD [EDI + VAR_EBP]
                         MOV     ESP,DWORD [EDI + VAR_ESP]
                         MOV     EBX,DWORD [EDI + VAR_EBX]
 ; remove per-thread exception handler data
-                        POPDS   <DWORD [FS:0]>
-                        ADD     ESP,4
+;                        POPDS   <DWORD [FS:0]>
+;                        ADD     ESP,4
 
                         PUSHDS  <DWORD [EDI + VAR_RETURN_ADDR]>
                         MOV     EDI,DWORD [EDI + VAR_EDI]
                         RET
 
-THREAD_PROC:
+LINUX_THREAD_PROC:
                         POPDS   EDX                     ; return address
                         MOV     EAX,EDI
                         POPDS   EDI                     ; user data pointer
@@ -37,10 +37,10 @@ THREAD_PROC:
                         MOV     DWORD [EDI + VAR_EBX],EBX
 
 ; setup per-thread exception handler
-                        MOV     EAX,SEH_HANDLER + IMAGE_BASE
-                        PUSHDS  EAX
-                        PUSHDS  <DWORD [FS:0]>
-                        MOV     DWORD [FS:0],ESP
+;                        MOV     EAX,SEH_HANDLER + IMAGE_BASE
+;                        PUSHDS  EAX
+;                        PUSHDS  <DWORD [FS:0]>
+;                        MOV     DWORD [FS:0],ESP
 
 ; setup exception stack
                         LEA     EAX,DWORD [EDI + VAR_EXC_STACK]
@@ -50,18 +50,23 @@ THREAD_PROC:
 
                         MOV     DWORD [EDI + VAR_ESP],ESP
                         PUSHDS  ECX
-                        MOV     ESI,DO_THREAD + IMAGE_BASE
+                        MOV     ESI,DO_LINUX_THREAD + IMAGE_BASE
                         $NEXT
-DO_THREAD:
+DO_LINUX_THREAD:
                         XT_$CATCH
                         XT_$DROP
-                        XT_$THREAD_EXIT
+                        XT_$LINUX_THREAD_EXIT
 
-;  SEH-HANDLER
-;  D: win32-exc-id -- exc-id
-                        $DEFER  'SEH-HANDLER',$SEH_HANDLER,$PSEH_HANDLER
+;  SIG-HANDLER
+;  D: signal-id -- signal-id
+                        $DEFER  'SIG-HANDLER',$SIG_HANDLER,$PSIG_HANDLER
 
-SEH_HANDLER:
+;  (SIG-HANDLER)
+;  D: signal-id -- signal-id
+                        $COLON  '(SIG-HANDLER)',$PSIG_HANDLER,VEF_USUAL
+                        XT_$EXIT
+
+SIG_HANDLER:
                         PUSH    EBP
                         MOV     EBP,ESP
                         PUSH    EBX
@@ -78,29 +83,21 @@ SEH_HANDLER:
                         ADD     EDI,VAR_WIN32_EXCEPTION_CONTEXT
                 REP     MOVSB
 ; fixup CONTEXT.EIP
-                        MOV     DWORD [EBX + 46 * 4],DO_SEH + IMAGE_BASE
+                        MOV     DWORD [EBX + 46 * 4],DO_SIG + IMAGE_BASE
 ; fixup CONTEXT.EAX (= Win32 exception code)
                         MOV     DWORD [EBX + 44 * 4],EAX
 ; eax=0 reload context & continue execution
-                        MOV     EAX,0                     
+                        MOV     EAX,0
                         POP     ESI
                         POP     EDI
                         POP     EBX
                         MOV     ESP,EBP
                         POP     EBP
                         RET
-DO_SEH:
+DO_SIG:
                         PUSHDS  EAX
-                        MOV     ESI,DO_FORTH_SEH + IMAGE_BASE
+                        MOV     ESI,DO_FORTH_SIG + IMAGE_BASE
                         $NEXT
-DO_FORTH_SEH:
-                        XT_$SEH_HANDLER
+DO_FORTH_SIG:
+                        XT_$SIG_HANDLER
                         XT_$THROW
-
-;  (SEH-HANDLER)
-;  D: win32-exc-id -- exc-id
-                        $COLON  '(SEH-HANDLER)',$PSEH_HANDLER,VEF_USUAL
-                        XT_$EXIT
-
-                        $USER   'WIN32-EXCEPTION-CONTEXT',$WIN32_EXCEPTION_CONTEXT,VAR_WIN32_EXCEPTION_CONTEXT
-

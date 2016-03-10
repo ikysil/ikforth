@@ -48,7 +48,8 @@ typedef struct _ImageHeader {
     void *            DesiredBase;
     CELL              DesiredSize;
     MainProc          MainProcAddr;
-    ForthThreadProc   ThreadProcAddr;
+    ForthThreadProc   Win32ThreadProcAddr;
+    ForthThreadProc   LinuxThreadProcAddr;
     CELL              UserDataAreaSize;
     CELL              DataStackSize;
 } ImageHeader;

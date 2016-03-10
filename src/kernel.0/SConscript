@@ -6,6 +6,8 @@ senv = env.Clone()
 senv.Command('FKernel.img', '#build/image/FKernel.img',  Copy('$TARGET', '$SOURCE'))
 senv.Command('FKernel.exe', '#build/loader-nt/FKernel.exe', Copy('$TARGET', '$SOURCE'))
 
+senv.Command('FKernel',     '#build/loader-linux/fkernel', Copy('$TARGET', '$SOURCE'))
+
 kernel_0_src = senv.Glob('#src/*.f')
 kernel_0_src.extend(senv.Glob('#src/*.4th'))
 kernel_0_src.extend(senv.Glob('#src/kernel/*.f'))
@@ -28,4 +30,4 @@ kernel_0_deps.extend(kernel_0_src)
 senv.Command('IKForth.img',
         'FKernel.exe',
         'IKFORTHTERMINIT=${TERMINIT} ${BUILD_LAUNCHER} ${SOURCE} ${TARGET}')
-senv.Depends('IKForth.img', ['FKernel.img', 'FKernel.exe', kernel_0_deps])
+senv.Depends('IKForth.img', ['FKernel.img', 'FKernel.exe', 'FKernel', kernel_0_deps])

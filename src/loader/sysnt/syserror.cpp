@@ -21,3 +21,6 @@ void ShowLastError(char const * where) {
     LocalFree(HLOCAL(errMessage));
 }
 
+int     __stdcall sys_GetLastError() {
+    return GetLastError();
+}

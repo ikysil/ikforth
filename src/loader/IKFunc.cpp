@@ -7,6 +7,7 @@
 
 void const * sysfunctions[] = {
 // order MUST be the same as in ftable.inc FUNC_TABLE
+    sys_GetLastError,
     fLoadLibrary,
     fFreeLibrary,
     fGetProcAddress,

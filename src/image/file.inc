@@ -104,5 +104,3 @@ INCLUDE_FILE_EXIT:
                         XT_$CURRENT_FILE_POSITION
                         XT_$2STORE
                         XT_$EXIT
-
-                        

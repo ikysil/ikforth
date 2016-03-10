@@ -7,8 +7,8 @@ void sys_initIo() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 }
 
-void sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD * lpNumberOfBytesRead) {
-    ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, NULL);
+bool sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD * lpNumberOfBytesRead) {
+    return ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, NULL);
 }
 
 void __stdcall fEmit(char c) {
@@ -54,8 +54,9 @@ HANDLE  __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * na
     return result;
 }
 
-void    __stdcall fFileReposition(HANDLE fileId, LONG HWord, LONG LWord) {
-    SetFilePointer(fileId, LWord, &HWord, FILE_BEGIN);
+void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
+    LONG hPos = HWord;
+    SetFilePointer(fileId, LWord, &hPos, FILE_BEGIN);
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
@@ -69,7 +70,7 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
     int rewind = 0;
     while (i + skipped < cLen) {
         DWORD res = 0;
-        if (!ReadFile(fileId, &c, sizeof(c), &res, NULL)) {
+        if (!sys_ReadFile(fileId, &c, sizeof(c), &res)) {
             res = -1;
         }
         if (res <= 0) {
@@ -108,7 +109,7 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
         flag = 0;
     }
     else {
-        flag = -1;
+        flag = fTRUE;
     }
     return ((__int64)flag << 32) | i;
 }

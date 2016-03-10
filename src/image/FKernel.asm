@@ -60,15 +60,15 @@ SLPOCKET                EQU     256
                         DD      DESIRED_BASE_EQU
 DESIRED_SIZE_VAR:
                         DD      DESIRED_SIZE_EQU
-                        DD      START       + IMAGE_BASE
-                        DD      THREAD_PROC + IMAGE_BASE
+                        DD      START + IMAGE_BASE
+                        DD      WIN32_THREAD_PROC + IMAGE_BASE
+                        DD      LINUX_THREAD_PROC + IMAGE_BASE
                         DD      USER_AREA_SIZE0 + USER_AREA_SIZE
                         DD      DATA_STACK_SIZE
 
 ;******************************************************************************
 ;  Include functions table
 ;******************************************************************************
-;                        ALIGN   16
 
                         INCLUDE "ftable.inc"
 
