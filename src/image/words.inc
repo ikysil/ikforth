@@ -32,4 +32,5 @@
                         INCLUDE "sysnt-thread.asm"
                         INCLUDE "syslinux-thread.asm"
                         INCLUDE "ik.inc"
+                        INCLUDE "call-ffl.asm"
 
