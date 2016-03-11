@@ -19,8 +19,10 @@ REPORT-NEW-NAME OFF
 \   WriteConsole \ ( hOut, PChar( S ), Length( S ), Result, nil );
 \ ;
 
+[DEFINED] RaiseException [IF]
 : NTHROW (S exc-id -- )
   >R 0 0 0 R> RaiseException ;
+[THEN]
 
 : .RS RP@ DUP RDEPTH CELLS + SWAP
   ?DO I @ 1 CELLS - @ DUP >HEAD DUP HERE U< IF SWAP ." 0x" H.8 SPACE H>#NAME TYPE CR

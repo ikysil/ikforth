@@ -5,7 +5,6 @@
 \
 
 REQUIRES" src/kernel/console.4th"
-REQUIRES" lib/term/winconsole.4th"
 
 CR .( Loading ANSITERM definitions )
 
@@ -128,7 +127,11 @@ ONLY FORTH DEFINITIONS ALSO ANSITERM-PRIVATE
 \ private definitions are available for use
 
 : ANSITERM-INIT
-  WINCONSOLE-INIT
+
+  [DEFINED] WINCONSOLE-INIT [IF]
+    WINCONSOLE-INIT
+  [THEN]
+
   \DEBUG CR ." ANSITERM-INIT"
   CR
   ['] ANSI-BACKSPACE IS CONSOLE-BACKSPACE

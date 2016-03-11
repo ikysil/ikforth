@@ -19,5 +19,10 @@ S" libc.so.6" (LoadLibrary) [IF]
 ENV>
 
 REQUIRES" lib/linux/libc.4th"
+REQUIRES" lib/linux/libreadline.4th"
+
+:NONAME
+   S" ANSITERM-INIT"
+; IS TERMINIT-DEFAULT
 
 [THEN]

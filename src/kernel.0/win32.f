@@ -25,4 +25,8 @@ REQUIRES" lib/term/winconsole.4th"
 REQUIRES" lib/win32/winfile.f"
 REQUIRES" lib/win32/winmisc.f"
 
+:NONAME
+   S" WINCONSOLE-INIT"
+; IS TERMINIT-DEFAULT
+
 [THEN]

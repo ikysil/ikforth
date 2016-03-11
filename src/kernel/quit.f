@@ -196,20 +196,6 @@ DEFER .INPUT-PROMPT-INFO
   SHUTDOWN-CHAIN CHAIN.EXECUTE< (BYE)
 ;
 
-DEFER TERMINIT-DEFAULT
-
-:NONAME
-   S" WINCONSOLE-INIT"
-; IS TERMINIT-DEFAULT
-
-: TERMINIT-ENV?
-   (S -- c-addr count true | false )
-   (G Seach host environment for IKFORTHTERMINIT variable )
-   (G and return value as counted string )
-   (G Return true if found, false otherwise )
-   S" IKFORTHTERMINIT" ENVP?
-;
-
 : TERMINIT-WORD
    (S -- c-addr count )
    (G Return name of the word used ot initialize console/terminal integration )
@@ -228,6 +214,11 @@ DEFER TERMINIT-DEFAULT
 ;
 
 :NONAME
+
+  [DEFINED] ACCEPT-READLINE [IF]
+    ['] ACCEPT-READLINE IS ACCEPT
+  [THEN]
+
   TERMINIT GET-ORDER
   1- SWAP >R
   TERMINIT-WORD
