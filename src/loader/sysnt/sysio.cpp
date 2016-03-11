@@ -106,11 +106,6 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
     if (rewind > 0) {
         SetFilePointer(fileId, -rewind, NULL, FILE_CURRENT);
     }
-    if (eof && (i == 0)) {
-        flag = 0;
-    }
-    else {
-        flag = fTRUE;
-    }
+    flag = (eof && (i == 0)) ? fFALSE : fTRUE;
     return ((__int64)flag << 32) | i;
 }

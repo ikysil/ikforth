@@ -11,8 +11,9 @@ void sys_initIo() {
 }
 
 bool sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD * lpNumberOfBytesRead) {
-    *lpNumberOfBytesRead = read(hFile, lpBuffer, nNumberOfBytesToRead);
-    return lpNumberOfBytesRead > 0;
+    ssize_t readBytes = read(hFile, lpBuffer, nNumberOfBytesToRead);
+    *lpNumberOfBytesRead = readBytes;
+    return readBytes >= 0;
 }
 
 void __stdcall fEmit(char c) {
@@ -98,11 +99,6 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
     if (rewind > 0) {
         lseek64(fileId, -rewind, SEEK_CUR);
     }
-    if (eof && (i == 0)) {
-        flag = 0;
-    }
-    else {
-        flag = fTRUE;
-    }
+    flag = (eof && (i == 0)) ? fFALSE : fTRUE;
     return ((__int64)flag << 32) | i;
 }
