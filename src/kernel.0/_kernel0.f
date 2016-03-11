@@ -42,14 +42,15 @@ S" lib/ansi/block.f"            INCLUDED
 REQUIRES" lib/~ik/quotations.4th"
 S" lib/ansi/see.f"              INCLUDED
 
-S" src/kernel.0/win32.f"        INCLUDED
+REQUIRES" src/kernel.0/win32.f"
+REQUIRES" src/kernel.0/linux.4th"
 
 S" lib/term/ansiterm.4th"       INCLUDED
 
 REQUIRES" lib/~ik/locate.4th"
 S" lib/~ik/macro.f"             INCLUDED
 S" lib/~ik/loop.f"              INCLUDED
-S" lib/~ik/486asm.f"            INCLUDED
+REQUIRES" lib/~ik/486asm.f"
 S" lib/~ik/class.f"             INCLUDED
 \ S" lib/~ik/float.f"             INCLUDED
 S" lib/~ik/S$.f"                INCLUDED

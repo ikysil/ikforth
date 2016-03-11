@@ -11,7 +11,7 @@ CR .( Loading DLLINTF definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-BASE @ 
+BASE @
 
 : (DLL.Init) (S lib-addr sliteral<DLL> -- )
   (LoadLibrary) GetLastError THROW SWAP !
@@ -62,31 +62,18 @@ BASE @
 HEX
 
 : (VoidDLLEntry) (S 'Name' -- )
-  CREATE 0 , 
-  ;CODE
-  83 B, ED B, 04 B,       \ SUB     EBP,4
-  89 B, 7D B, 00 B,       \ MOV     [DWORD PTR EBP],EDI
-  8B B, 58 B, CFA-SIZE B, \ MOV     EBX,[DWORD PTR EAX+CFA-SIZE]
-  FF B, D3 B,             \ CALL    EBX
-  8B B, 7D B, 00 B,       \ MOV     EDI,[DWORD PTR EBP]
-  83 B, C5 B, 04 B,       \ ADD     EBP,4
-  $NEXT
+  CREATE 0 ,
+  DOES> @ CALL-STDCALL-R0
+;
 
 : VoidDLLEntry (S 'Name' 'DLL' 'DLLName' -- )
   (VoidDLLEntry) DLLEntry.Init
 ;
 
 : (Int32DLLEntry) (S 'Name' -- )
-  CREATE 0 , 
-  ;CODE
-  83 B, ED B, 04 B,       \ SUB     EBP,4
-  89 B, 7D B, 00 B,       \ MOV     [DWORD PTR EBP],EDI
-  8B B, 58 B, CFA-SIZE B, \ MOV     EBX,[DWORD PTR EAX+CFA-SIZE]
-  FF B, D3 B,             \ CALL    EBX
-  50 B,                   \ PUSH    EAX
-  8B B, 7D B, 00 B,       \ MOV     EDI,[DWORD PTR EBP]
-  83 B, C5 B, 04 B,       \ ADD     EBP,4
-  $NEXT
+  CREATE 0 ,
+  DOES> @ CALL-STDCALL-R1
+;
 
 : Int32DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
   (Int32DLLEntry) DLLEntry.Init
@@ -94,16 +81,8 @@ HEX
 
 : (Int64DLLEntry) (S 'Name' -- )
   CREATE 0 ,
-  ;CODE
-  83 B, ED B, 04 B,       \ SUB     EBP,4
-  89 B, 7D B, 00 B,       \ MOV     [DWORD PTR EBP],EDI
-  8B B, 58 B, CFA-SIZE B, \ MOV     EBX,[DWORD PTR EAX+CFA-SIZE]
-  FF B, D3 B,             \ CALL    EBX
-  50 B,                   \ PUSH    EAX
-  52 B,                   \ PUSH    EDX
-  8B B, 7D B, 00 B,       \ MOV     EDI,[DWORD PTR EBP]
-  83 B, C5 B, 04 B,       \ ADD     EBP,4
-  $NEXT
+  DOES> @ CALL-STDCALL-R2
+;
 
 : Int64DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
   (Int64DLLEntry) DLLEntry.Init

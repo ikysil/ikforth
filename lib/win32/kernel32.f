@@ -5,7 +5,6 @@
 \
 
 REQUIRES" lib/win32/dllintf.f"
-REQUIRES" lib/win32/wincon.f"
 
 CR .( Loading KERNEL32 definitions )
 
@@ -102,7 +101,7 @@ Int32DLLEntry GetNumberOfConsoleInputEvents KERNEL32.DLL GetNumberOfConsoleInput
 
 STRUCT COORD
   WORD: COORD.X
-  WORD: COORD.Y  
+  WORD: COORD.Y
 ENDSTRUCT
 
 STRUCT SMALL_RECT
