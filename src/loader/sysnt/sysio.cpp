@@ -60,6 +60,7 @@ void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
+    SetLastError(0);
     char c;
     bool eof = false;
     int flag = 0;

@@ -4,10 +4,8 @@
 HMODULE __stdcall fLoadLibrary(CELL nameLen, char const * nameAddr) {
     char libName[MAX_FILE_PATH];
     initName(libName, MAX_FILE_PATH, nameAddr, nameLen);
+    SetLastError(0);
     HMODULE result = LoadLibrary(libName);
-    if (result != 0) {
-        SetLastError(0);
-    }
     return result;
 }
 
