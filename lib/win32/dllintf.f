@@ -63,7 +63,7 @@ HEX
 
 : (VoidDLLEntry) (S 'Name' -- )
   CREATE 0 ,
-  DOES> @ CALL-STDCALL-R0
+  DOES> @ CALL-STDCALL-C0
 ;
 
 : VoidDLLEntry (S 'Name' 'DLL' 'DLLName' -- )
@@ -72,7 +72,7 @@ HEX
 
 : (Int32DLLEntry) (S 'Name' -- )
   CREATE 0 ,
-  DOES> @ CALL-STDCALL-R1
+  DOES> @ CALL-STDCALL-C1
 ;
 
 : Int32DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
@@ -81,7 +81,7 @@ HEX
 
 : (Int64DLLEntry) (S 'Name' -- )
   CREATE 0 ,
-  DOES> @ CALL-STDCALL-R2
+  DOES> @ CALL-STDCALL-C2
 ;
 
 : Int64DLLEntry (S 'Name' 'DLL' 'DLLName' -- )
