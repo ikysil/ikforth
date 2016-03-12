@@ -36,7 +36,7 @@ REQUIRES" lib/~js/486asm/486ASM.F"
 ALSO ASSEMBLER ALSO ASM-HIDDEN DEFINITIONS
 
 :NONAME ( start a native code definition )
-  code-header 0 (CFA,) hide !csp init-asm
+  code-header 0 (CFA,) DROP hide !csp init-asm
 ; IS CODE
 
 HOST-ITC? [IF]
