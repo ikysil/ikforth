@@ -111,4 +111,10 @@ cdecl-import-c0 _free LIBC.SO free
 1 CONSTANT STDOUT
 2 CONSTANT STDERR
 
+cdecl-import-c0 _memset LIBC.SO memset
+
+:NONAME (S c-addr u char -- )
+  SWAP ROT 3 _memset
+; IS FILL
+
 REPORT-NEW-NAME !
