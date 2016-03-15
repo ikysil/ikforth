@@ -1,7 +1,7 @@
 \
 \  struct.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading STRUCT definitions )
@@ -69,5 +69,52 @@ REPORT-NEW-NAME OFF
 : 2CELL:
   1 2CELLS:
 ;
+
+VARIABLE STRUCTURE-PAIRS
+
+: BEGIN-STRUCTURE  \ -- addr STRUCTURE-PAIRS 0 ; -- size
+   CREATE
+      HERE STRUCTURE-PAIRS 0 0 ,      \ mark stack, lay dummy
+   DOES> @         \ -- rec-len
+;
+
+: END-STRUCTURE   \ addr STRUCTURE-PAIRS len --
+   SWAP STRUCTURE-PAIRS ?PAIRS
+   SWAP !         \ set len
+;
+
+: +FIELD  \ n <"name"> -- ; Exec: addr -- 'addr
+   CREATE OVER , +
+   DOES> @ +
+;
+
+
+: FIELD:    (S n1 "name" -- n2 ; addr1 -- addr2 )
+   1 CELLS +FIELD
+;
+
+: 2FIELD:    (S n1 "name" -- n2 ; addr1 -- addr2 )
+   2 CELLS +FIELD
+;
+
+: CFIELD:   (S n1 "name" -- n2 ; addr1 -- addr2 )
+   1 CHARS +FIELD
+;
+
+\ BFIELD:  1 byte (8 bit) field
+: BFIELD:   (S n1 "name" -- n2 ; addr1 -- addr2 )
+   1 +FIELD
+;
+
+\ WFIELD:  16 bit field
+: WFIELD:   (S n1 "name" -- n2 ; addr1 -- addr2 )
+   2 +FIELD
+;
+
+\ LFIELD:  32 bit field
+SYNONYM LFIELD: FIELD:
+
+\ XFIELD:  64 bit field
+SYNONYM XFIELD: 2FIELD:
 
 REPORT-NEW-NAME !
