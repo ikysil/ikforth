@@ -7,6 +7,8 @@
 S" src/kernel.0/primitives.f"   INCLUDED
 S" src/kernel/const.f"          INCLUDED
 S" src/kernel/core.f"           INCLUDED
+S" src/kernel/string.f"         INCLUDED
+S" src/kernel/string-escape.4th"  INCLUDED
 S" src/kernel/zchar.f"          INCLUDED
 S" src/kernel/args.4th"         INCLUDED
 S" src/kernel/chain.f"          INCLUDED
@@ -24,7 +26,6 @@ S" src/kernel/format.f"         INCLUDED
 S" src/kernel/exception.f"      INCLUDED
 S" src/kernel/exception-ext.f"  INCLUDED
 S" src/kernel/search-order.f"   INCLUDED
-S" src/kernel/string.f"         INCLUDED
 S" src/kernel/required.f"       INCLUDED
 S" src/kernel/environment.f"    INCLUDED
 S" src/kernel/platform.f"       INCLUDED

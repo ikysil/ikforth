@@ -1,7 +1,7 @@
 \
 \  S$.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading S$ definitions )
@@ -30,14 +30,34 @@ REPORT-NEW-NAME OFF
   PARSE                    \ parse to  second delimiter
 ;
 
+\ run-time routine for string parsing
+: PARSE-S\$ ( <char1>ccc<char2> -- addr u)
+  >IN @
+  BL WORD COUNT DROP C@
+  SWAP >IN !
+  DUP PARSE 2DROP
+  (S-DELIM)                \ determine second delimiter
+  PARSE\                   \ parse to  second delimiter
+;
+
 \ parse string; if compiling, compile it as a literal.
 :NONAME PARSE-S$ ;
 :NONAME PARSE-S$ POSTPONE SLITERAL ;
 INT/COMP: S$
 
+\ parse string; if compiling, compile it as a literal.
+:NONAME PARSE-S\$ ;
+:NONAME PARSE-S\$ POSTPONE SLITERAL ;
+INT/COMP: S\$
+
 \ parse string and print it
 : .$ ( <char1>ccc<char2> -- )
   PARSE-S$ TYPE
+; IMMEDIATE
+
+\ parse string and print it
+: .\$ ( <char1>ccc<char2> -- )
+  PARSE-S\$ TYPE
 ; IMMEDIATE
 
 REPORT-NEW-NAME !
