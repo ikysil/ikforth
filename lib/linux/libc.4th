@@ -14,30 +14,30 @@ REPORT-NEW-NAME OFF
 DLLImport LIBC.SO "libc.so.6"
 
 : (cdecl-import-c0) (S 'Name' -- )
-  CREATE 0 ,
-  DOES> @ CALL-CDECL-C0
+   CREATE 0 ,
+   DOES> @ CALL-CDECL-C0
 ;
 
 : cdecl-import-c0 (S 'Name' 'DLL' 'DLLName' -- )
-  (cdecl-import-c0) DLLEntry.Init
+   (cdecl-import-c0) DLLEntry.Init
 ;
 
 : (cdecl-import-c1) (S 'Name' -- )
-  CREATE 0 ,
-  DOES> @ CALL-CDECL-C1
+   CREATE 0 ,
+   DOES> @ CALL-CDECL-C1
 ;
 
 : cdecl-import-c1 (S 'Name' 'DLL' 'DLLName' -- )
-  (cdecl-import-c1) DLLEntry.Init
+   (cdecl-import-c1) DLLEntry.Init
 ;
 
 : (cdecl-import-c2) (S 'Name' -- )
-  CREATE 0 ,
-  DOES> @ CALL-CDECL-C2
+   CREATE 0 ,
+   DOES> @ CALL-CDECL-C2
 ;
 
 : cdecl-import-c2 (S 'Name' 'DLL' 'DLLName' -- )
-  (cdecl-import-c2) DLLEntry.Init
+   (cdecl-import-c2) DLLEntry.Init
 ;
 
 cdecl-import-c1 _time LIBC.SO time
@@ -72,15 +72,15 @@ cdecl-import-c1 _localtime_r LIBC.SO localtime_r
 ; IS TIME&DATE
 
 :NONAME
-  4 OR
+   4 OR
 ; IS BIN
 
 :NONAME
-  1
+   1
 ; IS W/O
 
 :NONAME
-  2
+   2
 ; IS R/W
 
 : libc-write (S u1 c-addr fileid -- x )
@@ -92,18 +92,18 @@ cdecl-import-c1 _localtime_r LIBC.SO localtime_r
 ;
 
 :NONAME (S c-addr u1 fileid -- ior )
-  ROT SWAP libc-write
-  0< IF GetLastError ELSE 0 THEN
+   ROT SWAP libc-write
+   0< IF GetLastError ELSE 0 THEN
 ; IS WRITE-FILE
 
 cdecl-import-c0 _free LIBC.SO free
 
 : libc-free (S addr -- )
    (G The free function frees the memory space pointed to by ptr, which
-       must have been returned by a previous call to malloc, calloc, or
-       realloc.  Otherwise, or if free has already been called
-       before, undefined behavior occurs.  If addr is NULL, no operation is
-       performed. )
+      must have been returned by a previous call to malloc, calloc, or
+      realloc.  Otherwise, or if free has already been called
+      before, undefined behavior occurs.  If addr is NULL, no operation is
+      performed. )
    1 _free
 ;
 
@@ -114,7 +114,7 @@ cdecl-import-c0 _free LIBC.SO free
 cdecl-import-c0 _memset LIBC.SO memset
 
 :NONAME (S c-addr u char -- )
-  SWAP ROT 3 _memset
+   SWAP ROT 3 _memset
 ; IS FILL
 
 cdecl-import-c0 _usleep LIBC.SO usleep
