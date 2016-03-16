@@ -117,4 +117,11 @@ cdecl-import-c0 _memset LIBC.SO memset
   SWAP ROT 3 _memset
 ; IS FILL
 
+cdecl-import-c0 _usleep LIBC.SO usleep
+
+:NONAME (S u -- )
+   (G Wait at least u milliseconds. )
+   1000 * 1 _usleep
+; IS MS
+
 REPORT-NEW-NAME !
