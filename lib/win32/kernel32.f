@@ -4,100 +4,100 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" lib/win32/dllintf.f"
+REQUIRES" lib/~ik/dynlib.4th"
 
 CR .( Loading KERNEL32 definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-DLLImport KERNEL32.DLL "kernel32.dll"
+S" kernel32.dll" DYNLIB KERNEL32.DLL
 
-Int32DLLEntry GlobalAlloc        KERNEL32.DLL GlobalAlloc
-Int32DLLEntry GlobalFree         KERNEL32.DLL GlobalFree
-Int32DLLEntry GlobalReAlloc      KERNEL32.DLL GlobalReAlloc
+KERNEL32.DLL S" GlobalAlloc"   DYNLIB-SYMBOL STDCALL-C1 GlobalAlloc
+KERNEL32.DLL S" GlobalFree"    DYNLIB-SYMBOL STDCALL-C1 GlobalFree
+KERNEL32.DLL S" GlobalReAlloc" DYNLIB-SYMBOL STDCALL-C1 GlobalReAlloc
 
-VoidDLLEntry  GetSystemTime      KERNEL32.DLL GetSystemTime
-VoidDLLEntry  GetLocalTime       KERNEL32.DLL GetLocalTime
+KERNEL32.DLL S" GetSystemTime" DYNLIB-SYMBOL STDCALL-C0 GetSystemTime
+KERNEL32.DLL S" GetLocalTime"  DYNLIB-SYMBOL STDCALL-C0 GetLocalTime
 
-VoidDLLEntry  FlushFileBuffers   KERNEL32.DLL FlushFileBuffers
+KERNEL32.DLL S" FlushFileBuffers" DYNLIB-SYMBOL STDCALL-C0 FlushFileBuffers
 
-VoidDLLEntry  FillMemory         KERNEL32.DLL RtlFillMemory
-VoidDLLEntry  ZeroMemory         KERNEL32.DLL RtlZeroMemory
+KERNEL32.DLL S" RtlFillMemory" DYNLIB-SYMBOL STDCALL-C0 FillMemory
+KERNEL32.DLL S" RtlZeroMemory" DYNLIB-SYMBOL STDCALL-C0 ZeroMemory
 
-Int32DLLEntry IsBadCodePtr       KERNEL32.DLL IsBadCodePtr
-Int32DLLEntry IsBadReadPtr       KERNEL32.DLL IsBadReadPtr
-Int32DLLEntry IsBadWritePtr      KERNEL32.DLL IsBadWritePtr
-Int32DLLEntry IsBadStringPtrA    KERNEL32.DLL IsBadStringPtrA
-Int32DLLEntry IsBadStringPtrW    KERNEL32.DLL IsBadStringPtrW
+KERNEL32.DLL S" IsBadCodePtr"    DYNLIB-SYMBOL STDCALL-C1 IsBadCodePtr
+KERNEL32.DLL S" IsBadReadPtr"    DYNLIB-SYMBOL STDCALL-C1 IsBadReadPtr
+KERNEL32.DLL S" IsBadWritePtr"   DYNLIB-SYMBOL STDCALL-C1 IsBadWritePtr
+KERNEL32.DLL S" IsBadStringPtrA" DYNLIB-SYMBOL STDCALL-C1 IsBadStringPtrA
+KERNEL32.DLL S" IsBadStringPtrW" DYNLIB-SYMBOL STDCALL-C1 IsBadStringPtrW
 
 DEFER IsBadStringPtr
 ' IsBadStringPtrA IS IsBadStringPtr
 
-Int32DLLEntry GetStdHandle       KERNEL32.DLL GetStdHandle
+KERNEL32.DLL S" GetStdHandle" DYNLIB-SYMBOL STDCALL-C1 GetStdHandle
 
-Int32DLLEntry AreFileApisANSI    KERNEL32.DLL AreFileApisANSI
-VoidDLLEntry  SetFileApisToANSI  KERNEL32.DLL SetFileApisToANSI
-VoidDLLEntry  SetFileApisToOEM   KERNEL32.DLL SetFileApisToOEM
+KERNEL32.DLL S" AreFileApisANSI"   DYNLIB-SYMBOL STDCALL-C1 AreFileApisANSI
+KERNEL32.DLL S" SetFileApisToANSI" DYNLIB-SYMBOL STDCALL-C0 SetFileApisToANSI
+KERNEL32.DLL S" SetFileApisToOEM"  DYNLIB-SYMBOL STDCALL-C0 SetFileApisToOEM
 
-Int32DLLEntry DeleteFileA        KERNEL32.DLL DeleteFileA
-Int32DLLEntry DeleteFileW        KERNEL32.DLL DeleteFileW
+KERNEL32.DLL S" DeleteFileA" DYNLIB-SYMBOL STDCALL-C1 DeleteFileA
+KERNEL32.DLL S" DeleteFileW" DYNLIB-SYMBOL STDCALL-C1 DeleteFileW
 
 DEFER DeleteFile
 ' DeleteFileA IS DeleteFile
 
-Int32DLLEntry MoveFileA          KERNEL32.DLL MoveFileA
-Int32DLLEntry MoveFileW          KERNEL32.DLL MoveFileW
+KERNEL32.DLL S" MoveFileA" DYNLIB-SYMBOL STDCALL-C1 MoveFileA
+KERNEL32.DLL S" MoveFileW" DYNLIB-SYMBOL STDCALL-C1 MoveFileW
 
 DEFER MoveFile
 ' MoveFileA IS MoveFile
 
-Int32DLLEntry GetFileAttributesA KERNEL32.DLL GetFileAttributesA
-Int32DLLEntry GetFileAttributesW KERNEL32.DLL GetFileAttributesW
+KERNEL32.DLL S" GetFileAttributesA" DYNLIB-SYMBOL STDCALL-C1 GetFileAttributesA
+KERNEL32.DLL S" GetFileAttributesW" DYNLIB-SYMBOL STDCALL-C1 GetFileAttributesW
 
 DEFER GetFileAttributes
 ' GetFileAttributesA IS GetFileAttributes
 
-Int32DLLEntry GetFileSize        KERNEL32.DLL GetFileSize
-Int32DLLEntry SetEndOfFile       KERNEL32.DLL SetEndOfFile
-Int32DLLEntry SetFilePointer     KERNEL32.DLL SetFilePointer
-Int32DLLEntry SetFilePointerEx   KERNEL32.DLL SetFilePointerEx
-Int32DLLEntry ReadFile           KERNEL32.DLL ReadFile
-Int32DLLEntry WriteFile          KERNEL32.DLL WriteFile
+KERNEL32.DLL S" GetFileSize"      DYNLIB-SYMBOL STDCALL-C1 GetFileSize
+KERNEL32.DLL S" SetEndOfFile"     DYNLIB-SYMBOL STDCALL-C1 SetEndOfFile
+KERNEL32.DLL S" SetFilePointer"   DYNLIB-SYMBOL STDCALL-C1 SetFilePointer
+KERNEL32.DLL S" SetFilePointerEx" DYNLIB-SYMBOL STDCALL-C1 SetFilePointerEx
+KERNEL32.DLL S" ReadFile"         DYNLIB-SYMBOL STDCALL-C1 ReadFile
+KERNEL32.DLL S" WriteFile"        DYNLIB-SYMBOL STDCALL-C1 WriteFile
 
-VoidDLLEntry  ExitProcess        KERNEL32.DLL ExitProcess
+KERNEL32.DLL S" ExitProcess"      DYNLIB-SYMBOL STDCALL-C0 ExitProcess
 
-Int32DLLEntry GetCommandLineA    KERNEL32.DLL GetCommandLineA
-Int32DLLEntry GetCommandLineW    KERNEL32.DLL GetCommandLineW
+KERNEL32.DLL S" GetCommandLineA"  DYNLIB-SYMBOL STDCALL-C1 GetCommandLineA
+KERNEL32.DLL S" GetCommandLineW"  DYNLIB-SYMBOL STDCALL-C1 GetCommandLineW
 
 DEFER GetCommandLine
 ' GetCommandLineA IS GetCommandLine
 
-Int32DLLEntry lstrlenA           KERNEL32.DLL lstrlenA
-Int32DLLEntry lstrlenW           KERNEL32.DLL lstrlenW
+KERNEL32.DLL S" lstrlenA" DYNLIB-SYMBOL STDCALL-C1 lstrlenA
+KERNEL32.DLL S" lstrlenW" DYNLIB-SYMBOL STDCALL-C1 lstrlenW
 
 DEFER lstrlen
 ' lstrlenA IS lstrlen
 
-Int32DLLEntry lstrcmpA           KERNEL32.DLL lstrcmpA
-Int32DLLEntry lstrcmpW           KERNEL32.DLL lstrcmpW
+KERNEL32.DLL S" lstrcmpA" DYNLIB-SYMBOL STDCALL-C1 lstrcmpA
+KERNEL32.DLL S" lstrcmpW" DYNLIB-SYMBOL STDCALL-C1 lstrcmpW
 
 DEFER lstrcmp
 ' lstrcmpA IS lstrcmp
 
-Int32DLLEntry ReadConsoleInputA  KERNEL32.DLL ReadConsoleInputA
-Int32DLLEntry ReadConsoleInputW  KERNEL32.DLL ReadConsoleInputW
+KERNEL32.DLL S" ReadConsoleInputA" DYNLIB-SYMBOL STDCALL-C1 ReadConsoleInputA
+KERNEL32.DLL S" ReadConsoleInputW" DYNLIB-SYMBOL STDCALL-C1 ReadConsoleInputW
 
 DEFER ReadConsoleInput
 ' ReadConsoleInputA IS ReadConsoleInput
 
-VoidDLLEntry WriteConsoleA  KERNEL32.DLL WriteConsoleA
-VoidDLLEntry WriteConsoleW  KERNEL32.DLL WriteConsoleW
+KERNEL32.DLL S" WriteConsoleA" DYNLIB-SYMBOL STDCALL-C0 WriteConsoleA
+KERNEL32.DLL S" WriteConsoleW" DYNLIB-SYMBOL STDCALL-C0 WriteConsoleW
 
 DEFER WriteConsole
 ' WriteConsoleA IS WriteConsole
 
-Int32DLLEntry GetNumberOfConsoleInputEvents KERNEL32.DLL GetNumberOfConsoleInputEvents
+KERNEL32.DLL S" GetNumberOfConsoleInputEvents" DYNLIB-SYMBOL STDCALL-C1 GetNumberOfConsoleInputEvents
 
 STRUCT COORD
   WORD: COORD.X
@@ -119,28 +119,28 @@ STRUCT CONSOLE_SCREEN_BUFFER_INFO
   COORD STRUCT-SIZEOF STRUCT-FIELD      CONSOLE_SCREEN_BUFFER_INFO.dwMaximumWindowSize
 ENDSTRUCT
 
-Int32DLLEntry SetConsoleCursorPosition KERNEL32.DLL SetConsoleCursorPosition
+KERNEL32.DLL S" SetConsoleCursorPosition" DYNLIB-SYMBOL STDCALL-C1 SetConsoleCursorPosition
 
-Int32DLLEntry GetConsoleScreenBufferInfo KERNEL32.DLL GetConsoleScreenBufferInfo
-Int32DLLEntry FillConsoleOutputCharacterA KERNEL32.DLL FillConsoleOutputCharacterA
-Int32DLLEntry FillConsoleOutputCharacterW KERNEL32.DLL FillConsoleOutputCharacterW
+KERNEL32.DLL S" GetConsoleScreenBufferInfo"  DYNLIB-SYMBOL STDCALL-C1 GetConsoleScreenBufferInfo
+KERNEL32.DLL S" FillConsoleOutputCharacterA" DYNLIB-SYMBOL STDCALL-C1 FillConsoleOutputCharacterA
+KERNEL32.DLL S" FillConsoleOutputCharacterW" DYNLIB-SYMBOL STDCALL-C1 FillConsoleOutputCharacterW
 
 DEFER FillConsoleOutputCharacter
 ' FillConsoleOutputCharacterA IS FillConsoleOutputCharacter
 
-Int32DLLEntry FormatMessageA KERNEL32.DLL FormatMessageA
-Int32DLLEntry FormatMessageW KERNEL32.DLL FormatMessageW
+KERNEL32.DLL S" FormatMessageA" DYNLIB-SYMBOL STDCALL-C1 FormatMessageA
+KERNEL32.DLL S" FormatMessageW" DYNLIB-SYMBOL STDCALL-C1 FormatMessageW
 
 DEFER FormatMessage
 ' FormatMessageA IS FormatMessage
 
-VoidDLLEntry  RaiseException KERNEL32.DLL RaiseException
+KERNEL32.DLL S" RaiseException" DYNLIB-SYMBOL STDCALL-C0 RaiseException
 
-VoidDLLEntry  Sleep KERNEL32.DLL Sleep
+KERNEL32.DLL S" Sleep" DYNLIB-SYMBOL STDCALL-C0 Sleep
 ' Sleep IS MS
 
-Int32DLLEntry CompareStringA KERNEL32.DLL CompareStringA
-Int32DLLEntry CompareStringW KERNEL32.DLL CompareStringW
+KERNEL32.DLL S" CompareStringA" DYNLIB-SYMBOL STDCALL-C1 CompareStringA
+KERNEL32.DLL S" CompareStringW" DYNLIB-SYMBOL STDCALL-C1 CompareStringW
 
 DEFER CompareString
 ' CompareStringA IS CompareString

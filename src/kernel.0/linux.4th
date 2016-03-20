@@ -6,7 +6,7 @@
 \  Linux specific definitions
 \
 
-REQUIRES" lib/win32/dllintf.f"
+REQUIRES" lib/~ik/dynlib.4th"
 
 CR .( Probing for Linux host )
 

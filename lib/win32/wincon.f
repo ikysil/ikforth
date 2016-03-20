@@ -6,6 +6,8 @@
 \  An interface to WINCON.DLL
 \
 
+REQUIRES" lib/~ik/dynlib.4th"
+
 CR .( Loading WINCON definitions )
 
 REPORT-NEW-NAME @
@@ -15,9 +17,9 @@ REPORT-NEW-NAME OFF
 
 USER CONST-VALUE 1 CELLS USER-ALLOC
 
-DLLImport WINCON.DLL "lib/win32/wincon.dll"
+S" lib/win32/wincon.dll" DYNLIB WINCON.DLL
 
-Int32DLLEntry FindWin32Constant WINCON.DLL FindWin32Constant
+WINCON.DLL S" FindWin32Constant" DYNLIB-SYMBOL STDCALL-C1 FindWin32Constant
 
 : GetWindowsConstant ( c-addr count -- value 1 | 0 )
   SWAP 2>R CONST-VALUE 2R> FindWin32Constant

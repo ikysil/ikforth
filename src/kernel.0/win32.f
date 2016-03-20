@@ -6,7 +6,7 @@
 \  Win32 specific definitions
 \
 
-REQUIRES" lib/win32/dllintf.f"
+REQUIRES" lib/~ik/dynlib.4th"
 
 CR .( Probing for Win32 host )
 

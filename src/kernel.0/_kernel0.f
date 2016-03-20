@@ -43,6 +43,7 @@ S" lib/ansi/block.f"            INCLUDED
 REQUIRES" lib/~ik/quotations.4th"
 S" lib/ansi/see.f"              INCLUDED
 
+REQUIRES" lib/~ik/dynlib.4th"
 REQUIRES" src/kernel.0/win32.f"
 REQUIRES" src/kernel.0/linux.4th"
 
