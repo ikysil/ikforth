@@ -33,10 +33,13 @@ void __stdcall fFileClose(HANDLE fileId) {
 
 const int accessMethod[3] = {O_RDONLY, O_WRONLY, O_RDWR};
 
+const mode_t modeCreate = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+const mode_t modeOpen = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+
 HANDLE  __stdcall fFileCreate(CELL fileAccessMethod, CELL nameLen, char const * nameAddr) {
     char fileName[MAX_FILE_PATH];
     initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
-    return open(fileName, accessMethod[fileAccessMethod & 3] | O_CREAT | O_TRUNC);
+    return open(fileName, accessMethod[fileAccessMethod & 3] | O_CREAT | O_TRUNC, modeCreate);
 }
 
 __int64 __stdcall fFilePosition(HANDLE fileId) {
@@ -46,7 +49,7 @@ __int64 __stdcall fFilePosition(HANDLE fileId) {
 HANDLE __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * nameAddr) {
     char fileName[MAX_FILE_PATH];
     initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
-    return open(fileName, accessMethod[fileAccessMethod & 3]);
+    return open(fileName, accessMethod[fileAccessMethod & 3], modeOpen);
 }
 
 void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
