@@ -18,7 +18,8 @@ ALSO LOCALS-HIDDEN DEFINITIONS
 \ align to cell
 1 CELLS USER-SIZE-VAR @ OVER 1- AND - USER-ALLOC
 
-USER LP 1 CELLS USER-ALLOC \ locals stack pointer
+USER LP  1 CELLS USER-ALLOC \ locals stack pointer
+USER LFP 1 CELLS USER-ALLOC \ locals frame pointer
 
 DS-SIZE CELLS USER-ALLOC
 USER LP0 \ initial locals stack pointer
@@ -31,21 +32,34 @@ USER LP0 \ initial locals stack pointer
   LP !
 ;
 
+: LFP@ (S -- addr ) \ addr is locals frame pointer
+   LFP @
+;
+
+: LFP! (S addr -- ) \ addr is locals frame pointer
+   LFP !
+;
+
 :NONAME
   LP0 LP!
+  LP0 LFP!
 ;
 DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
+
+: L-ADDR (S n -- l-addr )
+   LFP@ SWAP - CELL-
+;
 
 : L@: (S n "name" -- n ) \ define word name to fetch the value of local with index n
   CREATE DUP CELLS ,
   DOES> (S -- x ) \ x is the value of local
-  @ LP@ + @
+  @ L-ADDR @
 ;
 
 : L!: (S n "name" -- n ) \ define word name to store the value of local with index n
   CREATE DUP CELLS ,
   DOES> (S x -- ) \ x is the new value of local
-  @ LP@ + !
+  @ L-ADDR !
 ;
 
 : L@-N: (S n "name"*n -- )
@@ -59,12 +73,12 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 ;
 
 : LOCALS-RESTORE
-  EXC> LP!
+  EXC> LP! EXC> LFP!
 ;
 
 :NONAME
   DEFERRED EXC-FRAME-PUSH
-  LP@ >EXC
+  LFP@ >EXC LP@ >EXC
   ['] LOCALS-RESTORE >EXC
 ; IS EXC-FRAME-PUSH
 
@@ -105,15 +119,30 @@ DEFER (L IMMEDIATE ' ( IS (L
   L> L> SWAP >L >L
 ;
 
-: LOCALS-ALLOC (S n -- ) \ allocate locals frame for n cells
-  LP@ OVER CELLS - LP!
-  >EXC
+: LOCALS-FRAME (S n -- ) \ allocate locals frame for n cells
+   LFP@ >L LP@ DUP LFP!
+   SWAP CELLS - LP!
 ;
 
-: LOCALS-DEALLOC (S -- ) \ deallocate locals frame
-  EXC>
-  CELLS LP@ + LP0 MIN LP!
+: LOCALS-UNFRAME
+   LFP@ LP! L> LFP!
 ;
+
+\ : : : POSTPONE LOCALS-FRAME ;
+
+\ : :NONAME :NONAME POSTPONE LOCALS-FRAME ;
+
+\ : ; POSTPONE LOCALS-UNFRAME POSTPONE ; ; IMMEDIATE
+
+\ : [: POSTPONE [: POSTPONE LOCALS-FRAME ; IMMEDIATE
+
+\ : :] POSTPONE LOCALS-UNFRAME POSTPONE :] ; IMMEDIATE
+
+\ : EXIT POSTPONE LOCALS-UNFRAME POSTPONE EXIT ;
+
+\ : DOES> POSTPONE LOCALS-UNFRAME POSTPONE DOES> POSTPONE LOCALS-FRAME ; IMMEDIATE
+
+\ : ;CODE POSTPONE LOCALS-UNFRAME POSTPONE ;CODE ; IMMEDIATE
 
 ONLY FORTH DEFINITIONS
 
