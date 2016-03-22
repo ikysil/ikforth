@@ -11,8 +11,8 @@ CR .( Loading STRING definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-\ 17.6.1.0935 COMPARE 
-\ STRING 
+\ 17.6.1.0935 COMPARE
+\ STRING
 \ (S c-addr1 u1 c-addr2 u2 -- n )
 \ Compare the string specified by c-addr1 u1 to the string specified by c-addr2 u2.
 \ The strings are compared, beginning at the given addresses, character by character,
@@ -35,7 +35,7 @@ REPORT-NEW-NAME OFF
     >R SWAP >R   \ S: min-u1-u2 char1 char2
     -            \ S: min-u1-u2 flag1
     ?DUP
-    IF 
+    IF
       NIP 0 SWAP \ S: 0 flag
     ELSE
       1- 0       \ S: len-1 0
@@ -51,10 +51,6 @@ REPORT-NEW-NAME OFF
   WHILE
     CHAR-
   REPEAT
-;
-
-: /STRING
-  2DUP < IF DROP DUP THEN ROT OVER + -ROT -
 ;
 
 : SEARCH
