@@ -1,9 +1,9 @@
 ;******************************************************************************
 ;
-;  stack.inc
+;  stack.asm
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Stack manipulation
@@ -133,7 +133,7 @@ QDUPZERO:
                         $NEXT
 
 ;  -ROT
-;  D: a b c -- c a b 
+;  D: a b c -- c a b
                         $CODE   '-ROT',$MROT,VEF_USUAL
 
                         POPDS   ECX
@@ -157,7 +157,7 @@ QDUPZERO:
 ;  6.2.2030 PICK
 ;  D: xu ... x1 x0 u -- xu ... x1 x0 xu
 ;  Remove u. Copy the xu to the top of the stack. An ambiguous condition exists
-;  if there are less than u+2 items on the stack before PICK is executed. 
+;  if there are less than u+2 items on the stack before PICK is executed.
                         $CODE   'PICK',$PICK,VEF_USUAL
 
                         POPDS   EBX
@@ -167,7 +167,7 @@ QDUPZERO:
 
 ;  6.2.2300 TUCK
 ;  D: x1 x2 -- x2 x1 x2
-;  Copy the first (top) stack item below the second stack item. 
+;  Copy the first (top) stack item below the second stack item.
                         $CODE   'TUCK',$TUCK,VEF_USUAL
 
                         POPDS   EAX

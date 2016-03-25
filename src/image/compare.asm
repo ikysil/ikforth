@@ -1,9 +1,9 @@
 ;******************************************************************************
 ;
-;  compare.inc
+;  compare.asm
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  Compare
@@ -155,7 +155,7 @@ ULE_YES:
 
 ;  6.2.2350 U>
 ;  D: u1 u2 -- flag
-;  flag is true if and only if u1 is greater than u2. 
+;  flag is true if and only if u1 is greater than u2.
                         $CODE   'U>',$UGR,VEF_USUAL
 
                         POPDS   EBX

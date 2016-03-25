@@ -1,9 +1,9 @@
 ;******************************************************************************
 ;
-;  string.inc
+;  string.asm
 ;  IKForth
 ;
-;  Copyright (C) 1999-2004 Illya Kysil
+;  Copyright (C) 1999-2016 Illya Kysil
 ;
 ;******************************************************************************
 ;  String words
@@ -13,7 +13,7 @@
 ;  D: c-addr1 c-addr2 u --
 ;  If u is greater than zero, copy u consecutive characters from the data space
 ;  starting at c-addr1 to that starting at c-addr2, proceeding character-by-character
-;  from lower addresses to higher addresses. 
+;  from lower addresses to higher addresses.
                         $CODE   'CMOVE',$CMOVE
 
                         PUSHRS  EDI
@@ -34,7 +34,7 @@ CMOVE_EXIT:
 ;  D: c-addr1 c-addr2 u --
 ;  If u is greater than zero, copy u consecutive characters from the data space
 ;  starting at c-addr1 to that starting at c-addr2, proceeding character-by-character
-;  from higher addresses to lower addresses. 
+;  from higher addresses to lower addresses.
                         $CODE   'CMOVE>',$CMOVEGR
 
                         PUSHRS  EDI

@@ -1,6 +1,6 @@
 ;******************************************************************************
 ;
-;  syslinux-thread.inc
+;  syslinux-thread.asm
 ;  IKForth
 ;
 ;  Copyright (C) 1999-2016 Illya Kysil

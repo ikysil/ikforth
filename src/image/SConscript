@@ -4,7 +4,7 @@ Import('env')
 senv = env.Clone()
 
 senv.Command('FKernel.img',
-        senv.Glob('*.asm') + senv.Glob('*.inc'),
+        senv.Glob('*.asm'),
         'fasm -d CODE_THREADING=${CODE_THREADING_TYPE} -d DEBUG=${DEBUG} $SOURCE -s ${TARGET.dir}/FKernel.sym $TARGET')
 
 senv.Command('FKernel.lst',

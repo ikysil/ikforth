@@ -6,7 +6,7 @@
 #include "IKFunc.hpp"
 
 void const * sysfunctions[] = {
-// order MUST be the same as in ftable.inc FUNC_TABLE
+// order MUST be the same as in ftable.asm FUNC_TABLE
     sys_GetLastError,
     fLoadLibrary,
     fFreeLibrary,

@@ -1,6 +1,6 @@
 ;******************************************************************************
 ;
-;  double.inc
+;  double.asm
 ;  IKForth
 ;
 ;  Copyright (C) 1999-2016 Illya Kysil
@@ -20,7 +20,7 @@
 
 ;  8.6.1.1040 D+
 ;  ( d1|ud1 d2|ud2 -- d3|ud3 )
-;  Add d2|ud2 to d1|ud1, giving the sum d3|ud3. 
+;  Add d2|ud2 to d1|ud1, giving the sum d3|ud3.
                         $CODE   'D+',$DADD,VEF_USUAL
 
                         POPDS   ECX
@@ -33,7 +33,7 @@
                         PUSHDS  EDX
                         $NEXT
 
-;  8.6.1.1230 DNEGATE 
+;  8.6.1.1230 DNEGATE
 ;  ( d1 -- d2 )
 ;  d2 is the negation of d1.
                         $CODE   'DNEGATE',$DNEGATE,VEF_USUAL

@@ -70,12 +70,12 @@ DESIRED_SIZE_VAR:
 ;  Include functions table
 ;******************************************************************************
 
-                        INCLUDE "ftable.inc"
+                        INCLUDE "ftable.asm"
 
 ;******************************************************************************
 ;  Include user area variables. These variables are unique for each thread.
 ;******************************************************************************
-                        INCLUDE "user.inc"
+                        INCLUDE "user.asm"
 
 ;******************************************************************************
 ;  Include Forth definitions.
@@ -96,7 +96,7 @@ DESIRED_SIZE_VAR:
                         INCLUDE "forth-vm-itc.asm"
                         }
 
-                        INCLUDE "words.inc"
+                        INCLUDE "words.asm"
 
 START:
 ; typedef struct _MainProcContext {
