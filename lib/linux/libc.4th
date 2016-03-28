@@ -94,7 +94,7 @@ LIBC.SO S" free" DYNLIB-SYMBOL 1 CDECL-C0 libc-free
 LIBC.SO S" memset" DYNLIB-SYMBOL 3 CDECL-C0 _memset
 
 :NONAME (S c-addr u char -- )
-   SWAP ROT 3 _memset
+   SWAP ROT _memset
 ; IS FILL
 
 LIBC.SO S" usleep" DYNLIB-SYMBOL 1 CDECL-C0 _usleep

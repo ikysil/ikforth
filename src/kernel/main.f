@@ -52,7 +52,9 @@ REPORT-NEW-NAME OFF
 \    2 OF
 \ ignore file not found exception
 \    ENDOF
-    DUP .EXCEPTION
+    DUP
+    CR .EXCEPTION
+    CR REPORT-SOURCE
   ENDCASE
 ;
 
