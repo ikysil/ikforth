@@ -94,6 +94,11 @@ ONLY FORTH DEFINITIONS ALSO LOCALS-HIDDEN
    L-ADDR !
 ;
 
+: (L+!) (S x n -- )
+   \ increment local value with index n
+   L-ADDR +!
+;
+
 16 L@-N: L15@ L14@ L13@ L12@ L11@ L10@ L9@ L8@ L7@ L6@ L5@ L4@ L3@ L2@ L1@ L0@
 16 L!-N: L15! L14! L13! L12! L11! L10! L9! L8! L7! L6! L5! L4! L3! L2! L1! L0!
 
