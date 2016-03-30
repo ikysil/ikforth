@@ -120,6 +120,7 @@ DOES>-(L@),
 : (LOCAL) \ ( c-addr u -- )
    2DUP OR 0= IF
       \ last message
+      2DROP
       PATCH-#LOCALS @ ?DUP IF
          CURRENT-#LOCALS @ SWAP !
       THEN
