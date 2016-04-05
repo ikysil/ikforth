@@ -18,6 +18,7 @@ S" libc.so.6" (LoadLibrary) [IF]
 
 ENV>
 
+REQUIRES" lib/linux/lincon.4th"
 REQUIRES" lib/linux/libc.4th"
 REQUIRES" lib/linux/libreadline.4th"
 

@@ -104,4 +104,16 @@ LIBC.SO S" usleep" DYNLIB-SYMBOL 1 CDECL-C0 _usleep
    1000 * _usleep
 ; IS MS
 
+:NONAME
+   0 SP@ 1 CHARS STDIN READ-FILE THROW DROP
+; IS KEY
+
+LIBC.SO S" isatty" DYNLIB-SYMBOL 1 CDECL-C1 _isatty
+
+: ISATTY (S fd -- flag )
+   (G ISATTY returns TRUE if fd is an open file descriptor referring to a terminal;
+      otherwise FALSE is returned. )
+   _isatty 0<>
+;
+
 REPORT-NEW-NAME !
