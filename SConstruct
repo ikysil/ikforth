@@ -10,6 +10,10 @@ fkernelPath = env.SConscript(dirs = ['src/loader'],
         exports = ['env'],
         variant_dir = 'build/loader-$TSYS', duplicate = 0)
 
+env.SConscript(dirs = ['src/lincon'],
+        exports = ['env'],
+        variant_dir = 'build/lincon', duplicate = 0)
+
 env.SConscript(dirs = ['src/image'],
         exports = ['env'],
         variant_dir = 'build/image', duplicate = 0)

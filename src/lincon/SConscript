@@ -1,0 +1,22 @@
+# lincon
+
+Import('env')
+senv = env.Clone()
+senv['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = True
+
+senv.Append(LINKFLAGS = ['-m32'])
+
+senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-O3', '-mtune=i586', '-m32'])
+
+if senv['TSYS'] == 'nt':
+    senv.Replace(tools = ['mingw'])
+    senv.Replace(CXX  = 'mingw32-g++')
+    senv.Replace(LINK = 'mingw32-g++')
+    senv.Append(CPPFLAGS = ['-mconsole'])
+
+if senv['TSYS'] == 'linux':
+    senv.Append(CPPFLAGS = [])
+    senv.Append(LINKFLAGS = ['-ldl'])
+
+senv.SharedLibrary('lincon', 'lincon.c')
+senv.Alias('lincon', ['liblincon.so'])
