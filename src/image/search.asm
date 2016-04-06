@@ -10,7 +10,7 @@
 ;******************************************************************************
 
 ;  16.6.1.1595 FORTH-WORDLIST
-                        $CREATE    'FORTH-WORDLIST',$FORTH_WORDLIST
+                        $CREATE 'FORTH-WORDLIST',$FORTH_WORDLIST
 FORTH_WORDLIST_EQU:
                         DD      LATEST_WORD             ; last word in a list
                         CC      0                       ; wordlist name
@@ -102,15 +102,23 @@ SW_NOT_FOUND:
                         POPRS   EDI
                         $NEXT
 
-;  FIND-FORTH
-;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
-                        $COLON  'FIND-FORTH',$FIND_FORTH
+;  D: ( c-addr u -- 0 | xt 1 | xt -1 )
+                        $COLON  'SEARCH-FORTH-WORDLIST',$SEARCH_FORTH_WORDLIST
+                        XT_$FORTH_WORDLIST
+                        XT_$SEARCH_WORDLIST
+                        XT_$EXIT
 
+;  SEARCH-NAME
+;  D: ( c-addr u -- 0 | xt 1 | xt -1 )
+                        $DEFER  'SEARCH-NAME',$SEARCH_NAME,$SEARCH_FORTH_WORDLIST
+
+;  6.1.1550 FIND
+;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
+                        $COLON  'FIND',$FIND
                         XT_$DUP
                         XT_$TOR
                         XT_$COUNT
-                        XT_$FORTH_WORDLIST
-                        XT_$SEARCH_WORDLIST
+                        XT_$SEARCH_NAME
                         XT_$DUP
                         XT_$ZEROEQ
                         CQBR    FF_FOUND
@@ -122,8 +130,3 @@ FF_FOUND:
                           XT_$DROP
 FF_EXIT:
                         XT_$EXIT
-
-;  6.1.1550 FIND
-;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
-                        $DEFER  'FIND',$FIND,$FIND_FORTH
-

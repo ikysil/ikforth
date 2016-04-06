@@ -20,25 +20,24 @@ USER #ORDER 1 CELLS USER-ALLOC
 
 USER CONTEXT MAX-ORDER-COUNT 1+ CELLS USER-ALLOC
 
-:NONAME \ FIND-ORDER (S c-addr -- c-addr 0 | xt 1 | xt -1 )
-  0 #ORDER @ 0 ?DO                              \ S: c-addr 0
-                 OVER COUNT                     \ S: c-addr 0 c-addr1 count
-                 I CELLS CONTEXT + @            \ S: c-addr 0 c-addr1 count wid
-                 SEARCH-WORDLIST                \ S: c-addr 0 [ 0 | xt 1 | xt -1 ]
-                 ?DUP IF                        \ found S: c-addr 0 xt [ 1 | -1 ]
-                        2SWAP 2DROP             \ S: xt [ 1 | -1 ]
-                        LEAVE                   
-                      THEN
-               LOOP
-               ?DUP IF
-                      EXIT                      \ found, EXIT
-                    THEN
-                                                \ not found S: c-addr
-                                                \ try to search FORTH-WORDLIST
-               DEFERRED FIND
-; IS FIND
+: SEARCH-ORDER \ (S c-addr u -- 0 | xt 1 | xt -1 )
+   0 #ORDER @ 0 ?DO              \ S: c-addr u 0
+      DROP 2DUP
+      I CELLS CONTEXT + @        \ S: c-addr u c-addr u wid
+      SEARCH-WORDLIST            \ S: c-addr u [ 0 | xt 1 | xt -1 ]
+      DUP 0<> IF                 \ found S: c-addr u xt [ 1 | -1 ]
+         2SWAP 2DROP             \ S: xt [ 1 | -1 ]
+         LEAVE
+      THEN
+   LOOP
+   \ found, EXIT
+   ?DUP IF   EXIT   THEN
+   \ not found S: c-addr u
+   \ try to search FORTH-WORDLIST
+   DEFERRED SEARCH-NAME
+;
 
-\ ' FIND-ORDER IS FIND
+' SEARCH-ORDER IS SEARCH-NAME
 
 : GET-ORDER
   #ORDER @ 0
@@ -153,7 +152,7 @@ INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
 
 : (GET-ORDER)
   FORTH-WORDLIST GET-ORDER 1+
-;  
+;
 
 : ORDER
   (GET-ORDER)

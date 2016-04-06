@@ -9,7 +9,7 @@ REQUIRES" lib/~ik/locals.4th"
 CR .( Loading LOCALS definitions )
 
 REPORT-NEW-NAME @
-REPORT-NEW-NAME ON
+REPORT-NEW-NAME OFF
 
 <ENV
    16    CONSTANT #LOCALS
@@ -94,18 +94,20 @@ CREATE LOCAL-XT
    LOCAL-VT ,
 DOES>-(L@),
 
-:NONAME \ FIND-LOCALS (S c-addr -- c-addr 0 | xt 1 | xt -1 )
-   DUP
-   COUNT LOCALS-WORDLIST SEARCH-WORDLIST
+: SEARCH-LOCALS \ (S c-addr u -- 0 | xt 1 | xt -1 )
+   2DUP
+   LOCALS-WORDLIST SEARCH-WORDLIST
    ?DUP IF
-      ROT DROP
+      2SWAP 2DROP
       SWAP >BODY @ #LOCAL-RT !
       ['] LOCAL-XT SWAP
       EXIT
    THEN
-   \ not found S: c-addr
-   DEFERRED FIND
-; IS FIND
+   \ not found S: c-addr u
+   DEFERRED SEARCH-NAME
+;
+
+' SEARCH-LOCALS IS SEARCH-NAME
 
 : LOCAL, \ ( c-addr u -- )
    2>R (DO-CREATE) 2R> &IMMEDIATE HEADER, \ xt
