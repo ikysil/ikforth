@@ -71,6 +71,10 @@
 ;  Stores the xt of the word to be compiled by RECURSE
                         $USER   'RECURSE-XT',,VAR_RECURSE_XT
 
+;  DEFER-XT
+;  Stores the xt of the last DEFER executed by (DO-DEFER)
+                        $USER   'DEFER-XT',,VAR_DEFER_XT
+
 ;  Start file name
 ;  #SF
                         $VAR    '#SF',$HASH_SF,0

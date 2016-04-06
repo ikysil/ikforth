@@ -98,5 +98,6 @@ NOQBRANCH:
 ;  (DO-DEFER)
                         $CREATE '(DO-DEFER)'
                         LABEL   CFA_$DODEFER
+                        MOV     DWORD [EDI + VAR_DEFER_XT],EAX
                         MOV     EAX,DWORD [EAX + CFA_SIZE]
                         $JMP

@@ -52,6 +52,8 @@ USER_HERE          =       ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
 
                         _VAR    RECURSE_XT
 
+                        _VAR    DEFER_XT
+
                         _VAR    EXCEPTION_HANDLER
                         _VAR    EXCP
 
