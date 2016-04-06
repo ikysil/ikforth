@@ -51,11 +51,12 @@ __S_END:
                         MACRO   $TRACE_STACK LBL,CNT {
                             $CR
                             $WRITE LBL
+                            $WRITE ' '
                             REPT CNT C:0 \{
                             REVERSE
-                            CCLIT   C
-                            XT_$PICK
-                            XT_$HOUT8
+                            CCLIT  C
+                            CW     $PICK
+                            CW     $HOUT8
                             $WRITE ' '
                             \}
                             $CR

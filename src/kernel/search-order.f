@@ -68,12 +68,18 @@ VARIABLE LAST-WORDLIST
 FORTH-WORDLIST LAST-WORDLIST !
 
 \  WORDLIST structure
-\  Offset (CELLS)       Value
-\  +0                   last word in wordlist (modified by header creation words)
-\  +1                   VOCABULARY XT (if any, 0 otherwise)
-\  +2                   previous WORDLIST
+\  Offset (CELLS)   Value
+\  +0               last word in wordlist (modified by header creation words)
+\  +1               VOCABULARY XT (if any, 0 otherwise)
+\  +2               previous WORDLIST
+\  +3               WORDLIST-VT
+\
+\  WORDLIST-VT structure
+\  Offset (CELLS)   Value
+\  +0               SEARCH XT, stack effect ( c-addr u wid -- 0 | xt 1 | xt -1 )
+
 : WORDLIST
-  HERE DUP 0 DUP , , LAST-WORDLIST DUP >R @ , R> !
+  HERE DUP 0 DUP , , LAST-WORDLIST DUP >R @ , WORDLIST-VT , R> !
 ;
 
 : WL>LATEST (S wordlist-id -- latest-word-addr )

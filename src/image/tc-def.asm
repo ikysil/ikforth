@@ -27,6 +27,10 @@
                         DD      CFA_#CFA_NAME + IMAGE_BASE
                         }
 
+                        MACRO   PW [CFA_NAME] {
+                        DD      PFA_#CFA_NAME + IMAGE_BASE
+                        }
+
                         MACRO   CWLIT [VALUE] {
                         CW      $LIT
                         CW      VALUE
