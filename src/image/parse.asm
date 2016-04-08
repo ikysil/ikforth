@@ -14,26 +14,25 @@
 
 ;  (WORD)
                         $CODE   '(WORD)',$PWORD
-
                         PUSHRS  ESI
                         PUSHRS  EDI
                         MOV     EAX,EDI
                         ADD     EAX,VAR_TOIN
-                        POPDS   EDI                     ; dest address
+                        POPDS   EDI                   ; dest address
                         PUSHRS  EDI
                         INC     EDI
-                        POPDS   ECX                     ; count
-                        POPDS   ESI                     ; source address
-                        POPDS   EDX                     ; DL - char
+                        POPDS   ECX                   ; count
+                        POPDS   ESI                   ; source address
+                        POPDS   EDX                   ; DL - char
                         PUSHDS  EBP
                         MOV     EBP,EAX
                         XOR     EBX,EBX
-                        XOR     AH,AH                   ; in word flag
+                        XOR     AH,AH                 ; in word flag
 PWORD_LOOP:
                         DEC     ECX
                         JS      SHORT PWORD_EXIT
                         LODSB
-                        INC     DWORD [EBP]         ; inc >IN
+                        INC     DWORD [EBP]           ; inc >IN
                         OR      AL,AL
                         JZ      SHORT PWORD_EXIT
                         OR      AH,AH
@@ -50,15 +49,17 @@ PWORD_ADDCHAR:
                         JMP     SHORT PWORD_LOOP
 PWORD_NOT_IN_WORD:
                         CMP     AL,32
-                        JLE     SHORT PWORD_LOOP
+                        JL      SHORT PWORD_LOOP      ; skip control characters
+                        CMP     AL,DL
+                        JZ      SHORT PWORD_LOOP      ; skip leading delimiters
                         MOV     AH,1
                         JMP     SHORT PWORD_ADDCHAR
 PWORD_EXIT:
                         POPDS   EBP
-                        MOV     BYTE [EDI],32       ; store space
+                        MOV     BYTE [EDI],32         ; store space
                         POPRS   EDI
                         PUSHDS  EDI
-                        MOV     BYTE [EDI],BL       ; store length
+                        MOV     BYTE [EDI],BL         ; store length
                         POPRS   EDI
                         POPRS   ESI
                         $NEXT
@@ -70,7 +71,7 @@ PWORD_EXIT:
                         CFETCH  $TOIN
                         XT_$SUB
                         XT_$SWAP                   ; c u c-addr
-                        CFETCH  $TOIN                   ; c u c-addr offset
+                        CFETCH  $TOIN              ; c u c-addr offset
                         XT_$ADD                    ; c u c-addr
                         XT_$SWAP                   ; c c-addr u
                         XT_$POCKET                 ; c c-addr u dest-addr
@@ -109,7 +110,7 @@ PPARSE_EXIT:
                         CFETCH  $TOIN
                         XT_$SUB
                         XT_$SWAP                   ; c u c-addr
-                        CFETCH  $TOIN                   ; c u c-addr offset
+                        CFETCH  $TOIN              ; c u c-addr offset
                         XT_$ADD                    ; c u c-addr
                         XT_$SWAP                   ; c c-addr u
                         XT_$PPARSE                 ; c-addr u
