@@ -104,10 +104,6 @@ LIBC.SO S" usleep" DYNLIB-SYMBOL 1 CDECL-C0 _usleep
    1000 * _usleep
 ; IS MS
 
-:NONAME
-   0 SP@ 1 CHARS STDIN READ-FILE THROW DROP
-; IS KEY
-
 LIBC.SO S" isatty" DYNLIB-SYMBOL 1 CDECL-C1 _isatty
 
 : ISATTY (S fd -- flag )
@@ -115,5 +111,70 @@ LIBC.SO S" isatty" DYNLIB-SYMBOL 1 CDECL-C1 _isatty
       otherwise FALSE is returned. )
    _isatty 0<>
 ;
+
+LIBC.SO S" tcgetattr" DYNLIB-SYMBOL 2 CDECL-C1 _tcgetattr
+LIBC.SO S" tcsetattr" DYNLIB-SYMBOL 3 CDECL-C1 _tcsetattr
+
+: tcsetattr-execute (S i*x xt xt-attr-mutator -- j*x )
+   (G Execute xt with termios attributes modified by xt-attr-mutator )
+   (G xt-attr-mutator stack effect: termios-addr -- )
+   SIZEOF_TERMIOS 2 * ALLOCATE THROW >R
+   R@ STDIN _tcgetattr DROP
+   R@ DUP SIZEOF_TERMIOS + DUP >R SIZEOF_TERMIOS MOVE
+   R@ SWAP EXECUTE
+   R> TCSANOW STDIN _tcsetattr DROP
+   CATCH
+   R@ TCSANOW STDIN _tcsetattr DROP
+   R> FREE THROW THROW
+;
+
+: and! (S x addr -- )
+   (G *addr &= x )
+   SWAP OVER @ AND SWAP !
+;
+
+: key?-tcattr (S termios-addr -- )
+   (G Modify termios flags as suitable for KEY? )
+   ICANON INVERT OVER OFFSETOF_C_LFLAG + and!
+   ECHO   INVERT OVER OFFSETOF_C_LFLAG + and!
+   OFFSETOF_C_CC +
+   VMIN  CHARS OVER + 0 SWAP C!
+   VTIME CHARS OVER + 0 SWAP C!
+   DROP
+;
+
+: key-tcattr (S termios-addr -- )
+   (G Modify termios flags as suitable for KEY )
+   ICANON INVERT OVER OFFSETOF_C_LFLAG + AND!
+   ECHO   INVERT OVER OFFSETOF_C_LFLAG + AND!
+   OFFSETOF_C_CC +
+   VMIN  CHARS OVER + 1 SWAP C!
+   VTIME CHARS OVER + 0 SWAP C!
+   DROP
+;
+
+VARIABLE PENDING-CHAR
+
+:NONAME
+   PENDING-CHAR @ 0<> ?DUP IF   EXIT   THEN
+   [:
+      0 SP@ 1 CHARS STDIN READ-FILE THROW 0<> SWAP PENDING-CHAR !
+   ;]
+   ['] key?-tcattr
+   tcsetattr-execute
+; IS KEY?
+
+:NONAME
+   PENDING-CHAR @ ?DUP IF   0 PENDING-CHAR ! EXIT   THEN
+   [:
+      BEGIN
+         0 SP@ 1 CHARS STDIN READ-FILE THROW
+         1 <
+      WHILE
+      REPEAT
+   ;]
+   ['] key-tcattr
+   tcsetattr-execute
+; IS KEY
 
 REPORT-NEW-NAME !
