@@ -32,17 +32,20 @@ __S_END:
 ;  Output the name of the executed word for debugging purposes
 ;******************************************************************************
                         MACRO   $TRACE_WORD NAME {
-                        $WRITE  '>> TW '
-                        IF      NAME EQ
-                          CW      $LIT
-                          CC      LASTWORD + IMAGE_BASE
-                          CW      $1ADD
-                          CW      $COUNT
-                          CW      $TYPE
-                        ELSE
-                          $WRITE    NAME
-                        END IF
-                        $CR
+                            $CR
+                            $WRITE  '>> TW '
+                            IF      NAME EQ
+                              CW      $LIT
+                              CC      LASTWORD + IMAGE_BASE
+                              CW      $1ADD
+                              CW      $COUNT
+                              CW      $TYPE
+                            ELSE
+                              $WRITE    NAME
+                            END IF
+                            $WRITE  '@'
+                            XT_$RFETCH
+                            XT_$HOUT8
                         }
 
 ;******************************************************************************
@@ -59,6 +62,5 @@ __S_END:
                             CW     $HOUT8
                             $WRITE ' '
                             \}
-                            $CR
                         }
 

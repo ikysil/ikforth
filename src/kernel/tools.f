@@ -237,4 +237,24 @@ DEFER CS-ROLL ' ROLL IS CS-ROLL
     IF EXECUTE ELSE COMPILE, THEN
 ;
 
+\ -----------------------------------------------------------------------------
+\  TRACE-WORD
+\ -----------------------------------------------------------------------------
+: TRACE-WORD-NAME
+   \ S: xt --
+   \ Print the name of the word or (noname)
+   CR ." TRACE-WORD: " R@ H.8 SPACE >HEAD H>#NAME
+   ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
+;
+
+: TRACE-STACK
+   CR H.S
+;
+
+: TRACE-WORD
+   RECURSE-XT @ POSTPONE LITERAL
+   POSTPONE TRACE-WORD-NAME
+   POSTPONE TRACE-STACK
+; IMMEDIATE
+
 REPORT-NEW-NAME !

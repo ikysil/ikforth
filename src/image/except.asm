@@ -191,7 +191,10 @@ PTHROW_CHAIN:
 ;  9.6.1.2275 THROW
 ;  D: exc-id --
                         $COLON  'THROW',$THROW
-
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_WORD
+                           $TRACE_STACK 'THROW',1
+                        }
                         XT_$QDUP
                         CQBR    THROW_EXIT
                         XT_$PTHROW

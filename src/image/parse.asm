@@ -71,17 +71,21 @@ PWORD_EXIT:
                         XT_$DUP
                         CQBR    WORD_EMPTY_SOURCE
                         CFETCH  $TOIN
-                           ;$CR
-                           ;$TRACE_STACK 'WORD-A:',4
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'WORD-A:',4
+                        }
                         XT_$SUB
                         XT_$SWAP                   ; c u c-addr
                         CFETCH  $TOIN              ; c u c-addr offset
                         XT_$ADD                    ; c u c-addr
                         XT_$SWAP                   ; c c-addr u
-                           ;$TRACE_STACK 'WORD-B:',3
-                           ;$WRITE  'WORD-C: '
-                           ;XT_$2DUP
-                           ;XT_$TYPE
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'WORD-B:',3
+                           $CR
+                           $WRITE  'WORD-C: '
+                           XT_$2DUP
+                           XT_$TYPE
+                        }
 WORD_EMPTY_SOURCE:
                         XT_$POCKET                 ; c c-addr u dest-addr
                         XT_$PWORD

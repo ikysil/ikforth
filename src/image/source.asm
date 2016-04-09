@@ -54,9 +54,6 @@
                         XT_$REFILL_SOURCE
                         XT_$2STORE
                         CFETCH  $INCLUDE_LINE_NUM
-                        XT_$1ADD
-                        XT_$DUP
-                        CSTORE  $INCLUDE_LINE_NUM
                         CSTORE  $ERROR_LINE_NUM
                         XT_$EXIT
 
@@ -117,7 +114,9 @@
 
                         XT_$RFROM
                         XT_$SAVE_INPUT
-                           ;$TRACE_STACK 'INPUT>R',9
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'INPUT>R',12
+                        }
                         XT_$N_TO_R
                         XT_$TOR
                         XT_$EXIT
@@ -127,7 +126,9 @@
 
                         XT_$RFROM
                         XT_$N_R_FROM
-                           ;$TRACE_STACK 'R>INPUT',9
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'R>INPUT',12
+                        }
                         XT_$RESTORE_INPUT
                         XT_$DROP
                         XT_$TOR
