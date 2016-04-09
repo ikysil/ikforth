@@ -62,28 +62,27 @@ PLOOP_NOEQ:
 
 ;  (+LOOP)
                         $CODE   '(+LOOP)'
-
-                        LODSD                           ; loop addr
-                        POPDS   EDX                     ; loop index increment
-                        POPRS   ECX                     ; current
-                        FETCHRS EBX                     ; limit
-                        SUB     EBX,ECX
-                        OR      EDX,EDX
-                        JS      PADDLOOP_NEGATIVE       ; jump if increment is negative
-                        CMP     EBX,EDX
-                        JLE     SHORT PADDLOOP_LOOP_EXIT
-PADDLOOP_LOOP_CONT:
+                        POPRS   ECX                     ; ECX - i  - index
+                        FETCHRS EBX                     ; EBX - l  - limit
+                        POPDS   EDX                     ; EDX - ii - index increment
+                        MOV     EAX,ECX
+                        SUB     EAX,EBX                 ; EAX = t0 = i - l
+                        XOR     EAX,EDX
+                        JGE     SHORT PAL_NEXT          ; if (t0 ^ ii) >= 0
+                        MOV     EAX,ECX
+                        SUB     EAX,EBX                 ; EAX = t0 = i - l
+                        MOV     EBX,EAX
+                        ADD     EAX,EDX                 ; EBX = t0 + ii
+                        XOR     EAX,EBX
+                        JGE     SHORT PAL_NEXT          ; if (t0 ^ (t0 + ii)) >= 0
+PAL_EXIT:
+                        POPRS   EAX
+                        POPRS   EAX
+                        LODSD
+                        $NEXT
+PAL_NEXT:
                         ADD     ECX,EDX
                         PUSHRS  ECX                     ; current
+                        LODSD
                         MOV     ESI,EAX
                         $NEXT
-PADDLOOP_LOOP_EXIT:
-                        POPRS   EAX
-                        POPRS   EAX
-                        $NEXT
-
-PADDLOOP_NEGATIVE:
-                        CMP     EBX,EDX
-                        JG      SHORT PADDLOOP_LOOP_EXIT
-                        JMP     SHORT PADDLOOP_LOOP_CONT
-

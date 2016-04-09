@@ -54,7 +54,8 @@ HLD-SIZE USER-ALLOC USER HLD0
 ;
 
 : (UD.R)
-  1- >R <# #S #> R> OVER - DUP 0> IF SPACES ELSE DROP THEN TYPE
+   >R <# #S #> R> OVER - DUP 0> IF   SPACES   ELSE   DROP   THEN
+   TYPE
 ;
 
 : UD.

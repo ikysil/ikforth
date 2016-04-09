@@ -117,6 +117,7 @@
 
                         XT_$RFROM
                         XT_$SAVE_INPUT
+                           ;$TRACE_STACK 'INPUT>R',9
                         XT_$N_TO_R
                         XT_$TOR
                         XT_$EXIT
@@ -126,6 +127,7 @@
 
                         XT_$RFROM
                         XT_$N_R_FROM
+                           ;$TRACE_STACK 'R>INPUT',9
                         XT_$RESTORE_INPUT
                         XT_$DROP
                         XT_$TOR

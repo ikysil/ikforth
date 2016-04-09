@@ -16,7 +16,7 @@ USER #EVAL 1 CELLS USER-ALLOC
 
 \ 6.1.2216 SOURCE
 \ c-addr is the address of, and u is the number of characters in
-\ the input buffer. 
+\ the input buffer.
 \ D: -- c-addr u
 :NONAME
   SOURCE-ID 0< IF
@@ -43,9 +43,22 @@ USER #EVAL 1 CELLS USER-ALLOC
   DEFERRED REFILL
 ; IS REFILL
 
-: EVALUATE
-  INPUT>R RESET-INPUT -1 SOURCE-ID!
-  #EVAL ! EVAL ! ['] INTERPRET CATCH R>INPUT THROW
+(G EVALUATE
+   Save the current input source specification.
+   Store minus-one [-1] in SOURCE-ID if it is present.
+   Make the string described by c-addr and u both the input source
+   and input buffer, set >IN to zero, and interpret.
+   When the parse area is empty, restore the prior input source specification.
+   Other stack effects are due to the words EVALUATEd. )
+: EVALUATE (S i*x c-addr u -- j*x )
+   INPUT>R RESET-INPUT -1 SOURCE-ID!
+   #EVAL ! EVAL ! ['] INTERPRET CATCH
+   R>INPUT
+   SOURCE-ID 0> IF
+      SOURCE >IN ! \ exhaust the parse area if file
+      DROP
+   THEN
+   THROW
 ;
 
 : QUERY

@@ -29,8 +29,8 @@ DEFER MS (S msecs -- )
   DWORD-SPLIT SWAP DWORD-JOIN
 ;
 
-: BODY>
-  [ 1 CELLS ] LITERAL -
+: BODY> (S PFA -- CFA )
+  CFA-SIZE -
 ;
 
 : R-DROP

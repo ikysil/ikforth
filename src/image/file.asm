@@ -23,7 +23,7 @@
 INCLUDE_FILE_LOOP:
                         XT_$SOURCE_ID
                         XT_$FILE_POSITION
-                        XT_$DROP
+                        XT_$THROW
                         XT_$CURRENT_FILE_POSITION
                         XT_$2STORE
 
@@ -85,7 +85,7 @@ INCLUDE_FILE_EXIT:
                           XT_$2FETCH
                           XT_$SOURCE_ID
                           XT_$REPOSITION_FILE
-                          XT_$DROP
+                          XT_$THROW
 @@PRESTORE_FILE_INPUT_EXIT:
                         XT_$EXIT
 
