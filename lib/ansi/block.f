@@ -31,11 +31,34 @@ USER BLOCK-DATA    BLOCK-SIZE 1 + CHARS USER-ALLOC
 
 : EMPTY-BUFFERS 0 BLOCK# ! FALSE BLOCK-UPDATED ! ;
 
+: S"+CHAR (S c-addr u char -- c-addr u' )
+   (G Append char to a string )
+   DUP 2OVER + C! DROP CHAR+
+;
+
+: BLOCK-NUM# (S block-num -- char block-num' )
+   S>D D# 16 UM/MOD \ S: r q
+   SWAP
+   DIGITS + C@      \ S: q char
+   SWAP
+;
+
+DEFER BLOCK-ROOT (S  -- c-addr count )
+
+: DEFAULT-BLOCK-ROOT
+   S" blocks/"
+;
+
+' DEFAULT-BLOCK-ROOT IS BLOCK-ROOT
+
 : MAKE-BLOCK-FILE-NAME (S block-num -- c-addr count )
 \DEBUG   TRACE-WORD
-   BASE @ >R HEX
-   S>D <# 8 0 DO # LOOP S" blocks/" HOLDS #>
-   R> BASE !
+   BLOCK-ROOT >S"BUFFER \ S: block-num c-addr u
+   2>R
+   8 0 DO BLOCK-NUM# LOOP
+   DROP
+   2R>
+   8 0 DO ROT S"+CHAR LOOP
 ;
 
 : WRITE-BLOCK (S block-data block-num -- )

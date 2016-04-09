@@ -90,12 +90,16 @@
                         $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT,$SAVE_INPUT_FILE
 
                         $COLON  'SAVE-INPUT',$SAVE_INPUT
-
                         XT_$PSAVE_INPUT
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'SAVE-INPUT',12
+                        }
                         XT_$EXIT
 
                         $COLON  'RESTORE-INPUT',$RESTORE_INPUT
-
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'RESTORE-INPUT',12
+                        }
                         XT_$1SUB
                         XT_$SWAP
                         XT_$EXECUTE
@@ -105,7 +109,6 @@
                         $DEFER  '(RESET-INPUT)',$PRESET_INPUT,$RESET_INPUT_FILE
 
                         $COLON  'RESET-INPUT',$RESET_INPUT
-
                         XT_$PRESET_INPUT
                         XT_$EXIT
 
