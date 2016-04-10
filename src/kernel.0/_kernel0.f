@@ -7,6 +7,7 @@
 S" src/kernel.0/primitives.f"   INCLUDED
 S" src/kernel/const.f"          INCLUDED
 S" src/kernel/core.f"           INCLUDED
+S" src/kernel/core-tools.4th"   INCLUDED
 S" src/kernel/string.f"         INCLUDED
 S" src/kernel/string-escape.4th"  INCLUDED
 S" src/kernel/zchar.f"          INCLUDED

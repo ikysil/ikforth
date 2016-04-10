@@ -13,28 +13,9 @@ CR .( Loading TOOLS definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-USER .S-PRINT-XT 1 CELLS USER-ALLOC
-
-: PN.S (S print-xt depth -- )
-  SWAP .S-PRINT-XT !
-  DEPTH 1- MIN
-  DUP . ." item" DUP 1 <> IF ." s" THEN ."  on stack" DUP 0>
-  IF 0
-    DO I 4 MOD 0= IF CR THEN I PICK 14 .S-PRINT-XT @ EXECUTE LOOP
-  ELSE
-    DROP
-  THEN
-;
-
-: N.S (S print-xt -- )
-  DEPTH 1- PN.S
-;
-
 :  .S [']  .R N.S ;
 
 : U.S ['] U.R N.S ;
-
-: H.S BASE @ >R HEX U.S R> BASE ! ;
 
 : >PRINTABLE (S c -- printable_c )
   DUP BL 127 WITHIN INVERT
@@ -236,25 +217,5 @@ DEFER CS-ROLL ' ROLL IS CS-ROLL
     @ STATE @ 0= OVER IMMEDIATE? OR
     IF EXECUTE ELSE COMPILE, THEN
 ;
-
-\ -----------------------------------------------------------------------------
-\  TRACE-WORD
-\ -----------------------------------------------------------------------------
-: TRACE-WORD-NAME
-   \ S: xt --
-   \ Print the name of the word or (noname)
-   CR ." TRACE-WORD: " R@ H.8 SPACE >HEAD H>#NAME
-   ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
-;
-
-: TRACE-STACK
-   CR H.S
-;
-
-: TRACE-WORD
-   RECURSE-XT @ POSTPONE LITERAL
-   POSTPONE TRACE-WORD-NAME
-   POSTPONE TRACE-STACK
-; IMMEDIATE
 
 REPORT-NEW-NAME !

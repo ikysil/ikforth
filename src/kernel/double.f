@@ -56,16 +56,7 @@ END-CODE
 \ 8.6.1.1830 M+
 \ (S d1|ud1 n -- d2|ud2 )
 \ Add n to d1|ud1, giving the sum d2|ud2.
-CODE M+
-  5B B,                    \ POP     EBX
-  5A B,                    \ POP     EDX
-  58 B,                    \ POP     EAX
-  03 B, C3 B,              \ ADD     EAX,EBX
-  83 B, D2 B, 00 B,        \ ADC     EDX,0
-  50 B,                    \ PUSH    EAX
-  52 B,                    \ PUSH    EDX
-  $NEXT
-END-CODE
+: M+ S>D D+ ;
 
 BASE !
 
@@ -75,11 +66,25 @@ BASE !
 
 : D0< NIP 0< ;
 
-: D0> NIP 0> ;
+: D0> DNEGATE D0< ;
 
-: D< D- D0< ;
+: D<-EXECUTE \ (S ln1 mn1 ln2 mn2 xt -- flag )
+   >R
+   ROT SWAP     \ S: ln1 ln2 mn1 mn2 R: xt
+   2DUP = IF    \ compare ln* parts ONLY if mn* parts are equal
+      2DROP
+      U<
+      R> DROP
+      EXIT
+   THEN
+   2SWAP 2DROP  \ S: ln1 ln2 R: xt
+   R>
+   EXECUTE
+;
 
-: D> D- D0> ;
+: D< ['] < D<-EXECUTE ;
+
+: D> 2SWAP D< ;
 
 : D0= OR 0= ;
 
@@ -89,7 +94,7 @@ BASE !
 \ (S ud1 ud2 -- flag )
 \ flag is true if and only if ud1 is less than ud2.
 : DU< (S ud1 ud2 -- flag )
-  D- D0<
+   ['] U< D<-EXECUTE
 ;
 
 : D>S DROP ;
@@ -102,14 +107,14 @@ BASE !
 \ (S d1 d2 -- d3 )
 \ d3 is the lesser of d1 and d2.
 : DMIN (S d1 d2 -- d3 )
-  2OVER 2OVER D> IF 2SWAP THEN 2DROP
+   2OVER 2OVER D> IF 2SWAP THEN 2DROP
 ;
 
 \ 8.6.1.1210 DMAX
 \ (S d1 d2 -- d3 )
 \ d3 is the greater of d1 and d2.
 : DMAX (S d1 d2 -- d3 )
-  2OVER 2OVER D< IF 2SWAP THEN 2DROP
+   2OVER 2OVER D< IF 2SWAP THEN 2DROP
 ;
 
 \ 8.6.1.1160 DABS
