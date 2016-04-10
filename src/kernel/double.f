@@ -1,7 +1,7 @@
 \
 \  double.f
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading DOUBLE definitions )
