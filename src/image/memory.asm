@@ -32,20 +32,18 @@
 ;  Store two top cells from the stack to the memory
 ;  D: x1 x2 addr --
                         $CODE   '2!',$2STORE,VEF_USUAL
-
                         POPDS   EBX
-                        POPDS   <DWORD [EBX]>
                         POPDS   <DWORD [EBX + CELL_SIZE]>
+                        POPDS   <DWORD [EBX]>
                         $NEXT
 
 ;  6.1.0350 2@
 ;  Fetch two cells from the memory and put them on stack
 ;  D: addr -- x1 x2
                         $CODE   '2@',$2FETCH,VEF_USUAL
-
                         POPDS   EBX
-                        PUSHDS  <DWORD [EBX + CELL_SIZE]>
                         PUSHDS  <DWORD [EBX]>
+                        PUSHDS  <DWORD [EBX + CELL_SIZE]>
                         $NEXT
 
 ;  6.1.0850 C!
