@@ -57,29 +57,40 @@ HERE 3 'S' C, '"' C, BL C, 2CONSTANT S"-NAME
   INCLUDE-MARK !        \ restore previous INCLUDE mark
 ;
 
+(G Modify file path provided to INCLUDED or REQUIRED )
+DEFER INCLUDED-PATH (S c-addr1 count1 -- c-addr2 count2 )
+
+' NOOP IS INCLUDED-PATH
+
+: (TRACKED-INCLUDED)
+   ?REPORT-INCLUDED
+   MARK-INCLUDE, >R
+   2DUP S">Z" >R
+   [ACTION-OF] INCLUDED CATCH
+   R> OVER 0= IF   DUP ZCOUNT INCLUDED, R> RESOLVE-INCLUDE   ELSE   R> DROP   THEN
+   FREE THROW THROW
+;
+
 :NONAME (S c-addr count -- )
-  ?REPORT-INCLUDED
-  MARK-INCLUDE, >R
-  2DUP S">Z" >R
-  [ACTION-OF] INCLUDED CATCH
-  R> OVER 0= IF   DUP ZCOUNT INCLUDED, R> RESOLVE-INCLUDE   ELSE   R> DROP   THEN
-  FREE THROW THROW
+   INCLUDED-PATH
+   (TRACKED-INCLUDED)
 ; IS INCLUDED
 
 : REQUIRED? (S c-addr count -- c-addr count flag )
   2DUP INCLUDED-WORDLIST SEARCH-WORDLIST DUP IF NIP THEN INVERT ;
 
 : REQUIRED (S x*i c-addr count -- y*j )
-  REQUIRED?
-  IF
-    SP@ [ 2 CELLS ] LITERAL + \ take account of INCLUDED arguments
-    >R
-    INCLUDED
-    SP@ R> - 0<>
-    IF EXC-STACK-CHANGED THROW THEN
-  ELSE
-    2DROP
-  THEN
+   INCLUDED-PATH
+   REQUIRED?
+   IF
+      SP@ [ 2 CELLS ] LITERAL + \ take account of INCLUDED arguments
+      >R
+      (TRACKED-INCLUDED)
+      SP@ R> - 0<>
+      IF EXC-STACK-CHANGED THROW THEN
+   ELSE
+      2DROP
+   THEN
 ;
 
 : (REQUIRES) (S x*i c-addr count -- y*j )
