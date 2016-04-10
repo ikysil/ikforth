@@ -110,4 +110,20 @@ INT/COMP: REQUIRES" (S x*i "name" -- y*j )
   THEN
 ;
 
+\  11.6.2.2144.10 REQUIRE
+\  ( i * x "name" -- i * x )
+\  Skip leading white space and parse name delimited by a white space character.
+\  Push the address and length of the name on the stack and perform the function of REQUIRED.
+: REQUIRE ( i*x "name" -- i*x )
+   PARSE-NAME REQUIRED
+;
+
+\  11.6.2.1714 INCLUDE
+\  ( i * x "name" -- j * x )
+\  Skip leading white space and parse name delimited by a white space character.
+\  Push the address and length of the name on the stack and perform the function of INCLUDED.
+: INCLUDE ( i*x "name" -- j*x )
+   PARSE-NAME INCLUDED
+;
+
 REPORT-NEW-NAME !
