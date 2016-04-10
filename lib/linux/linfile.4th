@@ -44,8 +44,8 @@ REPORT-NEW-NAME OFF
 ;
 
 : FLUSH-FILE (S fileid -- ior )
-  _fsync
-  0<> IF   GetLastError   ELSE   0   THEN
+   _fsync
+   0<> IF   GetLastError   ELSE   0   THEN
 ;
 
 \  11.6.1.2147 RESIZE-FILE
@@ -57,7 +57,8 @@ REPORT-NEW-NAME OFF
 \  been written. At the conclusion of the operation, FILE-SIZE returns
 \  the value ud and FILE-POSITION returns an unspecified value.
 : RESIZE-FILE ( ud fileid -- ior )
-   _ftruncate
+   SWAP ROT ROT
+   _ftruncate64
    0<> IF   GetLastError   ELSE   0   THEN
 ;
 

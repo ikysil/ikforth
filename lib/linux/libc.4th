@@ -191,8 +191,8 @@ LIBC.SO S" __xstat64" DYNLIB-SYMBOL 3 CDECL-C1 __xstat64
 \ int fsync(int fd);
 LIBC.SO S" fsync" DYNLIB-SYMBOL 1 CDECL-C1 _fsync
 
-\ int ftruncate(int fd, off_t length);
-LIBC.SO S" ftruncate" DYNLIB-SYMBOL 3 CDECL-C1 _ftruncate
+\ int ftruncate64(int fd, off_t length);
+LIBC.SO S" ftruncate64" DYNLIB-SYMBOL 3 CDECL-C1 _ftruncate64
 
 \ int unlink(const char *path);
 LIBC.SO S" unlink" DYNLIB-SYMBOL 1 CDECL-C1 _unlink
