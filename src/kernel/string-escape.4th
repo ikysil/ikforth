@@ -66,7 +66,7 @@ DEFER ESCAPE\" (S c-addr u d-addr -- c-addr' u' d-addr' )
 \  \n   newline         (implementation dependent , e.g., CR/LF, CR, LF, LF/CR)
    OVER C@ [CHAR] n = IF
       1 /STRING
-      13 R> C!+
+      10 R> C!+
       EXIT
    THEN
 \  \q   double-quote    (ASCII 34)

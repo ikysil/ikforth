@@ -28,8 +28,10 @@ typedef struct _Entry {
 } Entry ;
 
 // Add entry to table
-#define CONSTANT(x)  {0, #x, (int)x},
-#define DEFINE(x,v)  {0, #x, (int)v},
+#define CONSTANT(x)      {0, #x, (int)x},
+#define DEFINE(x,v)      {0, #x, (int)v},
+#define SIZEOF(x,v)      DEFINE(x, sizeof(v))
+#define OFFSETOF(x,s,f)  DEFINE(x, offsetof(s,f))
 
 // Table of names from generated wincon.i file
 Entry entry[] = {

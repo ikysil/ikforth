@@ -119,9 +119,9 @@ LIBC.SO S" tcsetattr" DYNLIB-SYMBOL 3 CDECL-C1 _tcsetattr
 : tcsetattr-execute (S i*x xt xt-attr-mutator -- j*x )
    (G Execute xt with termios attributes modified by xt-attr-mutator )
    (G xt-attr-mutator stack effect: termios-addr -- )
-   SIZEOF_TERMIOS 2 * ALLOCATE THROW >R
+   SIZEOF_STRUCT_TERMIOS 2 * ALLOCATE THROW >R
    R@ STDIN _tcgetattr DROP
-   R@ DUP SIZEOF_TERMIOS + DUP >R SIZEOF_TERMIOS MOVE
+   R@ DUP SIZEOF_STRUCT_TERMIOS + DUP >R SIZEOF_STRUCT_TERMIOS MOVE
    R@ SWAP EXECUTE
    R> TCSANOW STDIN _tcsetattr DROP
    CATCH
@@ -177,5 +177,27 @@ VARIABLE PENDING-CHAR
    ['] key-tcattr
    tcsetattr-execute
 ; IS KEY
+
+\ int __fxstat64(int ver, int fildes, struct stat64 * stat_buf);
+\ ver shall be 3 or the behavior of these functions is undefined.
+LIBC.SO S" __fxstat64" DYNLIB-SYMBOL 3 CDECL-C1 __fxstat64
+
+\ int __xstat64(int __ver, const char *__filename, struct stat64 *__stat_buf)
+LIBC.SO S" __xstat64" DYNLIB-SYMBOL 3 CDECL-C1 __xstat64
+
+3 CONSTANT MAGIC__fxstat64
+3 CONSTANT MAGIC__xstat64
+
+\ int fsync(int fd);
+LIBC.SO S" fsync" DYNLIB-SYMBOL 1 CDECL-C1 _fsync
+
+\ int ftruncate(int fd, off_t length);
+LIBC.SO S" ftruncate" DYNLIB-SYMBOL 3 CDECL-C1 _ftruncate
+
+\ int unlink(const char *path);
+LIBC.SO S" unlink" DYNLIB-SYMBOL 1 CDECL-C1 _unlink
+
+\ int rename(const char *old, const char *new);
+LIBC.SO S" rename" DYNLIB-SYMBOL 2 CDECL-C1 _rename
 
 REPORT-NEW-NAME !

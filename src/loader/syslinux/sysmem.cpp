@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include "../IKFCommon.hpp"
@@ -8,6 +9,7 @@ void *  __stdcall fAlloc(DWORD size) {
 }
 
 void    __stdcall fFree(void * addr) {
+    errno = 0;
     free(addr);
 }
 

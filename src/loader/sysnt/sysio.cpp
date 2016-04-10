@@ -75,7 +75,7 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
             res = -1;
         }
         if (res <= 0) {
-            eof = true;
+            eof = (i + skipped) == 0;
             break;
         }
         if (lfSeen) {
