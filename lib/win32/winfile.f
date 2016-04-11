@@ -9,7 +9,7 @@ CR .( Loading WINFILE definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-\  11.6.1.2080 READ-FILE 
+\  11.6.1.2080 READ-FILE
 \  (S c-addr u1 fileid -- u2 ior )
 :NONAME (S c-addr u1 fileid -- u2 ior )
   >R 2>R
@@ -24,8 +24,9 @@ REPORT-NEW-NAME OFF
 ; IS WRITE-FILE
 
 : DELETE-FILE (S c-addr u -- ior )
-  S">Z" DUP DeleteFile DROP
-  FREE THROW GetLastError
+  S">Z" DUP DeleteFile
+  0= IF   GetLastError   ELSE   0   THEN
+  SWAP FREE THROW
 ;
 
 : RENAME-FILE (S c-addr1 u1 c-addr2 u2 -- ior )
@@ -35,7 +36,8 @@ REPORT-NEW-NAME OFF
 
 : FILE-STATUS (S c-addr u -- x ior )
   S">Z" DUP GetFileAttributes
-  SWAP FREE THROW GetLastError
+  DUP INVALID_FILE_ATTRIBUTES = IF   GetLastError   ELSE   0   THEN
+  ROT FREE THROW
 ;
 
 : FLUSH-FILE (S FileHandle -- ior )
@@ -50,10 +52,10 @@ REPORT-NEW-NAME OFF
   DUP >R WRITE-FILE THROW CR-STR COUNT R> WRITE-FILE
 ;
 
-\  11.6.1.2147 RESIZE-FILE 
+\  11.6.1.2147 RESIZE-FILE
 \  ( ud fileid -- ior )
 \  Set the size of the file identified by fileid to ud. ior is the
-\  implementation-defined I/O result code. 
+\  implementation-defined I/O result code.
 \  If the resultant file is larger than the file before the operation,
 \  the portion of the file added as a result of the operation might not have
 \  been written. At the conclusion of the operation, FILE-SIZE returns

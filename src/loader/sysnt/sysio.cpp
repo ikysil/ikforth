@@ -41,9 +41,12 @@ HANDLE  __stdcall fFileCreate(CELL fileAccessMethod, CELL nameLen, char const * 
 }
 
 __int64 __stdcall fFilePosition(HANDLE fileId) {
-    LONG LWord;
     LONG HWord = 0;
-    LWord = SetFilePointer(fileId, 0, &HWord, FILE_CURRENT);
+    LONG res = SetFilePointer(fileId, 0, &HWord, FILE_CURRENT);
+    if (res != INVALID_SET_FILE_POINTER) {
+        SetLastError(0);
+    }
+    LONG LWord = res;
     return ((__int64)HWord << 32) | LWord;
 }
 
@@ -56,7 +59,10 @@ HANDLE  __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * na
 
 void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
     LONG hPos = HWord;
-    SetFilePointer(fileId, LWord, &hPos, FILE_BEGIN);
+    LONG res = SetFilePointer(fileId, LWord, &hPos, FILE_BEGIN);
+    if (res != INVALID_SET_FILE_POINTER) {
+        SetLastError(0);
+    }
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
