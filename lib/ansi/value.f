@@ -22,7 +22,7 @@ REPORT-NEW-NAME OFF
 ;
 
 : VALUE-METHOD-DOES
-   DOES> (S value-xt vt-body -- ) \ runtime semantics
+   DOES> (S value-xt value-method-body -- ) \ runtime semantics
    @
    SWAP >BODY VALUE>DATA
    STATE @
@@ -80,7 +80,7 @@ CREATE 2VALUE-VT
 ;
 
 : TO
-  ' DUP VALUE>VT VALUE!VT@ EXECUTE
+  ' DUP VALUE>VT VALUE!VT@  EXECUTE
 ; IMMEDIATE
 
 : +TO

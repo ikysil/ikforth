@@ -27,6 +27,8 @@ DEFER TEST-ROOT (S  -- c-addr count )
    2DUP CR ." INCLUDED-PATH: " TYPE CR
 ; IS INCLUDED-PATH
 
+REPORT-NEW-NAME OFF
+
 S" prelimtest.fth" INCLUDED
 \ S" tester.fr" INCLUDED
 S" ttester.fs" INCLUDED
@@ -43,7 +45,7 @@ S" doubletest.fth" INCLUDED
 S" exceptiontest.fth" INCLUDED
 S" facilitytest.fth" INCLUDED
 S" filetest.fth" INCLUDED
-\ S" localstest.fth" INCLUDED
+S" localstest.fth" INCLUDED
 S" memorytest.fth" INCLUDED
 \ S" toolstest.fth" INCLUDED
 S" searchordertest.fth" INCLUDED
@@ -51,5 +53,7 @@ S" searchordertest.fth" INCLUDED
 REPORT-ERRORS
 
 CR .( Forth tests completed ) CR CR
+
+.( Press any key to exit... ) KEY DROP
 
 BYE

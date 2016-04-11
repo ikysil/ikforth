@@ -47,7 +47,7 @@ USER LP0 \ initial locals stack pointer
 DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
 : L-ADDR (S n -- l-addr )
-   LFP@ SWAP - CELL-
+   1+ CELLS LFP@ SWAP -
 ;
 
 : L@: (S n "name" -- n ) \ define word name to fetch the value of local with index n

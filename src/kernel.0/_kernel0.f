@@ -51,6 +51,9 @@ REQUIRES" src/kernel.0/linux.4th"
 S" lib/term/ansiterm.4th"       INCLUDED
 
 REQUIRES" lib/~ik/locate.4th"
+REQUIRES" lib/~ik/locals.4th"
+REQUIRES" lib/ansi/locals.4th"
+
 S" lib/~ik/macro.f"             INCLUDED
 S" lib/~ik/loop.f"              INCLUDED
 REQUIRES" lib/~ik/486asm.f"
