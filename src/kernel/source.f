@@ -35,9 +35,12 @@ USER #EVAL 1 CELLS USER-ALLOC
                  FALSE EXIT
                THEN
   SOURCE-ID 0> IF
-                 FILE-LINE MAX-FILE-LINE-LENGTH SOURCE-ID READ-LINE THROW SWAP #FILE-LINE ! 0 >IN !
-                 REPORT-SOURCE!
-                 \DEBUG CR ." REFILL: " REPORT-SOURCE
+                 REFILL-FILE
+\                 SOURCE-ID FILE-POSITION THROW CURRENT-FILE-POSITION 2!
+\                 FILE-LINE MAX-FILE-LINE-LENGTH SOURCE-ID READ-LINE THROW SWAP #FILE-LINE ! 0 >IN !
+\                 INCLUDE-LINE# @ 1+ INCLUDE-LINE# !
+\                 REPORT-SOURCE!
+\                 \DEBUG CR ." REFILL: " REPORT-SOURCE
                  EXIT
                THEN
   DEFERRED REFILL

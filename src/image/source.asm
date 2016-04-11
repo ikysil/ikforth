@@ -63,29 +63,7 @@
 
 ;  6.2.2125 REFILL
 ;  D: -- flag
-                        $NONAME $_REFILL
-
-                        XT_$FILE_LINE
-                        CCLIT   MAX_FILE_LINE_LENGTH
-                        XT_$SOURCE_ID
-                        XT_$READ_LINE
-                        XT_$DROP
-                        XT_$SWAP
-                        CSTORE  $HASH_FILE_LINE
-                        XT_$ZERO
-                        CSTORE  $TOIN
-
-                        XT_$REPORT_SOURCE_STORE
-
-                        MATCH   =TRUE, DEBUG {
-                        $CR
-                        $WRITE  'REFILL: '
-                        XT_$REPORT_SOURCE
-                        }
-
-                        XT_$EXIT
-
-                        $DEFER  'REFILL',$REFILL,$_REFILL
+                        $DEFER  'REFILL',$REFILL,$REFILL_FILE
 
                         $DEFER  '(SAVE-INPUT)',$PSAVE_INPUT,$SAVE_INPUT_FILE
 
@@ -98,12 +76,14 @@
 
                         $COLON  'RESTORE-INPUT',$RESTORE_INPUT
                         MATCH   =TRUE, DEBUG {
-                           $TRACE_STACK 'RESTORE-INPUT',12
+                           $TRACE_STACK 'RESTORE-INPUT-A',12
                         }
                         XT_$1SUB
                         XT_$SWAP
-                        XT_$EXECUTE
-                        XT_$FALSE
+                        XT_$CATCH
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_STACK 'RESTORE-INPUT-B',1
+                        }
                         XT_$EXIT
 
                         $DEFER  '(RESET-INPUT)',$PRESET_INPUT,$RESET_INPUT_FILE

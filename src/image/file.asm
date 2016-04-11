@@ -11,6 +11,45 @@
 
                         $CONST  'R/O',$R_O,0
 
+                        $COLON  'REFILL-FILE',$REFILL_FILE
+                        XT_$SOURCE_ID
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_WORD  'REFILL-FILE'
+                           $TRACE_STACK 'REFILL-FILE-A:',1
+                        }
+                        XT_$FILE_POSITION
+                        MATCH   =TRUE, DEBUG {
+                           $TRACE_WORD  'REFILL-FILE'
+                           $TRACE_STACK 'REFILL-FILE-B:',3
+                        }
+                        XT_$THROW
+                        XT_$CURRENT_FILE_POSITION
+                        XT_$2STORE
+
+                        XT_$FILE_LINE
+                        CCLIT   MAX_FILE_LINE_LENGTH
+                        XT_$SOURCE_ID
+                        XT_$READ_LINE
+                        XT_$THROW
+                        XT_$SWAP
+                        CSTORE  $HASH_FILE_LINE
+                        XT_$ZERO
+                        CSTORE  $TOIN
+
+                        CFETCH  $INCLUDE_LINE_NUM
+                        XT_$1ADD
+                        CSTORE  $INCLUDE_LINE_NUM
+
+                        XT_$REPORT_SOURCE_STORE
+
+                        MATCH   =TRUE, DEBUG {
+                        $CR
+                        $WRITE  'REFILL: '
+                        XT_$REPORT_SOURCE
+                        }
+
+                        XT_$EXIT
+
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
                         $DEFER  'INCLUDE-FILE',$INCLUDE_FILE,$_INCLUDE_FILE
@@ -20,27 +59,10 @@
                         XT_$RESET_INPUT
                         XT_$SOURCE_ID_STORE
 INCLUDE_FILE_LOOP:
-                        XT_$SOURCE_ID
-                        MATCH   =TRUE, DEBUG {
-                           $TRACE_WORD '_INCLUDE_FILE'
-                           $TRACE_STACK '_INCLUDE_FILE-A:',1
-                        }
-                        XT_$FILE_POSITION
-                        MATCH   =TRUE, DEBUG {
-                           $TRACE_WORD '_INCLUDE_FILE'
-                           $TRACE_STACK '_INCLUDE_FILE-B:',3
-                        }
-                        XT_$THROW
-                        XT_$CURRENT_FILE_POSITION
-                        XT_$2STORE
-
                         XT_$ZERO                   ; FOR THROW
                         XT_$REFILL
                         CQBR    INCLUDE_FILE_EXIT
                           XT_$DROP
-                          CFETCH  $INCLUDE_LINE_NUM
-                          XT_$1ADD
-                          CSTORE  $INCLUDE_LINE_NUM
                           CWLIT   $INTERPRET
                           XT_$CATCH
                           XT_$QDUP
@@ -109,7 +131,7 @@ INCLUDE_FILE_EXIT:
                         CSTORE  $TOIN
                         XT_$DUP
                         XT_$SOURCE_ID_STORE
-                        CCLIT   1
+                        CCLIT   0
                         XT_$DUP
                         CSTORE  $INCLUDE_LINE_NUM
                         CSTORE  $ERROR_LINE_NUM
