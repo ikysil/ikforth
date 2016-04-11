@@ -8,27 +8,48 @@ CR .( Running ANS Forth and Forth 2012 test programs, version 0.13) CR
 
 : MARKER CREATE DOES> DROP ;
 
-S" test/forth2012-test-suite/src/prelimtest.fth" INCLUDED
-\ S" test/forth2012-test-suite/src/tester.fr" INCLUDED
-S" test/forth2012-test-suite/src/ttester.fs" INCLUDED
+DEFER TEST-ROOT (S  -- c-addr count )
 
-S" test/forth2012-test-suite/src/core.fr" INCLUDED
-S" test/forth2012-test-suite/src/coreplustest.fth" INCLUDED
-S" test/forth2012-test-suite/src/utilities.fth" INCLUDED
-S" test/forth2012-test-suite/src/errorreport.fth" INCLUDED
-S" test/forth2012-test-suite/src/coreexttest.fth" INCLUDED
-S" test/forth2012-test-suite/src/blocktest.fth" INCLUDED
-S" test/forth2012-test-suite/src/doubletest.fth" INCLUDED
-S" test/forth2012-test-suite/src/exceptiontest.fth" INCLUDED
-S" test/forth2012-test-suite/src/facilitytest.fth" INCLUDED
-S" test/forth2012-test-suite/src/filetest.fth" INCLUDED
-S" test/forth2012-test-suite/src/localstest.fth" INCLUDED
-S" test/forth2012-test-suite/src/memorytest.fth" INCLUDED
-S" test/forth2012-test-suite/src/toolstest.fth" INCLUDED
-S" test/forth2012-test-suite/src/searchordertest.fth" INCLUDED
-S" test/forth2012-test-suite/src/stringtest.fth" INCLUDED
+: DEFAULT-TEST-ROOT
+   S" test/forth2012-test-suite/src/"
+;
+
+' DEFAULT-TEST-ROOT IS TEST-ROOT
+
+: APPEND-TEST-ROOT (S c-addr1 u1 -- c-addr2 u2 )
+   TEST-ROOT >S"BUFFER   \ S: f-addr f-u r-addr r-u
+   2SWAP 2OVER + SWAP    \ S: r-addr r-u f-addr r-addr' f-u
+   DUP >R MOVE R> +      \ S: r-addr r-u'
+;
+
+:NONAME
+   APPEND-TEST-ROOT
+   2DUP CR ." INCLUDED-PATH: " TYPE CR
+; IS INCLUDED-PATH
+
+S" prelimtest.fth" INCLUDED
+\ S" tester.fr" INCLUDED
+S" ttester.fs" INCLUDED
+
+S" core.fr" INCLUDED
+VERBOSE ON
+
+S" coreplustest.fth" INCLUDED
+S" utilities.fth" INCLUDED
+S" errorreport.fth" INCLUDED
+S" coreexttest.fth" INCLUDED
+S" blocktest.fth" INCLUDED
+S" doubletest.fth" INCLUDED
+S" exceptiontest.fth" INCLUDED
+S" facilitytest.fth" INCLUDED
+S" filetest.fth" INCLUDED
+\ S" localstest.fth" INCLUDED
+S" memorytest.fth" INCLUDED
+\ S" toolstest.fth" INCLUDED
+S" searchordertest.fth" INCLUDED
+\ S" stringtest.fth" INCLUDED
 REPORT-ERRORS
 
 CR .( Forth tests completed ) CR CR
 
-
+BYE

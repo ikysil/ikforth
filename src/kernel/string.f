@@ -45,12 +45,31 @@ REPORT-NEW-NAME OFF
   R> SWAP DUP 0<> IF NIP ELSE DROP THEN SGN NIP
 ;
 
+\  17.6.1.0170 -TRAILING
+\  ( c-addr u1 -- c-addr u2 )
+\  If u1 is greater than zero, u2 is equal to u1 less the number of spaces
+\  at the end of the character string specified by c-addr u1.
+\  If u1 is zero or the entire string consists of spaces, u2 is zero.
 : -TRAILING
-  BEGIN
-    2DUP CHAR- + @ BL = OVER 0> AND
-  WHILE
-    CHAR-
-  REPEAT
+   BEGIN
+      2DUP CHAR- + C@ BL = OVER 0> AND
+   WHILE
+      CHAR-
+   REPEAT
+;
+
+\  17.6.2.2375 UNESCAPE
+\  Replace each '%' character in the input string c-addr1 len1 with two '%' characters.
+\  The output is represented by c-addr2 len2.
+\  If you pass a string through UNESCAPE and then SUBSTITUTE, you get the original string.
+: UNESCAPE \ c-addr1 len1 c-addr2 -- c-addr2 len2
+   DUP 2SWAP OVER + SWAP ?DO
+      I C@ [CHAR] % = IF
+         [CHAR] % OVER C! 1+
+      THEN
+      I C@ OVER C! 1+
+   LOOP
+   OVER -
 ;
 
 : SEARCH
