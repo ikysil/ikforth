@@ -21,6 +21,6 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr);
 DWORD   __stdcall fStartThread(void * ParentUserDataAreaAddr, DWORD CreateSuspended, DWORD XT);
 void *  __stdcall fAlloc(DWORD size);
 void    __stdcall fFree(void * addr);
-void *  __stdcall fReAlloc(void * addr, DWORD newSize);
+void *  __stdcall fReAlloc(DWORD newSize, void * addr);
 
 #endif
