@@ -1,14 +1,14 @@
 \
-\  loop.f
+\  loop.4th
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 \ -----------------------------------------------------------------------------
 \ LOOPS EXT
 \ -----------------------------------------------------------------------------
 
-REQUIRES" lib/~ik/macro.f"
+REQUIRES" lib/~ik/macro.4th"
 
 CR .( Loading LOOP definitions )
 

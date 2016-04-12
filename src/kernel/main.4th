@@ -1,10 +1,10 @@
 \
-\  main.f
+\  main.4th
 \
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" src/kernel/quit.f"
+REQUIRES" src/kernel/quit.4th"
 
 CR .( Loading MAIN definitions )
 

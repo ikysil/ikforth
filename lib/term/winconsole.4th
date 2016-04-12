@@ -5,7 +5,7 @@
 \
 
 REQUIRES" src/kernel/console.4th"
-REQUIRES" lib/win32/kernel32.f"
+REQUIRES" lib/win32/kernel32.4th"
 
 CR .( Loading WINCONSOLE definitions )
 

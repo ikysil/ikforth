@@ -24,7 +24,7 @@ int main(int const argc, char const ** argv, char const ** envp) {
     char * StartFileName = (char *)fAlloc(MAX_FILE_PATH);
     strcpy(StartFileName, argv[0]);
     strcpy(ImageFileName, StartFileName);
-    ChangeFileExt(StartFileName, ".f");
+    ChangeFileExt(StartFileName, ".4th");
     ChangeFileExt(ImageFileName, ".img");
     int returnCode = StartForth(argc, argv, envp, ImageFileName, StartFileName);
     fFree(StartFileName);

@@ -1,5 +1,5 @@
 \
-\  win32.f
+\  win32.4th
 \
 \  Copyright (C) 1999-2016 Illya Kysil
 \
@@ -18,12 +18,12 @@ S" kernel32.dll" (LoadLibrary) [IF]
 
 ENV>
 
-REQUIRES" lib/win32/kernel32.f"
-REQUIRES" lib/win32/wincon.f"
-REQUIRES" lib/win32/winexception.f"
+REQUIRES" lib/win32/kernel32.4th"
+REQUIRES" lib/win32/wincon.4th"
+REQUIRES" lib/win32/winexception.4th"
 REQUIRES" lib/term/winconsole.4th"
-REQUIRES" lib/win32/winfile.f"
-REQUIRES" lib/win32/winmisc.f"
+REQUIRES" lib/win32/winfile.4th"
+REQUIRES" lib/win32/winmisc.4th"
 
 :NONAME
    S" WINCONSOLE-INIT"

@@ -1,12 +1,12 @@
 \
-\  peimage.f
+\  peimage.4th
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  Win32 Portable Executable utils
 \
 
-REQUIRES" src/kernel/struct.f"
+REQUIRES" src/kernel/struct.4th"
 
 CR .( Loading PEIMAGE definitions )
 
@@ -22,9 +22,9 @@ STRUCT PE-HEADER
   CELL: PE_HEADER.NumberOfSymbols
   WORD: PE_HEADER.NTHDRsize
   WORD: PE_HEADER.Flags
- 
+
   \ Standart fields
- 
+
   WORD: PE_HEADER.Magic
   BYTE: PE_HEADER.MajorLinkedVersion
   BYTE: PE_HEADER.MinorLinkedVersion
@@ -34,9 +34,9 @@ STRUCT PE-HEADER
   CELL: PE_HEADER.AddresOfEntryPoint
   CELL: PE_HEADER.BaseOfCode
   CELL: PE_HEADER.BaseOfData
- 
+
   \ NT Additional fields
- 
+
   CELL: PE_HEADER.ImageBase
   CELL: PE_HEADER.SectionAlignment
   CELL: PE_HEADER.FileAlignment
@@ -58,9 +58,9 @@ STRUCT PE-HEADER
   CELL: PE_HEADER.HeapCommitSize
   CELL: PE_HEADER.LoaderFlags
   CELL: PE_HEADER.NumberOfRvaAndSizes
- 
+
   \ IMAGE_DATA_DIRECTORY
- 
+
   CELL: PE_HEADER.ExportTableRVA
   CELL: PE_HEADER.TotalExportDataSize
   CELL: PE_HEADER.ImportTableRVA
@@ -89,7 +89,7 @@ STRUCT PE-HEADER
   CELL: PE_HEADER.TotalIATDataSize
   CELL: PE_HEADER.DelayImportTableRVA
   CELL: PE_HEADER.TotalDelayImportDataSize
-  
+
   2 2CELLS: PE_HEADER.ReservedSections
 ENDSTRUCT
 PE-HEADER STRUCT-SIZEOF CONSTANT /PE-HEADER
@@ -110,12 +110,12 @@ ENDSTRUCT
 ObjectTable STRUCT-SIZEOF CONSTANT /ObjectTable
 
 STRUCT ImportDirectory
-  CELL: ImportDirectory.ImportLookupTableRVA  
+  CELL: ImportDirectory.ImportLookupTableRVA
   CELL: ImportDirectory.TimeDateStamp
   WORD: ImportDirectory.MajorVersion
   WORD: ImportDirectory.MinorVersion
   CELL: ImportDirectory.NameRVA               \ DLL name pointer
-  CELL: ImportDirectory.ImportAddressTableRVA 
+  CELL: ImportDirectory.ImportAddressTableRVA
 ENDSTRUCT
 ImportDirectory STRUCT-SIZEOF CONSTANT /ImportDirectory
 
@@ -128,9 +128,9 @@ STRUCT ExportDirectory
   CELL: ExportDirectory.OrdinalBase       \ 1
   CELL: ExportDirectory.NumberOfFunctions
   CELL: ExportDirectory.NumberOfNames
-  CELL: ExportDirectory.AddressTableRVA   
-  CELL: ExportDirectory.NamePtrTableRVA   
-  CELL: ExportDirectory.OrdinalTableRVA   
+  CELL: ExportDirectory.AddressTableRVA
+  CELL: ExportDirectory.NamePtrTableRVA
+  CELL: ExportDirectory.OrdinalTableRVA
 ENDSTRUCT
 ExportDirectory STRUCT-SIZEOF CONSTANT /ExportDirectory
 

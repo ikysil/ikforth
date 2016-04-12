@@ -11,12 +11,6 @@
   DROP
 ;
 
-: TEST-WORDS S" lib/test/wordstest.f" INCLUDED ;
-
-: TEST-ANSI94 REPORT-NEW-NAME @ >R REPORT-NEW-NAME off
-       S" lib/test/ANSITest.f" ['] included catch
-       R> REPORT-NEW-NAME ! throw ;
-
 : TEST-STRING requires" test/string-test.4th" ;
 
 : TEST-HOSTENV requires" test/hostenv-test.4th" ;
