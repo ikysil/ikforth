@@ -125,10 +125,8 @@ DOES>-(L@),
    DUP 0= IF
       \ last message
       2DROP
-      PATCH-#LOCALS @ ?DUP IF
-         CURRENT-#LOCALS @ SWAP !
-      THEN
    ELSE
+      LOCALS-FRAME,
       DP @ >R GET-CURRENT >R
       LOCALS-DP @ DP !
       LOCALS-WORDLIST SET-CURRENT
@@ -142,10 +140,12 @@ DOES>-(L@),
       LOCAL-INIT,
       1 CURRENT-#LOCALS +!
    THEN
+   PATCH-#LOCALS @ ?DUP IF
+      CURRENT-#LOCALS @ SWAP !
+   THEN
 ; COMPILE-ONLY
 
 : LOCALS| ( "name...name |" -- )
-   LOCALS-FRAME,
    BEGIN
       PARSE-NAME OVER C@
       [CHAR] | - OVER 1 - OR
@@ -192,7 +192,6 @@ HERE CONSTANT UNDEFINED-VALUE
 ;
 
 : DEFINE-LOCALS ( c-addr1 u1 ... c-addrn un n -- )
-   LOCALS-FRAME,
    0 ?DO
       (LOCAL)
    LOOP

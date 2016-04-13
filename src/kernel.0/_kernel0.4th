@@ -53,6 +53,7 @@ S" lib/term/ansiterm.4th"         INCLUDED
 REQUIRES" lib/~ik/locate.4th"
 REQUIRES" lib/~ik/locals.4th"
 REQUIRES" lib/ansi/locals.4th"
+REQUIRES" lib/~ik/locals-ext.4th"
 
 S" lib/~ik/macro.4th"             INCLUDED
 S" lib/~ik/loop.4th"              INCLUDED
