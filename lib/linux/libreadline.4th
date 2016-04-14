@@ -21,26 +21,4 @@ S" libreadline.so.6" DYNLIB LIBREADLINE.SO
 \ The line returned has the final newline removed, so only the text of the line remains.
 LIBREADLINE.SO S" readline" DYNLIB-SYMBOL 1 CDECL-C1 libc-readline
 
-: ACCEPT-READLINE
-   (S c-addr +n1 -- +n2 )
-   \ Receive a string of at most +n1 characters.
-   DUP 0=
-   OVER 0< OR
-   OVER 32767 > OR
-   IF   EXC-INVALID-NUM-ARGUMENT THROW   THEN
-   0 libc-readline
-   ?DUP IF
-      DUP >R
-      \ c-addr +n1 z-addr
-      ZCOUNT
-      \ c-addr +n1 z-addr z-count
-      2SWAP ROT MIN
-      DUP >R CMOVE R> R>
-      \ +n2 z-addr
-      libc-free
-   ELSE
-      2DROP 0
-   THEN
-;
-
 REPORT-NEW-NAME !
