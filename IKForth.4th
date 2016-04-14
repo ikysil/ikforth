@@ -128,3 +128,9 @@ CR .S
 CR
 
 SEE SW
+
+DECIMAL
+
+: test-ekey begin ekey h.8 cr cr again ;
+
+\ test-ekey

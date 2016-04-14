@@ -22,6 +22,7 @@ REQUIRES" lib/linux/lincon.4th"
 REQUIRES" lib/linux/libc.4th"
 REQUIRES" lib/linux/libreadline.4th"
 REQUIRES" lib/linux/linfile.4th"
+REQUIRES" lib/term/linconsole.4th"
 
 :NONAME
    S" ANSITERM-INIT"
