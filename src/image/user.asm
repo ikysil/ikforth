@@ -48,6 +48,9 @@ USER_HERE          =       ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
                         _VAR    HASH_FILE_LINE
                         _VAR    FILE_LINE,MAX_FILE_LINE_LENGTH
 
+                        _VAR    HASH_INTERPRET_TEXT
+                        _VAR    INTERPRET_TEXT,MAX_FILE_LINE_LENGTH
+
                         _VAR    CURRENT
 
                         _VAR    RECURSE_XT

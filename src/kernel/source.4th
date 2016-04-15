@@ -40,7 +40,7 @@ USER #EVAL 1 CELLS USER-ALLOC
 \                 FILE-LINE MAX-FILE-LINE-LENGTH SOURCE-ID READ-LINE THROW SWAP #FILE-LINE ! 0 >IN !
 \                 INCLUDE-LINE# @ 1+ INCLUDE-LINE# !
 \                 REPORT-SOURCE!
-\                 \DEBUG CR ." REFILL: " REPORT-SOURCE
+\                 \DEBUG CR ." REFILL: " REPORT-REFILL
                  EXIT
                THEN
   DEFERRED REFILL

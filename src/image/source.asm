@@ -39,14 +39,27 @@
 
                         $DEFER  'SOURCE',$SOURCE,$_SOURCE
 
-                        $COLON  'REPORT-SOURCE',$REPORT_SOURCE
+;   (REPORT-SOURCE)
+;   D: c-addr u line-u -- 
+                        $COLON  '(REPORT-SOURCE)',$PREPORT_SOURCE
                         $WRITE  'LINE# H# '
-                        CFETCH  $ERROR_LINE_NUM
                         XT_$HOUT8
                         $WRITE  '  '
+                        XT_$TYPE
+                        XT_$EXIT
+
+                        $COLON  'REPORT-REFILL',$REPORT_REFILL
                         XT_$REFILL_SOURCE
                         XT_$2FETCH
-                        XT_$TYPE
+                        CFETCH  $INCLUDE_LINE_NUM
+                        XT_$PREPORT_SOURCE
+                        XT_$EXIT
+
+                        $COLON  'REPORT-SOURCE',$REPORT_SOURCE
+                        XT_$INTERPRET_TEXT
+                        CFETCH  $HASH_INTERPRET_TEXT
+                        CFETCH  $ERROR_LINE_NUM
+                        XT_$PREPORT_SOURCE
                         XT_$EXIT
 
                         $COLON  'REPORT-SOURCE!',$REPORT_SOURCE_STORE

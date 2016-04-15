@@ -40,6 +40,14 @@
 
                         $CONST  'MAX-FILE-LINE-LENGTH',,MAX_FILE_LINE_LENGTH
 
+;  INTERPRET-TEXT
+;  Line address for INCLUDED
+                        $USER   'INTERPRET-TEXT',$INTERPRET_TEXT,VAR_INTERPRET_TEXT
+
+;  #INTERPRET-TEXT
+;  Line length for INCLUDED
+                        $USER   '#INTERPRET-TEXT',$HASH_INTERPRET_TEXT,VAR_HASH_INTERPRET_TEXT
+
 ;  USER-SIZE-VAR
                         $VAR    'USER-SIZE-VAR',,USER_AREA_SIZE
 

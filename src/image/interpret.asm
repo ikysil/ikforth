@@ -221,9 +221,27 @@ IW_EXIT_1:
 IW_EXIT:
                         XT_$EXIT
 
+
+;  INTERPRET-TEXT!
+;  Save current SOURCE for error reporting purposes
+                        $COLON  'INTERPRET-TEXT!',$INTERPRET_TEXT_STORE
+                        XT_$SOURCE
+                        XT_$DUP
+                        CSTORE  $HASH_INTERPRET_TEXT
+                        XT_$INTERPRET_TEXT
+                        XT_$SWAP
+                        XT_$CMOVE
+                        XT_$INTERPRET_TEXT
+                        XT_$HASH_INTERPRET_TEXT
+                        XT_$REFILL_SOURCE
+                        XT_$2STORE
+                        CFETCH  $INCLUDE_LINE_NUM
+                        CSTORE  $ERROR_LINE_NUM
+                        XT_$EXIT
+
 ;  INTERPRET
                         $COLON  'INTERPRET',$INTERPRET
-
+                        XT_$INTERPRET_TEXT_STORE
 INT_LOOP:
                         XT_$BL
                         XT_$WORD                   ; c-addr

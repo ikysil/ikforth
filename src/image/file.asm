@@ -45,7 +45,7 @@
                         MATCH   =TRUE, DEBUG {
                         $CR
                         $WRITE  'REFILL: '
-                        XT_$REPORT_SOURCE
+                        XT_$REPORT_REFILL
                         }
 
                         XT_$EXIT
@@ -106,22 +106,28 @@ INCLUDE_FILE_EXIT:
                         XT_$SOURCE_ID_STORE
                         XT_$ZEROGR
                         CQBR    @@PRESTORE_FILE_INPUT_EXIT
-                          ; restore file position
-                          XT_$CURRENT_FILE_POSITION
-                          XT_$2FETCH
-                          XT_$SOURCE_ID
-                          XT_$REPOSITION_FILE
-                          XT_$THROW
-                          ; re-read last line
-                          XT_$FILE_LINE
-                          CCLIT   MAX_FILE_LINE_LENGTH
-                          XT_$SOURCE_ID
-                          XT_$READ_LINE
-                          XT_$THROW
-                          XT_$DROP
-                          CSTORE  $HASH_FILE_LINE
-                          ; store information for errors tracing
-                          XT_$REPORT_SOURCE_STORE
+                        ; restore file position
+                        XT_$CURRENT_FILE_POSITION
+                        XT_$2FETCH
+                        XT_$SOURCE_ID
+                        XT_$REPOSITION_FILE
+                        XT_$THROW
+                        ; re-read last line
+                        XT_$FILE_LINE
+                        CCLIT   MAX_FILE_LINE_LENGTH
+                        XT_$SOURCE_ID
+                        XT_$READ_LINE
+                        XT_$THROW
+                        XT_$DROP
+                        XT_$DUP
+                        CSTORE  $HASH_FILE_LINE
+                        CFETCH  $TOIN
+                        XT_$GR
+                        CQBR    @@PRESTORE_FILE_INPUT_EXIT
+                        ; if value of #FILE-LINE is large than value of >IN
+                        ; then we have more things to process on this line
+                        ; save the information for error reporting purposes
+                        CW      $INTERPRET_TEXT_STORE
 @@PRESTORE_FILE_INPUT_EXIT:
                         XT_$EXIT
 
