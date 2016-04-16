@@ -176,4 +176,11 @@ BASE !
   DUP >R 2@ D+ R> 2!
 ;
 
+: D<<8 (S d1 -- d2 )
+   (G Shift double value d1 left by 8 bits )
+   D# 8 LSHIFT
+   OVER D# 24 RSHIFT OR
+   SWAP D# 8 LSHIFT SWAP
+; 
+
 REPORT-NEW-NAME !

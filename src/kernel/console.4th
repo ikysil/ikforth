@@ -19,6 +19,11 @@ DEFER EKEY
 DEFER EKEY?
 DEFER EKEY>CHAR
 
+\ 10.6.2.1306.40 EKEY>FKEY ( x -- u flag )
+\ If the keyboard event x corresponds to a keypress in the implementation-defined
+\ special key set, return that key's id u and true. Otherwise return x and false.
+DEFER EKEY>FKEY
+
 \ 10.6.2.1325 EMIT?
 \ (S -- flag )
 \ flag is true if the user output device is ready to accept data and the execution

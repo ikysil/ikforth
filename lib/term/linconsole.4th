@@ -7,6 +7,7 @@
 REQUIRES" src/kernel/console.4th"
 REQUIRES" lib/linux/libc.4th"
 REQUIRES" lib/linux/libreadline.4th"
+REQUIRES" lib/term/linterm-ekey.4th"
 
 CR .( Loading linconsole definitions )
 
@@ -91,33 +92,6 @@ VARIABLE PENDING-CHAR
    tcsetattr-execute
 ;
 
-\ 10.6.2.1305 EKEY ( -- u )
-\ Receive one keyboard event u.
-\ The encoding of keyboard events is implementation defined.
-\ 4 most significant bits of x contain number of characters received after ESC
-: LIN-CONSOLE-EKEY ( -- x )
-   KEY
-   DUP H# 1B = IF
-      0 SWAP
-      BEGIN
-         KEY?
-      WHILE
-         8 LSHIFT
-         KEY OR
-         SWAP 1+ SWAP
-      REPEAT
-      H# F0000000 INVERT AND
-      SWAP H# F AND D# 28 LSHIFT OR
-   THEN
-;
-
-\ 10.6.2.1306 EKEY>CHAR ( u -- u false | char true )
-\ If the keyboard event u corresponds to a character in the implementation-defined
-\ character set, return that character and true. Otherwise return u and false.
-: LIN-CONSOLE-EKEY>CHAR ( x -- x false | char true )
-   DUP 128 U<
-;
-
 : LIN-ACCEPT-READLINE
    (S c-addr +n1 -- +n2 )
    \ Receive a string of at most +n1 characters.
@@ -153,8 +127,9 @@ VARIABLE PENDING-CHAR
 \   ['] LIN-ERASE-CHAR        IS CONSOLE-BACKSPACE
 \   ['] LIN-AT-XY             IS AT-XY
    ['] LIN-CONSOLE-KEY?      IS EKEY?
-   ['] LIN-CONSOLE-EKEY      IS EKEY
-   ['] LIN-CONSOLE-EKEY>CHAR IS EKEY>CHAR
+   ['] term-ekey             IS EKEY
+   ['] term-ekey>char        IS EKEY>CHAR
+   ['] term-ekey>fkey        IS EKEY>FKEY
    ['] LIN-CONSOLE-KEY?      IS KEY?
    ['] LIN-CONSOLE-KEY       IS KEY
    ['] LIN-ACCEPT-READLINE   IS ACCEPT

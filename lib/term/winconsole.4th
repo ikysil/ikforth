@@ -77,6 +77,13 @@ USER INPUT_RECORD 20 ( /INPUT_RECORD) USER-ALLOC
   FALSE
 ;
 
+\ 10.6.2.1306.40 EKEY>FKEY ( x -- u flag )
+\ If the keyboard event x corresponds to a keypress in the implementation-defined
+\ special key set, return that key's id u and true. Otherwise return x and false.
+: WIN-CONSOLE-EKEY>FKEY ( u -- u false | char true )
+  DUP 0x00FF0000 AND 0<>
+;
+
 VARIABLE PENDING-CHAR
 
 \ 10.6.1.1755 KEY? ( -- flag )
@@ -228,6 +235,7 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
   ['] WIN-CONSOLE-EKEY?     IS EKEY?
   ['] WIN-CONSOLE-EKEY      IS EKEY
   ['] WIN-CONSOLE-EKEY>CHAR IS EKEY>CHAR
+  ['] WIN-CONSOLE-EKEY>FKEY IS EKEY>FKEY
   ['] WIN-CONSOLE-KEY?      IS KEY?
   ['] WIN-CONSOLE-KEY       IS KEY
   ['] WIN-ACCEPT            IS ACCEPT

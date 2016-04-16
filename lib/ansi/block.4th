@@ -31,11 +31,6 @@ USER BLOCK-DATA    BLOCK-SIZE 1 + CHARS USER-ALLOC
 
 : EMPTY-BUFFERS 0 BLOCK# ! FALSE BLOCK-UPDATED ! ;
 
-: S"+CHAR (S c-addr u char -- c-addr u' )
-   (G Append char to a string )
-   DUP 2OVER + C! DROP CHAR+
-;
-
 : BLOCK-NUM# (S block-num -- char block-num' )
    S>D D# 16 UM/MOD \ S: r q
    SWAP

@@ -131,6 +131,13 @@ SEE SW
 
 DECIMAL
 
-: test-ekey begin ekey h.8 cr cr again ;
+: test-ekey
+   begin
+      CR ." -------------------------------------------" CR
+      ekey
+      dup ekey>char swap 'q' = and if bye then
+      cr h.8
+   again
+;
 
 \ test-ekey

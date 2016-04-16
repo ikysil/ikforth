@@ -9,6 +9,8 @@
 REPORT-NEW-NAME @
 FALSE REPORT-NEW-NAME !
 
+DECIMAL
+
 USER .S-PRINT-XT 1 CELLS USER-ALLOC
 
 : .PN.S (S n -- )
@@ -58,5 +60,11 @@ USER .S-PRINT-XT 1 CELLS USER-ALLOC
    POSTPONE TRACE-WORD-NAME
    POSTPONE TRACE-STACK
 ; IMMEDIATE
+
+: #HEX-DIGIT (S d -- char d' )
+   (G Extract least significant hex digit char from d
+      and return remaining number as d' )
+   16 0 UD/ 2SWAP DROP DIGITS + C@ -ROT
+;
 
 REPORT-NEW-NAME !

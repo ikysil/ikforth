@@ -168,4 +168,9 @@ USER KEY-VALUE?-SEP    1 CHARS USER-ALLOC
   [CHAR] = KEY-VALUE?
 ;
 
+: S"+CHAR (S c-addr u char -- c-addr u' )
+   (G Append char to a string )
+   DUP 2OVER + C! DROP CHAR+
+;
+
 REPORT-NEW-NAME !
