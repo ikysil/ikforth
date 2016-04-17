@@ -21,17 +21,17 @@ int StartForth(int const argc, char const * argv[], char const * envp[],
     }
     if (strncmp("IKFI", IHeader.Signature, 4) != 0) {
         char msg[] = " is not valid IKForth image.";
-        fType(strlen(ImageFileName), ImageFileName);
-        fType(strlen(msg), msg);
-        fType(2, "\n\r");
+        sys_Type(strlen(ImageFileName), ImageFileName);
+        sys_Type(strlen(msg), msg);
+        sys_Type(2, "\n\r");
         fFileClose(fHandle);
         return 1;
     }
     ImageHeader * lHeader = (ImageHeader *) AllocateDictionaryAddressSpace(IHeader.DesiredBase, IHeader.DesiredSize);
     if (lHeader != IHeader.DesiredBase) {
         char msg[] = "Cannot allocate memory for dictionary.";
-        fType(strlen(msg), msg);
-        fType(2, "\n\r");
+        sys_Type(strlen(msg), msg);
+        sys_Type(2, "\n\r");
         fFileClose(fHandle);
         return 1;
     }

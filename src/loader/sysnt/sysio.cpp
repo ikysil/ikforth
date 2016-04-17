@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "../IKFCommon.hpp"
 #include "../IKFunc.hpp"
 
@@ -9,19 +12,6 @@ void sys_initIo() {
 
 bool sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWORD * lpNumberOfBytesRead) {
     return ReadFile(hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, NULL);
-}
-
-void __stdcall fEmit(char c) {
-    DWORD written = 0;
-    WriteConsole(hOut, &c, sizeof(c), &written, NULL);
-}
-
-void __stdcall fType(CELL sLen, char const * sAddr) {
-    if (sLen < 1) {
-        return;
-    }
-    DWORD written = 0;
-    WriteConsole(hOut, sAddr, sLen, &written, NULL);
 }
 
 void __stdcall fFileClose(HANDLE fileId) {

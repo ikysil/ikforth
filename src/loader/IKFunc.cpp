@@ -12,8 +12,8 @@ void const * sysfunctions[] = {
     fFreeLibrary,
     fGetProcAddress,
     sys_Bye,
-    fEmit,
-    fType,
+    sys_Emit,
+    sys_Type,
     fFileClose,
     fFileCreate,
     fFilePosition,
@@ -40,4 +40,15 @@ void initName(char * buffer, int bufferSize, char const * value, int valueSize) 
 void __stdcall sys_Bye() {
     CanExit = true;
     while (true) { usleep(100000); }
+}
+
+void __stdcall sys_Emit(char c) {
+    write(STDOUT_FILENO, &c, sizeof(c));
+}
+
+void __stdcall sys_Type(CELL sLen, char const * sAddr) {
+    if (sLen < 1) {
+        return;
+    }
+    write(STDOUT_FILENO, sAddr, sLen);
 }

@@ -17,17 +17,6 @@ bool sys_ReadFile(HANDLE hFile, void * lpBuffer, DWORD nNumberOfBytesToRead, DWO
     return readBytes >= 0;
 }
 
-void __stdcall fEmit(char c) {
-    write(STDOUT_FILENO, &c, sizeof(c));
-}
-
-void __stdcall fType(CELL sLen, char const * sAddr) {
-    if (sLen < 1) {
-        return;
-    }
-    write(STDOUT_FILENO, sAddr, sLen);
-}
-
 void __stdcall fFileClose(HANDLE fileId) {
     close(fileId);
 }
