@@ -1,7 +1,7 @@
 \
-\  class.f
+\  class.4th
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading CLASS definitions )
@@ -270,7 +270,7 @@ INT/COMP: FIELD-ADDR
 
   : (.T) (S class level -- level )
      OVER SUPER ?DUP IF SWAP RECURSE THEN
-     DUP ?DUP IF 1- 2* SPACES ." À-" THEN 1+
+     DUP ?DUP IF 1- 2* SPACES ." ï¿½-" THEN 1+
      SWAP INVOKE .CLASSINFO CR
   ;
 

@@ -11,26 +11,18 @@ senv.Command('FKernel.img', '#build/image/FKernel.img',  Copy('$TARGET', '$SOURC
 senv.Command(fkernelExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
 kernel_0_src = []
-kernel_0_src.extend(senv.Glob('#src/*.f'))
 kernel_0_src.extend(senv.Glob('#src/*.4th'))
-kernel_0_src.extend(senv.Glob('#src/kernel/*.f'))
 kernel_0_src.extend(senv.Glob('#src/kernel/*.4th'))
-kernel_0_src.extend(senv.Glob('#src/kernel.0/*.f'))
 kernel_0_src.extend(senv.Glob('#src/kernel.0/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/ansi/*.f'))
 kernel_0_src.extend(senv.Glob('#lib/ansi/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/linux/*.f'))
 kernel_0_src.extend(senv.Glob('#lib/linux/*.4th'))
 kernel_0_src.extend(senv.Glob('#lib/term/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/win32/*.f'))
 kernel_0_src.extend(senv.Glob('#lib/win32/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/~ik/*.f'))
 kernel_0_src.extend(senv.Glob('#lib/~ik/*.4th'))
 kernel_0_src.extend(senv.Glob('#lib/~js/486asm/*.F'))
 kernel_0_src.extend(senv.Glob('#lib/~js/486asm/*.4th'))
 
 kernel_0_deps = []
-kernel_0_deps.extend(senv.Glob('*.f'))
 kernel_0_deps.extend(senv.Glob('*.4th'))
 kernel_0_deps.extend(kernel_0_src)
 

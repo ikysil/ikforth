@@ -1,5 +1,5 @@
 \
-\  primitives.f
+\  primitives.4th
 \
 \  Copyright (C) 1999-2016 Illya Kysil
 \
@@ -7,7 +7,7 @@
 REPORT-NEW-NAME @
 FALSE REPORT-NEW-NAME !
 
-13 EMIT 10 EMIT S" Loading PRIMITIVES definitions " TYPE
+10 EMIT S" Loading PRIMITIVES definitions " TYPE
 
 \ -----------------------------------------------------------------------------
 \  [ ] ; :

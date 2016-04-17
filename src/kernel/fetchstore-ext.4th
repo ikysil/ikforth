@@ -1,7 +1,7 @@
 \
-\  fetchstore-ext.f
+\  fetchstore-ext.4th
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 
 CR .( Loading FETCHSTORE-EXT definitions )

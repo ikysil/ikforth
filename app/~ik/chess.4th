@@ -1,4 +1,4 @@
 : scroll ;
 : cls page ;
 
-S" app\~jf\chess.f" included
+S" app/~jf/CHESS.F" included

@@ -4,7 +4,7 @@
 \  Copyright (C) 2016 Illya Kysil
 \
 
-REQUIRE-NAME INCLUDED-WORDLIST src/kernel/required.f
+REQUIRE-NAME INCLUDED-WORDLIST src/kernel/required.4th
 
 CR .( Loading LOCATE definitions )
 

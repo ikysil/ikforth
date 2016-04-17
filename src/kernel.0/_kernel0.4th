@@ -59,7 +59,7 @@ S" lib/~ik/macro.4th"             INCLUDED
 S" lib/~ik/loop.4th"              INCLUDED
 REQUIRES" lib/~ik/486asm.4th"
 S" lib/~ik/class.4th"             INCLUDED
-\ S" lib/~ik/float.4th"           INCLUDED
+\ REQUIRES" lib/~ik/float.4th"
 S" lib/~ik/S$.4th"                INCLUDED
 REQUIRES" src/kernel/quit.4th"
 REQUIRES" src/kernel/main.4th"

@@ -1,7 +1,7 @@
 \
-\  string.f
+\  string.4th
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  STRING words
 \

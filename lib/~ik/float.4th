@@ -1,7 +1,7 @@
 \
-\  float.f
+\  float.4th
 \
-\  Copyright (C) 1999-2004 Illya Kysil
+\  Copyright (C) 1999-2016 Illya Kysil
 \
 \  Definitions needed to load Brad Eckert's float.f under IKForth
 \
@@ -16,6 +16,6 @@ REPORT-NEW-NAME OFF
              TRUE  CONSTANT FLOATING-EXT
 ENV>
 
-S" lib\~be\float.f"           INCLUDED
+S" lib/~be/float.f"           INCLUDED
 
 REPORT-NEW-NAME !
