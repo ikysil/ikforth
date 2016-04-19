@@ -2,7 +2,7 @@
 
 ## Code Conventions
 
-* Forth source files use `.4th` extension
+* Forth source files MUST use `.4th` extension (if produced by IKForth contributors)
 * File paths for `INCLUDED` (and family) MUST be relative to repository root
 * File paths MUST use `/` (forward slash) as file separator
 
