@@ -15,6 +15,7 @@
    * `/developer` - developer's interactive configuration, Forth
    * etc...
 * `/blocks` - filesystem root for `BLOCK` wordset implementations
+* `/build` - build artifacts and temporary files
 * `/docs` - system documentation
 * `/extension`
    * `/*` - extensions, Forth
