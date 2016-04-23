@@ -141,3 +141,14 @@ DECIMAL
 ;
 
 \ test-ekey
+
+: t2 postpone throw ; immediate
+: t3 t2 ;
+: t4 exit ;
+
+cr
+see t2
+cr
+see t3
+cr
+see t4

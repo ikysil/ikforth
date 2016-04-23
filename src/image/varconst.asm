@@ -121,7 +121,7 @@ VAR_DP EQU PFA_$DP
 ;  STATE is true when in compilation state, false otherwise.
 ;  The true value in STATE is non-zero, but is otherwise implementation-defined.
                         $VAR    'STATE',$STATE,F_FALSE
-VAR_STATE EQU PFA_$STATE
+VAR_STATE = PFA_$STATE
 
 ;  6.1.0750 BASE
 ;  a-addr is the address of a cell containing the current number-conversion

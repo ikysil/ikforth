@@ -27,7 +27,7 @@
 
 ;  &IMMEDIATE
 ;  D: -- VEF-IMMEDIATE
-                        $CONST  '&IMMEDIATE',,VEF_IMMEDIATE
+                        $CONST  '&IMMEDIATE',HF_IMMEDIATE,VEF_IMMEDIATE
 
 ;  &HIDDEN
 ;  D: -- VEF-HIDDEN
@@ -35,7 +35,7 @@
 
 ;  &COMPILE-ONLY
 ;  D: -- VEF-COMPILE-ONLY
-                        $CONST  '&COMPILE-ONLY',,VEF_COMPILE_ONLY
+                        $CONST  '&COMPILE-ONLY',HF_COMPILE_ONLY,VEF_COMPILE_ONLY
 
 ;  &LOCATE
 ;  D: -- VEF-LOCATE
@@ -190,7 +190,11 @@ NAME_EXIT:
 ;  Compile CFA after (HEADER,)
 ;  D: [ code-addr | 0 ] -- xt
                         $COLON  '(CFA,)',$PCFA_C
-
+                        MATCH   =TRUE, DEBUG {
+                        $WRITE  '  XT='
+                        CW      $HERE, $HOUT8
+                        $WRITE  '  '
+                        }
                         XT_$DUP
                         ;  D: [ code-addr | 0 ] [ code-addr | 0 ]
                         XT_$ZEROEQ

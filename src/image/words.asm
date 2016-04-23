@@ -27,10 +27,11 @@
                         INCLUDE "parse.asm"
                         INCLUDE_HEADER_TC
                         INCLUDE "header.asm"
+                        INCLUDE "recognizer-core.asm"
+                        INCLUDE "recognizer-word.asm"
+                        INCLUDE "recognizer-num.asm"
                         INCLUDE "interpret.asm"
-                        INCLUDE "int_comp.asm"
                         INCLUDE "sysnt-thread.asm"
                         INCLUDE "syslinux-thread.asm"
                         INCLUDE "ik.asm"
                         INCLUDE "call-ffl.asm"
-

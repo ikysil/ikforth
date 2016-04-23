@@ -101,3 +101,20 @@ NOQBRANCH:
                         MOV     DWORD [EDI + VAR_DEFER_XT],EAX
                         MOV     EAX,DWORD [EAX + CFA_SIZE]
                         $JMP
+
+;  (DO-VALUE)
+                $CREATE     '(DO-VALUE)'
+                LABEL       CFA_$DOVALUE
+                PUSHDS      <DWORD [EAX + CFA_SIZE + CELL_SIZE]> ; first cell in VALUE body is reserved for VT
+                $NEXT
+
+;  (DO-INT/COMP)
+                $CREATE     '(DO-INT/COMP)'
+                LABEL       CFA_$PDO_INT_COMP
+                ADD         EAX,CFA_SIZE
+                CMP         BYTE [VAR_STATE + IMAGE_BASE],F_FALSE
+                JZ          PDIC_INT
+                ADD         EAX,CELL_SIZE
+PDIC_INT:
+                MOV         EAX,DWORD [EAX]
+                $JMP

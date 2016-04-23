@@ -16,6 +16,16 @@ REPORT-NEW-NAME OFF
 \ Hexadecimal literals: H# <literal>, $<literal>, 0x<literal>, 0X<literal>,
 \                       \x<literal>, \X<literal>, \u<literal>, \U<literal>
 
+: INTERPRET-LITERAL (S c-addr u -- flag )
+   REC:NUM DUP R:FAIL <>
+   IF
+      STATE @ IF  R>COMP  ELSE  R>INT  THEN
+      EXECUTE TRUE
+   ELSE
+      DROP FALSE
+   THEN
+;
+
 \ -----------------------------------------------------------------------------
 \  B# O# D# H#
 \ -----------------------------------------------------------------------------
@@ -184,6 +194,12 @@ DECIMAL
 ;
 
 DECIMAL
+
+: DO-LIT
+   (S n -- n ) \ INTERPRET
+   (S n -- )   \ COMPILE
+   STATE @ IF  POSTPONE LITERAL  THEN
+;
 
 :NONAME (S c-addr u -- )
   STRIP-PREFIX-CHAR

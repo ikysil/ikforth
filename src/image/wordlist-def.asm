@@ -62,7 +62,7 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 
                         LOCAL   __DEF,__PREVFLD,__LBLNAME,__CODE
 __DEF:
-LASTWORD                =       __DEF 
+LASTWORD                =       __DEF
                         $DEFLABEL HEAD,CFA_NAME
                         IF      ~ FLAGS eq
                           DB    FLAGS
@@ -76,7 +76,7 @@ LASTWORD                =       __DEF
                           DB      NAME
                         END IF
 __PREVFLD:
-                        DB      __PREVFLD - __DEF 
+                        DB      __PREVFLD - __DEF
 ;; LFA
                         $DEFLABEL LFA,CFA_NAME
                         DD      VOC_LINK
@@ -131,3 +131,19 @@ __CODE:
                         MACRO   $CODE NAME,CFA_NAME,FLAGS {
                         $DEF    NAME,CFA_NAME,<>,FLAGS
                         }
+
+                        MACRO   $VALUE NAME,CFA_NAME,VALUE,VT,FLAGS {
+                        $DEF    NAME,CFA_NAME,$DOVALUE,FLAGS
+                        IF      VT eq
+                        CC      0
+                        ELSE
+                        CW      VT
+                        END IF
+                        CC      VALUE
+                        }
+
+                        MACRO   $RTABLE NAME,CFA_NAME,INT_XT,COMP_XT,POST_XT,FLAGS {
+                        $DEF    NAME,CFA_NAME,$DOCREATE,FLAGS
+                        CW      INT_XT,COMP_XT,POST_XT
+                        }
+
