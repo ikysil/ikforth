@@ -30,7 +30,9 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 
 : +! \ (S x addr -- )
-  SWAP OVER @ + SWAP ! ;
+   \ Add value on stack to value at addr
+   SWAP OVER @ + SWAP !
+;
 
 : @+ \ (S addr1 -- addr2 x )
   DUP CELL+ SWAP @

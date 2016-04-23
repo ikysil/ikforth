@@ -9,6 +9,7 @@ S" src/kernel/const.4th"          INCLUDED
 S" src/kernel/core.4th"           INCLUDED
 S" src/kernel/core-tools.4th"     INCLUDED
 S" lib/ansi/value.4th"            INCLUDED
+S" src/kernel/recognizer.4th"     INCLUDED
 S" src/kernel/string.4th"         INCLUDED
 S" src/kernel/string-escape.4th"  INCLUDED
 S" src/kernel/zchar.4th"          INCLUDED
