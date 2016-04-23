@@ -87,3 +87,33 @@
                         CCLIT   VALUE
                         CW      $THROW
                         }
+
+;******************************************************************************
+;  Flow control - IF ELSE THEN
+;******************************************************************************
+                MACRO       _?LBL LBL {
+                IF          LBL eq
+                DISPLAY     "ERROR: LBL is required"
+                ERR
+                END IF
+                }
+
+                MACRO       _IF LBL {
+                _?LBL       LBL
+                IF          DEFINED LBL#_ELSE
+                CQBR        LBL#_ELSE
+                ELSE
+                CQBR        LBL#_THEN
+                END IF
+                }
+
+                MACRO       _ELSE LBL {
+                _?LBL       LBL
+                CBR         LBL#_THEN
+                LABEL       LBL#_ELSE
+                }
+
+                MACRO       _THEN LBL {
+                _?LBL       LBL
+                LABEL       LBL#_THEN
+                }

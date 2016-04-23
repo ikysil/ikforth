@@ -9,9 +9,6 @@
 ;  Core RECOGNIZERs
 ;******************************************************************************
 
-                $NONAME     R_NOOP
-                CW          $EXIT
-
                 $NONAME     R_FAIL_OP
                 CTHROW      -13
                 CW          $EXIT
@@ -61,7 +58,7 @@ DO_REC_LOOP_EXIT:
                 CW          $DROP, $2DROP, $RFROM, $DROP, R_FAIL
                 CW          $EXIT
 
-                $RTABLE     'R:NOT-FOUND',R_NOT_FOUND,R_NOOP,R_NOOP,R_NOOP
+                $RTABLE     'R:NOT-FOUND',R_NOT_FOUND,$NOOP,$NOOP,$NOOP
 
 ;  REC:NOT-FOUND
 ;  ( addr len -- R:NOT-FOUND )

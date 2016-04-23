@@ -42,17 +42,16 @@ ILCS_EXIT:
 ;  Return remaining literal string to convert and FALSE if not successful.
                 $COLON      'IL-CHECK-LIT',$ILCL
                 CW          $ZERO, $DUP, $2SWAP, $TONUMBER, $DUP, $ZEROEQ
-                CQBR        ILCL_NO
+                _IF         ILCL_TONUMBER_SUCCESS
                 CW          $2DROP, $DROP
                 CFETCH      $TONUMBER_SIGNED
-                CQBR        ILCL_UNSIGNED
+                _IF         ILCL_SIGNED
                 CW          $NEGATE
-ILCL_UNSIGNED:
+                _THEN       ILCL_SIGNED
                 CW          $TRUE
-                CBR         ILCL_EXIT
-ILCL_NO:
+                _ELSE       ILCL_TONUMBER_SUCCESS
                 CW          $FALSE
-ILCL_EXIT:
+                _THEN       ILCL_TONUMBER_SUCCESS
                 CW          $EXIT
 
 ;  IL-CHECK-2LIT
@@ -85,7 +84,7 @@ ILC2L_EXIT:
                 CW          $LITERAL
                 CW          $EXIT
 
-                $RTABLE     'R:NUM',R_NUM,R_NOOP,R_NUM_COMP,R_NUM_COMP
+                $RTABLE     'R:NUM',R_NUM,$NOOP,R_NUM_COMP,R_NUM_COMP
 
 ;  R:DNUM-COMP - double COMPILE and POSTPONE action
 ;  ( d -- )
@@ -93,7 +92,7 @@ ILC2L_EXIT:
                 CW          $2LITERAL
                 CW          $EXIT
 
-                $RTABLE     'R:DNUM',R_DNUM,R_NOOP,R_DNUM_COMP,R_DNUM_COMP
+                $RTABLE     'R:DNUM',R_DNUM,$NOOP,R_DNUM_COMP,R_DNUM_COMP
 
 ;  REC:NUM
 ;  ( addr len -- n R:NUM | d R:DNUM | R:FAIL )

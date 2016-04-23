@@ -46,12 +46,11 @@
                 $TRACE_STACK 'INTERPRET-WORD-B:',4
                 }
                 CFETCH      $STATE
-                CQBR        IW_INT
+                _IF         IW_COMPILE
                 CW          R2COMP
-                CBR         IW_EXEC
-IW_INT:
+                _ELSE       IW_COMPILE
                 CW          R2INT
-IW_EXEC:
+                _THEN       IW_COMPILE
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'INTERPRET-WORD'
                 $TRACE_STACK 'INTERPRET-WORD-C:',4
