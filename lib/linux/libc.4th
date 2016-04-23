@@ -74,7 +74,7 @@ LIBC.SO S" write" DYNLIB-SYMBOL 3 CDECL-C1 _write (S u1 c-addr fileid -- x )
 \ ssize_t read(int fileid, void *buf, size_t nbyte);
 LIBC.SO S" read" DYNLIB-SYMBOL 3 CDECL-C1 _read (S u1 c-addr fileid -- x )
 
-:NONAME (S c-addr u1 fileid -- ior )
+:NONAME ( c-addr u1 fileid -- u2 ior )
    ROT SWAP _read
    DUP 0< IF GetLastError ELSE 0 THEN
 ; IS READ-FILE

@@ -37,7 +37,7 @@ REPORT-NEW-NAME OFF
       IF
          DROP -1. GetLastError
       ELSE
-         OFFSETOF_ST_SIZE64 + 2@ 0
+         OFFSETOF_ST_SIZE64 + 2@ SWAP 0
       THEN
    ;]
    ALLOCATE-EXECUTE

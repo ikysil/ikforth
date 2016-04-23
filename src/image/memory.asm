@@ -29,21 +29,23 @@
                         $NEXT
 
 ;  6.1.0310 2!
-;  Store two top cells from the stack to the memory
-;  D: x1 x2 addr --
+;  ( x1 x2 a-addr -- )
+;  Store the cell pair x1 x2 at a-addr, with x2 at a-addr and x1 at the next consecutive cell.
+;  It is equivalent to the sequence SWAP OVER ! CELL+ !.
                         $CODE   '2!',$2STORE,VEF_USUAL
                         POPDS   EBX
-                        POPDS   <DWORD [EBX + CELL_SIZE]>
                         POPDS   <DWORD [EBX]>
+                        POPDS   <DWORD [EBX + CELL_SIZE]>
                         $NEXT
 
 ;  6.1.0350 2@
-;  Fetch two cells from the memory and put them on stack
-;  D: addr -- x1 x2
+;  ( a-addr -- x1 x2 )
+;  Fetch the cell pair x1 x2 stored at a-addr. x2 is stored at a-addr and x1 at the next consecutive cell.
+;  It is equivalent to the sequence DUP CELL+ @ SWAP @.
                         $CODE   '2@',$2FETCH,VEF_USUAL
                         POPDS   EBX
-                        PUSHDS  <DWORD [EBX]>
                         PUSHDS  <DWORD [EBX + CELL_SIZE]>
+                        PUSHDS  <DWORD [EBX]>
                         $NEXT
 
 ;  6.1.0850 C!
