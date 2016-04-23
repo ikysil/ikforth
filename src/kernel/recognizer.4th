@@ -43,4 +43,22 @@ VALUE-VT ' FORTH-RECOGNIZER >BODY !
    CREATE SWAP ROT , , ,
 ;
 
+: .RECOGNIZER-NAME (S rec-xt -- )
+   DUP ." H# " H.8 SPACE >HEAD H>#NAME
+   DUP 0= IF  2DROP ." (nonamed)"  THEN
+   TYPE
+;
+
+: .RECOGNIZERS (S stack-id -- )
+   (G Print names of recognizers configured in stack-id )
+   GET-RECOGNIZERS 0 ?DO
+      .RECOGNIZER-NAME CR
+   LOOP
+;
+
+: .FORTH-RECOGNIZERS
+   (G Print names of recognizers configured in FORTH-RECOGNIZER )
+   FORTH-RECOGNIZER .RECOGNIZERS
+;
+
 REPORT-NEW-NAME !
