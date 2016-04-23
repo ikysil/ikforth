@@ -8,6 +8,7 @@ S" src/kernel.0/primitives.4th"   INCLUDED
 S" src/kernel/const.4th"          INCLUDED
 S" src/kernel/core.4th"           INCLUDED
 S" src/kernel/core-tools.4th"     INCLUDED
+S" lib/ansi/value.4th"            INCLUDED
 S" src/kernel/string.4th"         INCLUDED
 S" src/kernel/string-escape.4th"  INCLUDED
 S" src/kernel/zchar.4th"          INCLUDED
@@ -39,7 +40,6 @@ S" src/kernel/file.4th"           INCLUDED
 S" src/kernel/struct.4th"         INCLUDED
 
 S" lib/ansi/case.4th"             INCLUDED
-S" lib/ansi/value.4th"            INCLUDED
 S" lib/ansi/block.4th"            INCLUDED
 REQUIRES" lib/~ik/quotations.4th"
 S" lib/ansi/see.4th"              INCLUDED

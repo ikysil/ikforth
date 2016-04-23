@@ -40,14 +40,9 @@ REPORT-NEW-NAME OFF
 
 VALUE-METHOD VALUE!   !
 VALUE-METHOD VALUE+!  +!
-VALUE-METHOD 2VALUE!  2!
-VALUE-METHOD 2VALUE+! 2+!
 
 CREATE VALUE-VT
    ' VALUE! , ' VALUE+! ,
-
-CREATE 2VALUE-VT
-   ' 2VALUE! , ' 2VALUE+! ,
 
 : VALUE>VT (S xt -- int-vt-addr )
    >BODY @
@@ -62,7 +57,7 @@ CREATE 2VALUE-VT
 ;
 
 \ -----------------------------------------------------------------------------
-\ VALUE 2VALUE TO +TO
+\ VALUE TO +TO
 \ -----------------------------------------------------------------------------
 
 : VALUE
@@ -70,13 +65,6 @@ CREATE 2VALUE-VT
    VALUE-VT ,
    ,
    DOES> VALUE>DATA @
-;
-
-: 2VALUE
-   CREATE
-   2VALUE-VT ,
-   HERE 2 CELLS ALLOT 2!
-   DOES> VALUE>DATA 2@
 ;
 
 : TO
