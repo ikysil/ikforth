@@ -221,7 +221,7 @@ DEFER CS-ROLL
 ;
 
 \ -----------------------------------------------------------------------------
-\   NAME>STRING
+\   NAME>STRING NAME>COMPILE
 \ -----------------------------------------------------------------------------
 
 \  15.6.2.1909.40 NAME>STRING
@@ -233,6 +233,16 @@ DEFER CS-ROLL
       The buffer containing c-addr u may be transient and valid until the next invocation of NAME>STRING.
       A program shall not write into the buffer containing the resulting string. )
    H>#NAME
+;
+
+\  15.6.2.1909.10 NAME>COMPILE
+\  ( nt -- x xt )
+: NAME>COMPILE
+   (S nt -- x xt )
+   (G x xt represents the compilation semantics of the word nt.
+      The returned xt has the stack effect [ i * x x -- j * x ].
+      Executing xt consumes x and performs the compilation semantics of the word represented by nt. )
+   HEAD> DUP IMMEDIATE? IF  ['] EXECUTE  ELSE  ['] COMPILE,  THEN
 ;
 
 REPORT-NEW-NAME !
