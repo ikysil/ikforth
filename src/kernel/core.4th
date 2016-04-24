@@ -210,9 +210,7 @@ VARIABLE DO-PAIRS
 
 : ' (') DUP IS-INT/COMP? IF INT/COMP>INT THEN ;
 
-' '
-:NONAME ' POSTPONE LITERAL ;
-INT/COMP: [']
+: ['] ' POSTPONE LITERAL ; IMMEDIATE COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
 \  THROW ABORT ABORT"
