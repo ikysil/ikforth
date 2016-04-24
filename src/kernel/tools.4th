@@ -220,4 +220,19 @@ DEFER CS-ROLL
     IF EXECUTE ELSE COMPILE, THEN
 ;
 
+\ -----------------------------------------------------------------------------
+\   NAME>STRING
+\ -----------------------------------------------------------------------------
+
+\  15.6.2.1909.40 NAME>STRING
+\  ( nt -- c-addr u )
+: NAME>STRING
+   (S nt -- c-addr u )
+   (G NAME>STRING returns the name of the word nt in the character string c-addr u.
+      The case of the characters in the string is implementation-dependent.
+      The buffer containing c-addr u may be transient and valid until the next invocation of NAME>STRING.
+      A program shall not write into the buffer containing the resulting string. )
+   H>#NAME
+;
+
 REPORT-NEW-NAME !
