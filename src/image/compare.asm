@@ -28,10 +28,9 @@
                 POPDS       EBX
                 POPDS       EAX
                 CMP         EAX,EBX
-                MOV         EAX,F_TRUE
-                J#COND      SHORT COMP_TRUE
                 MOV         EAX,F_FALSE
-COMP_TRUE:
+                MOV         EBX,F_TRUE
+                CMOV#COND   EAX,EBX
                 PUSHDS      EAX
                 }
 
@@ -39,10 +38,9 @@ COMP_TRUE:
                 LOCAL       COMPZ_TRUE
                 POPDS       EAX
                 OR          EAX,EAX
-                MOV         EAX,F_TRUE
-                J#COND      SHORT COMPZ_TRUE
                 MOV         EAX,F_FALSE
-COMPZ_TRUE:
+                MOV         EBX,F_TRUE
+                CMOV#COND   EAX,EBX
                 PUSHDS      EAX
                 }
 
