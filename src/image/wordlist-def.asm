@@ -39,117 +39,115 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
 ;                  machine code JMP to code address in DTC
 ;  +7+n+m   x                                               // PFA
 ;******************************************************************************
-                        MACRO   $REPORT_UNUSED NAME {
-                            IF      ~ NAME EQ
-                                IF      ~ USED NAME
-                                      DISPLAY `NAME # " not used.",13,10
-                                END IF
-                            END IF
-                        }
+                MACRO       $REPORT_UNUSED NAME {
+                IF          ~ NAME EQ
+                IF          ~ USED NAME
+                DISPLAY     `NAME # " not used.",13,10
+                END IF
+                END IF
+                }
 
-                        MACRO   $DEFLABEL PFX,CFA_NAME,REPORT_UNUSED {
-                        IF      ~ CFA_NAME EQ
-                            LABEL   PFX#_#CFA_NAME DWORD
-                            IF      REPORT_UNUSED EQ TRUE
-                                $REPORT_UNUSED PFX#_#CFA_NAME
-                            END IF
-                        END IF
-                        }
+                MACRO       $DEFLABEL PFX,CFA_NAME,REPORT_UNUSED {
+                IF          ~ CFA_NAME EQ
+                LABEL       PFX#_#CFA_NAME DWORD
+                IF          REPORT_UNUSED EQ TRUE
+                $REPORT_UNUSED PFX#_#CFA_NAME
+                END IF
+                END IF
+                }
 
-                        MACRO   $DEF NAME,CFA_NAME,CODE,FLAGS {
+                MACRO       $DEF NAME,CFA_NAME,CODE,FLAGS {
 
-                        $XTDEF  NAME,CFA_NAME
-
-                        LOCAL   __DEF,__PREVFLD,__LBLNAME,__CODE
+                LOCAL       __DEF,__PREVFLD,__LBLNAME,__CODE
 __DEF:
-LASTWORD                =       __DEF
-                        $DEFLABEL HEAD,CFA_NAME
-                        IF      ~ FLAGS eq
-                          DB    FLAGS
-                        ELSE
-                          DB    VEF_USUAL
-                        END IF
+LASTWORD = __DEF
+                $DEFLABEL   HEAD,CFA_NAME
+                IF          ~ FLAGS eq
+                DB          FLAGS
+                ELSE
+                DB          VEF_USUAL
+                END IF
 ;; NFA
-                        $DEFLABEL NFA,CFA_NAME
-                        DB      __PREVFLD - $ - 1
-                        IF      ~ NAME eq
-                          DB      NAME
-                        END IF
+                $DEFLABEL   NFA,CFA_NAME
+                DB          __PREVFLD - $ - 1
+                IF          ~ NAME eq
+                DB          NAME
+                END IF
 __PREVFLD:
-                        DB      __PREVFLD - __DEF
+                DB          __PREVFLD - __DEF
 ;; LFA
-                        $DEFLABEL LFA,CFA_NAME
-                        DD      VOC_LINK
-VOC_LINK                =       __DEF + IMAGE_BASE
+                $DEFLABEL   LFA,CFA_NAME
+                DD          VOC_LINK
+VOC_LINK = __DEF + IMAGE_BASE
 
 ;; CFA
-                        IF      CODE eq
-                          $CFA    __CODE,CFA_NAME
-                        ELSE
-                          $CFA    CFA_#CODE,CFA_NAME
-                        END IF
+                IF          CODE eq
+                $CFA        __CODE,CFA_NAME
+                ELSE
+                $CFA        CFA_#CODE,CFA_NAME
+                END IF
 __CODE:
-                        $DEFLABEL PFA,CFA_NAME
+                $DEFLABEL   PFA,CFA_NAME
 ;; PFA
-                        }
+                }
 
 ;******************************************************************************
 ;
 ;******************************************************************************
-                        MACRO   $CONST NAME,CFA_NAME,VALUE {
-                        $DEF    NAME,CFA_NAME,$DOCONST
-                        CC      VALUE
-                        }
+                MACRO       $CONST NAME,CFA_NAME,VALUE {
+                $DEF        NAME,CFA_NAME,$DOCONST
+                CC          VALUE
+                }
 
-                        MACRO   $VAR NAME,CFA_NAME,VALUE {
-                        $DEF    NAME,CFA_NAME,$DOVAR
-                        CC      VALUE
-                        }
+                MACRO       $VAR NAME,CFA_NAME,VALUE {
+                $DEF        NAME,CFA_NAME,$DOVAR
+                CC          VALUE
+                }
 
-                        MACRO   $CREATE NAME,CFA_NAME {
-                        $DEF    NAME,CFA_NAME,$DOCREATE
-                        }
+                MACRO       $CREATE NAME,CFA_NAME {
+                $DEF        NAME,CFA_NAME,$DOCREATE
+                }
 
-                        MACRO   $USER NAME,CFA_NAME,VALUE {
-                        $DEF    NAME,CFA_NAME,$DOUSER
-                        CC      VALUE
-                        }
+                MACRO       $USER NAME,CFA_NAME,VALUE {
+                $DEF        NAME,CFA_NAME,$DOUSER
+                CC          VALUE
+                }
 
-                        MACRO   $COLON NAME,CFA_NAME,FLAGS {
-                        $DEF    NAME,CFA_NAME,$ENTER,FLAGS
-                        }
+                MACRO       $COLON NAME,CFA_NAME,FLAGS {
+                $DEF        NAME,CFA_NAME,$ENTER,FLAGS
+                }
 
-                        MACRO   $NONAME CFA_NAME,FLAGS {
-                        $DEF    <>,CFA_NAME,$ENTER,FLAGS
-                        }
+                MACRO       $NONAME CFA_NAME,FLAGS {
+                $DEF        <>,CFA_NAME,$ENTER,FLAGS
+                }
 
-                        MACRO   $END_COLON {
-                        CW      $END_COLON
-                        }
+                MACRO       $END_COLON {
+                CW          $END_COLON
+                }
 
-                        MACRO   $DEFER NAME,CFA_NAME,VALUE,FLAGS {
-                        $DEF    NAME,CFA_NAME,$DODEFER,FLAGS
-                        CW      VALUE
-                        }
+                MACRO       $DEFER NAME,CFA_NAME,VALUE,FLAGS {
+                $DEF        NAME,CFA_NAME,$DODEFER,FLAGS
+                CW          VALUE
+                }
 
-                        MACRO   $CODE NAME,CFA_NAME,FLAGS {
-                        $DEF    NAME,CFA_NAME,<>,FLAGS
-                        }
+                MACRO       $CODE NAME,CFA_NAME,FLAGS {
+                $DEF        NAME,CFA_NAME,<>,FLAGS
+                }
 
-                        MACRO   $END_CODE {
-                        }
+                MACRO       $END_CODE {
+                }
 
-                        MACRO   $VALUE NAME,CFA_NAME,VALUE,VT,FLAGS {
-                        $DEF    NAME,CFA_NAME,$DOVALUE,FLAGS
-                        IF      VT eq
-                        CC      0
-                        ELSE
-                        CW      VT
-                        END IF
-                        CC      VALUE
-                        }
+                MACRO       $VALUE NAME,CFA_NAME,VALUE,VT,FLAGS {
+                $DEF        NAME,CFA_NAME,$DOVALUE,FLAGS
+                IF          VT eq
+                CC          0
+                ELSE
+                CW          VT
+                END IF
+                CC          VALUE
+                }
 
-                        MACRO   $RTABLE NAME,CFA_NAME,INT_XT,COMP_XT,POST_XT,FLAGS {
-                        $DEF    NAME,CFA_NAME,$DOCREATE,FLAGS
-                        CW      INT_XT,COMP_XT,POST_XT
-                        }
+                MACRO       $RTABLE NAME,CFA_NAME,INT_XT,COMP_XT,POST_XT,FLAGS {
+                $DEF        NAME,CFA_NAME,$DOCREATE,FLAGS
+                CW          INT_XT,COMP_XT,POST_XT
+                }

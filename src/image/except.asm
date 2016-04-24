@@ -10,87 +10,70 @@
 ;******************************************************************************
 
 ;  EXCS-SIZE
-                        $CONST  'EXCS-SIZE',,EXCEPTION_STACK_SIZE
+                $CONST      'EXCS-SIZE',,EXCEPTION_STACK_SIZE
 
 ;  EXCP0
-                        $CODE   'EXCP0',$EXCP0,VEF_USUAL
+                $CODE       'EXCP0',$EXCP0,VEF_USUAL
+                LEA         EAX,DWORD [EDI + VAR_EXC_STACK]
+                PUSHDS      EAX
+                $NEXT
 
-                        LEA     EAX,DWORD [EDI + VAR_EXC_STACK]
-                        PUSHDS  EAX
-                        $NEXT
-
-                        $USER   'EXCP',$EXCP,VAR_EXCP
+                $USER       'EXCP',$EXCP,VAR_EXCP
 
 ;  EXCP@
-                        $COLON  'EXCP@',$EXCPFETCH,VEF_USUAL
-                        CFETCH  $EXCP
-                        $END_COLON
+                $COLON      'EXCP@',$EXCPFETCH,VEF_USUAL
+                CFETCH      $EXCP
+                $END_COLON
 
 ;  EXCP!
-                        $COLON  'EXCP!',$EXCPSTORE,VEF_USUAL
-                        CSTORE  $EXCP
-                        $END_COLON
+                $COLON      'EXCP!',$EXCPSTORE,VEF_USUAL
+                CSTORE      $EXCP
+                $END_COLON
 
 ;  >EXC
 ;  Move value from the data stack to exception stack
 ;  D: a --
 ;  EXC:   -- a
-                        $COLON  '>EXC',$TOEXC
-                        XT_$EXCPFETCH
-                        CCLIT   CELL_SIZE
-                        XT_$SUB
-                        XT_$SWAP
-                        XT_$OVER
-                        XT_$STORE
-                        XT_$EXCPSTORE
-                        $END_COLON
+                $COLON      '>EXC',$TOEXC
+                CW          $EXCPFETCH
+                CCLIT       CELL_SIZE
+                CW          $SUB, $SWAP, $OVER, $STORE, $EXCPSTORE
+                $END_COLON
 
 ;  EXC>
 ;  Move x from the exception stack to the data stack.
 ;  ( D: -- x ) ( EXC:  x -- )
-                        $COLON  'EXC>',$EXCFROM
-                        XT_$EXCPFETCH
-                        XT_$DUP
-                        XT_$FETCH
-                        XT_$SWAP
-                        XT_$CELLADD
-                        XT_$EXCPSTORE
-                        $END_COLON
+                $COLON      'EXC>',$EXCFROM
+                CW          $EXCPFETCH, $DUP, $FETCH, $SWAP, $CELLADD, $EXCPSTORE
+                $END_COLON
 
 ;  EXC@
 ;  Copy value from the exception stack to data stack
 ;  EXC: a -- a
 ;  D:   -- a
-                        $COLON  'EXC@',$EXCFETCH,VEF_USUAL
-                        XT_$EXCPFETCH
-                        XT_$FETCH
-                        $END_COLON
+                $COLON      'EXC@',$EXCFETCH,VEF_USUAL
+                CW          $EXCPFETCH, $FETCH
+                $END_COLON
 
 ;  Return depth of exception stack
 ;  D:   -- a
-                        $COLON  'EXC-DEPTH',$EXCDEPTH,VEF_USUAL
-                        XT_$EXCP0
-                        XT_$EXCPFETCH
-                        XT_$SUB
-                        XT_$STOD
-                        CCLIT   CELL_SIZE
-                        XT_$UMDIVMOD
-                        XT_$SWAP
-                        XT_$DROP
-                        $END_COLON
+                $COLON      'EXC-DEPTH',$EXCDEPTH,VEF_USUAL
+                CW          $EXCP0, $EXCPFETCH, $SUB, $STOD
+                CCLIT       CELL_SIZE
+                CW          $UMDIVMOD, $SWAP, $DROP
+                $END_COLON
 
 ;  EXC-DROP
 ;  Drop value from the exception stack
 ;  EXC: a --
-                        $COLON  'EXC-DROP',$EXCDROP
-                        XT_$EXCFROM
-                        XT_$DROP
-                        $END_COLON
+                $COLON      'EXC-DROP',$EXCDROP
+                CW          $EXCFROM, $DROP
+                $END_COLON
 
-                        $DEFER  'EXC-FRAME-PUSH',$EXC_FRAME_PUSH,$PEXC_FRAME_PUSH
+                $DEFER      'EXC-FRAME-PUSH',$EXC_FRAME_PUSH,$PEXC_FRAME_PUSH
 
-                        $COLON  '(EXC-FRAME-PUSH)',$PEXC_FRAME_PUSH
-                        $END_COLON
+                $COLON      '(EXC-FRAME-PUSH)',$PEXC_FRAME_PUSH
+                $END_COLON
 
 ;  push exception frame to exception stack
 ;  new EXCEPTION-HANDLER points to the EXCP + 0
@@ -114,90 +97,66 @@
 ;  EXC: x*j --
 ;  D: exc-id --
 ;  the chain will be invoked by THROW runtime in reverse order
-                        $COLON  '(EXC-PUSH)',$PEXC_PUSH
-                        XT_$SPFETCH
-                        XT_$RFROM
-                        XT_$SWAP
-                        XT_$TOEXC
-                        CFETCH  $EXCEPTION_HANDLER
-                        XT_$TOEXC
-                        XT_$RPFETCH
-                        XT_$TOEXC
-                        CWLIT   $PEXC_POP_THROW
-                        XT_$TOEXC
-                        XT_$EXCPFETCH
-                        XT_$EXC_FRAME_PUSH
-                        XT_$TOEXC
-                        XT_$EXCPFETCH
-                        CSTORE  $EXCEPTION_HANDLER
-                        XT_$TOR
-                        $END_COLON
+                $COLON      '(EXC-PUSH)',$PEXC_PUSH
+                CW          $SPFETCH, $RFROM, $SWAP, $TOEXC
+                CFETCH      $EXCEPTION_HANDLER
+                CW          $TOEXC, $RPFETCH, $TOEXC
+                CWLIT       $PEXC_POP_THROW
+                CW          $TOEXC, $EXCPFETCH, $EXC_FRAME_PUSH, $TOEXC, $EXCPFETCH
+                CSTORE      $EXCEPTION_HANDLER
+                CW          $TOR
+                $END_COLON
 
 ;  pop exception frame from exception stack
 ;  restore EXCEPTION-HANDLER
 ;  EXC: see table above --
-                        $COLON  '(EXC-POP-CATCH)',$PEXC_POP_CATCH
+                $COLON      '(EXC-POP-CATCH)',$PEXC_POP_CATCH
 ;  skip optional exception frame data
-                        XT_$EXCFROM
-                        XT_$EXCPSTORE
+                CW          $EXCFROM, $EXCPSTORE
 ;  process mandatory exception frame data
-                        XT_$EXCDROP
-                        XT_$EXCDROP
-                        XT_$EXCFROM
-                        CSTORE  $EXCEPTION_HANDLER
-                        XT_$EXCDROP
-                        $END_COLON
+                CW          $EXCDROP, $EXCDROP, $EXCFROM
+                CSTORE  $EXCEPTION_HANDLER
+                CW          $EXCDROP
+                $END_COLON
 
 ;  restore execution environment from exception stack
 ;  restore SP, RP, EXCP, and EXCEPTION-HANDLER
 ;  EXC: see table above --
 ;  (THROW)
 ;  D: exc-id --
-                        $COLON  '(THROW)',$PTHROW
-                        CFETCH  $EXCEPTION_HANDLER
-                        XT_$EXCPSTORE
+                $COLON      '(THROW)',$PTHROW
+                CFETCH      $EXCEPTION_HANDLER
+                CW          $EXCPSTORE
 ;  skip the address of the mandatory exception frame data
-                        XT_$EXCDROP
+                CW          $EXCDROP
 ;  execute chain to restore execution environment from optional data
 PTHROW_CHAIN:
-                        XT_$EXCFROM
-                        XT_$EXECUTE
-                        CBR     PTHROW_CHAIN
-                        $END_COLON
+                CW          $EXCFROM, $EXECUTE
+                CBR         PTHROW_CHAIN
+                $END_COLON
 
-                        $COLON  '(EXC-POP-THROW)',$PEXC_POP_THROW
-                        XT_$EXCFROM
-                        XT_$RPSTORE
-                        XT_$EXCFROM
-                        CSTORE  $EXCEPTION_HANDLER
-                        XT_$EXCFROM
-                        XT_$SWAP
-                        XT_$TOR
-                        XT_$SPSTORE
-                        XT_$DROP
-                        XT_$RFROM
-                        $END_COLON
+                $COLON      '(EXC-POP-THROW)',$PEXC_POP_THROW
+                CW          $EXCFROM, $RPSTORE, $EXCFROM
+                CSTORE      $EXCEPTION_HANDLER
+                CW          $EXCFROM, $SWAP, $TOR, $SPSTORE, $DROP, $RFROM
+                $END_COLON
 
 ;  9.6.1.0875 CATCH
 ;  D: x*i xt -- x*j 0 | x*i exc-id
-                        $COLON  'CATCH',$CATCH
-
-                        XT_$PEXC_PUSH
-                        XT_$EXECUTE
-                        XT_$PEXC_POP_CATCH
-                        XT_$ZERO
-                        $END_COLON
+                $COLON      'CATCH',$CATCH
+                CW          $PEXC_PUSH, $EXECUTE, $PEXC_POP_CATCH, $ZERO
+                $END_COLON
 
 ;  9.6.1.2275 THROW
 ;  D: exc-id --
-                        $COLON  'THROW',$THROW
-                        MATCH   =TRUE, DEBUG {
-                           $TRACE_WORD
-                           $TRACE_STACK 'THROW',1
-                        }
-                        XT_$QDUP
-                        CQBR    THROW_EXIT
-                        XT_$PTHROW
+                $COLON      'THROW',$THROW
+                MATCH       =TRUE, DEBUG {
+                $TRACE_WORD
+                $TRACE_STACK 'THROW',1
+                }
+                CW          $QDUP
+                CQBR        THROW_EXIT
+                CW          $PTHROW
 THROW_EXIT:
-                        $END_COLON
+                $END_COLON
 

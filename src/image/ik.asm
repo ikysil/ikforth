@@ -10,26 +10,24 @@
 ;******************************************************************************
 
 ;  INIT-USER
-                        $CODE   'INIT-USER',$INIT_USER
-
-                        CLD
-                        MOV     DWORD [EDI + VAR_BASE],10
-                        MOV     DWORD [EDI + VAR_CURRENT],FORTH_WORDLIST_EQU + IMAGE_BASE
-                        $NEXT
+                $CODE       'INIT-USER',$INIT_USER
+                CLD
+                MOV         DWORD [EDI + VAR_BASE],10
+                MOV         DWORD [EDI + VAR_CURRENT],FORTH_WORDLIST_EQU + IMAGE_BASE
+                $NEXT
 
 ;******************************************************************************
 ;  I/O
 ;******************************************************************************
 
 ;  (TYPE)
-                        $COLON  '(TYPE)',$PTYPE
-
-                        XT_$RFROM                  ; a
-                        XT_$COUNT                  ; a+1 b
-                        XT_$OVER                   ; a+1 b a+1
-                        XT_$OVER                   ; a+1 b a+1 b
-                        XT_$ADD                    ; a+1 b a+1+b
-                        XT_$TOR                    ; a+1 b
-                        XT_$TYPE
-                        $END_COLON
+                $COLON      '(TYPE)',$PTYPE
+                CW          $RFROM                  ; a
+                CW          $COUNT                  ; a+1 b
+                CW          $OVER                   ; a+1 b a+1
+                CW          $OVER                   ; a+1 b a+1 b
+                CW          $ADD                    ; a+1 b a+1+b
+                CW          $TOR                    ; a+1 b
+                CW          $TYPE
+                $END_COLON
 

@@ -9,84 +9,72 @@
 
 
 ;******************************************************************************
-;  $XTDEF defines macro with name XT_CFA_NAME
-;  Can be used instead of CW CFA_NAME sequence
-;******************************************************************************
-                        MACRO   $XTDEF NAME,CFA_NAME {
-                        IF      ~ CFA_NAME EQ
-                          MACRO   XT_#CFA_NAME# \{
-                          CW      CFA_NAME
-                          \}
-                        END IF
-                        }
-
-;******************************************************************************
 ;  Use this macro to compile FORTH threaded code definitions
 ;******************************************************************************
-                        MACRO   CW [CFA_NAME] {
-                        DD      CFA_#CFA_NAME + IMAGE_BASE
-                        }
+                MACRO       CW [CFA_NAME] {
+                DD          CFA_#CFA_NAME + IMAGE_BASE
+                }
 
-                        MACRO   PW [CFA_NAME] {
-                        DD      PFA_#CFA_NAME + IMAGE_BASE
-                        }
+                MACRO       PW [CFA_NAME] {
+                DD          PFA_#CFA_NAME + IMAGE_BASE
+                }
 
-                        MACRO   CWLIT [VALUE] {
-                        CW      $LIT
-                        CW      VALUE
-                        }
+                MACRO       CWLIT [VALUE] {
+                CW          $LIT
+                CW          VALUE
+                }
 
 ;******************************************************************************
 ;  Use this macro to compile constants
 ;******************************************************************************
-                        MACRO   CC [VALUE] {
-                        DD      VALUE
-                        }
+                MACRO       CC [VALUE] {
+                DD          VALUE
+                }
 
-                        MACRO   CCLIT [VALUE] {
-                        CW      $LIT
-                        DD      VALUE
-                        }
+                MACRO       CCLIT [VALUE] {
+                CW          $LIT
+                DD          VALUE
+                }
 
 ;******************************************************************************
 ;  Compile @
 ;******************************************************************************
-                        MACRO   CFETCH [ADDR] {
-                        CW      ADDR
-                        CW      $FETCH
-                        }
+                MACRO       CFETCH [ADDR] {
+                CW          ADDR
+                CW          $FETCH
+                }
 
 ;******************************************************************************
 ;  Compile !
 ;******************************************************************************
-                        MACRO   CSTORE [ADDR] {
-                        CW      ADDR
-                        CW      $STORE
-                        }
+                MACRO       CSTORE [ADDR] {
+                CW          ADDR
+                CW          $STORE
+                }
 
 ;******************************************************************************
 ;  Compile a conditional branch ?BRANCH
 ;******************************************************************************
-                        MACRO   CQBR VALUE {
-                        CW      $QBRANCH
-                        CC      VALUE + IMAGE_BASE
-                        }
+                MACRO       CQBR VALUE {
+                CW          $QBRANCH
+                CC          VALUE + IMAGE_BASE
+                }
 
 ;******************************************************************************
 ;  Compile an unconditional branch BRANCH
 ;******************************************************************************
-                        MACRO   CBR VALUE {
-                        CW      $BRANCH
-                        CC      VALUE + IMAGE_BASE
-                        }
+                MACRO       CBR VALUE {
+                CW          $BRANCH
+                CC          VALUE + IMAGE_BASE
+                }
 
 ;******************************************************************************
 ;  Compile THROW
 ;******************************************************************************
-                        MACRO   CTHROW VALUE {
-                        CCLIT   VALUE
-                        CW      $THROW
-                        }
+                MACRO       CTHROW VALUE {
+                CCLIT       VALUE
+                CW          $THROW
+                }
 
 ;******************************************************************************
 ;  Flow control - IF ELSE THEN

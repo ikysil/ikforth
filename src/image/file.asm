@@ -9,139 +9,117 @@
 ;  FILE access words
 ;******************************************************************************
 
-                        $CONST  'R/O',$R_O,0
+;  R/O
+                $CONST      'R/O',$R_O,0
 
-                        $COLON  'REFILL-FILE',$REFILL_FILE
-                        XT_$SOURCE_ID
-                        MATCH   =TRUE, DEBUG {
-                           $TRACE_WORD  'REFILL-FILE'
-                           $TRACE_STACK 'REFILL-FILE-A:',1
-                        }
-                        XT_$FILE_POSITION
-                        MATCH   =TRUE, DEBUG {
-                           $TRACE_WORD  'REFILL-FILE'
-                           $TRACE_STACK 'REFILL-FILE-B:',3
-                        }
-                        XT_$THROW
-                        XT_$CURRENT_FILE_POSITION
-                        XT_$2STORE
+;  REFILL-FILE
+                $COLON      'REFILL-FILE',$REFILL_FILE
+                CW          $SOURCE_ID
+                MATCH       =TRUE, DEBUG {
+                $TRACE_WORD  'REFILL-FILE'
+                $TRACE_STACK 'REFILL-FILE-A:',1
+                }
+                CW          $FILE_POSITION
+                MATCH       =TRUE, DEBUG {
+                $TRACE_WORD  'REFILL-FILE'
+                $TRACE_STACK 'REFILL-FILE-B:',3
+                }
+                CW          $THROW, $CURRENT_FILE_POSITION, $2STORE
 
-                        XT_$FILE_LINE
-                        CCLIT   MAX_FILE_LINE_LENGTH
-                        XT_$SOURCE_ID
-                        XT_$READ_LINE
-                        XT_$THROW
-                        XT_$SWAP
-                        CSTORE  $HASH_FILE_LINE
-                        XT_$ZERO
-                        CSTORE  $TOIN
+                CW          $FILE_LINE
+                CCLIT       MAX_FILE_LINE_LENGTH
+                CW          $SOURCE_ID, $READ_LINE, $THROW, $SWAP
+                CSTORE      $HASH_FILE_LINE
+                CW          $ZERO
+                CSTORE      $TOIN
 
-                        CFETCH  $INCLUDE_LINE_NUM
-                        XT_$1ADD
-                        CSTORE  $INCLUDE_LINE_NUM
+                CFETCH      $INCLUDE_LINE_NUM
+                CW          $1ADD
+                CSTORE      $INCLUDE_LINE_NUM
 
-                        XT_$REPORT_SOURCE_STORE
+                CW          $REPORT_SOURCE_STORE
 
-                        MATCH   =TRUE, DEBUG {
-                        $CR
-                        $WRITE  'REFILL: '
-                        XT_$REPORT_REFILL
-                        }
+                MATCH       =TRUE, DEBUG {
+                $CR
+                $WRITE      'REFILL: '
+                CW          $REPORT_REFILL
+                }
 
-                        $END_COLON
+                $END_COLON
 
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
-                        $DEFER  'INCLUDE-FILE',$INCLUDE_FILE,$_INCLUDE_FILE
+                $DEFER      'INCLUDE-FILE',$INCLUDE_FILE,$_INCLUDE_FILE
 
-                        $NONAME $_INCLUDE_FILE
-                        XT_$INPUT_TO_R
-                        XT_$RESET_INPUT
-                        XT_$SOURCE_ID_STORE
+;  INCLUDE-FILE for bootstrap
+                $NONAME     $_INCLUDE_FILE
+                CW          $INPUT_TO_R, $RESET_INPUT, $SOURCE_ID_STORE
 INCLUDE_FILE_LOOP:
-                        XT_$ZERO                   ; FOR THROW
-                        XT_$REFILL
-                        CQBR    INCLUDE_FILE_EXIT
-                          XT_$DROP
-                          CWLIT   $INTERPRET
-                          XT_$CATCH
-                          XT_$QDUP
-                        CQBR    INCLUDE_FILE_LOOP
+                CW          $ZERO ; FOR THROW
+                CW          $REFILL
+                CQBR        INCLUDE_FILE_EXIT
+                CW          $DROP
+                CWLIT       $INTERPRET
+                CW          $CATCH, $QDUP
+                CQBR        INCLUDE_FILE_LOOP
 INCLUDE_FILE_EXIT:
-                        XT_$SOURCE_ID
-                        XT_$CLOSE_FILE
-                        XT_$THROW
-                        XT_$R_TO_INPUT
-                        XT_$THROW
-                        $END_COLON
+                CW          $SOURCE_ID, $CLOSE_FILE, $THROW, $R_TO_INPUT, $THROW
+                $END_COLON
 
-                        $NONAME $_INCLUDED
-                        XT_$R_O
-                        XT_$OPEN_FILE
-                        XT_$THROW
-                        XT_$INCLUDE_FILE
-                        $END_COLON
+;  INCLUDED for bootstrap
+                $NONAME     $_INCLUDED
+                CW          $R_O, $OPEN_FILE, $THROW, $INCLUDE_FILE
+                $END_COLON
 
 ;  11.6.1.1718 INCLUDED
 ;  D: c-addr count --
-                        $DEFER  'INCLUDED',$INCLUDED,$_INCLUDED
+                $DEFER      'INCLUDED',$INCLUDED,$_INCLUDED
 
-                        $NONAME $SAVE_INPUT_FILE
-                        XT_$SOURCE_ID
-                        XT_$CURRENT_FILE_POSITION
-                        XT_$2FETCH
-                        CFETCH  $TOIN
-                        CFETCH  $INCLUDE_LINE_NUM
-                        CWLIT   $RESTORE_INPUT_FILE
-                        CCLIT   6
-                        $END_COLON
+SAVE_INPUT_FILE_DATA_SIZE EQU 6
 
-                        $NONAME $RESTORE_INPUT_FILE
-                        XT_$DROP
-                        CSTORE  $INCLUDE_LINE_NUM
-                        CSTORE  $TOIN
-                        XT_$CURRENT_FILE_POSITION
-                        XT_$2STORE
-                        XT_$DUP
-                        XT_$SOURCE_ID_STORE
-                        XT_$ZEROGR
-                        CQBR    @@PRESTORE_FILE_INPUT_EXIT
-                        ; restore file position
-                        XT_$CURRENT_FILE_POSITION
-                        XT_$2FETCH
-                        XT_$SOURCE_ID
-                        XT_$REPOSITION_FILE
-                        XT_$THROW
-                        ; re-read last line
-                        XT_$FILE_LINE
-                        CCLIT   MAX_FILE_LINE_LENGTH
-                        XT_$SOURCE_ID
-                        XT_$READ_LINE
-                        XT_$THROW
-                        XT_$DROP
-                        XT_$DUP
-                        CSTORE  $HASH_FILE_LINE
-                        CFETCH  $TOIN
-                        XT_$GR
-                        CQBR    @@PRESTORE_FILE_INPUT_EXIT
-                        ; if value of #FILE-LINE is large than value of >IN
-                        ; then we have more things to process on this line
-                        ; save the information for error reporting purposes
-                        CW      $INTERPRET_TEXT_STORE
-@@PRESTORE_FILE_INPUT_EXIT:
-                        $END_COLON
+;  SAVE-INPUT for file
+                $NONAME     $SAVE_INPUT_FILE
+                CW          $SOURCE_ID, $CURRENT_FILE_POSITION, $2FETCH
+                CFETCH      $TOIN
+                CFETCH      $INCLUDE_LINE_NUM
+                CWLIT       $RESTORE_INPUT_FILE
+                CCLIT       SAVE_INPUT_FILE_DATA_SIZE
+                $END_COLON
 
-                        $NONAME $RESET_INPUT_FILE
-                        XT_$ZERO
-                        XT_$DUP
-                        CSTORE  $TOIN
-                        XT_$DUP
-                        XT_$SOURCE_ID_STORE
-                        CCLIT   0
-                        XT_$DUP
-                        CSTORE  $INCLUDE_LINE_NUM
-                        CSTORE  $ERROR_LINE_NUM
-                        XT_$STOD
-                        XT_$CURRENT_FILE_POSITION
-                        XT_$2STORE
-                        $END_COLON
+;  RESTORE-INPUT for file
+                $NONAME     $RESTORE_INPUT_FILE
+;  FIXME check the number of values
+                CW          $DROP
+                CSTORE      $INCLUDE_LINE_NUM
+                CSTORE      $TOIN
+                CW          $CURRENT_FILE_POSITION, $2STORE, $DUP, $SOURCE_ID_STORE, $ZEROGR
+                _IF         RESTORE_INPUT_FILE_FILE
+                ; restore file position
+                CW          $CURRENT_FILE_POSITION, $2FETCH, $SOURCE_ID, $REPOSITION_FILE, $THROW
+                ; re-read last line
+                CW          $FILE_LINE
+                CCLIT       MAX_FILE_LINE_LENGTH
+                CW          $SOURCE_ID, $READ_LINE, $THROW, $DROP, $DUP
+                CSTORE      $HASH_FILE_LINE
+                CFETCH      $TOIN
+                CW          $GR
+                _IF         RESTORE_INPUT_FILE_MORE_CURRENT_LINE
+                ; if value of #FILE-LINE is larger than value of >IN
+                ; then we have more things to process on this line
+                ; save the information for error reporting purposes
+                CW          $INTERPRET_TEXT_STORE
+                _THEN       RESTORE_INPUT_FILE_MORE_CURRENT_LINE
+                _THEN       RESTORE_INPUT_FILE_FILE
+                $END_COLON
+
+;  RESET-INPUT for file
+                $NONAME     $RESET_INPUT_FILE
+                CW          $ZERO, $DUP
+                CSTORE      $TOIN
+                CW          $DUP, $SOURCE_ID_STORE
+                CCLIT       0
+                CW          $DUP
+                CSTORE      $INCLUDE_LINE_NUM
+                CSTORE      $ERROR_LINE_NUM
+                CW          $STOD, $CURRENT_FILE_POSITION, $2STORE
+                $END_COLON
