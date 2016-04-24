@@ -205,12 +205,26 @@ VARIABLE DO-PAIRS
 \  ' [']
 \ -----------------------------------------------------------------------------
 
-: (') BL WORD DUP COUNT 0= IF EXC-EMPTY-NAME THROW THEN
-         DROP DUP FIND  0= IF EXC-UNDEFINED  THROW ELSE NIP THEN ;
+\ use VARIABLE since DEFER is not available here yet
+VARIABLE REC:'
 
-: ' (') DUP IS-INT/COMP? IF INT/COMP>INT THEN ;
+:NONAME
+   \ ( addr len -- XT flags R:xxx | R:FAIL )
+   \ Recognize word for ' (tick).
+   REC:WORD
+; REC:' !
 
-: ['] ' POSTPONE LITERAL ; IMMEDIATE COMPILE-ONLY
+: (')
+   BL WORD COUNT
+   DUP 0= IF  EXC-EMPTY-NAME THROW  THEN
+   REC:' @ EXECUTE
+   R:FAIL = IF  EXC-UNDEFINED THROW  THEN
+   DROP
+;
+
+: ' (') DUP IS-INT/COMP? IF  INT/COMP>INT  THEN ;
+
+: ['] (') POSTPONE LITERAL ; IMMEDIATE COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
 \  THROW ABORT ABORT"
@@ -224,7 +238,6 @@ USER THROW-WORD    1 CELLS USER-ALLOC
   IF (THROW) ELSE 0 DUP THROW-ADDRESS ! THROW-WORD ! THEN ;
 
 :NONAME 0 DUP THROW-ADDRESS ! THROW-WORD ! THROW ;
-\ ' THROW
 :NONAME LATEST-HEAD@ POSTPONE LITERAL POSTPONE (COMP-THROW) ;
 INT/COMP: THROW
 
