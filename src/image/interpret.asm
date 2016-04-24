@@ -25,7 +25,7 @@
 
 ;  D: c-addr u --
                 $NONAME     $PINTERPRET_WORD_NOT_FOUND
-                CW          $2DROP
+                CW          $SQTOPOCKET
                 CTHROW      -13
                 $END_COLON
 

@@ -122,6 +122,25 @@ SKBL_LOOP:
                 CW          $PPARSE_NAME
                 $END_COLON
 
+;  S">POCKET
+;  ( c-addr1 u1 -- c-addr2 )
+;  Copy string from c-addr1 to POCKET as counted string and return its address.
+;  Trim to 255 characters if needed.
+                $COLON      'S">POCKET',$SQTOPOCKET
+                CW          $DUP
+                CCLIT       255
+                CW          $UGR
+                _IF         SQTOPOCKET_TOO_LONG
+                CW          $DROP
+                CCLIT       255
+                _THEN       SQTOPOCKET_TOO_LONG
+                CW          $DUP, $POCKET, $DUP, $TOR, $CSTORE
+                CW          $RFETCH, $1ADD, $SWAP
+                CW          $2DUP, $2TOR, $CMOVE, $2RFROM
+                CW          $CHARS, $ADD, $BL, $SWAP, $STORE
+                CW          $RFROM
+                $END_COLON
+
 ;  6.1.2450 WORD
 ;  ( char "<chars>ccc<char>" -- c-addr )
 ;  Skip leading delimiters. Parse characters ccc delimited by char.
@@ -135,11 +154,7 @@ SKBL_LOOP:
                 CFETCH      $TOIN
                 CW          $SLASH_STRING
                 CW          $PPARSE_NAME
-                CW          $DUP, $POCKET, $DUP, $TOR, $CSTORE
-                CW          $RFETCH, $1ADD, $SWAP
-                CW          $2DUP, $2TOR, $CMOVE, $2RFROM
-                CW          $CHARS, $ADD, $BL, $SWAP, $STORE
-                CW          $RFROM
+                CW          $SQTOPOCKET
                 $END_COLON
 
 ;  (S")
