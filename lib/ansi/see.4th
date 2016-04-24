@@ -50,7 +50,7 @@ DEFER DEFER-PRI
       ." Low-level primitive" TRUE
     ENDOF
     [ ' CREATE-PRI CFA@ ] LITERAL OF
-      ." CREATE " TRUE
+      ." CREATE( BODY@ " R@ EXECUTE WRITE-VALUE ." )" TRUE
     ENDOF
     [ ' V-PRI CFA@ ] LITERAL OF
       ." VARIABLE( " R@ EXECUTE WRITE-VALUE ." )" TRUE
@@ -94,6 +94,7 @@ DEFER DEFER-PRI
     IF
       R@ .WORD-NAME SPACE
       ." XT=H# " R@ H.8 SPACE
+      ." BODY@ " R@ >BODY WRITE-VALUE SPACE
       R@ >HEAD WORD-ATTR
       ." DOES> " CR
       FALSE
@@ -186,9 +187,7 @@ DEFER DEFER-PRI
 ;
 
 : SEE (S 'name' -- )
-  BL WORD DUP COUNT 0= IF EXC-EMPTY-NAME THROW THEN DROP
-          DUP  FIND 0= IF EXC-UNDEFINED  THROW THEN NIP
-  (SEE)
+   ' (SEE)
 ;
 
 BASE !
