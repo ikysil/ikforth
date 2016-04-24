@@ -57,6 +57,11 @@
                 $TRACE_WORD  'REC:WORD'
                 $TRACE_STACK 'REC:WORD-A:',2
                 }
+                CW          $DUP, $ZEROEQ
+                _IF         REC_WORD_EMPTY_NAME
+                CW          $DROP, R_FAIL
+                CW          $EXIT
+                _THEN       REC_WORD_EMPTY_NAME
                 CW          $SEARCH_NAME     ; ( XT imm-flag | 0 )
                 CW          $QDUP
                 _IF         REC_WORD_SUCCESS
