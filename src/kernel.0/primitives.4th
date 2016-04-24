@@ -55,6 +55,12 @@ FALSE REPORT-NEW-NAME !
   &COMPILE-ONLY SET-HFLAGS!
 ;
 
+: COMPILE-ONLY?
+   \ (S xt -- flag )
+   \ (G Check if word identified by xt is a compile-only word. )
+   >HEAD HFLAGS@ &COMPILE-ONLY AND 0<>
+;
+
 : IMMEDIATE/COMPILE-ONLY
   &IMMEDIATE/COMPILE-ONLY SET-HFLAGS!
 ;
