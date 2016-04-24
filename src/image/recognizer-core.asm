@@ -11,7 +11,7 @@
 
                 $NONAME     R_FAIL_OP
                 CTHROW      -13
-                CW          $EXIT
+                $END_COLON
 
                 $RTABLE     'R:FAIL',R_FAIL,R_FAIL_OP,R_FAIL_OP,R_FAIL_OP
 
@@ -19,19 +19,19 @@
 ;  R:TABLE -- XT-INTERPRET
                 $COLON      'R>INT',R2INT
                 CW          $FETCH
-                CW          $EXIT
+                $END_COLON
 
 ;  R>COMP
 ;  R:TABLE -- XT-COMPILE
                 $COLON      'R>COMP',R2COMP
                 CW          $CELLADD, $FETCH
-                CW          $EXIT
+                $END_COLON
 
 ;  R>POST
 ;  R:TABLE -- XT-POSTPONE
                 $COLON      'R>POST',R2POST
                 CW          $CELLADD, $CELLADD,$FETCH
-                CW          $EXIT
+                $END_COLON
 
 ;  DO-RECOGNIZER
 ;  c-addr len rec-id -- i*x R:TABLE | R:FAIL
@@ -56,7 +56,7 @@ DO_REC_LOOP_CONT:
                 CBR         DO_REC_LOOP
 DO_REC_LOOP_EXIT:
                 CW          $DROP, $2DROP, $RFROM, $DROP, R_FAIL
-                CW          $EXIT
+                $END_COLON
 
                 $RTABLE     'R:NOT-FOUND',R_NOT_FOUND,$NOOP,$NOOP,$NOOP
 
@@ -66,7 +66,7 @@ DO_REC_LOOP_EXIT:
                 $COLON      'REC:NOT-FOUND',REC_NOT_FOUND
                 CW          $INTERPRET_WORD_NOT_FOUND
                 CW          R_NOT_FOUND
-                CW          $EXIT
+                $END_COLON
 
                 $CREATE     'CORE-RECOGNIZER',CORE_RECOGNIZER
                 CC          3

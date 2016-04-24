@@ -123,6 +123,10 @@ __CODE:
                         $DEF    <>,CFA_NAME,$ENTER,FLAGS
                         }
 
+                        MACRO   $END_COLON {
+                        CW      $END_COLON
+                        }
+
                         MACRO   $DEFER NAME,CFA_NAME,VALUE,FLAGS {
                         $DEF    NAME,CFA_NAME,$DODEFER,FLAGS
                         CW      VALUE
@@ -130,6 +134,9 @@ __CODE:
 
                         MACRO   $CODE NAME,CFA_NAME,FLAGS {
                         $DEF    NAME,CFA_NAME,<>,FLAGS
+                        }
+
+                        MACRO   $END_CODE {
                         }
 
                         MACRO   $VALUE NAME,CFA_NAME,VALUE,VT,FLAGS {
@@ -146,4 +153,3 @@ __CODE:
                         $DEF    NAME,CFA_NAME,$DOCREATE,FLAGS
                         CW      INT_XT,COMP_XT,POST_XT
                         }
-

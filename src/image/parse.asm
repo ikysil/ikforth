@@ -89,7 +89,7 @@ PWORD_EXIT:
 WORD_EMPTY_SOURCE:
                         XT_$POCKET                 ; c c-addr u dest-addr
                         XT_$PWORD
-                        XT_$EXIT
+                        $END_COLON
 
 ;  (PARSE)
                         $CODE   '(PARSE)',$PPARSE
@@ -127,7 +127,7 @@ PPARSE_EXIT:
                         XT_$ADD                    ; c u c-addr
                         XT_$SWAP                   ; c c-addr u
                         XT_$PPARSE                 ; c-addr u
-                        XT_$EXIT
+                        $END_COLON
 
 ;  (S")
 ;  -- c-addr count
@@ -142,7 +142,7 @@ PPARSE_EXIT:
                         XT_$ADD
                         XT_$TOR
                         XT_$SWAP
-                        XT_$EXIT
+                        $END_COLON
 
 ;  S"-COMP
                         $COLON  'S"-COMP',$SQ_COMP
@@ -158,7 +158,7 @@ PPARSE_EXIT:
                         XT_$ALLOT
                         XT_$SWAP
                         XT_$CMOVE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  +S"BUFFER
 ;  S: -- c-addr
@@ -175,7 +175,7 @@ PPARSE_EXIT:
                         XT_$MUL
                         XT_$SQBUFFER
                         XT_$ADD
-                        XT_$EXIT
+                        $END_COLON
 
 ;  >S"BUFFER
 ;  S: c-addr1 u1 -- c-addr2 u2
@@ -188,14 +188,14 @@ PPARSE_EXIT:
                         XT_$2TOR
                         XT_$CMOVE
                         XT_$2RFROM
-                        XT_$EXIT
+                        $END_COLON
 
 ;  S"-INT
                         $COLON  'S"-INT',$SQ_INT
                         CCLIT   '"'
                         XT_$PARSE
                         XT_$TOSQBUFFER
-                        XT_$EXIT
+                        $END_COLON
 
 ;     6.1.2165 S"
 ;  11.6.1.2165 S"
@@ -208,12 +208,12 @@ PPARSE_EXIT:
                         XT_$ZERO
                         XT_$PARSE
                         XT_$2DROP
-                        XT_$EXIT
+                        $END_COLON
 
                         $DEFER  '\',,$PBSLASH,VEF_IMMEDIATE
 
                         $COLON  'NOOP',$NOOP,VEF_IMMEDIATE
-                        XT_$EXIT
+                        $END_COLON
 
                         MATCH   =TRUE, DEBUG {
                         $DEFER  '\DEBUG',$SLDEBUG,$NOOP,VEF_IMMEDIATE

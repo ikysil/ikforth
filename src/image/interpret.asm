@@ -21,13 +21,13 @@
                 CW          $BL, $WORD, $COUNT
                 CW          FORTH_RECOGNIZER, DO_RECOGNIZER
                 CW          $DUP, $TOR, R2POST, $EXECUTE, $RFROM, R2COMP, $COMPILEC
-                CW          $EXIT
+                $END_COLON
 
 ;  D: c-addr u --
                 $NONAME     $PINTERPRET_WORD_NOT_FOUND
                 CW          $2DROP
                 CTHROW      -13
-                CW          $EXIT
+                $END_COLON
 
 ;  INTERPRET-WORD-NOT-FOUND
 ;  D: c-addr u --
@@ -60,7 +60,7 @@
                 $TRACE_WORD  'INTERPRET-WORD'
                 $TRACE_STACK 'INTERPRET-WORD-D:',4
                 }
-                CW          $EXIT
+                $END_COLON
 
 ;  INTERPRET-TEXT!
 ;  Save current SOURCE for error reporting purposes
@@ -71,7 +71,7 @@
                 CW          $INTERPRET_TEXT, $HASH_INTERPRET_TEXT, $REFILL_SOURCE, $2STORE
                 CFETCH      $INCLUDE_LINE_NUM
                 CSTORE      $ERROR_LINE_NUM
-                CW          $EXIT
+                $END_COLON
 
 ;  INTERPRET
                 $COLON      'INTERPRET',$INTERPRET
@@ -83,4 +83,4 @@ INT_LOOP:
                 CBR         INT_LOOP
 INT_EXIT:
                 CW          $2DROP
-                CW          $EXIT
+                $END_COLON

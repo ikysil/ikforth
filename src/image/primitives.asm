@@ -76,8 +76,7 @@ NOQBRANCH:
                         $NEXT                           ; fetch next word address and execute it
 
 ;  (;)
-                        $CODE   '(;)',$EXIT,VEF_COMPILE_ONLY
-
+                        $CODE   '(;)',$END_COLON,VEF_COMPILE_ONLY
                         POPRS   ESI                     ; pop previous IP from return stack
                         $NEXT
 

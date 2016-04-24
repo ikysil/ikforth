@@ -64,7 +64,7 @@ DO_LINUX_THREAD:
 ;  (SIG-HANDLER)
 ;  D: signal-id -- signal-id
                         $COLON  '(SIG-HANDLER)',$PSIG_HANDLER,VEF_USUAL
-                        XT_$EXIT
+                        $END_COLON
 
 SIG_HANDLER:
                         PUSH    EBP

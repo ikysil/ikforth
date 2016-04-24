@@ -18,7 +18,7 @@
                         CCLIT   CFA_EXECUTOR_OFFSET
                         XT_$ADD
                         XT_$FETCH
-                        XT_$EXIT
+                        $END_COLON
 
 ;  CFA!
 ;  D: code-addr xt --
@@ -27,7 +27,7 @@
                         CCLIT   CFA_EXECUTOR_OFFSET
                         XT_$ADD
                         XT_$STORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  CODE-ADDRESS!
 ;  D: code-addr xt --
@@ -44,7 +44,7 @@
                         XT_$CMOVE
                         ; D: code-addr xt
                         XT_$CFASTORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  6.1.0550 >BODY
 ;  Convert CFA to PFA
@@ -52,7 +52,7 @@
                         $COLON  '>BODY',$TOBODY
                         CCLIT   CFA_SIZE
                         XT_$ADD
-                        XT_$EXIT
+                        $END_COLON
 
                         $CONST  'HOST-ITC?',,F_FALSE
 

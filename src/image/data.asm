@@ -22,7 +22,7 @@
 ;  COMPILE,
                         $COLON  'COMPILE,',$COMPILEC,VEF_COMPILE_ONLY
                         XT_$COMMA
-                        XT_$EXIT
+                        $END_COLON
 
 ;  6.1.0710 ALLOT
 ;  Allocates n memory cells on the top of vocabulary
@@ -49,12 +49,12 @@
                         CWLIT   $LIT
                         XT_$COMPILEC
                         XT_$COMMA
-                        XT_$EXIT
+                        $END_COLON
 
 ;  6.1.1650 HERE
 ;  addr is the data-space pointer.
 ;  D: -- addr
                         $COLON  'HERE',$HERE
                         CFETCH  $DP
-                        XT_$EXIT
+                        $END_COLON
 

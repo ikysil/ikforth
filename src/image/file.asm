@@ -48,7 +48,7 @@
                         XT_$REPORT_REFILL
                         }
 
-                        XT_$EXIT
+                        $END_COLON
 
 ;  11.6.1.1717 INCLUDE-FILE
 ;  D: fileid --
@@ -73,14 +73,14 @@ INCLUDE_FILE_EXIT:
                         XT_$THROW
                         XT_$R_TO_INPUT
                         XT_$THROW
-                        XT_$EXIT
+                        $END_COLON
 
                         $NONAME $_INCLUDED
                         XT_$R_O
                         XT_$OPEN_FILE
                         XT_$THROW
                         XT_$INCLUDE_FILE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  11.6.1.1718 INCLUDED
 ;  D: c-addr count --
@@ -94,7 +94,7 @@ INCLUDE_FILE_EXIT:
                         CFETCH  $INCLUDE_LINE_NUM
                         CWLIT   $RESTORE_INPUT_FILE
                         CCLIT   6
-                        XT_$EXIT
+                        $END_COLON
 
                         $NONAME $RESTORE_INPUT_FILE
                         XT_$DROP
@@ -129,7 +129,7 @@ INCLUDE_FILE_EXIT:
                         ; save the information for error reporting purposes
                         CW      $INTERPRET_TEXT_STORE
 @@PRESTORE_FILE_INPUT_EXIT:
-                        XT_$EXIT
+                        $END_COLON
 
                         $NONAME $RESET_INPUT_FILE
                         XT_$ZERO
@@ -144,4 +144,4 @@ INCLUDE_FILE_EXIT:
                         XT_$STOD
                         XT_$CURRENT_FILE_POSITION
                         XT_$2STORE
-                        XT_$EXIT
+                        $END_COLON

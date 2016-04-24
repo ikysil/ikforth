@@ -16,7 +16,7 @@
                         XT_$SWAP
                         XT_$COMMA
                         XT_$COMMA
-                        XT_$EXIT
+                        $END_COLON
 
 ;  8.6.1.1040 D+
 ;  ( d1|ud1 d2|ud2 -- d3|ud3 )

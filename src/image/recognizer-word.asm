@@ -21,7 +21,7 @@
                 CTHROW      -14
                 _THEN       R_WORD_INT_COMPILE_ONLY
                 CW          $EXECUTE
-                CW          $EXIT
+                $END_COLON
 
 ;  R:WORD-COMP - word COMPILE action
 ;  ( XT flags -- )
@@ -36,7 +36,7 @@
                 _ELSE       R_WORD_COMP_IMMEDIATE
                 CW          $COMPILEC
                 _THEN       R_WORD_COMP_IMMEDIATE
-                CW          $EXIT
+                $END_COLON
 
 ;  R:WORD-POST - word POSTPONE action
 ;  ( XT flags -- )
@@ -46,7 +46,7 @@
                 $TRACE_STACK 'R:WORD-POST-A:',2
                 }
                 CW          $2LITERAL
-                CW          $EXIT
+                $END_COLON
 
                 $RTABLE     'R:WORD',R_WORD,R_WORD_INT,R_WORD_COMP,R_WORD_POST
 
@@ -74,4 +74,4 @@
                 $TRACE_WORD  'REC:WORD'
                 $TRACE_STACK 'REC:WORD-B:',3
                 }
-                CW          $EXIT
+                $END_COLON

@@ -33,7 +33,7 @@ ILCS_SIGNED:
 ILCS_UNSIGNED:
                 CW          $SWAP, $CHARADD, $SWAP, $1SUB
 ILCS_EXIT:
-                CW          $EXIT
+                $END_COLON
 
 ;  IL-CHECK-LIT
 ;  ( c-addr u - n TRUE | c-addr u FALSE )
@@ -52,7 +52,7 @@ ILCS_EXIT:
                 _ELSE       ILCL_TONUMBER_SUCCESS
                 CW          $FALSE
                 _THEN       ILCL_TONUMBER_SUCCESS
-                CW          $EXIT
+                $END_COLON
 
 ;  IL-CHECK-2LIT
 ;  ( d c-addr u - d TRUE | FALSE )
@@ -76,13 +76,13 @@ ILC2L_TOO_SHORT:
 ILC2L_NOT_DOUBLE:
                 CW          $2DROP, $FALSE
 ILC2L_EXIT:
-                CW          $EXIT
+                $END_COLON
 
 ;  R:NUM-COMP - number COMPILE and POSTPONE action
 ;  ( n -- )
                 $NONAME     R_NUM_COMP
                 CW          $LITERAL
-                CW          $EXIT
+                $END_COLON
 
                 $RTABLE     'R:NUM',R_NUM,$NOOP,R_NUM_COMP,R_NUM_COMP
 
@@ -90,7 +90,7 @@ ILC2L_EXIT:
 ;  ( d -- )
                 $NONAME     R_DNUM_COMP
                 CW          $2LITERAL
-                CW          $EXIT
+                $END_COLON
 
                 $RTABLE     'R:DNUM',R_DNUM,$NOOP,R_DNUM_COMP,R_DNUM_COMP
 
@@ -136,4 +136,4 @@ RECN_CHECK_2LIT:
 RECN_FAIL:
                 CW          R_FAIL
 RECN_EXIT:
-                CW          $EXIT
+                $END_COLON

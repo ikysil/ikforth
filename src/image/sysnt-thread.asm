@@ -63,7 +63,7 @@ DO_WIN32_THREAD:
 ;  (SEH-HANDLER)
 ;  D: win32-exc-id -- exc-id
                         $COLON  '(SEH-HANDLER)',$PSEH_HANDLER,VEF_USUAL
-                        XT_$EXIT
+                        $END_COLON
 
 SEH_HANDLER:
                         PUSH    EBP

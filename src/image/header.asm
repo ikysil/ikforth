@@ -71,7 +71,7 @@ NEXT_CODE_SIZE          EQU     NEXT_CODE_END - NEXT_CODE_START
                         XT_$SWAP
                         XT_$NEXT_CODE_SIZE
                         XT_$CMOVE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  LATEST-HEAD@
 ;  addr is the link address of the last compiled word in compilation wordlist.
@@ -106,7 +106,7 @@ NAME_ZEROGR:
                         CQBR    NAME_OK
                           CTHROW  -19
 NAME_OK:
-                        XT_$EXIT
+                        $END_COLON
 
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
@@ -131,7 +131,7 @@ NO_REPORT:
                           XT_$TYPE
                           $WRITE  ' '
 CDN_OK:
-                        XT_$EXIT
+                        $END_COLON
 
 ;  REPORT-NAME
 ;  D: c-addr count -- c-addr count
@@ -152,7 +152,7 @@ CDN_OK:
                         XT_$AMPLOCATE
                         XT_$OR
 NO_LOCATE:
-                        XT_$EXIT
+                        $END_COLON
 
 ;  (HEADER,)
 ;  Compile header without CFA
@@ -184,7 +184,7 @@ NAME_EXIT:
                         XT_$COMMA
                         XT_$RFROM
                         XT_$LATEST_HEAD_STORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  (CFA,)
 ;  Compile CFA after (HEADER,)
@@ -217,7 +217,7 @@ HAS_CODE_ADDR:
                           ;   D: xt code-addr xt
                         XT_$CODE_ADDRESS_STORE
                           ;   D: xt
-                        XT_$EXIT
+                        $END_COLON
 
 ;  HEADER,
 ;  D: [ code-addr | 0 ] [ 0 0 | c-addr count ] flags -- xt
@@ -225,7 +225,7 @@ HAS_CODE_ADDR:
 
                         XT_$PHEADERC
                         XT_$PCFA_C
-                        XT_$EXIT
+                        $END_COLON
 
 ;  CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
@@ -236,7 +236,7 @@ HAS_CODE_ADDR:
                         XT_$REPORT_NAME
                         XT_$RFROM
                         XT_$HEADERC
-                        XT_$EXIT
+                        $END_COLON
 
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
@@ -248,7 +248,7 @@ HAS_CODE_ADDR:
                         XT_$COUNT
                         XT_$RFROM
                         XT_$CHECK_HEADERC
-                        XT_$EXIT
+                        $END_COLON
 
 ;  HFLAGS!
 ;  D: x h-id --
@@ -256,7 +256,7 @@ HAS_CODE_ADDR:
                         $COLON  'HFLAGS!',$HFLAGS_STORE
 
                         XT_$CSTORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  HFLAGS@
 ;  D: h-id -- x
@@ -264,7 +264,7 @@ HAS_CODE_ADDR:
                         $COLON  'HFLAGS@',$HFLAGS_FETCH
 
                         XT_$CFETCH
-                        XT_$EXIT
+                        $END_COLON
 
 ;  SET-HFLAGS!
 ;  D: flags --
@@ -277,7 +277,7 @@ HAS_CODE_ADDR:
                         XT_$OR
                         XT_$SWAP
                         XT_$HFLAGS_STORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  RESET-HFLAGS!
 ;  D: flags --
@@ -291,7 +291,7 @@ HAS_CODE_ADDR:
                         XT_$AND
                         XT_$SWAP
                         XT_$HFLAGS_STORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  INVERT-HFLAGS!
 ;  D: flags --
@@ -304,7 +304,7 @@ HAS_CODE_ADDR:
                         XT_$XOR
                         XT_$SWAP
                         XT_$HFLAGS_STORE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  >HEAD
 ;  D: xt -- h-id
@@ -337,13 +337,13 @@ HAS_CODE_ADDR:
                         $COLON  'HEAD>NAME',$HEAD_TO_NAME
 
                         XT_$1ADD
-                        XT_$EXIT
+                        $END_COLON
 
 ;  NAME>HEAD
                         $COLON  'NAME>HEAD',$NAME_TO_HEAD
 
                         XT_$1SUB
-                        XT_$EXIT
+                        $END_COLON
 
 ;  >NAME
 ;  D: xt -- name-addr
@@ -351,7 +351,7 @@ HAS_CODE_ADDR:
 
                         XT_$TO_HEAD
                         XT_$HEAD_TO_NAME
-                        XT_$EXIT
+                        $END_COLON
 
 ;  NAME>
 ;  D: name-addr -- xt
@@ -359,7 +359,7 @@ HAS_CODE_ADDR:
 
                         XT_$NAME_TO_HEAD
                         XT_$HEAD_FROM
-                        XT_$EXIT
+                        $END_COLON
 
 ;  >LINK
 ;  D: CFA -- LFA
@@ -367,7 +367,7 @@ HAS_CODE_ADDR:
 
                         CCLIT   CELL_SIZE
                         XT_$SUB
-                        XT_$EXIT
+                        $END_COLON
 
 ;  LINK>
 ;  D: LFA -- CFA
@@ -375,7 +375,7 @@ HAS_CODE_ADDR:
 
                         CCLIT   CELL_SIZE
                         XT_$ADD
-                        XT_$EXIT
+                        $END_COLON
 
 ;  H>NEXT>H
 ;  D: h-id -- prev_h-id | 0
@@ -384,7 +384,7 @@ HAS_CODE_ADDR:
                         XT_$HEAD_FROM
                         XT_$TO_LINK
                         XT_$FETCH
-                        XT_$EXIT
+                        $END_COLON
 
 ;  H>#NAME
 ;  D: h-id -- addr len
@@ -395,7 +395,7 @@ HAS_CODE_ADDR:
                         XT_$1ADD
                         XT_$SWAP
                         XT_$CFETCH
-                        XT_$EXIT
+                        $END_COLON
 
                         LABEL   UPCASE
                         CMP     AL,'a'

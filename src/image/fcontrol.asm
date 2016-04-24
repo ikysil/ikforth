@@ -11,9 +11,13 @@
 
 ;  6.1.1370 EXECUTE
                         $CODE   'EXECUTE',$EXECUTE
-
                         POPDS   EAX                     ; pop new IP from data stack
                         $JMP
+
+;  EXIT
+                        $CODE   'EXIT',$EXIT,VEF_COMPILE_ONLY
+                        POPRS   ESI                     ; pop previous IP from return stack
+                        $NEXT
 
 ;  EXECUTE-IP
 ;  S: token-addr --

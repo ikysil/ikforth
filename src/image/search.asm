@@ -32,7 +32,7 @@ FORTH_WORDLIST_VT:
                         XT_$WID_TO_VT
                         XT_$FETCH
                         XT_$FETCH
-                        XT_$EXIT
+                        $END_COLON
 
 ;  16.6.1.2192 SEARCH-WORDLIST
 ;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
@@ -40,14 +40,14 @@ FORTH_WORDLIST_VT:
                         XT_$DUP
                         XT_$WID_TO_XT_SEARCH
                         XT_$EXECUTE
-                        XT_$EXIT
+                        $END_COLON
 
 ;  SEARCH-FORTH-WORDLIST
 ;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
                         $COLON  'SEARCH-FORTH-WORDLIST',$SEARCH_FORTH_WORDLIST
                         XT_$FETCH
                         CW      $SEARCH_HEADERS
-                        XT_$EXIT
+                        $END_COLON
 
                         $CREATE 'WORDLIST-VT',$WORDLIST_VT
                         CW      $SEARCH_FORTH_WORDLIST
@@ -56,7 +56,7 @@ FORTH_WORDLIST_VT:
                         $COLON  '(SEARCH-NAME)',$PSEARCH_NAME
                         XT_$FORTH_WORDLIST
                         XT_$SEARCH_WORDLIST
-                        XT_$EXIT
+                        $END_COLON
 
 ;  SEARCH-NAME
 ;  D: ( c-addr u -- 0 | xt 1 | xt -1 )
@@ -79,4 +79,4 @@ FF_FOUND:
                           XT_$RFROM
                           XT_$DROP
 FF_EXIT:
-                        XT_$EXIT
+                        $END_COLON

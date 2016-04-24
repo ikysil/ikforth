@@ -35,7 +35,7 @@
 
                         XT_$FILE_LINE
                         CFETCH  $HASH_FILE_LINE
-                        XT_$EXIT
+                        $END_COLON
 
                         $DEFER  'SOURCE',$SOURCE,$_SOURCE
 
@@ -46,21 +46,21 @@
                         XT_$HOUT8
                         $WRITE  '  '
                         XT_$TYPE
-                        XT_$EXIT
+                        $END_COLON
 
                         $COLON  'REPORT-REFILL',$REPORT_REFILL
                         XT_$REFILL_SOURCE
                         XT_$2FETCH
                         CFETCH  $INCLUDE_LINE_NUM
                         XT_$PREPORT_SOURCE
-                        XT_$EXIT
+                        $END_COLON
 
                         $COLON  'REPORT-SOURCE',$REPORT_SOURCE
                         XT_$INTERPRET_TEXT
                         CFETCH  $HASH_INTERPRET_TEXT
                         CFETCH  $ERROR_LINE_NUM
                         XT_$PREPORT_SOURCE
-                        XT_$EXIT
+                        $END_COLON
 
                         $COLON  'REPORT-SOURCE!',$REPORT_SOURCE_STORE
                         XT_$SOURCE
@@ -68,7 +68,7 @@
                         XT_$2STORE
                         CFETCH  $INCLUDE_LINE_NUM
                         CSTORE  $ERROR_LINE_NUM
-                        XT_$EXIT
+                        $END_COLON
 
 ;  11.6.1.2090 READ-LINE
 ;  (S c-addr u1 fileid -- u2 flag ior )
@@ -85,7 +85,7 @@
                         MATCH   =TRUE, DEBUG {
                            $TRACE_STACK 'SAVE-INPUT',12
                         }
-                        XT_$EXIT
+                        $END_COLON
 
                         $COLON  'RESTORE-INPUT',$RESTORE_INPUT
                         MATCH   =TRUE, DEBUG {
@@ -97,13 +97,13 @@
                         MATCH   =TRUE, DEBUG {
                            $TRACE_STACK 'RESTORE-INPUT-B',1
                         }
-                        XT_$EXIT
+                        $END_COLON
 
                         $DEFER  '(RESET-INPUT)',$PRESET_INPUT,$RESET_INPUT_FILE
 
                         $COLON  'RESET-INPUT',$RESET_INPUT
                         XT_$PRESET_INPUT
-                        XT_$EXIT
+                        $END_COLON
 
 ;  INPUT>R
                         $COLON  'INPUT>R',$INPUT_TO_R,VEF_COMPILE_ONLY
@@ -115,7 +115,7 @@
                         }
                         XT_$N_TO_R
                         XT_$TOR
-                        XT_$EXIT
+                        $END_COLON
 
 ;  R>INPUT
                         $COLON  'R>INPUT',$R_TO_INPUT,VEF_COMPILE_ONLY
@@ -128,5 +128,5 @@
                         XT_$RESTORE_INPUT
                         XT_$DROP
                         XT_$TOR
-                        XT_$EXIT
+                        $END_COLON
 

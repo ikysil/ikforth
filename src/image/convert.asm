@@ -130,7 +130,7 @@ DIGITS_TABLE:
                         XT_$BTOH
                         XT_$EMIT
                         XT_$EMIT
-                        XT_$EXIT
+                        $END_COLON
 
 ;  Output the value on the top of the data stack in hexadecimal representation.
 ;  S: a --
@@ -140,4 +140,4 @@ DIGITS_TABLE:
                         XT_$HOUT2
                         XT_$HOUT2
                         XT_$HOUT2
-                        XT_$EXIT
+                        $END_COLON

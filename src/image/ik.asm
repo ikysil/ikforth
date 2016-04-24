@@ -31,5 +31,5 @@
                         XT_$ADD                    ; a+1 b a+1+b
                         XT_$TOR                    ; a+1 b
                         XT_$TYPE
-                        XT_$EXIT
+                        $END_COLON
 
