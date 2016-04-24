@@ -193,9 +193,11 @@ VOCABULARY EDITOR
 
 : [THEN] ; IMMEDIATE
 
-DEFER CS-PICK ' PICK IS CS-PICK
+DEFER CS-PICK
+' 2PICK IS CS-PICK
 
-DEFER CS-ROLL ' ROLL IS CS-ROLL
+DEFER CS-ROLL
+' 2ROLL IS CS-ROLL
 
 \ -----------------------------------------------------------------------------
 \  ALIAS SYNONYM

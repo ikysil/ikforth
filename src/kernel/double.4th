@@ -201,4 +201,22 @@ CREATE 2VALUE-VT
    DOES> VALUE>DATA 2@
 ;
 
+\ -----------------------------------------------------------------------------
+\   2PICK 2ROLL
+\ -----------------------------------------------------------------------------
+
+: 2PICK (S du du-1 ... d0 u -- du du-1 du-2 ... d0 du )
+   (G Remove u. Copy the du to the top of the stack.
+      An ambiguous condition exists if there are less than u double
+      items on the stack before 2PICK is executed. )
+   1+ 2 * DUP PICK SWAP 1- PICK
+;
+
+: 2ROLL (S du du-1 du-2 ... d0 u -- du-1 ... d0 du )
+   (G Remove u. Rotate u+1 double items on the top of the stack.
+      An ambiguous condition exists if there are less than u+1 double
+      items on the stack before 2ROLL is executed. )
+   1+ 2 * DUP ROLL SWAP 1- ROLL
+;
+
 REPORT-NEW-NAME !
