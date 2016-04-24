@@ -54,10 +54,8 @@ FALSE REPORT-NEW-NAME !
 ;
 
 \ -----------------------------------------------------------------------------
-\  CHARS ALIGN ALIGNED
+\  ALIGN ALIGNED
 \ -----------------------------------------------------------------------------
-
-: CHARS ;
 
 : ALIGN ;
 
@@ -428,49 +426,6 @@ DEFER CR
   ELSE
     R> CMOVE
   THEN
-;
-
-\ -----------------------------------------------------------------------------
-\ 17.6.1.0245 /STRING
-\ Adjust the character string at c-addr1 by n characters.
-\ The resulting character string, specified by c-addr2 u2,
-\ begins at c-addr1 plus n characters and is u1 minus n characters long.
-: /STRING ( c-addr1 u1 n -- c-addr2 u2 )
-   2DUP < IF DROP DUP THEN ROT OVER + -ROT -
-;
-
-: ISSPACE? ( c -- f )
-   BL 1+ U<
-;
-
-: ISNOTSPACE? ( c -- f )
-   ISSPACE? INVERT
-;
-
-: XT-SKIP ( addr1 n1 xt -- addr2 n2 )
-   \ skip all characters satisfying xt ( c -- f )
-   >R
-   BEGIN
-      DUP
-   WHILE
-      OVER C@ R@ EXECUTE
-   WHILE
-      1 /STRING
-   REPEAT THEN
-   R> DROP
-;
-
-\ 6.2.2020 PARSE-NAME
-\ ( "<spaces>name<space>" -- c-addr u )
-\ Skip leading space delimiters. Parse name delimited by a space.
-\ c-addr is the address of the selected string within the input buffer and u is its length in characters.
-\ If the parse area is empty or contains only white space, the resulting string has length zero.
-: PARSE-NAME ( "name" -- c-addr u )
-   SOURCE >IN @ /STRING
-   ['] ISSPACE? XT-SKIP OVER >R
-   ['] ISNOTSPACE? XT-SKIP \ end-word restlen r: start-word
-   2DUP 1 MIN + SOURCE DROP - >IN !
-   DROP R> TUCK -
 ;
 
 \ -----------------------------------------------------------------------------

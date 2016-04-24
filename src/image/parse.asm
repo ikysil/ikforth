@@ -12,84 +12,9 @@
 ;  6.1.0560 >IN
                 $USER       '>IN',$TOIN,VAR_TOIN
 
-;  (WORD)
-                $CODE       '(WORD)',$PWORD
-                PUSHRS      ESI
-                PUSHRS      EDI
-                MOV         EAX,EDI
-                ADD         EAX,VAR_TOIN
-                POPDS       EDI                   ; dest address
-                PUSHRS      EDI
-                INC         EDI
-                POPDS       ECX                   ; count
-                POPDS       ESI                   ; source address
-                POPDS       EDX                   ; DL - char
-                PUSHDS      EBP
-                MOV         EBP,EAX
-                XOR         EBX,EBX
-                XOR         AH,AH                 ; in word flag
-PWORD_LOOP:
-                DEC         ECX
-                JS          SHORT PWORD_EXIT
-                LODSB
-                INC         DWORD [EBP]           ; inc >IN
-                OR          AL,AL
-                JZ          SHORT PWORD_EXIT
-                OR          AH,AH
-                JZ          SHORT PWORD_NOT_IN_WORD
-                CMP         AL,DL
-                JZ          SHORT PWORD_EXIT
-                CMP         AL,32
-                JG          SHORT PWORD_ADDCHAR
-                CMP         DL,32
-                JZ          SHORT PWORD_EXIT
-PWORD_ADDCHAR:
-                STOSB
-                INC         BL
-                JMP         SHORT PWORD_LOOP
-PWORD_NOT_IN_WORD:
-                CMP         AL,32
-                JL          SHORT PWORD_LOOP      ; skip control characters
-                CMP         AL,DL
-                JZ          SHORT PWORD_LOOP      ; skip leading delimiters
-                MOV         AH,1
-                JMP         SHORT PWORD_ADDCHAR
-PWORD_EXIT:
-                POPDS       EBP
-                MOV         BYTE [EDI],32         ; store space
-                POPRS       EDI
-                PUSHDS      EDI
-                MOV         BYTE [EDI],BL         ; store length
-                POPRS       EDI
-                POPRS       ESI
-                $NEXT
-
-;  6.1.2450 WORD
-                $COLON      'WORD',$WORD
-                CW          $SOURCE                 ; c c-addr u
-                CW          $DUP
-                CQBR        WORD_EMPTY_SOURCE
-                CFETCH      $TOIN
-                MATCH       =TRUE, DEBUG {
-                $TRACE_STACK 'WORD-A:',4
-                }
-                CW          $SUB
-                CW          $SWAP                   ; c u c-addr
-                CFETCH      $TOIN                   ; c u c-addr offset
-                CW          $ADD                    ; c u c-addr
-                CW          $SWAP                   ; c c-addr u
-                MATCH       =TRUE, DEBUG {
-                $TRACE_STACK 'WORD-B:',3
-                $CR
-                $WRITE  'WORD-C: '
-                CW          $2DUP, $TYPE
-                }
-WORD_EMPTY_SOURCE:
-                CW          $POCKET                 ; c c-addr u dest-addr
-                CW          $PWORD
-                $END_COLON
-
 ;  (PARSE)
+;  ( char c-addr1 u1 -- c-addr2 u2 )
+;  Parse c-addr1 u1 delimited by the delimiter char.
                 $CODE       '(PARSE)',$PPARSE
                 PUSHRS      ESI
                 POPDS       ECX                     ; count
@@ -101,7 +26,6 @@ PPARSE_LOOP:
                 DEC         ECX
                 JS          SHORT PPARSE_EXIT
                 LODSB
-                INC         DWORD [EDI + VAR_TOIN]
                 OR          AL,AL
                 JZ          SHORT PPARSE_EXIT
                 CMP         AL,DL
@@ -114,14 +38,104 @@ PPARSE_EXIT:
                 $NEXT
 
 ;  6.2.2008 PARSE
+;  ( char "ccc<char>" -- c-addr u )
+;  Parse ccc delimited by the delimiter char.
+;
+;  c-addr is the address (within the input buffer) and u is the length of the parsed string.
+;  If the parse area was empty, the resulting string has a zero length.
                 $COLON      'PARSE',$PARSE
                 CW          $SOURCE             ; c c-addr u
                 CFETCH      $TOIN
-                CW          $SUB, $SWAP         ; c u c-addr
-                CFETCH      $TOIN               ; c u c-addr offset
-                CW          $ADD                ; c u c-addr
-                CW          $SWAP               ; c c-addr u
+                CW          $SLASH_STRING
                 CW          $PPARSE             ; c-addr u
+                CW          $DUP, $CHARADD, $TOINADD
+                $END_COLON
+
+;  17.6.1.0245 /STRING
+;  Adjust the character string at c-addr1 by n characters.
+;  The resulting character string, specified by c-addr2 u2,
+;  begins at c-addr1 plus n characters and is u1 minus n characters long.
+;  : /STRING ( c-addr1 u1 n -- c-addr2 u2 )
+;     2DUP < IF DROP DUP THEN ROT OVER + -ROT -
+;  ;
+                $COLON      '/STRING',$SLASH_STRING
+                CW          $2DUP, $LE
+                _IF         SLS_SHORT
+                CW          $DROP, $DUP
+                _THEN       SLS_SHORT
+                CW          $ROT, $OVER, $ADD, $MROT, $SUB
+                $END_COLON
+
+;  SKIP-BLANK
+;  c-addr u -- c-addr' u'
+                $COLON      'SKIP-BLANK',$SKIP_BLANK
+SKBL_LOOP:
+                CW          $DUP, $ZEROGR
+                _IF         SKBL_HAS_CHARS
+                CW          $OVER, $CFETCH, $BL, $1ADD, $ULE
+                _IF         SKBL_BLANK
+                CCLIT       1
+                CW          $SLASH_STRING
+                CBR         SKBL_LOOP
+                _THEN       SKBL_HAS_CHARS
+                _THEN       SKBL_BLANK
+                $END_COLON
+
+;  >IN+
+;  S: n --
+;  Add n to the value of >IN
+                $COLON      '>IN+',$TOINADD
+                CW          $TOIN, $FETCH, $ADD, $TOIN, $STORE
+                $END_COLON
+
+;  (PARSE-NAME)
+;  ( char "<spaces>name<space>" -- c-addr2 u2 )
+;  Skip leading space delimiters. Parse c-addr1 u1 delimited by the delimiter char.
+                $COLON      '(PARSE-NAME)',$PPARSE_NAME
+                MATCH       =TRUE, DEBUG {
+                $TRACE_STACK '(PARSE-NAME)-A:',3
+                }
+                CW          $SOURCE             ; c c-addr u
+                CFETCH      $TOIN
+                CW          $SLASH_STRING       ; S: c c-addr* u*
+                CW          $OVER, $TOR         ; S: c c-addr* u* R: c-addr*
+                CW          $SKIP_BLANK         ; S: c c-addr" u" R: c-addr*
+                CW          $OVER, $RFROM, $SUB, $TOINADD
+                CW          $PPARSE             ; c-addr u
+                CW          $DUP, $CHARADD, $TOINADD
+                MATCH       =TRUE, DEBUG {
+                $TRACE_STACK '(PARSE-NAME)-B:',2
+                $CR
+                $WRITE      '(PARSE-NAME)-C: '
+                CW          $2DUP, $TYPE
+                }
+                $END_COLON
+
+;  6.2.2020 PARSE-NAME
+;  ( "<spaces>name<space>" -- c-addr u )
+;  Skip leading space delimiters. Parse name delimited by a space.
+;
+;  c-addr is the address of the selected string within the input buffer and u is its length in characters.
+;  If the parse area is empty or contains only white space, the resulting string has length zero.
+                $COLON      'PARSE-NAME',$PARSE_NAME
+                CW          $BL, $PPARSE_NAME
+                $END_COLON
+
+;  6.1.2450 WORD
+;  ( char "<chars>ccc<char>" -- c-addr )
+;  Skip leading delimiters. Parse characters ccc delimited by char.
+;  An ambiguous condition exists if the length of the parsed string is greater than the implementation-defined length of a counted string.
+;
+;  c-addr is the address of a transient region containing the parsed word as a counted string.
+;  If the parse area was empty or contained no characters other than the delimiter,
+;  the resulting string has a zero length. A program may replace characters within the string.
+                $COLON      'WORD',$WORD
+                CW          $PPARSE_NAME
+                CW          $DUP, $POCKET, $DUP, $TOR, $CSTORE
+                CW          $RFETCH, $1ADD, $SWAP
+                CW          $2DUP, $2TOR, $CMOVE, $2RFROM
+                CW          $CHARS, $ADD, $BL, $SWAP, $STORE
+                CW          $RFROM
                 $END_COLON
 
 ;  (S")

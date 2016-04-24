@@ -89,3 +89,9 @@
                 INC         EAX
                 PUSHDS      EAX
                 $NEXT
+
+;  6.1.0898 CHARS
+;  ( n1 -- n2 )
+;  n2 is the size in address units of n1 characters.
+                $CODE       'CHARS',$CHARS
+                $NEXT

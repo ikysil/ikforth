@@ -24,7 +24,6 @@
                 $NEXT
 
                 MACRO       COMP_OP COND {
-                LOCAL       COMP_TRUE
                 POPDS       EBX
                 POPDS       EAX
                 CMP         EAX,EBX
@@ -35,7 +34,6 @@
                 }
 
                 MACRO       COMPZ_OP COND {
-                LOCAL       COMPZ_TRUE
                 POPDS       EAX
                 OR          EAX,EAX
                 MOV         EAX,F_FALSE
