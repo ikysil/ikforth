@@ -4,7 +4,7 @@ s" ext\fetchstore-ext.f" included
 
 HEX
 
-: FS-TEST >IN @ BL WORD COUNT TYPE 9 EMIT >IN ! ' EXECUTE ;
+: FS-TEST >IN @ PARSE-NAME TYPE 9 EMIT >IN ! ' EXECUTE ;
 
 VARIABLE A-TEST
 
@@ -27,7 +27,7 @@ DROP
 CR
 
 : DW GET-ORDER
-     >IN @ >R BL WORD COUNT TYPE
+     >IN @ >R PARSE-NAME TYPE
      CR R@ >IN ! ONLY        ' >BODY 64 DUMP 
      CR R> >IN ! ALSO TARGET ' >BODY 64 DUMP
      SET-ORDER ;

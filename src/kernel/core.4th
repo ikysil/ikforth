@@ -11,7 +11,7 @@ FALSE REPORT-NEW-NAME !
 \  CHAR [CHAR] PARSE) .(
 \ -----------------------------------------------------------------------------
 
-: CHAR BL WORD COUNT DROP C@ ;
+: CHAR PARSE-NAME DROP C@ ;
 
 : [CHAR] CHAR POSTPONE LITERAL ; IMMEDIATE/COMPILE-ONLY
 
@@ -213,7 +213,7 @@ VARIABLE REC:'
 ; REC:' !
 
 : (')
-   BL WORD COUNT
+   PARSE-NAME
    DUP 0= IF  EXC-EMPTY-NAME THROW  THEN
    REC:' @ EXECUTE
    R:FAIL = IF  EXC-UNDEFINED THROW  THEN

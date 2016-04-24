@@ -217,7 +217,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
                 $COLON      'PARSE-CHECK-HEADER,',$PARSE_CHECK_HEADERC
-                CW          $TOR, $BL, $WORD, $COUNT, $RFROM, $CHECK_HEADERC
+                CW          $TOR, $PARSE_NAME, $RFROM, $CHECK_HEADERC
                 $END_COLON
 
 ;  HFLAGS!

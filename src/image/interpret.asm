@@ -18,7 +18,7 @@
 ;  Append the compilation semantics of name to the current definition.
 ;  An ambiguous condition exists if name is not found.
                 $COLON      'POSTPONE',,VEF_IMMEDIATE
-                CW          $BL, $WORD, $COUNT
+                CW          $PARSE_NAME
                 CW          FORTH_RECOGNIZER, DO_RECOGNIZER
                 CW          $DUP, $TOR, R2POST, $EXECUTE, $RFROM, R2COMP, $COMPILEC
                 $END_COLON
@@ -77,7 +77,7 @@
                 $COLON      'INTERPRET',$INTERPRET
                 CW          $INTERPRET_TEXT_STORE
 INT_LOOP:
-                CW          $BL, $WORD, $COUNT, $DUP
+                CW          $PARSE_NAME, $DUP
                 CQBR        INT_EXIT                ; exit loop if parse area is exhausted
                 CW          $INTERPRET_WORD
                 CBR         INT_LOOP

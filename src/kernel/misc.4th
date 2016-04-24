@@ -100,9 +100,7 @@ BASE !
 
 \  Parse name and compile header without CFA
 : HEADER        \  D: "name" --
-  BL WORD COUNT
-  CHECK-NAME REPORT-NAME
-  &USUAL (HEADER,)
+   PARSE-NAME CHECK-NAME REPORT-NAME &USUAL (HEADER,)
 ;
 
 USER PAD PAD-SIZE USER-ALLOC

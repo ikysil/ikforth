@@ -17,10 +17,10 @@
 ;  Parse c-addr1 u1 delimited by the delimiter char.
                 $CODE       '(PARSE)',$PPARSE
                 PUSHRS      ESI
-                POPDS       ECX                     ; count
-                POPDS       ESI                     ; source address
-                POPDS       EDX                     ; DL - char
-                PUSHDS      ESI                     ; result
+                POPDS       ECX                     ; ECX - u1
+                POPDS       ESI                     ; ESI - c-addr1 - source address
+                POPDS       EDX                     ; EDX - char
+                PUSHDS      ESI                     ; c-addr2
                 XOR         EBX,EBX
 PPARSE_LOOP:
                 DEC         ECX
@@ -89,17 +89,14 @@ SKBL_LOOP:
                 $END_COLON
 
 ;  (PARSE-NAME)
-;  ( char "<spaces>name<space>" -- c-addr2 u2 )
+;  ( char c-addr1 u1 -- c-addr2 u2 )
 ;  Skip leading space delimiters. Parse c-addr1 u1 delimited by the delimiter char.
                 $COLON      '(PARSE-NAME)',$PPARSE_NAME
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK '(PARSE-NAME)-A:',3
                 }
-                CW          $SOURCE             ; c c-addr u
-                CFETCH      $TOIN
-                CW          $SLASH_STRING       ; S: c c-addr* u*
-                CW          $OVER, $TOR         ; S: c c-addr* u* R: c-addr*
-                CW          $SKIP_BLANK         ; S: c c-addr" u" R: c-addr*
+                CW          $OVER, $TOR         ; S: c c-addr u R: c-addr
+                CW          $SKIP_BLANK         ; S: c c-addr" u" R: c-addr
                 CW          $OVER, $RFROM, $SUB, $TOINADD
                 CW          $PPARSE             ; c-addr u
                 CW          $DUP, $CHARADD, $TOINADD
@@ -118,7 +115,11 @@ SKBL_LOOP:
 ;  c-addr is the address of the selected string within the input buffer and u is its length in characters.
 ;  If the parse area is empty or contains only white space, the resulting string has length zero.
                 $COLON      'PARSE-NAME',$PARSE_NAME
-                CW          $BL, $PPARSE_NAME
+                CW          $BL
+                CW          $SOURCE             ; c c-addr u
+                CFETCH      $TOIN
+                CW          $SLASH_STRING       ; S: c c-addr* u*
+                CW          $PPARSE_NAME
                 $END_COLON
 
 ;  6.1.2450 WORD
@@ -130,6 +131,9 @@ SKBL_LOOP:
 ;  If the parse area was empty or contained no characters other than the delimiter,
 ;  the resulting string has a zero length. A program may replace characters within the string.
                 $COLON      'WORD',$WORD
+                CW          $SOURCE
+                CFETCH      $TOIN
+                CW          $SLASH_STRING
                 CW          $PPARSE_NAME
                 CW          $DUP, $POCKET, $DUP, $TOR, $CSTORE
                 CW          $RFETCH, $1ADD, $SWAP

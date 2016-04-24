@@ -103,8 +103,8 @@ DEFER INCLUDED-PATH (S c-addr1 count1 -- c-addr2 count2 )
        THEN
 ;
 
-:NONAME BL WORD COUNT (REQUIRES) ;
-:NONAME BL WORD COUNT POSTPONE SLITERAL POSTPONE (REQUIRES) ;
+:NONAME PARSE-NAME (REQUIRES) ;
+:NONAME PARSE-NAME POSTPONE SLITERAL POSTPONE (REQUIRES) ;
 INT/COMP: REQUIRES  (S x*i "name" -- y*j )
 
 :NONAME PARSE" (REQUIRES) ;
@@ -112,12 +112,12 @@ INT/COMP: REQUIRES  (S x*i "name" -- y*j )
 INT/COMP: REQUIRES" (S x*i "name" -- y*j )
 
 : REQUIRE-NAME \ S: <name> <path> --
-  \ Check if name is available using FIND, and include path if not
-  BL WORD FIND NIP
+  \ Check if name is available using ', and include path if not
+  ['] ' CATCH 0= NIP
   IF
     POSTPONE \
   ELSE
-    BL WORD COUNT (REQUIRES)
+    PARSE-NAME (REQUIRES)
   THEN
 ;
 

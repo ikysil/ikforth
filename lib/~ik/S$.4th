@@ -23,7 +23,7 @@ REPORT-NEW-NAME OFF
 \ run-time routine for string parsing
 : PARSE-S$ ( <char1>ccc<char2> -- addr u)
   >IN @
-  BL WORD COUNT DROP C@
+  CHAR
   SWAP >IN !
   DUP PARSE 2DROP
   (S-DELIM)                \ determine second delimiter
@@ -33,7 +33,7 @@ REPORT-NEW-NAME OFF
 \ run-time routine for string parsing
 : PARSE-S\$ ( <char1>ccc<char2> -- addr u)
   >IN @
-  BL WORD COUNT DROP C@
+  CHAR
   SWAP >IN !
   DUP PARSE 2DROP
   (S-DELIM)                \ determine second delimiter
