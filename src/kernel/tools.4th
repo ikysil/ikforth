@@ -221,7 +221,7 @@ DEFER CS-ROLL
 ;
 
 \ -----------------------------------------------------------------------------
-\   NAME>STRING NAME>COMPILE
+\   NAME>STRING NAME>COMPILE NAME>INTERPRET
 \ -----------------------------------------------------------------------------
 
 \  15.6.2.1909.40 NAME>STRING
@@ -243,6 +243,15 @@ DEFER CS-ROLL
       The returned xt has the stack effect [ i * x x -- j * x ].
       Executing xt consumes x and performs the compilation semantics of the word represented by nt. )
    HEAD> DUP IMMEDIATE? IF  ['] EXECUTE  ELSE  ['] COMPILE,  THEN
+;
+
+\  15.6.2.1909.20 NAME>INTERPRET
+\  ( nt -- xt | 0 )
+: NAME>INTERPRET
+   (S nt -- xt | 0 )
+   (G xt represents the interpretation semantics of the word nt.
+      If nt has no interpretation semantics, NAME>INTERPRET returns 0.)
+   HEAD> DUP COMPILE-ONLY? IF  DROP 0  THEN
 ;
 
 REPORT-NEW-NAME !
