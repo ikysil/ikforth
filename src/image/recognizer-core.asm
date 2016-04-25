@@ -62,7 +62,6 @@ DO_REC_LOOP_EXIT:
 
 ;  REC:NOT-FOUND
 ;  ( addr len -- R:NOT-FOUND )
-;  imm-flag - one (1) if the definition is immediate, minus-one (-1) otherwise.
                 $COLON      'REC:NOT-FOUND',REC_NOT_FOUND
                 CW          $INTERPRET_WORD_NOT_FOUND
                 CW          R_NOT_FOUND

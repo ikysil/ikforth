@@ -16,7 +16,7 @@ REPORT-NEW-NAME OFF
 \ Hexadecimal literals: H# <literal>, $<literal>, 0x<literal>, 0X<literal>,
 \                       \x<literal>, \X<literal>, \u<literal>, \U<literal>
 
-: INTERPRET-LITERAL (S c-addr u -- flag )
+: INTERPRET-LITERAL (S c-addr u -- d true | x true | false )
    REC:NUM DUP R:FAIL <>
    IF
       STATE @ IF  R>COMP  ELSE  R>INT  THEN
@@ -187,10 +187,10 @@ DECIMAL
   THEN
 ;
 
-: INTERPRET-LITERAL-IN-BASE (S c-addr u n -- flag )
-  BASE DUP @ >R !
-  INTERPRET-LITERAL
-  R> BASE !
+: INTERPRET-LITERAL-IN-BASE (S c-addr u n -- d true | x true | false )
+   BASE DUP @ >R !
+   INTERPRET-LITERAL
+   R> BASE !
 ;
 
 DECIMAL
@@ -201,33 +201,39 @@ DECIMAL
    STATE @ IF  POSTPONE LITERAL  THEN
 ;
 
+: INTERPRET-PREFIXED-LITERAL (S c-addr u n xt -- c-addr u false | x*j true )
+   (G xt - word to check prefix, n - conversion base )
+   2SWAP 2>R \ S: n xt
+   2R@ ROT   \ S: n c-addr u xt
+   EXECUTE
+   IF
+      \ S: n c-addr' u' R: c-addr u
+      ROT INTERPRET-LITERAL-IN-BASE
+      \ S: d true | x true | false R: c-addr u
+      DUP IF  2R> 2DROP  ELSE  2R> ROT  THEN
+   ELSE
+      \ S: n c-addr u R: c-addr u
+      DROP 2DROP 2R> FALSE
+   THEN
+;
+
 :NONAME (S c-addr u -- )
-  STRIP-PREFIX-CHAR
-  IF
-    DROP C@ DO-LIT
-    EXIT
-  THEN
-  STRIP-PREFIX-BINARY
-  IF
-    2 INTERPRET-LITERAL-IN-BASE
-    IF EXIT THEN
-  THEN
-  STRIP-PREFIX-OCTAL
-  IF
-    8 INTERPRET-LITERAL-IN-BASE
-    IF EXIT THEN
-  THEN
-  STRIP-PREFIX-DECIMAL
-  IF
-    10 INTERPRET-LITERAL-IN-BASE
-    IF EXIT THEN
-  THEN
-  STRIP-PREFIX-HEX
-  IF
-    16 INTERPRET-LITERAL-IN-BASE
-    IF EXIT THEN
-  THEN
-  DEFERRED INTERPRET-WORD-NOT-FOUND
+   STRIP-PREFIX-CHAR
+   IF  DROP C@ DO-LIT EXIT  THEN
+
+   2  ['] STRIP-PREFIX-BINARY
+   INTERPRET-PREFIXED-LITERAL IF  EXIT  THEN
+
+   8  ['] STRIP-PREFIX-OCTAL
+   INTERPRET-PREFIXED-LITERAL IF  EXIT  THEN
+
+   10 ['] STRIP-PREFIX-DECIMAL
+   INTERPRET-PREFIXED-LITERAL IF  EXIT  THEN
+
+   16 ['] STRIP-PREFIX-HEX
+   INTERPRET-PREFIXED-LITERAL IF  EXIT  THEN
+
+   DEFERRED INTERPRET-WORD-NOT-FOUND
 ; IS INTERPRET-WORD-NOT-FOUND
 
 REPORT-NEW-NAME !

@@ -125,14 +125,14 @@ SKBL_LOOP:
 ;  S">POCKET
 ;  ( c-addr1 u1 -- c-addr2 )
 ;  Copy string from c-addr1 to POCKET as counted string and return its address.
-;  Trim to 255 characters if needed.
+;  Trim to maximum length of POCKET if needed.
                 $COLON      'S">POCKET',$SQTOPOCKET
                 CW          $DUP
-                CCLIT       255
+                CCLIT       SLPOCKET - 1
                 CW          $UGR
                 _IF         SQTOPOCKET_TOO_LONG
                 CW          $DROP
-                CCLIT       255
+                CCLIT       SLPOCKET - 1
                 _THEN       SQTOPOCKET_TOO_LONG
                 CW          $DUP, $POCKET, $DUP, $TOR, $CSTORE
                 CW          $RFETCH, $1ADD, $SWAP
