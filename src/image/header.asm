@@ -371,7 +371,7 @@ PNAMEEQ_CS:
                 JNZ         SHORT PNAMEEQ_LOOP  ; jump if more characters to compare
                 MOV         EAX,F_TRUE          ; return TRUE - all characters matched
 PNAMEEQ_EXIT:
-                PUSHDS      EAX                 ; EAX - flag
+                PUSHDS      EAX                 ; EAX - result
                 POPRS       ESI
                 POPRS       EDI
                 $NEXT
@@ -510,43 +510,43 @@ STDWLTW_LOOP:
                 CW          $DROP, $RFROM, $DROP
                 $END_COLON
 
-;  STDWL-CHECK-NAME
+;  STDWL-SEARCH-NAME
 ;  ( c-addr u 0 nt -- c-addr u false true | xt 1 true false | xt -1 true false )
 ;  If flag is true, STDWL-TRAVERSE will continue with the next name, otherwise it will return.
 ;  nt is the address of vocabulary entry flags.
 ;  If the definition is found, return its execution token xt and one (1) if the definition is immediate, minus-one (-1) otherwise.
-                $COLON      'STDWL-CHECK-NAME',$STDWL_CHECK_NAME
+                $COLON      'STDWL-SEARCH-NAME',$STDWL_SEARCH_NAME
+                CW          $DUP, $CFETCH, $AMPHIDDEN, $AND
+                _IF         STDWL_SEARCH_NAME_HIDDEN
+                CW          $2DROP, $FALSE, $TRUE, $EXIT
+                _THEN       STDWL_SEARCH_NAME_HIDDEN
                 CW          $NIP, $MROT, $2TOR
                 ; S: nt R: c-addr u
-                CW          $DUP, $CFETCH, $AMPHIDDEN, $AND
-                _IF         STDWL_CHECK_NAME_HIDDEN
-                CW          $DROP, $2RFROM, $FALSE, $TRUE, $EXIT
-                _THEN       STDWL_CHECK_NAME_HIDDEN
                 CW          $DUP, $H_TO_HASH_NAME, $2RFETCH
                 ; S: nt nt-addr nt-u c-addr u R: c-addr u
                 CW          $NAMEEQ
-                _IF         STDWL_CHECK_NAME_FOUND
+                _IF         STDWL_SEARCH_NAME_FOUND
                 CW          $2RFROM, $2DROP
                 ; S: nt
                 CW          $DUP, $HEAD_FROM, $SWAP
                 CW          $CFETCH, $AMPIMMEDIATE, $AND
-                _IF         STDWL_CHECK_NAME_IMM
+                _IF         STDWL_SEARCH_NAME_IMM
                 CCLIT       1
-                _ELSE       STDWL_CHECK_NAME_IMM
+                _ELSE       STDWL_SEARCH_NAME_IMM
                 CCLIT       -1
-                _THEN       STDWL_CHECK_NAME_IMM
+                _THEN       STDWL_SEARCH_NAME_IMM
                 CW          $TRUE, $FALSE
-                _ELSE       STDWL_CHECK_NAME_FOUND
+                _ELSE       STDWL_SEARCH_NAME_FOUND
                 ; S: nt
                 CW          $DROP, $2RFROM, $FALSE, $TRUE
-                _THEN       STDWL_CHECK_NAME_FOUND
+                _THEN       STDWL_SEARCH_NAME_FOUND
                 $END_COLON
 
 ;  STDWL-SEARCH
 ;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
                 $COLON      'STDWL-SEARCH',$STDWL_SEARCH
                 CCLIT       0
-                CWLIT       $STDWL_CHECK_NAME
+                CWLIT       $STDWL_SEARCH_NAME
                 CW          $ROT, $STDWL_TRAVERSE, $INVERT
                 _IF         STDWL_SEARCH_NOT_FOUND
                 CW          $2DROP
