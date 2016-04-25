@@ -520,13 +520,16 @@ STDWLTW_LOOP:
                 _IF         STDWL_SEARCH_NAME_HIDDEN
                 CW          $2DROP, $FALSE, $TRUE, $EXIT
                 _THEN       STDWL_SEARCH_NAME_HIDDEN
-                CW          $NIP, $MROT, $2TOR
-                ; S: nt R: c-addr u
-                CW          $DUP, $H_TO_HASH_NAME, $2RFETCH
-                ; S: nt nt-addr nt-u c-addr u R: c-addr u
+                CW          $2OVER
+                CCLIT       2
+                CW          $PICK
+                ; S: c-addr u 0 nt c-addr u nt
+                CW          $H_TO_HASH_NAME
+                ; S: c-addr u 0 nt c-addr u nt-addr nt-u
                 CW          $NAMEEQ
                 _IF         STDWL_SEARCH_NAME_FOUND
-                CW          $2RFROM, $2DROP
+                ; S: c-addr u 0 nt
+                CW          $2SWAP, $2DROP, $NIP
                 ; S: nt
                 CW          $DUP, $HEAD_FROM, $SWAP
                 CW          $CFETCH, $AMPIMMEDIATE, $AND
@@ -537,8 +540,8 @@ STDWLTW_LOOP:
                 _THEN       STDWL_SEARCH_NAME_IMM
                 CW          $TRUE, $FALSE
                 _ELSE       STDWL_SEARCH_NAME_FOUND
-                ; S: nt
-                CW          $DROP, $2RFROM, $FALSE, $TRUE
+                ; S: c-addr u 0 nt
+                CW          $2DROP, $FALSE, $TRUE
                 _THEN       STDWL_SEARCH_NAME_FOUND
                 $END_COLON
 
