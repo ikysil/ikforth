@@ -165,7 +165,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 _ELSE       PHEADERC_HAS_NAME
                 CW          $DROP
                 _THEN       PHEADERC_HAS_NAME
-                CCLIT   2
+                CCLIT       2
                 CW          $ADD
                 CW          $CCOMMA                 ; compile (length + 2)
                 CW          $LATEST_HEAD_FETCH, $COMMA, $RFROM, $LATEST_HEAD_STORE
