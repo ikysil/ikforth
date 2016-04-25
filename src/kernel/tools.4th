@@ -169,15 +169,15 @@ VOCABULARY EDITOR
     BEGIN
       PARSE-NAME DUP
     WHILE
-      2DUP S" [IF]" COMPARE 0=
+      2DUP S" [IF]" NAME=
       IF
         2DROP 1+
       ELSE
-        2DUP S" [ELSE]" COMPARE 0=
+        2DUP S" [ELSE]" NAME=
         IF
           2DROP 1- DUP IF 1+ THEN
         ELSE
-          S" [THEN]" COMPARE 0=
+          S" [THEN]" NAME=
           IF 1- THEN
         THEN
       THEN
