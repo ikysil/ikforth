@@ -117,7 +117,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $ZERO, $DUP
                 CSTORE      $TOIN
                 CW          $DUP, $SOURCE_ID_STORE
-                CCLIT       0
+                CW          $ZERO
                 CW          $DUP
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $ERROR_LINE_NUM

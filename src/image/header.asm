@@ -408,3 +408,52 @@ SW_NOT_FOUND:
                 POPRS       ESI
                 POPRS       EDI
                 $NEXT
+
+;  : WL>LATEST (S wordlist-id -- latest-word-addr )
+;  ;
+                $COLON      'WL>LATEST',$WLTOLATEST
+                $END_COLON
+
+; \  15.6.2.2297 TRAVERSE-WORDLIST
+; \  ( i * x xt wid -- j * x )
+; : TRAVERSE-WORDLIST
+;    (S i * x xt wid -- j * x )
+;    (G Remove wid and xt from the stack. Execute xt once for every word in the wordlist wid,
+;       passing the name token nt of the word to xt, until the wordlist is exhausted or until xt returns false.
+;
+;       The invoked xt has the stack effect [ k * x nt -- l * x flag ].
+;
+;       If flag is true, TRAVERSE-WORDLIST will continue with the next name, otherwise it will return.
+;       TRAVERSE-WORDLIST does not put any items other than nt on the stack when calling xt,
+;       so that xt can access and modify the rest of the stack.
+;
+;       TRAVERSE-WORDLIST may visit words in any order, with one exception:
+;       words with the same name are called in the order newest-to-oldest, possibly with other words in between.
+;
+;       An ambiguous condition exists if words are added to or deleted from the wordlist wid
+;       during the execution of TRAVERSE-WORDLIST. )
+;    SWAP >R
+;    WL>LATEST @
+;    BEGIN
+;       DUP 0<>
+;    WHILE
+;       R@ OVER >R EXECUTE R> SWAP
+;       IF  H>NEXT>H  ELSE  DROP 0  THEN
+;    REPEAT
+;    DROP R> DROP
+; ;
+                $COLON      'TRAVERSE-WORDLIST',$STDWL_TRAVERSE_WORDLIST
+                CW          $SWAP, $TOR, $WLTOLATEST, $FETCH
+STDWLTW_LOOP:
+                CW          $DUP, $ZERONOEQ
+                _IF         STDWLTW_HAS_WORD
+                CW          $RFETCH, $OVER, $TOR, $EXECUTE, $RFROM, $SWAP
+                _IF         STDWLTW_CONTINUE
+                CW          $H_TO_NEXT_TO_H
+                _ELSE       STDWLTW_CONTINUE
+                CW          $DROP, $ZERO
+                _THEN       STDWLTW_CONTINUE
+                CBR         STDWLTW_LOOP
+                _THEN       STDWLTW_HAS_WORD
+                CW          $DROP, $RFROM, $DROP
+                $END_COLON

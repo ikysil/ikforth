@@ -254,34 +254,4 @@ DEFER CS-ROLL
    HEAD> DUP COMPILE-ONLY? IF  DROP 0  THEN
 ;
 
-\  15.6.2.2297 TRAVERSE-WORDLIST
-\  ( i * x xt wid -- j * x )
-: TRAVERSE-WORDLIST
-   (S i * x xt wid -- j * x )
-   (G Remove wid and xt from the stack. Execute xt once for every word in the wordlist wid,
-      passing the name token nt of the word to xt, until the wordlist is exhausted or until xt returns false.
-
-      The invoked xt has the stack effect [ k * x nt -- l * x flag ].
-
-      If flag is true, TRAVERSE-WORDLIST will continue with the next name, otherwise it will return.
-      TRAVERSE-WORDLIST does not put any items other than nt on the stack when calling xt,
-      so that xt can access and modify the rest of the stack.
-
-      TRAVERSE-WORDLIST may visit words in any order, with one exception:
-      words with the same name are called in the order newest-to-oldest, possibly with other words in between.
-
-      An ambiguous condition exists if words are added to or deleted from the wordlist wid
-      during the execution of TRAVERSE-WORDLIST. )
-   SWAP >R
-   WL>LATEST @
-   BEGIN
-      DUP 0<>
-   WHILE
-      R@ OVER >R EXECUTE R> SWAP
-      IF  H>NEXT>H  ELSE  DROP 0  THEN
-   REPEAT
-   DROP R> DROP
-;
-
-
 REPORT-NEW-NAME !

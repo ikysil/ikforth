@@ -86,9 +86,6 @@ FORTH-WORDLIST LAST-WORDLIST !
   HERE DUP 0 DUP , , LAST-WORDLIST DUP >R @ , WORDLIST-VT , R> !
 ;
 
-: WL>LATEST (S wordlist-id -- latest-word-addr )
-;
-
 : WL>VOC (S wordlist-id -- voc-xt-addr )
   CELL+
 ;
