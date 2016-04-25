@@ -30,7 +30,7 @@
                 $TRACE_WORD  'R:WORD-COMP'
                 $TRACE_STACK 'R:WORD-COMP-A:',2
                 }
-                CW          HF_IMMEDIATE, $AND, $ZERONOEQ
+                CW          $AMPIMMEDIATE, $AND, $ZERONOEQ
                 _IF         R_WORD_COMP_IMMEDIATE
                 CW          $EXECUTE
                 _ELSE       R_WORD_COMP_IMMEDIATE

@@ -32,20 +32,27 @@ FORTH_WORDLIST_VT:
                 CW          $WID_TO_VT, $FETCH, $FETCH
                 $END_COLON
 
+;  WID>XT-TRAVERSE
+;  D: ( wid -- xt-traverse )
+                $COLON      'WID>XT-TRAVERSE',$WID_TO_XT_TRAVERSE
+                CW          $WID_TO_VT, $FETCH, $CELLADD, $FETCH
+                $END_COLON
+
 ;  16.6.1.2192 SEARCH-WORDLIST
 ;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
                 $COLON      'SEARCH-WORDLIST',$SEARCH_WORDLIST
                 CW          $DUP, $WID_TO_XT_SEARCH, $EXECUTE
                 $END_COLON
 
-;  SEARCH-FORTH-WORDLIST
-;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
-                $COLON      'SEARCH-FORTH-WORDLIST',$SEARCH_FORTH_WORDLIST
-                CW          $FETCH, $SEARCH_HEADERS
+; 15.6.2.2297 TRAVERSE-WORDLIST
+; ( i * x xt wid -- j * x )
+                $COLON      'TRAVERSE-WORDLIST',$TRAVERSE_WORDLIST
+                CW          $DUP, $WID_TO_XT_TRAVERSE, $EXECUTE
                 $END_COLON
 
                 $CREATE     'WORDLIST-VT',$WORDLIST_VT
-                CW          $SEARCH_FORTH_WORDLIST
+                CW          $STDWL_SEARCH
+                CW          $STDWL_TRAVERSE
 
 ;  D: ( c-addr u -- 0 | xt 1 | xt -1 )
                 $COLON      '(SEARCH-NAME)',$PSEARCH_NAME

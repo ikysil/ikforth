@@ -27,11 +27,11 @@
 
 ;  &IMMEDIATE
 ;  D: -- VEF-IMMEDIATE
-                $CONST      '&IMMEDIATE',HF_IMMEDIATE,VEF_IMMEDIATE
+                $CONST      '&IMMEDIATE',$AMPIMMEDIATE,VEF_IMMEDIATE
 
 ;  &HIDDEN
 ;  D: -- VEF-HIDDEN
-                $CONST      '&HIDDEN',,VEF_HIDDEN
+                $CONST      '&HIDDEN',$AMPHIDDEN,VEF_HIDDEN
 
 ;  &COMPILE-ONLY
 ;  D: -- VEF-COMPILE-ONLY
@@ -386,7 +386,7 @@ PNAMEEQ_EXIT:
 
 ;  SEARCH-HEADERS
 ;  D: ( c-addr u lfa-addr -- 0 | xt 1 | xt -1 )
-                $CODE       'SEARCH-HEADERS',$SEARCH_HEADERS
+                $CODE       'SEARCH-HEADERS',$SEARCH_HEADERS_XXX
                 PUSHRS      EDI
                 PUSHRS      ESI
                 POPDS       ESI                     ; LATEST word link
@@ -464,8 +464,6 @@ SW_NOT_FOUND:
                 $COLON      'WL>LATEST',$WLTOLATEST
                 $END_COLON
 
-; \  15.6.2.2297 TRAVERSE-WORDLIST
-; \  ( i * x xt wid -- j * x )
 ; : TRAVERSE-WORDLIST
 ;    (S i * x xt wid -- j * x )
 ;    (G Remove wid and xt from the stack. Execute xt once for every word in the wordlist wid,
@@ -492,8 +490,12 @@ SW_NOT_FOUND:
 ;    REPEAT
 ;    DROP R> DROP
 ; ;
-                $COLON      'TRAVERSE-WORDLIST',$STDWL_TRAVERSE_WORDLIST
-                CW          $SWAP, $TOR, $WLTOLATEST, $FETCH
+
+; STDWL-TRAVERSE
+; ( i * x xt wid -- j * x )
+                $COLON      'STDWL-TRAVERSE',$STDWL_TRAVERSE
+                CW          $WLTOLATEST, $FETCH
+                CW          $SWAP, $TOR
 STDWLTW_LOOP:
                 CW          $DUP, $ZERONOEQ
                 _IF         STDWLTW_HAS_WORD
@@ -506,4 +508,48 @@ STDWLTW_LOOP:
                 CBR         STDWLTW_LOOP
                 _THEN       STDWLTW_HAS_WORD
                 CW          $DROP, $RFROM, $DROP
+                $END_COLON
+
+;  STDWL-CHECK-NAME
+;  ( c-addr u 0 nt -- c-addr u false true | xt 1 true false | xt -1 true false )
+;  If flag is true, STDWL-TRAVERSE will continue with the next name, otherwise it will return.
+;  nt is the address of vocabulary entry flags.
+;  If the definition is found, return its execution token xt and one (1) if the definition is immediate, minus-one (-1) otherwise.
+                $COLON      'STDWL-CHECK-NAME',$STDWL_CHECK_NAME
+                CW          $NIP, $MROT, $2TOR
+                ; S: nt R: c-addr u
+                CW          $DUP, $CFETCH, $AMPHIDDEN, $AND
+                _IF         STDWL_CHECK_NAME_HIDDEN
+                CW          $DROP, $2RFROM, $FALSE, $TRUE, $EXIT
+                _THEN       STDWL_CHECK_NAME_HIDDEN
+                CW          $DUP, $H_TO_HASH_NAME, $2RFETCH
+                ; S: nt nt-addr nt-u c-addr u R: c-addr u
+                CW          $NAMEEQ
+                _IF         STDWL_CHECK_NAME_FOUND
+                CW          $2RFROM, $2DROP
+                ; S: nt
+                CW          $DUP, $HEAD_FROM, $SWAP
+                CW          $CFETCH, $AMPIMMEDIATE, $AND
+                _IF         STDWL_CHECK_NAME_IMM
+                CCLIT       1
+                _ELSE       STDWL_CHECK_NAME_IMM
+                CCLIT       -1
+                _THEN       STDWL_CHECK_NAME_IMM
+                CW          $TRUE, $FALSE
+                _ELSE       STDWL_CHECK_NAME_FOUND
+                ; S: nt
+                CW          $DROP, $2RFROM, $FALSE, $TRUE
+                _THEN       STDWL_CHECK_NAME_FOUND
+                $END_COLON
+
+;  STDWL-SEARCH
+;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
+                $COLON      'STDWL-SEARCH',$STDWL_SEARCH
+                CCLIT       0
+                CWLIT       $STDWL_CHECK_NAME
+                CW          $ROT, $STDWL_TRAVERSE, $INVERT
+                _IF         STDWL_SEARCH_NOT_FOUND
+                CW          $2DROP
+                CCLIT       0
+                _THEN       STDWL_SEARCH_NOT_FOUND
                 $END_COLON
