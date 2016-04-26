@@ -130,3 +130,7 @@ cr .s
 cr .s
 CR
 2. d= . 3. d= . 1. d= .
+
+CR
+
+S" test/literal-ext-test.4th" INCLUDED
