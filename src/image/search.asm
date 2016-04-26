@@ -51,7 +51,7 @@ FORTH_WORDLIST_VT:
                 $END_COLON
 
                 $CREATE     'WORDLIST-VT',$WORDLIST_VT
-                CW          $STDWL_SEARCH
+                CW          $STDWL_SEARCH_ASM
                 CW          $STDWL_TRAVERSE
 
 ;  D: ( c-addr u -- 0 | xt 1 | xt -1 )

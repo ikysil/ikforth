@@ -386,7 +386,7 @@ PNAMEEQ_EXIT:
 
 ;  SEARCH-HEADERS
 ;  D: ( c-addr u lfa-addr -- 0 | xt 1 | xt -1 )
-                $CODE       'SEARCH-HEADERS',$SEARCH_HEADERS_XXX
+                $CODE       'SEARCH-HEADERS',$SEARCH_HEADERS
                 PUSHRS      EDI
                 PUSHRS      ESI
                 POPDS       ESI                     ; LATEST word link
@@ -555,4 +555,11 @@ STDWLTW_LOOP:
                 CW          $2DROP
                 CCLIT       0
                 _THEN       STDWL_SEARCH_NOT_FOUND
+                $END_COLON
+
+;  STDWL-SEARCH-ASM
+;  D: ( c-addr u wid -- 0 | xt 1 | xt -1 )
+                $COLON      'STDWL-SEARCH-ASM',$STDWL_SEARCH_ASM
+                CW          $WLTOLATEST, $FETCH
+                CW          $SEARCH_HEADERS
                 $END_COLON
