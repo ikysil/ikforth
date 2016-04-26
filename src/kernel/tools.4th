@@ -103,57 +103,52 @@ VARIABLE DUMP/LINE
          SET-CURRENT DROP
 ;
 
-: WORDLIST-WORDS (S wid -- )
-  DUP ." Wordlist: " .WORDLIST-NAME CR CR
-  WL>LATEST @
-  0 SWAP
-  BEGIN
-    ?DUP 0<>
-  WHILE
-    DUP H>#NAME DUP 0<>
-    IF
-      TYPE SPACE DUP WORD-ATTR CR
-      SWAP 1+
-      DUP 20 MOD 0=
+: .WL-WORD (S count nt -- count true | count false )
+   DUP H>#NAME DUP 0<>
+   IF
+      CR TYPE SPACE WORD-ATTR
+      1+ DUP 20 MOD 0=
       IF
-        DUP . ." word(s), press Q to exit, any other key to continue"
-        KEY DUP [CHAR] Q = SWAP [CHAR] q = OR
-        IF 2DROP EXIT THEN
-        CR
+         DUP
+         CR . ." word(s), press Q to exit, any other key to continue"
+         KEY DUP [CHAR] Q = SWAP [CHAR] q = OR
+         IF  FALSE EXIT  THEN
       THEN
-      SWAP
-    ELSE
-      2DROP
-    THEN
-    H>NEXT>H
-  REPEAT
-  . ." word(s) total" CR
+   ELSE
+      2DROP DROP
+   THEN
+   TRUE
 ;
 
-: WORDS
-  (GET-ORDER) ?DUP 0>
-  IF OVER >R NDROP R> WORDLIST-WORDS THEN
+: WORDLIST-WORDS (S wid -- )
+   DUP ." Wordlist: " .WORDLIST-NAME CR
+   0 ['] .WL-WORD ROT TRAVERSE-WORDLIST
+   CR . ." word(s) total"
+;
+
+: WORDS (S -- )
+   (GET-ORDER) ?DUP 0>
+   IF OVER >R NDROP R> WORDLIST-WORDS THEN
 ;
 
 : .INCLUDED-LIST (S -- )
-  INCLUDED-WORDLIST WORDLIST-WORDS
+   INCLUDED-WORDLIST WORDLIST-WORDS
 ;
 
-: (WORDS-COUNT) (S wid -- word count in wordlist )
-  WL>LATEST @
-  0 SWAP
-  BEGIN
-    DUP 0<>
-  WHILE
-    DUP H>#NAME NIP 0<> \ check for :NONAME, don't count them
-    IF SWAP 1+ SWAP THEN
-    H>NEXT>H
-  REPEAT
-  DROP ;
+: .WL-COUNT (S count nt -- count true | count false )
+   H>#NAME 0<> \ check for :NONAME, don't count them
+   NIP IF  1+  THEN
+   TRUE
+;
 
 : WORDS-COUNT (S -- word count in first wordlist )
-  (GET-ORDER) ?DUP 0>
-  IF OVER >R NDROP R> (WORDS-COUNT) ELSE 0 THEN
+   (GET-ORDER) ?DUP 0>
+   IF
+      OVER >R NDROP R>
+      0 ['] .WL-COUNT ROT TRAVERSE-WORDLIST
+   ELSE
+      0
+   THEN
 ;
 
 : AHEAD
