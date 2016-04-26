@@ -52,12 +52,12 @@ __S_END:
                 $CR
                 $WRITE      LBL
                 $WRITE      ' '
-                REPT CNT C:0 \{
-                REVERSE
-                CCLIT       C
+                REPT CNT C \{
+                CCLIT       CNT - C
                 CW          $PICK
                 CW          $HOUT8
                 $WRITE      ' '
                 \}
+                $WRITE      ' <- TOS '
                 }
 

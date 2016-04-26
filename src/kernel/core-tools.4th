@@ -20,15 +20,13 @@ USER .S-PRINT-XT 1 CELLS USER-ALLOC
 : PN.S (S print-xt depth -- )
    SWAP .S-PRINT-XT !
    DEPTH 1- MIN
-   DUP .PN.S ."  item" DUP 1 <> IF ." s" THEN ."  on stack" DUP 0>
-   IF
-      0 DO
-         I DUP 4 MOD 0= IF   CR   THEN
-         PICK .PN.S
-      LOOP
-   ELSE
-      DROP
-   THEN
+   DUP >R
+   0 ?DO
+      DEPTH I - 1- PICK .PN.S
+      \ 3 I OVER AND = IF  CR  THEN
+   LOOP
+   ."  <- TOS"
+   R> .PN.S ."  cell" DUP 1 <> IF ." s" THEN
 ;
 
 : N.S (S print-xt -- )
