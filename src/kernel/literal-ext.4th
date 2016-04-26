@@ -16,7 +16,9 @@ REPORT-NEW-NAME OFF
 \ Hexadecimal literals: H# <literal>, $<literal>, 0x<literal>, 0X<literal>,
 \                       \x<literal>, \X<literal>, \u<literal>, \U<literal>
 
-: REC:LITERAL (S c-addr u -- d true | x true | false )
+: CONSUME-LITERAL
+   (S c-addr u -- d true | x true | false ) \ interpretation
+   (S c-addr u -- true | false )            \ compilation
    REC:NUM DUP R:FAIL <>
    IF
       STATE @ IF  R>COMP  ELSE  R>INT  THEN
@@ -42,7 +44,7 @@ REPORT-NEW-NAME OFF
    DOES>
    (S "literal" -- )
       DUP CELL+ @ >R @ \ S: base R: head
-      PARSE-NAME ROT ['] REC:LITERAL SWAP BASE-EXECUTE
+      ['] CONSUME-LITERAL SWAP PARSE-NAME 2SWAP BASE-EXECUTE
       INVERT IF  EXC-INVALID-LITERAL R> (COMP-THROW)  ELSE  R> DROP  THEN
 ;
 
@@ -86,7 +88,7 @@ DECIMAL
    DROP 2DROP FALSE
 ;
 
-: STRIP-PREFIX-CHAR (S c-addr u -- c-addr u flag )
+: ?CHAR-LITERAL (S c-addr u -- c-addr u flag )
 \ <cnum>:='<char>'
    2DUP 3 CHARS <> IF  DROP FALSE EXIT  THEN
    DUP 2 CHARS +
@@ -108,13 +110,12 @@ DECIMAL
 ;
 
 :NONAME (S c-addr u -- )
-   STRIP-PREFIX-CHAR
-   IF  DROP C@ DO-LIT EXIT  THEN
+   ?CHAR-LITERAL IF  DROP C@ DO-LIT EXIT  THEN
 
    2DUP 2>R
    ?BASE-PREFIX
    IF
-      ['] REC:LITERAL SWAP BASE-EXECUTE
+      ['] CONSUME-LITERAL SWAP BASE-EXECUTE
       IF  2R> 2DROP EXIT  THEN
    THEN
    2R>
