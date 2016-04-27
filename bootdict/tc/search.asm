@@ -18,14 +18,6 @@ FORTH_WORDLIST_EQU:
 FORTH_WORDLIST_VT:
                 PW          $WORDLIST_VT            ; wordlist VT
 
-;  WID>VT
-;  D: ( wid -- wid-vt-addr )
-                $CODE       'WID>VT',$WID_TO_VT
-                POPDS       EAX
-                ADD         EAX,FORTH_WORDLIST_VT - FORTH_WORDLIST_EQU
-                PUSHDS      EAX
-                $NEXT
-
 ;  WID>XT-SEARCH
 ;  D: ( wid -- xt-search )
                 $COLON      'WID>XT-SEARCH',$WID_TO_XT_SEARCH
