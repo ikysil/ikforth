@@ -54,15 +54,6 @@ WIN32_THREAD_PROC:
 DO_WIN32_THREAD:
                 CW          $CATCH, $DROP, $WIN32_THREAD_EXIT
 
-;  SEH-HANDLER
-;  D: win32-exc-id -- exc-id
-                $DEFER      'SEH-HANDLER',$SEH_HANDLER,$PSEH_HANDLER
-
-;  (SEH-HANDLER)
-;  D: win32-exc-id -- exc-id
-                $COLON      '(SEH-HANDLER)',$PSEH_HANDLER,VEF_USUAL
-                $END_COLON
-
 SEH_HANDLER:
                 PUSH        EBP
                 MOV         EBP,ESP
@@ -97,5 +88,3 @@ DO_SEH:
                 $NEXT
 DO_FORTH_SEH:
                 CW          $SEH_HANDLER, $THROW
-
-                $USER       'WIN32-EXCEPTION-CONTEXT',$WIN32_EXCEPTION_CONTEXT,VAR_WIN32_EXCEPTION_CONTEXT

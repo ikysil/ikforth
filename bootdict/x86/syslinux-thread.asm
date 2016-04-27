@@ -50,15 +50,6 @@ LINUX_THREAD_PROC:
 DO_LINUX_THREAD:
                 CW          $CATCH, $DROP, $LINUX_THREAD_EXIT
 
-;  SIG-HANDLER
-;  D: signal-id -- signal-id
-                $DEFER      'SIG-HANDLER',$SIG_HANDLER,$PSIG_HANDLER
-
-;  (SIG-HANDLER)
-;  D: signal-id -- signal-id
-                $COLON      '(SIG-HANDLER)',$PSIG_HANDLER,VEF_USUAL
-                $END_COLON
-
 SIG_HANDLER:
                 PUSH        EBP
                 MOV         EBP,ESP
