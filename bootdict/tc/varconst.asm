@@ -136,6 +136,6 @@ VAR_STATE = PFA_$STATE
 
 ;  MAIN
 ;  First Forth word to EXECUTE
-                        $DEFER  'MAIN',$MAIN,$DO_FORTH
+                        $DEFER  'MAIN',$MAIN,$BOOTSTRAP_INTERPRET
 MAIN_PROC_VAR EQU PFA_$MAIN
 

@@ -98,84 +98,8 @@ DESIRED_SIZE_VAR:
 
                 INCLUDE     "words.asm"
 
-START:
-; typedef struct _MainProcContext {
-;     int           argc;
-;     char const ** argv;
-;     char const ** envp;
-;     char const *  startFileName;
-;     int           startFileNameLength;
-;     int  const *  exitCode;
-;     void const ** sysfunctions;
-; } MainProcContext;
-;
-; typedef void __stdcall (* MainProc)(MainProcContext *);
-                POP         EAX     ; move return address away
-                POP         ESI     ; get address of MainProcContext
-                PUSH        EAX
-                MOV         EBX,IMAGE_BASE
-                CLD
-                LEA         EDI,[EBX + ARGC_VAR]
-                MOVSD
-                LEA         EDI,[EBX + ARGV_VAR]
-                MOVSD
-                LEA         EDI,[EBX + ENVP_VAR]
-                MOVSD
-                LEA         EDI,[EBX + SF_VAR]
-                MOVSD
-                LEA         EDI,[EBX + HASH_SF_VAR]
-                MOVSD
-                LEA         EDI,[EBX + EXIT_CODE_VAR]
-                MOVSD
-                LEA         EDI,[EBX + FUNC_TABLE_VAR]
-                MOVSD
-                MOV         EAX,DWORD [EBX + MAIN_PROC_VAR]
-                PUSH        EAX
-                PUSH        F_FALSE
-                PUSH        0
-                $CSYSCALL   START_THREAD
-                RET
-
-                $COLON      'DO-FORTH',$DO_FORTH,VEF_HIDDEN
-                CW          $INIT_USER
-                CFETCH      $SF
-                CFETCH      $HASH_SF
-                CWLIT       $INCLUDED
-                CW          $CATCH, $DUP, $EXIT_CODE, $STORE, $QDUP
-                CQBR        DO_FORTH_NO_EXCEPTIONS
-                $CR
-                $CR
-                $WRITE      'Exception caught while INCLUDing ['
-                CFETCH      $SF
-                CFETCH      $HASH_SF
-                CW          $TYPE
-                $WRITE      ']'
-                $CR
-                $WRITE      'Exception: H# '
-                CW          $HOUT8
-                $CR
-                CW          $2DROP
-                $WRITE      'HERE:      H# '
-                CW          $HERE, $HOUT8
-                $CR
-                $WRITE      'Latest word searched: '
-                CW          $POCKET, $COUNT, $TYPE
-                $CR
-                $WRITE      'Latest vocabulary entry: '
-                CW          $LATEST_HEAD_FETCH, $H_TO_HASH_NAME, $DUP, $ZERONOEQ
-                _IF         BOOTSTRAP_ERROR_HAS_NAME
-                CW          $TYPE
-                _ELSE       BOOTSTRAP_ERROR_HAS_NAME
-                CW          $2DROP
-                $WRITE      '(nonamed)'
-                _THEN       BOOTSTRAP_ERROR_HAS_NAME
-                $CR
-                $WRITE      'Error in: '
-                CW          $REPORT_SOURCE
-                $CR
-                $CR
-DO_FORTH_NO_EXCEPTIONS:
-                CW      $PBYE
+                INCLUDE     "bootdict/x86/main-proc.asm"
+                INCLUDE     "bootdict/tc/bootstrap-interpret.asm"
 
 LATEST_WORD     = VOC_LINK
 HERE:
