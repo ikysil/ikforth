@@ -75,25 +75,25 @@ DESIRED_SIZE_VAR:
 ;******************************************************************************
 ;  Include user area variables. These variables are unique for each thread.
 ;******************************************************************************
-                INCLUDE     "user.asm"
+                INCLUDE     "bootdict/tc/user.asm"
 
 ;******************************************************************************
 ;  Include Forth definitions.
 ;******************************************************************************
 ;                ALIGN       16
 
-                INCLUDE     "wordlist-def.asm"
-                INCLUDE     "tc-def.asm"
-                INCLUDE     "tc-trace.asm"
-                INCLUDE     "forth-vm.asm"
-                INCLUDE     "forth-vm-notc.asm"
+                INCLUDE     "bootdict/tc/wordlist-def.asm"
+                INCLUDE     "bootdict/tc/tc-def.asm"
+                INCLUDE     "bootdict/tc/tc-trace.asm"
+                INCLUDE     "bootdict/x86/forth-vm.asm"
+                INCLUDE     "bootdict/x86/forth-vm-notc.asm"
 
                 MATCH       =DTC, CODE_THREADING {
-                INCLUDE     "forth-vm-dtc.asm"
+                INCLUDE     "bootdict/x86-dtc/forth-vm-dtc.asm"
                 }
 
                 MATCH       =ITC, CODE_THREADING {
-                INCLUDE     "forth-vm-itc.asm"
+                INCLUDE     "bootdict/x86-itc/forth-vm-itc.asm"
                 }
 
                 INCLUDE     "words.asm"
