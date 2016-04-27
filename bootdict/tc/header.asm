@@ -70,22 +70,6 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $NEXT_CODE, $SWAP, $NEXT_CODE_SIZE, $CMOVE
                 $END_COLON
 
-;  LATEST-HEAD@
-;  addr is the link address of the last compiled word in compilation wordlist.
-;  D: -- addr
-                $CODE       'LATEST-HEAD@',$LATEST_HEAD_FETCH
-                MOV         EAX,DWORD [EDI + VAR_CURRENT]       ; get CURRENT wid
-                PUSHDS      <DWORD [EAX]>
-                $NEXT
-
-;  LATEST-HEAD!
-;  addr is the link address of the last compiled word in compilation wordlist.
-;  D: addr --
-                $CODE       'LATEST-HEAD!',$LATEST_HEAD_STORE
-                MOV         EAX,DWORD [EDI + VAR_CURRENT]       ; get CURRENT wid
-                POPDS       <DWORD [EAX]>
-                $NEXT
-
 ;  CHECK-NAME
 ;  D: c-addr count -- c-addr count
                 $COLON      'CHECK-NAME',$CHECK_NAME
@@ -252,31 +236,6 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $LATEST_HEAD_FETCH, $DUP, $HFLAGS_FETCH, $ROT, $XOR, $SWAP, $HFLAGS_STORE
                 $END_COLON
 
-;  >HEAD
-;  D: xt -- h-id
-;  h-id is the address of vocabulary entry flags
-                $CODE       '>HEAD',$TO_HEAD
-                POPDS       EAX
-                SUB         EAX,5
-                XOR         EBX,EBX
-                MOV         BL,BYTE [EAX]
-                SUB         EAX,EBX
-                PUSHDS      EAX
-                $NEXT
-
-;  HEAD>
-;  D: h-id -- xt
-;  h-id is the address of vocabulary entry flags
-                $CODE       'HEAD>',$HEAD_FROM
-                POPDS       EAX
-                INC         EAX
-                XOR         EBX,EBX
-                MOV         BL,BYTE [EAX]
-                ADD         EAX,EBX
-                ADD         EAX,6
-                PUSHDS      EAX
-                $NEXT
-
 ;  HEAD>NAME
                 $COLON      'HEAD>NAME',$HEAD_TO_NAME
                 CW          $1ADD
@@ -325,57 +284,6 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $HEAD_TO_NAME, $DUP, $1ADD, $SWAP, $CFETCH
                 $END_COLON
 
-                LABEL       UPCASE
-                CMP         AL,'a'
-                JB          SHORT @@UC              ; jump if AH < 'a'
-                CMP         AL,'z'
-                JA          SHORT @@UC              ; jump if AH > 'z'
-                SUB         AL,'a' - 'A'            ; convert to uppercase
-@@UC:
-                RET
-
-;  (NAME=)
-;  S: c-addr1 u1 c-addr2 u2 cs-flag -- flag
-;  Compare names, return true if same, false otherwise.
-;  Use case sensitive compare if cs-flag is true.
-                $CODE       '(NAME=)',$PNAMEEQ
-                PUSHRS      EDI
-                PUSHRS      ESI
-                POPDS       EBX                 ; EBX - cs-flag
-                POPDS       EDX                 ; EDX - u2
-                POPDS       EDI                 ; EDI - c-addr2
-                POPDS       ECX                 ; ECX - u1
-                POPDS       ESI                 ; ESI - c-addr1
-                MOV         EAX,F_FALSE         ; EAX - result
-                CMP         ECX,EDX
-                JNZ         SHORT PNAMEEQ_EXIT  ; jump and return FALSE if length is different
-                CMOVG       ECX,EDX             ; ECX = min(u1, u2)
-                OR          ECX,ECX
-                JZ          SHORT PNAMEEQ_EXIT  ; jump and return FALSE if length = 0
-PNAMEEQ_LOOP:
-                MOV         AL,BYTE [ESI]
-                MOV         AH,BYTE [EDI]
-                OR          EBX,EBX
-                JNZ         SHORT PNAMEEQ_CS    ; jump if compare is case sensitive
-                CALL        UPCASE
-                XCHG        AL,AH
-                CALL        UPCASE
-PNAMEEQ_CS:
-                CMP         AL,AH
-                MOV         EAX,F_FALSE
-                JNZ         SHORT PNAMEEQ_EXIT  ; jump and return FALSE if characters does not match
-                INC         ESI
-                INC         EDI
-                DEC         ECX
-                OR          ECX,ECX
-                JNZ         SHORT PNAMEEQ_LOOP  ; jump if more characters to compare
-                MOV         EAX,F_TRUE          ; return TRUE - all characters matched
-PNAMEEQ_EXIT:
-                PUSHDS      EAX                 ; EAX - result
-                POPRS       ESI
-                POPRS       EDI
-                $NEXT
-
 ;  NAME=
 ;  S: c-addr1 u1 c-addr2 u2 -- flag
 ;  Compare names, return true if same, false otherwise.
@@ -383,81 +291,6 @@ PNAMEEQ_EXIT:
                 $COLON      'NAME=',$NAMEEQ
                 CW          $CASE_SENSITIVE, $FETCH, $PNAMEEQ
                 $END_COLON
-
-;  SEARCH-HEADERS
-;  D: ( c-addr u lfa-addr -- 0 | xt 1 | xt -1 )
-                $CODE       'SEARCH-HEADERS',$SEARCH_HEADERS
-                PUSHRS      EDI
-                PUSHRS      ESI
-                POPDS       ESI                     ; LATEST word link
-                MOV         EBX,DWORD [EDI + VAR_CASE_SENSITIVE]
-                POPDS       ECX                     ; u
-                POPDS       EDI                     ; c-addr
-SW_LOOP:
-                OR          ESI,ESI
-                JZ          SHORT SW_NOT_FOUND
-                MOV         AX,WORD [ESI]
-                CMP         AH,CL
-                JNZ         SHORT SW_NEXT
-                TEST        AL,VEF_HIDDEN
-                JNZ         SHORT SW_NEXT
-                PUSHDS      ESI
-                PUSHDS      EDI
-                PUSHDS      ECX
-                ADD         ESI,2
-CMP_LOOP:
-                MOV         AL,BYTE [ESI]
-                MOV         AH,BYTE [EDI]
-                OR          EBX,EBX
-                JNZ         SHORT CMP_CONT
-                CALL        UPCASE
-                XCHG        AL,AH
-                CALL        UPCASE
-CMP_CONT:
-                CMP         AL,AH
-                JNZ         SHORT CMP_EXIT
-                INC         ESI
-                INC         EDI
-                DEC         ECX
-                OR          ECX,ECX
-                JNZ         SHORT CMP_LOOP
-                CMP         AL,AH
-                POPDS       ECX
-                POPDS       EDI
-                POPDS       ESI
-                JZ          SHORT SW_FOUND
-CMP_EXIT:
-                POPDS       ECX
-                POPDS       EDI
-                POPDS       ESI
-SW_NEXT:
-                MOVZX       EAX,BYTE [ESI + 1]
-                ADD         ESI,EAX
-                ADD         ESI,3
-                MOV         ESI,DWORD [ESI]
-                JMP         SHORT SW_LOOP
-
-SW_FOUND:
-                MOV         AL,BYTE [ESI]
-                TEST        AL,VEF_IMMEDIATE
-                MOV         EAX,1
-                JNZ         SHORT SW_FOUND_IMMEDIATE
-                NEG         EAX
-SW_FOUND_IMMEDIATE:
-                MOVZX       EBX,BYTE [ESI + 1]
-                ADD         ESI,EBX
-                ADD         ESI,7
-                PUSHDS      ESI
-                PUSHDS      EAX
-                POPRS       ESI
-                POPRS       EDI
-                $NEXT
-
-SW_NOT_FOUND:
-                PUSHDS      0
-                POPRS       ESI
-                POPRS       EDI
-                $NEXT
 
 ;  : WL>LATEST (S wordlist-id -- latest-word-addr )
 ;  ;
