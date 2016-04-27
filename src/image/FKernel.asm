@@ -85,8 +85,8 @@ DESIRED_SIZE_VAR:
                 INCLUDE     "bootdict/tc/wordlist-def.asm"
                 INCLUDE     "bootdict/tc/tc-def.asm"
                 INCLUDE     "bootdict/tc/tc-trace.asm"
+                INCLUDE     "bootdict/tc/forth-vm-notc.asm"
                 INCLUDE     "bootdict/x86/forth-vm.asm"
-                INCLUDE     "bootdict/x86/forth-vm-notc.asm"
 
                 MATCH       =DTC, CODE_THREADING {
                 INCLUDE     "bootdict/x86-dtc/forth-vm-dtc.asm"

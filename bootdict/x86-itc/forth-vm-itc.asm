@@ -46,5 +46,5 @@ CFA_CODE_OFFSET         EQU     0
 CFA_SIZE                EQU     CELL_SIZE
 
                 MACRO       INCLUDE_HEADER_TC {
-                INCLUDE     "header-itc.asm"
+                INCLUDE     "bootdict/x86-itc/header-itc.asm"
                 }

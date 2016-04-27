@@ -63,7 +63,7 @@
                 }
 
                 MACRO       INCLUDE_HEADER_TC {
-                INCLUDE     "header-dtc.asm"
+                INCLUDE     "bootdict/x86-dtc/header-dtc.asm"
                 }
 
                 VIRTUAL AT 0
