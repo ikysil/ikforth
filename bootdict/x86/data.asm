@@ -19,11 +19,6 @@
                 ADD         DWORD [VAR_DP + IMAGE_BASE],CELL_SIZE
                 $NEXT
 
-;  COMPILE,
-                $COLON      'COMPILE,',$COMPILEC,VEF_COMPILE_ONLY
-                CW          $COMMA
-                $END_COLON
-
 ;  6.1.0710 ALLOT
 ;  Allocates n memory cells on the top of vocabulary
 ;  D: n --
@@ -41,16 +36,3 @@
                 MOV         BYTE [EBX],AL
                 INC         DWORD [VAR_DP + IMAGE_BASE]
                 $NEXT
-
-;  6.1.1780 LITERAL
-                $COLON      'LITERAL',$LITERAL,VEF_IMMEDIATE_COMPILE_ONLY
-                CWLIT       $LIT
-                CW          $COMPILEC, $COMMA
-                $END_COLON
-
-;  6.1.1650 HERE
-;  addr is the data-space pointer.
-;  D: -- addr
-                $COLON      'HERE',$HERE
-                CFETCH      $DP
-                $END_COLON
