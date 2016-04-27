@@ -10,61 +10,7 @@
 ;
 ;******************************************************************************
 
-                format      binary
-
-                USE32
-
-                ORG         0
-
-DESIRED_BASE_EQU        EQU     20000000h
-
-IMAGE_BASE              =       DESIRED_BASE_EQU
-
-DESIRED_SIZE_EQU        EQU     00040000h               ; 256KB
-
-DATA_STACK_SIZE         EQU     00001000h               ; 4KB
-RETURN_STACK_SIZE       EQU     00001000h               ; 4KB
-EXCEPTION_STACK_SIZE    EQU     00001000h               ; 4KB
-
-USER_AREA_SIZE0         EQU     00020000h               ; 128KB
-
-F_TRUE                  EQU     0FFFFFFFFh
-F_FALSE                 EQU     0
-
-CELL_SIZE               EQU     4
-
-MAX_FILE_LINE_LENGTH    EQU     1024
-
-;  Number of buffers supported by S"
-;  !!! SLSQINDEX MUST be power of 2 !!!
-SLSQINDEX               EQU     8
-
-                IF          SLSQINDEX AND (SLSQINDEX - 1) <> 0
-                DISPLAY     "ERROR: SLSQINDEX MUST be power of 2"
-                ERR
-                END IF
-
-;  Size of a buffer supported by S"
-SLSQBUFFER      EQU         1024
-
-;  Size of POCKET
-SLPOCKET        EQU         256
-
-;******************************************************************************
-;  Header
-;******************************************************************************
-                DB          'IKFI'                  ; MAX. 16 bytes !!!
-
-                ALIGN       16
-
-                DD          DESIRED_BASE_EQU
-DESIRED_SIZE_VAR:
-                DD          DESIRED_SIZE_EQU
-                DD          START + IMAGE_BASE
-                DD          WIN32_THREAD_PROC + IMAGE_BASE
-                DD          LINUX_THREAD_PROC + IMAGE_BASE
-                DD          USER_AREA_SIZE0 + USER_AREA_SIZE
-                DD          DATA_STACK_SIZE
+                INCLUDE     "bootdict/tc/bootdict-header.asm"
 
 ;******************************************************************************
 ;  Include functions table
@@ -96,10 +42,55 @@ DESIRED_SIZE_VAR:
                 INCLUDE     "bootdict/x86-itc/forth-vm-itc.asm"
                 }
 
-                INCLUDE     "words.asm"
+                INCLUDE     "bootdict/x86/primitives.asm"
+                INCLUDE     "bootdict/x86/fcontrol.asm"
+                INCLUDE     "bootdict/tc/varconst.asm"
+                INCLUDE     "bootdict/x86/stack.asm"
+                INCLUDE     "bootdict/x86/rstack.asm"
+                INCLUDE     "bootdict/x86/math.asm"
+                INCLUDE     "bootdict/x86/data.asm"
+                INCLUDE     "bootdict/tc/here.asm"
+                INCLUDE     "bootdict/tc/literal.asm"
+                INCLUDE     "bootdict/tc/compile-comma.asm"
+                INCLUDE     "bootdict/tc/two-literal.asm"
+                INCLUDE     "bootdict/x86/double.asm"
+                INCLUDE     "bootdict/x86/compare.asm"
+                INCLUDE     "bootdict/x86/memory.asm"
+                INCLUDE     "bootdict/x86/string.asm"
+                INCLUDE     "bootdict/x86/host.asm"
+                INCLUDE     "bootdict/x86/wid-to-vt.asm"
+                INCLUDE     "bootdict/tc/search.asm"
+                INCLUDE     "bootdict/x86/convert.asm"
+                INCLUDE     "bootdict/tc/digits.asm"
+                INCLUDE     "bootdict/tc/h-dot-2.asm"
+                INCLUDE     "bootdict/tc/h-dot-8.asm"
+                INCLUDE     "bootdict/x86/excp-zero.asm"
+                INCLUDE     "bootdict/tc/except.asm"
+                INCLUDE     "bootdict/x86/source-id.asm"
+                INCLUDE     "bootdict/x86/source-id-store.asm"
+                INCLUDE     "bootdict/tc/source.asm"
+                INCLUDE     "bootdict/tc/file.asm"
+                INCLUDE     "bootdict/x86/paren-parse-paren.asm"
+                INCLUDE     "bootdict/tc/parse.asm"
+                INCLUDE_HEADER_TC
+                INCLUDE     "bootdict/x86/latest-head-fetch.asm"
+                INCLUDE     "bootdict/x86/latest-head-store.asm"
+                INCLUDE     "bootdict/x86/to-head.asm"
+                INCLUDE     "bootdict/x86/head-from.asm"
+                INCLUDE     "bootdict/x86/sys-upcase.asm"
+                INCLUDE     "bootdict/x86/paren-name-equals-paren.asm"
+                INCLUDE     "bootdict/x86/search-headers.asm"
+                INCLUDE     "bootdict/tc/header.asm"
+                INCLUDE     "bootdict/tc/recognizer-core.asm"
+                INCLUDE     "bootdict/tc/recognizer-word.asm"
+                INCLUDE     "bootdict/tc/recognizer-num.asm"
+                INCLUDE     "bootdict/tc/interpret.asm"
+                INCLUDE     "bootdict/tc/seh-handler.asm"
+                INCLUDE     "bootdict/tc/sig-handler.asm"
+                INCLUDE     "bootdict/x86/sysnt-thread.asm"
+                INCLUDE     "bootdict/x86/syslinux-thread.asm"
+                INCLUDE     "bootdict/x86/ik.asm"
+                INCLUDE     "bootdict/x86/call-ffl.asm"
 
                 INCLUDE     "bootdict/x86/main-proc.asm"
                 INCLUDE     "bootdict/tc/bootstrap-interpret.asm"
-
-LATEST_WORD     = VOC_LINK
-HERE:
