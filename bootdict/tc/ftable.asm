@@ -25,18 +25,6 @@ FUNC_NUM        =           0
                 FUNC_NUM = ( FUNC_NUM / CELL_SIZE + 1 ) * CELL_SIZE
                 }
 
-                MACRO       $CSYSCALL NAME {
-                MOV         EAX,DWORD [FUNC_TABLE_VAR + IMAGE_BASE]
-                MOV         EAX,DWORD [EAX + FUNC_#NAME * CELL_SIZE]
-                CALL        EAX
-                }
-
-                MACRO       $FSYSCALL NAME {
-                PUSHRS      EDI
-                $CSYSCALL   NAME
-                POPRS       EDI
-                }
-
 FUNC_TABLE_VAR:
                 DD          0
                 $FUNC       GET_LAST_ERROR

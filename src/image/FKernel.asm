@@ -70,7 +70,7 @@ DESIRED_SIZE_VAR:
 ;  Include functions table
 ;******************************************************************************
 
-                INCLUDE     "ftable.asm"
+                INCLUDE     "bootdict/tc/ftable.asm"
 
 ;******************************************************************************
 ;  Include user area variables. These variables are unique for each thread.

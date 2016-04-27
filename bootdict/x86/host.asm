@@ -9,6 +9,18 @@
 ;  Contains words, provided by hosting application.
 ;******************************************************************************
 
+                MACRO       $CSYSCALL NAME {
+                MOV         EAX,DWORD [FUNC_TABLE_VAR + IMAGE_BASE]
+                MOV         EAX,DWORD [EAX + FUNC_#NAME * CELL_SIZE]
+                CALL        EAX
+                }
+
+                MACRO       $FSYSCALL NAME {
+                PUSHRS      EDI
+                $CSYSCALL   NAME
+                POPRS       EDI
+                }
+
                 MACRO       CGET_LAST_ERROR {
                 $FSYSCALL   GET_LAST_ERROR
                 PUSHDS      EAX
