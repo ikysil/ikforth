@@ -3,8 +3,16 @@
 Import('env')
 senv = env.Clone()
 
+bootdict_src = []
+bootdict_src.extend(senv.Glob('#src/image/*.asm'))
+bootdict_src.extend(senv.Glob('#bootdict/*.asm'))
+bootdict_src.extend(senv.Glob('#bootdict/tc/*.asm'))
+bootdict_src.extend(senv.Glob('#bootdict/x86/*.asm'))
+bootdict_src.extend(senv.Glob('#bootdict/x86-itc/*.asm'))
+bootdict_src.extend(senv.Glob('#bootdict/x86-dtc/*.asm'))
+
 senv.Command('FKernel.img',
-        senv.Glob('*.asm'),
+        bootdict_src,
         'fasm -d CODE_THREADING=${CODE_THREADING_TYPE} -d DEBUG=${DEBUG} $SOURCE -s ${TARGET.dir}/FKernel.sym $TARGET')
 
 senv.Command('FKernel.lst',

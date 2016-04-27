@@ -15,15 +15,19 @@
    * `/developer` - developer's interactive configuration, Forth
    * etc...
 * `/blocks` - filesystem root for `BLOCK` wordset implementations
+* `/bootdict` - Bootstrap dictionary, Flat Assembler sources
+   * `/tc` - Forth VM threaded code
+   * `/x86` - native x86 code
+   * `/x86-dtc` - native x86 code, DTC specifics
+   * `/x86-itc` - native x86 code, ITC specifics
+   * `bootdict-x86.asm` - main module for x86
 * `/build` - build artifacts and temporary files
 * `/docs` - system documentation
 * `/extension`
    * `/*` - extensions, Forth
    * `*.4th`
-* `/host`
-   * `/bootdict` - Bootstrap dictionary, Flat Assembler sources
-   * `/lincon` - LINux CONstants dynamic library, C sources
-   * `/loader` - Loader for dictionaries, C/C++ sources
+* `/lincon` - LINux CONstants dynamic library, C sources
+* `/loader` - Loader for dictionaries, C/C++ sources
 * `/system`
    * `/linux` - Linux-specific definitions, Forth
    * `/term` - terminal integration, Forth
