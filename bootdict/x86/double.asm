@@ -9,12 +9,6 @@
 ;  Double number words
 ;******************************************************************************
 
-;  8.6.1.0390 2LITERAL
-                $COLON      '2LITERAL',$2LITERAL,VEF_IMMEDIATE_COMPILE_ONLY
-                CWLIT       $2LIT
-                CW          $COMPILEC, $SWAP, $COMMA, $COMMA
-                $END_COLON
-
 ;  8.6.1.1040 D+
 ;  ( d1|ud1 d2|ud2 -- d3|ud3 )
 ;  Add d2|ud2 to d1|ud1, giving the sum d3|ud3.

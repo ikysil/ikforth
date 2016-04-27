@@ -73,11 +73,6 @@ TN_STOP:
                 POPRS       EDI
                 $NEXT
 
-;  DIGITS
-                $CREATE     'DIGITS',$DIGITS
-DIGITS_TABLE:
-                DB          '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',0
-
 ;  6.1.2170 S>D
 ;  Convert single cell value to double cell value
 ;  D: a -- aa
@@ -121,15 +116,3 @@ DIGITS_TABLE:
                 MOV         CL,AH
                 PUSH        ECX
                 $NEXT
-
-;  Output the byte on the top of the data stack in hexadecimal representation.
-;  S: a --
-                $COLON      'H.2',$HOUT2
-                CW          $BTOH, $EMIT, $EMIT
-                $END_COLON
-
-;  Output the value on the top of the data stack in hexadecimal representation.
-;  S: a --
-                $COLON      'H.8',$HOUT8
-                CW          $SPLIT8, $HOUT2, $HOUT2, $HOUT2, $HOUT2
-                $END_COLON

@@ -1,0 +1,4 @@
+;  DIGITS
+                $CREATE     'DIGITS',$DIGITS
+DIGITS_TABLE:
+                DB          '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',0
