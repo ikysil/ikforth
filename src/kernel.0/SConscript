@@ -7,7 +7,7 @@ senv = env.Clone()
 
 fkernelExec = os.path.basename(fkernelPath)
 
-senv.Command('FKernel.img', '#build/image/FKernel.img',  Copy('$TARGET', '$SOURCE'))
+senv.Command('FKernel.img', '#build/bootdict/bootdict-x86.img',  Copy('$TARGET', '$SOURCE'))
 senv.Command(fkernelExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
 kernel_0_src = []

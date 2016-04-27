@@ -14,9 +14,11 @@ env.SConscript(dirs = ['src/lincon'],
         exports = ['env'],
         variant_dir = 'build/lincon', duplicate = 0)
 
-env.SConscript(dirs = ['src/image'],
-        exports = ['env'],
-        variant_dir = 'build/image', duplicate = 0)
+env_bootdict = env.Clone()
+env_bootdict['ARCH'] = 'x86'
+env.SConscript(dirs = ['bootdict'],
+        exports = ['env_bootdict'],
+        variant_dir = 'build/bootdict', duplicate = 0)
 
 env.SConscript(dirs = ['src/kernel.0'],
         exports = ['env', 'fkernelPath'],
