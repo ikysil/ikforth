@@ -83,7 +83,7 @@ FALSE REPORT-NEW-NAME !
 \ Reserve one byte of data space and store x in the byte
 \ Used to compile machine code
 : B, \ (S x -- )
-  DP @ TUCK ! 1+ DP !
+   DP @ TUCK C! 1+ DP !
 ;
 
 \ -----------------------------------------------------------------------------

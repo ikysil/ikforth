@@ -28,10 +28,11 @@
    * `*.4th`
 * `/lincon` - LINux CONstants dynamic library, C sources
 * `/loader` - Loader for dictionaries, C/C++ sources
-* `/system`
-   * `/linux` - Linux-specific definitions, Forth
+* `/sysdict` - system dictionary, Forth
    * `/term` - terminal integration, Forth
-   * `/win32` - Windows-specific definitions, Forth
+   * `/x86` - x86-specific primitives, Forth
+   * `/x86-linux` - Linux-specific definitions, Forth
+   * `/x86-windows` - Windows-specific definitions, Forth
    * `*.4th`
 * `/test`
    * `/*` - tests, Forth
