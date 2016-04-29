@@ -5,6 +5,7 @@ senv = env.Clone()
 
 sysdict_deps = []
 sysdict_deps.extend(senv.Glob('*.4th'))
+sysdict_deps.extend(senv.Glob('term/*.4th'))
 sysdict_deps.extend(senv.Glob('x86/*.4th'))
 sysdict_deps.extend(senv.Glob('x86-linux/*.4th'))
 sysdict_deps.extend(senv.Glob('x86-windows/*.4th'))
