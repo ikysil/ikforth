@@ -4,17 +4,17 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-S" src/kernel.0/primitives.4th"   INCLUDED
-S" src/kernel/const.4th"          INCLUDED
-S" src/kernel/core.4th"           INCLUDED
-S" src/kernel/core-tools.4th"     INCLUDED
-S" lib/ansi/value.4th"            INCLUDED
-S" src/kernel/recognizer.4th"     INCLUDED
-S" src/kernel/string.4th"         INCLUDED
-S" src/kernel/string-escape.4th"  INCLUDED
-S" src/kernel/zchar.4th"          INCLUDED
-S" src/kernel/args.4th"           INCLUDED
-S" src/kernel/chain.4th"          INCLUDED
+S" sysdict/primitives.4th"   INCLUDED
+S" sysdict/const.4th"          INCLUDED
+S" sysdict/core.4th"           INCLUDED
+S" sysdict/core-tools.4th"     INCLUDED
+S" sysdict/value.4th"            INCLUDED
+S" sysdict/recognizer.4th"     INCLUDED
+S" sysdict/string.4th"         INCLUDED
+S" sysdict/string-escape.4th"  INCLUDED
+S" sysdict/zchar.4th"          INCLUDED
+S" sysdict/args.4th"           INCLUDED
+S" sysdict/chain.4th"          INCLUDED
 
 :NONAME INIT-USER ;
 CHAIN STARTUP-CHAIN
@@ -22,45 +22,45 @@ CHAIN STARTUP-CHAIN
 :NONAME ;
 CHAIN SHUTDOWN-CHAIN
 
-S" src/kernel/literal-ext.4th"    INCLUDED
-S" src/kernel/source.4th"         INCLUDED
-S" src/kernel/double.4th"         INCLUDED
-S" src/kernel/format.4th"         INCLUDED
-S" src/kernel/exception.4th"      INCLUDED
-S" src/kernel/exception-ext.4th"  INCLUDED
-S" src/kernel/search-order.4th"   INCLUDED
-S" src/kernel/required.4th"       INCLUDED
-S" src/kernel/environment.4th"    INCLUDED
-S" src/kernel/platform.4th"       INCLUDED
-S" src/kernel/hostenv.4th"        INCLUDED
+S" sysdict/literal-ext.4th"    INCLUDED
+S" sysdict/source.4th"         INCLUDED
+S" sysdict/double.4th"         INCLUDED
+S" sysdict/format.4th"         INCLUDED
+S" sysdict/exception.4th"      INCLUDED
+S" sysdict/exception-ext.4th"  INCLUDED
+S" sysdict/search-order.4th"   INCLUDED
+S" sysdict/required.4th"       INCLUDED
+S" sysdict/environment.4th"    INCLUDED
+S" sysdict/platform.4th"       INCLUDED
+S" sysdict/hostenv.4th"        INCLUDED
 
-S" src/kernel/fetchstore-ext.4th" INCLUDED
-S" src/kernel/tools.4th"          INCLUDED
-S" src/kernel/misc.4th"           INCLUDED
-S" src/kernel/file.4th"           INCLUDED
-S" src/kernel/struct.4th"         INCLUDED
+S" sysdict/fetchstore-ext.4th" INCLUDED
+S" sysdict/tools.4th"          INCLUDED
+S" sysdict/misc.4th"           INCLUDED
+S" sysdict/file.4th"           INCLUDED
+S" sysdict/struct.4th"         INCLUDED
 
-S" lib/ansi/case.4th"             INCLUDED
-S" lib/ansi/block.4th"            INCLUDED
-REQUIRES" lib/~ik/quotations.4th"
-S" lib/ansi/see.4th"              INCLUDED
+REQUIRES" sysdict/case.4th"
+REQUIRES" sysdict/block.4th"
+REQUIRES" sysdict/quotations.4th"
+REQUIRES" sysdict/see.4th"
 
-REQUIRES" lib/~ik/dynlib.4th"
-REQUIRES" src/kernel.0/win32.4th"
-REQUIRES" src/kernel.0/linux.4th"
+REQUIRES" sysdict/dynlib.4th"
+REQUIRES" sysdict/x86-windows.4th"
+REQUIRES" sysdict/x86-linux.4th"
 
-S" lib/term/ansiterm.4th"         INCLUDED
+REQUIRES" sysdict/term/ansiterm.4th"
 
-REQUIRES" lib/~ik/locate.4th"
-REQUIRES" lib/~ik/locals.4th"
-REQUIRES" lib/ansi/locals.4th"
-REQUIRES" lib/~ik/locals-ext.4th"
+REQUIRES" sysdict/locate.4th"
+REQUIRES" sysdict/locals-stack.4th"
+REQUIRES" sysdict/locals.4th"
+REQUIRES" sysdict/locals-ext.4th"
 
-S" lib/~ik/macro.4th"             INCLUDED
-S" lib/~ik/loop.4th"              INCLUDED
-REQUIRES" lib/~ik/486asm.4th"
-S" lib/~ik/class.4th"             INCLUDED
-\ REQUIRES" lib/~ik/float.4th"
-S" lib/~ik/S$.4th"                INCLUDED
-REQUIRES" src/kernel/quit.4th"
-REQUIRES" src/kernel/main.4th"
+REQUIRES" sysdict/macro.4th"
+REQUIRES" sysdict/loop.4th"
+REQUIRES" sysdict/x86/486asm.4th"
+REQUIRES" sysdict/class.4th"
+\ REQUIRES" sysdict/float.4th"
+REQUIRES" sysdict/S$.4th"
+REQUIRES" sysdict/quit.4th"
+REQUIRES" sysdict/main.4th"

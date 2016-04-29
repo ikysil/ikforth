@@ -4,7 +4,7 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" lib/~ik/locals.4th"
+REQUIRES" sysdict/locals-stack.4th"
 
 CR .( Loading LOCALS definitions )
 

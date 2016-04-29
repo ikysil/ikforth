@@ -4,7 +4,7 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" src/kernel/quit.4th"
+REQUIRES" sysdict/quit.4th"
 
 CR .( Loading MAIN definitions )
 

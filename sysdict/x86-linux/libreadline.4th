@@ -4,7 +4,7 @@
 \  Copyright (C) 2016 Illya Kysil
 \
 
-REQUIRES" lib/~ik/dynlib.4th"
+REQUIRES" sysdict/dynlib.4th"
 
 CR .( Loading libreadline definitions )
 

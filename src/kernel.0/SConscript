@@ -10,14 +10,10 @@ fkernelExec = os.path.basename(fkernelPath)
 senv.Command('FKernel.img', '#build/bootdict/bootdict-x86.img',  Copy('$TARGET', '$SOURCE'))
 senv.Command(fkernelExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
+sysdict_deps = senv.SConscript('#sysdict/SConstruct-config', exports = ['env'])
+
 kernel_0_src = []
-kernel_0_src.extend(senv.Glob('#src/*.4th'))
-kernel_0_src.extend(senv.Glob('#src/kernel/*.4th'))
-kernel_0_src.extend(senv.Glob('#src/kernel.0/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/ansi/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/linux/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/term/*.4th'))
-kernel_0_src.extend(senv.Glob('#lib/win32/*.4th'))
+kernel_0_src.extend(sysdict_deps)
 kernel_0_src.extend(senv.Glob('#lib/~ik/*.4th'))
 kernel_0_src.extend(senv.Glob('#lib/~js/486asm/*.F'))
 kernel_0_src.extend(senv.Glob('#lib/~js/486asm/*.4th'))

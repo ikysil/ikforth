@@ -6,7 +6,7 @@
 \  TOOLS and TOOLS-EXT wordsets
 \
 
-REQUIRES" src/kernel/console.4th"
+REQUIRES" sysdict/console.4th"
 
 CR .( Loading TOOLS definitions )
 

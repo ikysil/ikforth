@@ -6,7 +6,7 @@
 \  Win32 Portable Executable utils
 \
 
-REQUIRES" src/kernel/struct.4th"
+REQUIRES" sysdict/struct.4th"
 
 CR .( Loading PEIMAGE definitions )
 

@@ -6,7 +6,7 @@
 \  An interface to WINCON.DLL
 \
 
-REQUIRES" lib/~ik/dynlib.4th"
+REQUIRES" sysdict/dynlib.4th"
 
 CR .( Loading WINCON definitions )
 

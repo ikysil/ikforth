@@ -4,7 +4,7 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" src/kernel/console.4th"
+REQUIRES" sysdict/console.4th"
 
 CR .( Loading QUIT definitions )
 

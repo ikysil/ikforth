@@ -4,10 +4,10 @@
 \  Copyright (C) 2016 Illya Kysil
 \
 
-REQUIRES" src/kernel/console.4th"
-REQUIRES" lib/linux/libc.4th"
-REQUIRES" lib/linux/libreadline.4th"
-REQUIRES" lib/term/linterm-ekey.4th"
+REQUIRES" sysdict/console.4th"
+REQUIRES" sysdict/x86-linux/libc.4th"
+REQUIRES" sysdict/x86-linux/libreadline.4th"
+REQUIRES" sysdict/term/linterm-ekey.4th"
 
 CR .( Loading linconsole definitions )
 

@@ -6,7 +6,7 @@
 \  Linux specific definitions
 \
 
-REQUIRES" lib/~ik/dynlib.4th"
+REQUIRES" sysdict/dynlib.4th"
 
 CR .( Probing for Linux host )
 
@@ -18,11 +18,11 @@ S" libc.so.6" (LoadLibrary) [IF]
 
 ENV>
 
-REQUIRES" lib/linux/lincon.4th"
-REQUIRES" lib/linux/libc.4th"
-REQUIRES" lib/linux/libreadline.4th"
-REQUIRES" lib/linux/linfile.4th"
-REQUIRES" lib/term/linconsole.4th"
+REQUIRES" sysdict/x86-linux/lincon.4th"
+REQUIRES" sysdict/x86-linux/libc.4th"
+REQUIRES" sysdict/x86-linux/libreadline.4th"
+REQUIRES" sysdict/x86-linux/linfile.4th"
+REQUIRES" sysdict/term/linconsole.4th"
 
 :NONAME
    S" ANSITERM-INIT"

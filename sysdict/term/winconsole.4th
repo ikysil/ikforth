@@ -4,8 +4,8 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" src/kernel/console.4th"
-REQUIRES" lib/win32/kernel32.4th"
+REQUIRES" sysdict/console.4th"
+REQUIRES" sysdict/x86-windows/kernel32.4th"
 
 CR .( Loading WINCONSOLE definitions )
 

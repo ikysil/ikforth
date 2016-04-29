@@ -4,7 +4,7 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-REQUIRES" src/kernel/file.4th"
+REQUIRES" sysdict/file.4th"
 
 CR .( Loading BLOCK definitions )
 

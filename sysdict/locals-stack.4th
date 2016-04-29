@@ -1,10 +1,10 @@
 \ ------------------------------------------------------------------------------
-\  locals.4th
+\  locals-stack.4th
 \
 \  Copyright (C) 2016 Illya Kysil
 \ ------------------------------------------------------------------------------
 
-CR .( Loading LOCALS definitions )
+CR .( Loading LOCALS-STACK definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

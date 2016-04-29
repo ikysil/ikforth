@@ -8,7 +8,7 @@
 \ LOOPS EXT
 \ -----------------------------------------------------------------------------
 
-REQUIRES" lib/~ik/macro.4th"
+REQUIRES" sysdict/macro.4th"
 
 CR .( Loading LOOP definitions )
 
