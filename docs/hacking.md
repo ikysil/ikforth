@@ -10,10 +10,6 @@
 
 *Note*: The structure below is Work In Progress.
 
-* `/application`
-   * `/base` - basic interactive system configuration, Forth
-   * `/developer` - developer's interactive configuration, Forth
-   * etc...
 * `/blocks` - filesystem root for `BLOCK` wordset implementations
 * `/bootdict` - Bootstrap dictionary, Flat Assembler sources
    * `/tc` - Forth VM threaded code
@@ -22,12 +18,15 @@
    * `/x86-itc` - native x86 code, ITC specifics
    * `bootdict-x86.asm` - main module for x86
 * `/build` - build artifacts and temporary files
-* `/docs` - system documentation
-* `/extension`
-   * `/*` - extensions, Forth
+* `/contrib`
+   * `/*` - contributions, Forth
    * `*.4th`
+* `/docs` - system documentation
 * `/lincon` - LINux CONstants dynamic library, C sources
 * `/loader` - Loader for dictionaries, C/C++ sources
+* `/product`
+   * `ikforth-base-x86` - basic interactive system configuration, Forth
+   * `ikforth-dev-x86` - developer's interactive configuration, Forth
 * `/sysdict` - system dictionary, Forth
    * `/term` - terminal integration, Forth
    * `/x86` - x86-specific primitives, Forth
