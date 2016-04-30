@@ -5,6 +5,13 @@
 \
 
 S" sysdict/primitives.4th"     INCLUDED
+S" sysdict/int-slash-comp-colon.4th" INCLUDED
+S" sysdict/x86/paren-do-paren.4th" INCLUDED
+S" sysdict/x86/i.4th"          INCLUDED
+S" sysdict/x86/i-tick.4th"     INCLUDED
+S" sysdict/x86/j.4th"          INCLUDED
+S" sysdict/x86/leave.4th"      INCLUDED
+S" sysdict/x86/exit.4th"       INCLUDED
 S" sysdict/const.4th"          INCLUDED
 S" sysdict/core.4th"           INCLUDED
 S" sysdict/core-tools.4th"     INCLUDED
