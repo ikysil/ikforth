@@ -20,9 +20,9 @@ env.SConscript(dirs = ['bootdict'],
         exports = ['env_bootdict'],
         variant_dir = 'build/bootdict', duplicate = 0)
 
-env.SConscript(dirs = ['src/kernel.0'],
+env.SConscript(dirs = ['product/ikforth-dev-x86'],
         exports = ['env', 'fkernelPath'],
-        variant_dir = 'build/ikforth-$TERMINIT', duplicate = 1)
+        variant_dir = 'build/ikforth-dev-$TERMINIT', duplicate = 1)
 
 env.SConscript('SConscript',
         exports = ['env', 'fkernelPath'])

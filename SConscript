@@ -20,15 +20,16 @@ def test_stdin(source, target, env):
 def ansitest(source, target, env):
     env.Execute('${RUN_CMD} \'S\" test/forth2012-test.4th\" INCLUDED\'')
 
-source_dir = '#build/ikforth-$TERMINIT/'
+source_dir = '#build/ikforth-dev-$TERMINIT/'
+ikforthSrcDict = source_dir + 'ikforth-dev-x86.img'
 
-senv.Command(ikforthDict, source_dir + ikforthDict, Copy('$TARGET', '$SOURCE'))
+senv.Command(ikforthDict, ikforthSrcDict, Copy('$TARGET', '$SOURCE'))
 senv.Command(ikforthExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
 senv.Alias('ikforth', [ikforthExec, ikforthDict])
 
 senv.Alias('all', 'ikforth')
-senv.Depends('all', [source_dir + ikforthDict])
+senv.Depends('all', [ikforthSrcDict])
 senv.Clean('all', ['#build', 'IKForth', 'IKForth.exe'])
 
 senv.Alias('run', [], run)

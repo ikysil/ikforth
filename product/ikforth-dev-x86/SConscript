@@ -1,0 +1,32 @@
+# kernel.0
+
+import os
+
+Import('env', 'fkernelPath')
+senv = env.Clone()
+
+senv['productname'] = 'ikforth-dev-x86' 
+senv['buildername'] = 'product-builder' 
+
+fkernelExec = senv.execname('${buildername}');
+
+senv.Command('${buildername}.img', '#build/bootdict/bootdict-x86.img',  Copy('$TARGET', '$SOURCE'))
+senv.Command(fkernelExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
+
+sysdict_deps = senv.SConscript('#sysdict/SConstruct-config', exports = ['env'])
+
+product_src = []
+product_src.extend(sysdict_deps)
+product_src.extend(senv.Glob('#lib/~ik/*.4th'))
+product_src.extend(senv.Glob('#lib/~js/486asm/*.F'))
+product_src.extend(senv.Glob('#lib/~js/486asm/*.4th'))
+
+product_deps = []
+product_deps.extend(senv.Glob('*.4th'))
+product_deps.extend(senv.Glob('#product/ikforth-base-x86/*.4th'))
+product_deps.extend(product_src)
+
+senv.Command('${productname}.img',
+        fkernelExec,
+        'IKFORTHTERMINIT=${TERMINIT} ${BUILD_LAUNCHER} ${SOURCE} ${TARGET}')
+senv.Depends('${productname}.img', ['${buildername}.img', fkernelExec, product_deps])

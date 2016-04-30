@@ -1,5 +1,5 @@
 \
-\  _kernel0.4th
+\  product-dict.4th
 \
 \  Copyright (C) 1999-2016 Illya Kysil
 \
@@ -65,9 +65,6 @@ REQUIRES" sysdict/locals-ext.4th"
 
 REQUIRES" sysdict/macro.4th"
 REQUIRES" sysdict/loop.4th"
-REQUIRES" sysdict/x86/486asm.4th"
-REQUIRES" sysdict/class.4th"
-\ REQUIRES" sysdict/float.4th"
 REQUIRES" sysdict/S$.4th"
 REQUIRES" sysdict/quit.4th"
 REQUIRES" sysdict/main.4th"

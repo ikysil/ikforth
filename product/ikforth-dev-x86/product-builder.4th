@@ -1,5 +1,5 @@
 \
-\  FKernel.4th
+\  product-builder.4th
 \
 \  Copyright (C) 1999-2016 Illya Kysil
 \
@@ -12,7 +12,7 @@ REPORT-NEW-NAME @
 TRUE REPORT-NEW-NAME-DUPLICATE !
 FALSE REPORT-NEW-NAME !
 
-S" src/kernel.0/_kernel0.4th" INCLUDED
+S" product/ikforth-dev-x86/product-dict.4th" INCLUDED
 
 \ ' _READ-LINE     IS READ-LINE
 \ ' _INCLUDED      IS INCLUDED
@@ -25,7 +25,7 @@ DECIMAL
 
 0x00800000 DATA-AREA-SIZE !
 
-1 ARGV? INVERT [IF]   S" IKForth.img"   [THEN]
+1 ARGV? INVERT [IF]   S" ikforth-dev-x86.img"   [THEN]
 2DUP CR .( Writing ) TYPE
 
 W/O CREATE-FILE THROW
