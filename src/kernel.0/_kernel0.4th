@@ -4,11 +4,11 @@
 \  Copyright (C) 1999-2016 Illya Kysil
 \
 
-S" sysdict/primitives.4th"   INCLUDED
+S" sysdict/primitives.4th"     INCLUDED
 S" sysdict/const.4th"          INCLUDED
 S" sysdict/core.4th"           INCLUDED
 S" sysdict/core-tools.4th"     INCLUDED
-S" sysdict/value.4th"            INCLUDED
+S" sysdict/value.4th"          INCLUDED
 S" sysdict/recognizer.4th"     INCLUDED
 S" sysdict/string.4th"         INCLUDED
 S" sysdict/string-escape.4th"  INCLUDED
