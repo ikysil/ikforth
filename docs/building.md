@@ -16,7 +16,8 @@
 ### `ansitest`
 ### `debug`
 ### `dtc`
-### `image`
+### `bootdict`
+### `bootdict-x86`
 ### `itc`
 ### `loader`
 ### `run`
