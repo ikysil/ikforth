@@ -46,6 +46,7 @@ S" sysdict/tools.4th"          INCLUDED
 S" sysdict/misc.4th"           INCLUDED
 S" sysdict/file.4th"           INCLUDED
 S" sysdict/struct.4th"         INCLUDED
+S" sysdict/word.4th"           INCLUDED
 
 REQUIRES" sysdict/case.4th"
 REQUIRES" sysdict/block.4th"
@@ -62,6 +63,7 @@ REQUIRES" sysdict/locate.4th"
 REQUIRES" sysdict/locals-stack.4th"
 REQUIRES" sysdict/locals.4th"
 REQUIRES" sysdict/locals-ext.4th"
+
 
 REQUIRES" sysdict/macro.4th"
 REQUIRES" sysdict/loop.4th"
