@@ -61,6 +61,8 @@
                 INCLUDE     "bootdict/x86/wid-to-vt.asm"
                 INCLUDE     "bootdict/tc/search.asm"
                 INCLUDE     "bootdict/x86/convert.asm"
+                INCLUDE     "bootdict/x86/to-digit.asm"
+                INCLUDE     "bootdict/x86/to-number.asm"
                 INCLUDE     "bootdict/tc/digits.asm"
                 INCLUDE     "bootdict/tc/h-dot-2.asm"
                 INCLUDE     "bootdict/tc/h-dot-8.asm"
