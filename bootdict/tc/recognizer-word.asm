@@ -18,6 +18,8 @@
                 }
                 CW          HF_COMPILE_ONLY, $AND, $ZERONOEQ
                 _IF         R_WORD_INT_COMPILE_ONLY
+                CW          $TO_HEAD, $H_TO_HASH_NAME
+                CW          $SQTOPOCKET, $DROP
                 CTHROW      -14
                 _THEN       R_WORD_INT_COMPILE_ONLY
                 CW          $EXECUTE
