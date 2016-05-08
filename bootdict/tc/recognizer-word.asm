@@ -11,7 +11,7 @@
 
 ;  R:WORD-INT - word INTERPRET action
 ;  ( i*x XT flags -- j*y )
-                $NONAME     R_WORD_INT
+                $COLON      'R:WORD-INT',R_WORD_INT
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'R:WORD-INT'
                 $TRACE_STACK 'R:WORD-INT-A:',2
@@ -25,7 +25,7 @@
 
 ;  R:WORD-COMP - word COMPILE action
 ;  ( XT flags -- )
-                $NONAME     R_WORD_COMP
+                $COLON      'R:WORD-COMP',R_WORD_COMP
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'R:WORD-COMP'
                 $TRACE_STACK 'R:WORD-COMP-A:',2
@@ -40,12 +40,12 @@
 
 ;  R:WORD-POST - word POSTPONE action
 ;  ( XT flags -- )
-                $NONAME     R_WORD_POST
+                $COLON      'R:WORD-POST',R_WORD_POST
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'R:WORD-POST'
                 $TRACE_STACK 'R:WORD-POST-A:',2
                 }
-                CW          $2LITERAL
+                CW          $SWAP, $LITERAL, $LITERAL
                 $END_COLON
 
                 $RTABLE     'R:WORD',R_WORD,R_WORD_INT,R_WORD_COMP,R_WORD_POST
