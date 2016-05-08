@@ -113,3 +113,14 @@ NOQBRANCH:
 PDIC_INT:
                 MOV         EAX,DWORD [EAX]
                 $JMP
+
+;  (DO-DOES>)
+;  Run-time semantics of DOES>
+;  EAX contains xt of word
+;  top of hardware stack contains address of DOES> part
+                $CREATE     '(DO-DOES>)'
+                PUSHRS      ESI
+                POPDS       ESI
+                ADD         EAX,CFA_SIZE
+                PUSHDS      EAX
+                $NEXT
