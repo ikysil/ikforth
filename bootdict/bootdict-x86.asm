@@ -93,6 +93,7 @@
                 INCLUDE     "bootdict/tc/recognizer-core.asm"
                 INCLUDE     "bootdict/tc/recognizer-word.asm"
                 INCLUDE     "bootdict/tc/recognizer-num.asm"
+                INCLUDE     "bootdict/tc/postpone.asm"
                 INCLUDE     "bootdict/tc/interpret.asm"
                 INCLUDE     "bootdict/tc/seh-handler.asm"
                 INCLUDE     "bootdict/tc/sig-handler.asm"
