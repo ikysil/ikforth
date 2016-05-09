@@ -10,7 +10,7 @@
 ;
 ;******************************************************************************
 
-                INCLUDE     "bootdict/tc/bootdict-header.asm"
+                INCLUDE     "bootdict/x86/bootdict-header.asm"
 
 ;******************************************************************************
 ;  Include functions table
