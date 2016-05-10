@@ -10,13 +10,10 @@
 ;******************************************************************************
 
 ;  16.6.1.1595 FORTH-WORDLIST
-                $CREATE     'FORTH-WORDLIST',$FORTH_WORDLIST
-FORTH_WORDLIST_EQU:
-                DD          LATEST_WORD             ; last word in a list
-                CC          0                       ; wordlist name
-                CC          0                       ; wordlist link
-FORTH_WORDLIST_VT:
-                PW          $WORDLIST_VT            ; wordlist VT
+                $WORDLIST   'FORTH-WORDLIST',$FORTH_WORDLIST,LINK
+                $DEFINITIONS $FORTH_WORDLIST
+
+                $VAR        'LAST-WORDLIST',,LATEST_WL
 
 ;  WID>XT-SEARCH
 ;  D: ( wid -- xt-search )

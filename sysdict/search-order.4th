@@ -68,9 +68,6 @@ USER CONTEXT MAX-ORDER-COUNT 1+ CELLS USER-ALLOC
   CURRENT !
 ;
 
-VARIABLE LAST-WORDLIST
-FORTH-WORDLIST LAST-WORDLIST !
-
 \  WORDLIST structure
 \  Offset (CELLS)   Value
 \  +0               last word in wordlist (modified by header creation words)

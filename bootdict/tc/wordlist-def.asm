@@ -10,6 +10,7 @@
 ;******************************************************************************
 
 VOC_LINK                =       0                       ; link to previous word
+WL_LINK                 =       0                       ; link to the previous wordlist
 ;******************************************************************************
 ;  Vocabulary entry flags
 ;******************************************************************************
@@ -92,7 +93,7 @@ __CODE:
                 }
 
                 POSTPONE {
-LATEST_WORD     = VOC_LINK
+                LATEST_WL   = WL_LINK
                 LABEL       HERE
                 }
 
@@ -156,3 +157,30 @@ LATEST_WORD     = VOC_LINK
                 $DEF        NAME,CFA_NAME,$DOCREATE,FLAGS
                 CW          INT_XT,COMP_XT,POST_XT
                 }
+
+                MACRO       $DEFINITIONS CFA_NAME {
+                VOC_LINK    EQU VOC_LINK_#CFA_NAME
+                }
+
+                MACRO       $WORDLIST NAME,CFA_NAME,LINK {
+                VOC_LINK_#CFA_NAME = 0
+                IF          LINK EQ
+                RESTORE     VOC_LINK
+                VOC_LINK    = 0
+                END IF
+                $CREATE     NAME,CFA_NAME
+                DD          LATEST_WORD_#CFA_NAME   ; last word in a list
+                CC          0                       ; wordlist name
+                CC          WL_LINK                 ; wordlist link
+                $DEFLABEL   VT,CFA_NAME
+                PW          $WORDLIST_VT            ; wordlist VT
+
+                WL_LINK     = PFA_#CFA_NAME + IMAGE_BASE
+                VOC_LINK_#CFA_NAME = VOC_LINK
+
+                POSTPONE \{
+                LATEST_WORD_#CFA_NAME = VOC_LINK_#CFA_NAME
+                \}
+
+                }
+
