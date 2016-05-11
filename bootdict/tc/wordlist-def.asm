@@ -159,15 +159,12 @@ __CODE:
                 }
 
                 MACRO       $DEFINITIONS CFA_NAME {
+                RESTORE     VOC_LINK
                 VOC_LINK    EQU VOC_LINK_#CFA_NAME
                 }
 
                 MACRO       $WORDLIST NAME,CFA_NAME,LINK {
                 VOC_LINK_#CFA_NAME = 0
-                IF          LINK EQ
-                RESTORE     VOC_LINK
-                VOC_LINK    = 0
-                END IF
                 $CREATE     NAME,CFA_NAME
                 DD          LATEST_WORD_#CFA_NAME   ; last word in a list
                 CC          0                       ; wordlist name
@@ -176,7 +173,9 @@ __CODE:
                 PW          $WORDLIST_VT            ; wordlist VT
 
                 WL_LINK     = PFA_#CFA_NAME + IMAGE_BASE
+                IF          ~ LINK EQ
                 VOC_LINK_#CFA_NAME = VOC_LINK
+                END IF
 
                 POSTPONE \{
                 LATEST_WORD_#CFA_NAME = VOC_LINK_#CFA_NAME
