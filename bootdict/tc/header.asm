@@ -113,7 +113,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 $DEFER      'REPORT-NAME',$REPORT_NAME,$PREPORT_NAME
 
 ;  (LOCATE,)
-;  S: flags1 -- flags2
+;  S: flags1 count -- flags2
 ;  Compile information for LOCATE and set &LOCATE in flags if enabled.
                 $COLON      '(LOCATE,)',$PLOCATEC
                 CFETCH      $USE_LOCATE
@@ -121,9 +121,12 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CFETCH      $INCLUDE_MARK
                 CW          $COMMA
                 CFETCH      $TOIN
+                CW          $SWAP, $SUB
                 CW          $COMMA
                 CFETCH      $INCLUDE_LINE_NUM
                 CW          $COMMA, $AMPLOCATE, $OR
+                _ELSE       USE_LOCATE
+                CW          $DROP
                 _THEN       USE_LOCATE
                 $END_COLON
 
@@ -131,7 +134,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                 $COLON      '(HEADER,)',$PHEADERC
-                CW          $PLOCATEC
+                CW          $OVER, $PLOCATEC
                 CW          $HERE
                 CW          $TOR
                 CW          $CCOMMA                 ; compile flags

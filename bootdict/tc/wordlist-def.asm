@@ -20,7 +20,9 @@ VEF_HIDDEN              EQU     02h  ; hidden word
 VEF_COMPILE_ONLY        EQU     04h  ; compile only mode
 VEF_LOCATE              EQU     08h  ; LOCATE information is present
 VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
+VEF_INCLUDED            EQU     VEF_USUAL
 
+INCLUDE_MARK            EQU     0
 ;******************************************************************************
 ;  Macro $DEF defines a wordlist entry.
 ;  Parameters:
@@ -57,16 +59,23 @@ VEF_IMMEDIATE_COMPILE_ONLY  EQU VEF_IMMEDIATE OR VEF_COMPILE_ONLY
                 END IF
                 }
 
+                MACRO       $DEFLOCATE {
+                DD          INCLUDE_MARK + IMAGE_BASE
+                DD          -1                          ; column
+                DD          -1                          ; line
+                }
+
                 MACRO       $DEF NAME,CFA_NAME,CODE,FLAGS {
 
                 LOCAL       __DEF,__PREVFLD,__LBLNAME,__CODE
+                $DEFLOCATE
 __DEF:
 LASTWORD = __DEF
                 $DEFLABEL   HEAD,CFA_NAME
                 IF          ~ FLAGS eq
-                DB          FLAGS
+                DB          FLAGS OR VEF_INCLUDED
                 ELSE
-                DB          VEF_USUAL
+                DB          VEF_USUAL OR VEF_INCLUDED
                 END IF
 ;; NFA
                 $DEFLABEL   NFA,CFA_NAME
@@ -183,3 +192,14 @@ __CODE:
 
                 }
 
+                MACRO       $INCLUDED NAME {
+                LOCAL       INCLUDED, LBL_INCLUDE_MARK
+                LABEL       LBL_INCLUDE_MARK
+                INCLUDE_MARK EQU LBL_INCLUDE_MARK
+                CW          INCLUDED
+                VEF_INCLUDED EQU VEF_LOCATE
+                INCLUDE     NAME
+                RESTORE     VEF_INCLUDED
+                INCLUDE_MARK EQU 0
+                $CREATE     NAME,INCLUDED
+                }
