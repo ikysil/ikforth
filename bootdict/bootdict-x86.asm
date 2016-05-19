@@ -42,6 +42,9 @@
                 INCLUDE     "bootdict/x86-itc/forth-vm-itc.asm"
                 }
 
+                INCLUDE     "bootdict/tc/forth-wordlist.asm"
+                INCLUDE     "bootdict/tc/included-wordlist.asm"
+
                 $INCLUDED   "bootdict/x86/primitives.asm"
                 $INCLUDED   "bootdict/x86/fcontrol.asm"
                 $INCLUDED   "bootdict/tc/varconst.asm"

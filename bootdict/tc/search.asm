@@ -9,10 +9,6 @@
 ;  Words search
 ;******************************************************************************
 
-;  16.6.1.1595 FORTH-WORDLIST
-                $WORDLIST   'FORTH-WORDLIST',$FORTH_WORDLIST,LINK
-                $DEFINITIONS $FORTH_WORDLIST
-
                 $VAR        'LAST-WORDLIST',,LATEST_WL
 
 ;  WID>XT-SEARCH

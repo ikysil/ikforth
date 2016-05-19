@@ -18,7 +18,7 @@
                 CFETCH      $HASH_FILE_LINE
                 $END_COLON
 
-                $DEFER  'SOURCE',$SOURCE,$_SOURCE
+                $DEFER      'SOURCE',$SOURCE,$_SOURCE
 
 ;  (REPORT-SOURCE)
 ;  D: c-addr u line-u -- 

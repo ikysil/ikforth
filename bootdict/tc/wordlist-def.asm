@@ -60,9 +60,11 @@ INCLUDE_MARK            EQU     0
                 }
 
                 MACRO       $DEFLOCATE {
+                IF          ~ VEF_INCLUDED EQ VEF_USUAL
                 DD          INCLUDE_MARK + IMAGE_BASE
-                DD          -1                          ; column
-                DD          -1                          ; line
+                DD          0                           ; column
+                DD          0                           ; line
+                END IF
                 }
 
                 MACRO       $DEF NAME,CFA_NAME,CODE,FLAGS {
@@ -169,22 +171,24 @@ __CODE:
 
                 MACRO       $DEFINITIONS CFA_NAME {
                 RESTORE     VOC_LINK
+                IF          VOC_LINK > 0
+                ; link entries made before first $DEFINITIONS call
+                VOC_LINK_#CFA_NAME = VOC_LINK
+                VOC_LINK    = 0
+                END IF
                 VOC_LINK    EQU VOC_LINK_#CFA_NAME
                 }
 
-                MACRO       $WORDLIST NAME,CFA_NAME,LINK {
+                MACRO       $WORDLIST NAME,CFA_NAME {
                 VOC_LINK_#CFA_NAME = 0
                 $CREATE     NAME,CFA_NAME
-                DD          LATEST_WORD_#CFA_NAME   ; last word in a list
-                CC          0                       ; wordlist name
-                CC          WL_LINK                 ; wordlist link
+                DD          LATEST_WORD_#CFA_NAME       ; last word in a list
+                CC          HEAD_#CFA_NAME + IMAGE_BASE ; wordlist name
+                CC          WL_LINK                     ; wordlist link
                 $DEFLABEL   VT,CFA_NAME
-                PW          $WORDLIST_VT            ; wordlist VT
+                PW          $WORDLIST_VT                ; wordlist VT
 
                 WL_LINK     = PFA_#CFA_NAME + IMAGE_BASE
-                IF          ~ LINK EQ
-                VOC_LINK_#CFA_NAME = VOC_LINK
-                END IF
 
                 POSTPONE \{
                 LATEST_WORD_#CFA_NAME = VOC_LINK_#CFA_NAME
@@ -201,5 +205,7 @@ __CODE:
                 INCLUDE     NAME
                 RESTORE     VEF_INCLUDED
                 INCLUDE_MARK EQU 0
+                VOC_LINK    EQU VOC_LINK_$INCLUDED_WORDLIST
                 $CREATE     NAME,INCLUDED
+                RESTORE     VOC_LINK
                 }

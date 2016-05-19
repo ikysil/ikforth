@@ -71,7 +71,7 @@ USER CONTEXT MAX-ORDER-COUNT 1+ CELLS USER-ALLOC
 \  WORDLIST structure
 \  Offset (CELLS)   Value
 \  +0               last word in wordlist (modified by header creation words)
-\  +1               VOCABULARY XT (if any, 0 otherwise)
+\  +1               wordlist name, HEAD (if any, 0 otherwise)
 \  +2               previous WORDLIST
 \  +3               WORDLIST-VT
 \
