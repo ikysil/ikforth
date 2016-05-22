@@ -149,8 +149,8 @@ PTHROW_CHAIN:
                 $TRACE_STACK 'THROW',1
                 }
                 CW          $QDUP
-                CQBR        THROW_EXIT
+                _IF         THROW_HAS_EXCEPTION
                 CW          $PTHROW
-THROW_EXIT:
+                _THEN       THROW_HAS_EXCEPTION
                 $END_COLON
 

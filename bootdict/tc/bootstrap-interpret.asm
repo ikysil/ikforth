@@ -4,7 +4,7 @@
                 CFETCH      $HASH_SF
                 CWLIT       $INCLUDED
                 CW          $CATCH, $DUP, $EXIT_CODE, $STORE, $QDUP
-                CQBR        BSI_NO_EXCEPTIONS
+                _IF         BSI_HAS_EXCEPTION
                 $CR
                 $CR
                 $WRITE      'Exception caught while INCLUDing ['
@@ -36,5 +36,5 @@
                 CW          $REPORT_SOURCE
                 $CR
                 $CR
-BSI_NO_EXCEPTIONS:
-                CW      $PBYE
+                _THEN       BSI_HAS_EXCEPTION
+                CW          $PBYE

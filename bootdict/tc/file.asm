@@ -57,12 +57,12 @@
 INCLUDE_FILE_LOOP:
                 CW          $ZERO ; FOR THROW
                 CW          $REFILL
-                CQBR        INCLUDE_FILE_EXIT
+                _IF         INCF_INTERPRET
                 CW          $DROP
                 CWLIT       $INTERPRET
                 CW          $CATCH, $QDUP
                 CQBR        INCLUDE_FILE_LOOP
-INCLUDE_FILE_EXIT:
+                _THEN       INCF_INTERPRET
                 CW          $SOURCE_ID, $CLOSE_FILE, $THROW, $R_TO_INPUT, $THROW
                 $END_COLON
 

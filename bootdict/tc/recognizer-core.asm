@@ -40,21 +40,21 @@
 DO_REC_LOOP:
                 ; S: c-addr len rec-count
                 CW          $DUP
-                CQBR        DO_REC_LOOP_EXIT
+                _IF         DO_REC_HAS_MORE
                 CW          $DUP, $CELLS, $RFETCH, $ADD, $FETCH
                 ; S: c-addr len rec-count rec-xt R: rec-id
                 CW          $2OVER, $2TOR, $SWAP, $1SUB, $TOR
                 ; S: c-addr len rec-xt R: rec-id c-addr len rec-count'
                 CW          $EXECUTE
                 CW          $DUP, R_FAIL, $NOEQ
-                CQBR        DO_REC_LOOP_CONT
+                _IF         DO_REC_FOUND
                 CW          $2RFROM, $2DROP, $2RFROM, $2DROP
                 ; S: R:TABLE
                 CW          $EXIT
-DO_REC_LOOP_CONT:
+                _THEN       DO_REC_FOUND
                 CW          $DROP, $RFROM, $2RFROM, $ROT
                 CBR         DO_REC_LOOP
-DO_REC_LOOP_EXIT:
+                _THEN       DO_REC_HAS_MORE
                 CW          $DROP, $2DROP, $RFROM, $DROP, R_FAIL
                 $END_COLON
 

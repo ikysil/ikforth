@@ -64,9 +64,9 @@
                 CW          $INTERPRET_TEXT_STORE
 INT_LOOP:
                 CW          $PARSE_NAME, $DUP
-                CQBR        INT_EXIT                ; exit loop if parse area is exhausted
+                _IF         INT_HAS_WORD                ; exit loop if parse area is exhausted
                 CW          $INTERPRET_WORD
                 CBR         INT_LOOP
-INT_EXIT:
+                _THEN       INT_HAS_WORD
                 CW          $2DROP
                 $END_COLON
