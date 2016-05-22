@@ -332,17 +332,16 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 $COLON      'STDWL-TRAVERSE',$STDWL_TRAVERSE
                 CW          $WLTOLATEST, $FETCH
                 CW          $SWAP, $TOR
-STDWLTW_LOOP:
+                _BEGIN      STDWLTW_LOOP
                 CW          $DUP, $ZERONOEQ
-                _IF         STDWLTW_HAS_WORD
+                _WHILE      STDWLTW_LOOP
                 CW          $RFETCH, $OVER, $TOR, $EXECUTE, $RFROM, $SWAP
                 _IF         STDWLTW_CONTINUE
                 CW          $H_TO_NEXT_TO_H
                 _ELSE       STDWLTW_CONTINUE
                 CW          $DROP, $ZERO
                 _THEN       STDWLTW_CONTINUE
-                CBR         STDWLTW_LOOP
-                _THEN       STDWLTW_HAS_WORD
+                _REPEAT     STDWLTW_LOOP
                 CW          $DROP, $RFROM, $DROP
                 $END_COLON
 

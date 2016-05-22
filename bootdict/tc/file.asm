@@ -54,14 +54,14 @@
 ;  INCLUDE-FILE for bootstrap
                 $NONAME     $_INCLUDE_FILE
                 CW          $INPUT_TO_R, $RESET_INPUT, $SOURCE_ID_STORE
-INCLUDE_FILE_LOOP:
+                _BEGIN      INCF_LOOP
                 CW          $ZERO ; FOR THROW
                 CW          $REFILL
                 _IF         INCF_INTERPRET
                 CW          $DROP
                 CWLIT       $INTERPRET
                 CW          $CATCH, $QDUP
-                CQBR        INCLUDE_FILE_LOOP
+                _UNTIL      INCF_LOOP
                 _THEN       INCF_INTERPRET
                 CW          $SOURCE_ID, $CLOSE_FILE, $THROW, $R_TO_INPUT, $THROW
                 $END_COLON

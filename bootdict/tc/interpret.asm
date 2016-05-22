@@ -62,11 +62,10 @@
 ;  INTERPRET
                 $COLON      'INTERPRET',$INTERPRET
                 CW          $INTERPRET_TEXT_STORE
-INT_LOOP:
+                _BEGIN      INT_LOOP
                 CW          $PARSE_NAME, $DUP
-                _IF         INT_HAS_WORD                ; exit loop if parse area is exhausted
+                _WHILE      INT_LOOP                    ; exit loop if parse area is exhausted
                 CW          $INTERPRET_WORD
-                CBR         INT_LOOP
-                _THEN       INT_HAS_WORD
+                _REPEAT     INT_LOOP
                 CW          $2DROP
                 $END_COLON

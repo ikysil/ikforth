@@ -105,3 +105,29 @@
                 _?LBL       LBL
                 LABEL       LBL#_THEN
                 }
+
+                MACRO       _BEGIN LBL {
+                _?LBL       LBL
+                LABEL       LBL#_BEGIN
+                }
+
+                MACRO       _UNTIL LBL {
+                _?LBL       LBL
+                CQBR        LBL#_BEGIN
+                }
+
+                MACRO       _AGAIN LBL {
+                _?LBL       LBL
+                CBR         LBL#_BEGIN
+                }
+
+                MACRO       _WHILE LBL {
+                _?LBL       LBL
+                CQBR        LBL#_REPEAT
+                }
+
+                MACRO       _REPEAT LBL {
+                _?LBL       LBL
+                CBR         LBL#_BEGIN
+                LABEL       LBL#_REPEAT
+                }

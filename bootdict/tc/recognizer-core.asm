@@ -37,10 +37,10 @@
 ;  c-addr len rec-id -- i*x R:TABLE | R:FAIL
                 $COLON      'DO-RECOGNIZER',DO_RECOGNIZER
                 CW          $DUP, $TOR, $FETCH
-DO_REC_LOOP:
+                _BEGIN      DO_REC_LOOP
                 ; S: c-addr len rec-count
                 CW          $DUP
-                _IF         DO_REC_HAS_MORE
+                _WHILE      DO_REC_LOOP
                 CW          $DUP, $CELLS, $RFETCH, $ADD, $FETCH
                 ; S: c-addr len rec-count rec-xt R: rec-id
                 CW          $2OVER, $2TOR, $SWAP, $1SUB, $TOR
@@ -53,8 +53,7 @@ DO_REC_LOOP:
                 CW          $EXIT
                 _THEN       DO_REC_FOUND
                 CW          $DROP, $RFROM, $2RFROM, $ROT
-                CBR         DO_REC_LOOP
-                _THEN       DO_REC_HAS_MORE
+                _REPEAT     DO_REC_LOOP
                 CW          $DROP, $2DROP, $RFROM, $DROP, R_FAIL
                 $END_COLON
 

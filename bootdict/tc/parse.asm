@@ -44,16 +44,14 @@
 ;  SKIP-BLANK
 ;  c-addr u -- c-addr' u'
                 $COLON      'SKIP-BLANK',$SKIP_BLANK
-SKBL_LOOP:
+                _BEGIN      SKBL_LOOP
                 CW          $DUP, $ZEROGR
-                _IF         SKBL_HAS_CHARS
+                _WHILE      SKBL_LOOP
                 CW          $OVER, $CFETCH, $BL, $1ADD, $ULE
-                _IF         SKBL_BLANK
+                _WHILE      SKBL_LOOP
                 CCLIT       1
                 CW          $SLASH_STRING
-                CBR         SKBL_LOOP
-                _THEN       SKBL_HAS_CHARS
-                _THEN       SKBL_BLANK
+                _REPEAT     SKBL_LOOP
                 $END_COLON
 
 ;  >IN+

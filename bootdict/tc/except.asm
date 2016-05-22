@@ -124,9 +124,9 @@
 ;  skip the address of the mandatory exception frame data
                 CW          $EXCDROP
 ;  execute chain to restore execution environment from optional data
-PTHROW_CHAIN:
+                _BEGIN      PTHROW_CHAIN
                 CW          $EXCFROM, $EXECUTE
-                CBR         PTHROW_CHAIN
+                _AGAIN      PTHROW_CHAIN
                 $END_COLON
 
                 $COLON      '(EXC-POP-THROW)',$PEXC_POP_THROW
