@@ -10,6 +10,12 @@
   * symbolic link `mingw32-g++` -> `/usr/bin/i686-w64-mingw32-g++`
 * wine 32 bits (Linux)
 
+## Dockerized build environment
+```bash
+docker build -f Dockerfile -t ikforth-build:latest .
+docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
+```
+
 ## Targets
 
 ### `all`

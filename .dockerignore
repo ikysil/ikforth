@@ -1,0 +1,5 @@
+.git
+.vscode
+.scon*
+build/*
+core.*
