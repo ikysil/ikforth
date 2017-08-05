@@ -2,8 +2,8 @@
 
 ## Pre-requisites
 
-* SConstruct 2.4
-* flat assembler version 1.71.51
+* SConstruct 2.4+
+* flat assembler version 1.71.54
   * `listing` utility built from sources provided with flat assembler package
 * GCC (Linux)
 * mingw32 (Linux/Windows)
@@ -12,7 +12,12 @@
 
 ## Dockerized build environment
 ```bash
-docker build -f Dockerfile -t ikforth-build:latest .
+docker build --rm -f Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c && scons all"
+```
+
+## Dockerized run environment
+```
 docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ```
 
