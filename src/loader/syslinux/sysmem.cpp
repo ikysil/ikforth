@@ -4,6 +4,7 @@
 #include "../IKFCommon.hpp"
 
 void *  __stdcall fAlloc(DWORD size) {
+    errno = 0;
     void * result = (void *) malloc(size);
     return result;
 }
