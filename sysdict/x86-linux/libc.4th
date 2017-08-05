@@ -138,4 +138,20 @@ LIBC.SO S" unlink" DYNLIB-SYMBOL 1 CDECL-C1 _unlink
 \ int rename(const char *old, const char *new);
 LIBC.SO S" rename" DYNLIB-SYMBOL 2 CDECL-C1 _rename
 
+
+\ int strerror_r(int errnum, char *buf, size_t buflen);
+\             /* XSI-compliant */
+\ char *strerror_r(int errnum, char *buf, size_t buflen);
+\             /* GNU-specific */
+\ TODO - it is not clear which of the two would be used
+\ in my testing it was GNU-specific
+LIBC.SO S" strerror_r" DYNLIB-SYMBOL 3 CDECL-C1 _strerror_r
+
+1024 CONSTANT /STRERROR
+
+: PERROR (S errcode -- )
+   (G PERROR prints a string describing provided errorcode. )
+   0 0 ROT _strerror_r ZCOUNT TYPE
+;
+
 REPORT-NEW-NAME !
