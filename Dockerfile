@@ -1,26 +1,30 @@
 FROM centos:7
-MAINTAINER Illya Kysil <ikysil@ikysil.name>
+LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 
 WORKDIR /tmp
 
-RUN yum -y install epel-release wget
+RUN yum -y install \
+        epel-release \
+        && \
+    yum -y install \
+        wget \
+        gcc-c++ \
+        mingw32-gcc mingw32-gcc-c++ \
+        scons \
+        glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686 \
+        && \
+    yum clean all
 
-RUN yum -y install gcc-c++
-
-RUN yum -y install mingw32-gcc mingw32-gcc-c++
-
-RUN yum -y install scons
+RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++
 
 RUN wget http://flatassembler.net/fasm-1.71.54.tgz && \
     tar xf fasm-1.71.54.tgz && \
     mv /tmp/fasm /opt/fasm-1.71.54 && \
     ln -s /opt/fasm-1.71.54/fasm /usr/local/bin/fasm
-
-RUN yum -y install glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686
 
 WORKDIR /opt/fasm-1.71.54/tools/libc
 
