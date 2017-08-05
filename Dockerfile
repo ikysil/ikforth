@@ -33,7 +33,13 @@ RUN fasm listing.asm && \
     chmod +x ../../listing && \
     ln -s $PWD/../../listing /usr/local/bin/listing
 
-RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++
+ARG RUNUSER=ikforth
+
+ARG RUNUID=1001
+
+RUN useradd ${RUNUSER} --uid ${RUNUID} --user-group
+
+USER ${RUNUSER}
 
 VOLUME ["/opt/ikforth"]
 
