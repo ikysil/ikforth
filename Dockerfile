@@ -13,8 +13,7 @@ RUN yum -y install gcc-c++
 
 RUN yum -y install mingw32-gcc mingw32-gcc-c++
 
-RUN wget ftp://rpmfind.net/linux/sourceforge/s/sc/scons/scons/2.4.1/scons-2.4.1-1.noarch.rpm && \
-    yum -y localinstall scons-2.4.1-1.noarch.rpm
+RUN yum -y install scons
 
 RUN wget http://flatassembler.net/fasm-1.71.54.tgz && \
     tar xf fasm-1.71.54.tgz && \
