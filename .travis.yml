@@ -1,0 +1,14 @@
+sudo: required
+
+language: forth
+
+services:
+  - docker
+
+before_install:
+  - docker build --rm -f Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c"
+
+script:
+  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "echo -e '123\n ' | scons dtc ansitest | tee build/ansitest-dtc.out"
+  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "echo -e '123\n ' | scons itc ansitest | tee build/ansitest-itc.out"
