@@ -2,6 +2,8 @@
 
 **ikforth** is an idiomatic Forth implementation written from scratch.
 
+[![Build Status](https://travis-ci.org/ikysil/ikforth.svg?branch=master)](https://travis-ci.org/ikysil/ikforth)
+
 A few facts:
 * 32 bits code
 * Runs on Linux and Windows (tested with Wine)
