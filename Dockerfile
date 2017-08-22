@@ -16,6 +16,7 @@ RUN yum -y install \
         mingw32-gcc mingw32-gcc-c++ \
         scons \
         glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686 \
+        glibc-devel libgcc libstdc++ readline \
         && \
     yum clean all
 
