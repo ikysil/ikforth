@@ -61,4 +61,5 @@ REPORT-NEW-NAME OFF
 
 requires" lib/~ik/open-interpreter.4th"
 requires" lib/~ik/peimage.4th"
+requires" lib/~ik/float.4th"
 
