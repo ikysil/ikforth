@@ -182,6 +182,11 @@ DEFER (F IMMEDIATE ' ( IS (F
    D2/
 ;
 
+: F.DUMP
+   (G Dump the content of the floating-point stack)
+   FP@ DUP FP0 SWAP - CELL+ DUMP
+;
+
 \ ONLY FORTH DEFINITIONS ALSO FLOAT-PRIVATE
 
 \ public definitions go here
@@ -303,6 +308,36 @@ SYNONYM FDEPTH FDEPTH
    FNEGATE F+
 ;
 
+USER F*-YL*XH  2 CELLS USER-ALLOC
+USER F*-YH*XL  2 CELLS USER-ALLOC
+USER F*-YH*XH  2 CELLS USER-ALLOC
+
+: F* (F r1 r2 -- r3 ) \ 12.6.1.1410 F*
+   (G Multiply r1 by r2 giving r3.)
+   2 ?FPSTACK-UNDERFLOW
+   FPX0= IF  FNIP  EXIT  THEN
+   FPY0= IF  FDROP EXIT  THEN
+   'FPY-M 2@ 'FPX-M 2@  \ S: yl yh xl xh
+   ROT SWAP OVER        \ S: yl xl yh xh yh
+   UM* F*-YH*XH 2!
+   UM* F*-YH*XL 2!
+   'FPX-M 2@            \ S: yl xl xh
+   ROT SWAP OVER        \ S: xl yl xh yl
+   UM* F*-YL*XH 2!
+   UM* 0
+   0 F*-YL*XH 2@ T+
+   0 F*-YH*XL 2@ T+
+   ROT DROP 0
+   0 F*-YH*XH 2@ T+
+   'FPY-M 2! DROP
+   'FPY-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
+   'FPX-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
+   ROT + 1+ FPV-EXP-MASK AND
+   >R XOR R> OR 'FPY-E !
+   FDROP
+   FPX-NORMALIZE
+;
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
@@ -312,37 +347,59 @@ REPORT-NEW-NAME !
 -1. d>f
 1. d>f
 F+
-fp@ 32 cr dump
+CR F.DUMP
 FDROP
 
 123. d>f
 12. d>f
 F+
-fp@ 32 cr dump
+CR F.DUMP
 FDROP
 
 123. d>f
 12. d>f
 F-
-fp@ 32 cr dump
+CR F.DUMP
 FDROP
 
 44443333222211110000. d>f
 44443333222211110001. d>f
 F-
-fp@ 32 cr dump
+CR F.DUMP
 FDROP
 
 HEX FEDCBA987654321. DECIMAL d>f
 HEX 123456789ABCDEF. DECIMAL d>f
 F-
-fp@ 32 cr dump
+CR F.DUMP
 FDROP
 
 HEX 123456789ABCDEF. DECIMAL d>f
 HEX FEDCBA987654321. DECIMAL d>f
 F-
-fp@ 32 cr dump
+CR F.DUMP
 FDROP
+
+-1. d>f
+1. d>f
+CR F.DUMP
+F*
+CR F.DUMP
+FDROP
+
+-255. d>f
+256. d>f
+CR F.DUMP
+F*
+CR F.DUMP
+FDROP
+
+-255. d>f
+1000. d>f
+CR F.DUMP
+F*
+CR F.DUMP
+-255000. D>F
+F- F0= CR .
 
 bye
