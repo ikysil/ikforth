@@ -399,6 +399,20 @@ USER F/-XM   2 CELLS USER-ALLOC
    FOVER FOVER F< IF  FNIP  ELSE  FDROP  THEN
 ;
 
+: F>D ( -- d ) (F r -- ) \ 12.6.1.1470 F>D
+   (G d is the double-cell signed-integer equivalent of the integer portion of r.)
+   (G The fractional portion of r is discarded.)
+   (G An ambiguous condition exists if the integer portion of r cannot be represented as a double-cell signed integer.)
+   (G Note: Rounding the floating-point value prior to calling F>D is advised, because F>D rounds towards zero.)
+   1 ?FPSTACK-UNDERFLOW
+   D>F-EXPONENT 'FPX-E @ FPFLAGS>EXP -
+   DUP 0< IF  EXC-OUT-OF-RANGE THROW  THEN
+   FPX-DENORMALIZE
+   'FPX-M 2@
+   'FPX-E @ FPV-SIGN AND FPV-NEGATIVE = FPV-M>D DROP
+   FDROP
+;
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
@@ -472,5 +486,28 @@ CR F.DUMP
 F-
 CR F.DUMP
 F0= CR .
+
+1. D>F
+CR F.DUMP
+F>D
+CR .S
+1. D=
+CR .
+
+1. D>F
+10. D>F
+F/
+CR F.DUMP
+F>D
+CR .S
+0. D=
+CR .
+
+-1. D>F
+CR F.DUMP
+F>D
+CR .S
+-1. D=
+CR .
 
 bye
