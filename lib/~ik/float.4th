@@ -105,8 +105,10 @@ DEFER (F IMMEDIATE ' ( IS (F
 ;
 
 : FPFLAGS>EXP (S n1 -- n2 )
-   (G Extract exponent value from n)
+   (G Extract exponent value from n with sign expansion)
    FPV-EXP-MASK AND
+   DUP FPV-EXP-SIGN AND
+   IF  FPV-EXP-MASK INVERT OR  THEN
 ;
 
 : FP> (S -- d n) (F r -- )
@@ -298,7 +300,7 @@ SYNONYM FDEPTH FDEPTH
    T+ T2/
    FDROP
    0<> FPV-SIGN AND FPV-M>D
-   'FPX-E @ FPFLAGS>EXP 1+ OR 'FPX-E !
+   'FPX-E @ FPFLAGS>EXP 1+ FPV-EXP-MASK AND OR 'FPX-E !
    'FPX-M 2!
    FPX-NORMALIZE
 ;
@@ -333,6 +335,46 @@ USER F*-YH*XH  2 CELLS USER-ALLOC
    'FPY-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
    'FPX-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
    ROT + 1+ FPV-EXP-MASK AND
+   >R XOR R> OR 'FPY-E !
+   FDROP
+   FPX-NORMALIZE
+;
+
+USER F/-Q    2 CELLS USER-ALLOC
+USER F/-QBIT 2 CELLS USER-ALLOC
+USER F/-YM   2 CELLS USER-ALLOC
+USER F/-XM   2 CELLS USER-ALLOC
+
+: F/ (F r1 r2 -- r3 ) \ 12.6.1.1430 F/
+   (G Divide r1 by r2, giving the quotient r3. )
+   (G An ambiguous condition exists if r2 is zero, )
+   (G or the quotient lies outside of the range of a floating-point number.)
+   2 ?FPSTACK-UNDERFLOW
+   FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
+   FPY0= IF  FDROP EXIT  THEN
+   0. F/-Q 2!
+   0 FPV-MSBIT F/-QBIT 2!
+   'FPY-M 2@ F/-YM 2!
+   'FPX-M 2@ F/-XM 2!
+   BEGIN
+      F/-QBIT 2@ OR 0<>
+   WHILE
+      F/-YM 2@ 0
+      F/-XM 2@ 0
+      T+ 0<>
+      IF
+         2DROP
+      ELSE
+         F/-YM 2!
+         F/-Q 2@ F/-QBIT 2@ ROT OR >R OR R> F/-Q 2!
+      THEN
+      F/-XM   2@ 0 T2/ DROP F/-XM   2!
+      F/-QBIT 2@ 0 T2/ DROP F/-QBIT 2!
+   REPEAT
+   F/-Q 2@ 'FPY-M 2!
+   'FPY-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
+   'FPX-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
+   ROT SWAP - FPV-EXP-MASK AND
    >R XOR R> OR 'FPY-E !
    FDROP
    FPX-NORMALIZE
@@ -401,5 +443,15 @@ F*
 CR F.DUMP
 -255000. D>F
 F- F0= CR .
+
+-2. d>f
+2. d>f
+CR F.DUMP
+F/
+CR F.DUMP
+-1. D>F
+F-
+CR F.DUMP
+F0= CR .
 
 bye
