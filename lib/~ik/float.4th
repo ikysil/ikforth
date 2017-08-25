@@ -380,11 +380,30 @@ USER F/-XM   2 CELLS USER-ALLOC
    FPX-NORMALIZE
 ;
 
+: F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
+   (G flag is true if and only if r1 is less than r2.)
+   F- F0<
+;
+
+: FMIN (F r1 r2 -- r3 ) \ 12.6.1.1565 FMIN
+   (G r3 is the lesser of r1 and r2.)
+   2 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   FOVER FOVER F< IF  FDROP  ELSE  FNIP  THEN
+;
+
+: FMAX (F r1 r2 -- r3 ) \ 12.6.1.1562 FMAX
+   (G r3 is the greater of r1 and r2.)
+   2 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   FOVER FOVER F< IF  FNIP  ELSE  FDROP  THEN
+;
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
 
-\ \EOF
+\ EOF
 
 -1. d>f
 1. d>f
