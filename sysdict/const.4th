@@ -74,7 +74,7 @@ FALSE REPORT-NEW-NAME !
  -39 CONSTANT EXC-UNEXPECTED-EOF                 \ unexpected end of file
  -40 CONSTANT EXC-INVALID-FLOAT-BASE             \ invalid BASE for floating point conversion
  -41 CONSTANT EXC-PRECISION-LOSS                 \ loss of precision
- -42 CONSTANT EXC-FLOAT-DIVISION-BE-ZERO         \ floating-point divide by zero
+ -42 CONSTANT EXC-FLOAT-DIVISION-BY-ZERO         \ floating-point divide by zero
  -43 CONSTANT EXC-FLOAT-OUT-OF-RANGE             \ floating-point result out of range
  -44 CONSTANT EXC-FLOAT-STACK-OVERFLOW           \ floating-point stack overflow
  -45 CONSTANT EXC-FLOAT-STACK-UNDERFLOW          \ floating-point stack underflow
