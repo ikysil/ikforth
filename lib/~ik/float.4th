@@ -32,10 +32,10 @@ DECIMAL
 ENV>
 
 \ floating point representation
-\ +1   most  significant cell
-\ +2   least significant cell
+\ +0   most  significant cell
+\ +1   least significant cell
 \ unsigned mantissa is stored as double value, aligned to the most significant bit
-\ +3   exponent and flags cell
+\ +2   exponent and flags cell
 
 HEX
 00000000 CONSTANT FPV-POSITIVE
