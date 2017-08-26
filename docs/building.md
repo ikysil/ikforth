@@ -25,10 +25,11 @@ docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 
 ### `all`
 ### `ansitest`
-### `debug`
-### `dtc`
 ### `bootdict`
 ### `bootdict-x86`
+### `debug`
+### `dtc`
+### `fptest`
 ### `itc`
 ### `loader`
 ### `run`

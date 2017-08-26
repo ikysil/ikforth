@@ -17,16 +17,17 @@ VOCABULARY FLOAT-PRIVATE
 
 \ private definitions go here
 
-<ENV
-             TRUE  CONSTANT FLOATING
-             TRUE  CONSTANT FLOATING-EXT
-ENV>
-
 DECIMAL
 
 6 CONSTANT /FPSTACK
 3 CELLS CONSTANT B/FLOAT
 63 CONSTANT D>F-EXPONENT
+
+<ENV
+             TRUE  CONSTANT FLOATING
+            FALSE  CONSTANT FLOATING-EXT
+         /FPSTACK  CONSTANT FLOATING-STACK
+ENV>
 
 \ floating point representation
 \ +1   least significant cell
@@ -417,7 +418,7 @@ ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
 
-\ EOF
+\EOF
 
 -1. d>f
 1. d>f

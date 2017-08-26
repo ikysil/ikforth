@@ -20,6 +20,9 @@ def test_stdin(source, target, env):
 def ansitest(source, target, env):
     env.Execute('${RUN_CMD} \'S\" test/forth2012-test.4th\" INCLUDED\'')
 
+def fptest(source, target, env):
+    env.Execute('${RUN_CMD} \'S\" test/fp-test.4th\" INCLUDED\'')
+
 source_dir = '#build/ikforth-dev-$TERMINIT/'
 ikforthSrcDict = source_dir + 'ikforth-dev-x86.img'
 
@@ -36,10 +39,12 @@ senv.Alias('run', [], run)
 senv.Alias('test', [], test)
 senv.Alias('test-stdin', [], test_stdin)
 senv.Alias('ansitest', [], ansitest)
+senv.Alias('fptest', [], fptest)
 
 senv.Depends('run',        ['all'])
 senv.Depends('test',       ['all'])
 senv.Depends('test-stdin', ['all'])
 senv.Depends('ansitest',   ['all'])
+senv.Depends('fptest',     ['all'])
 
-senv.AlwaysBuild('run', 'test', 'test-stdin', 'ansitest')
+senv.AlwaysBuild('run', 'test', 'test-stdin', 'ansitest', 'fptest')
