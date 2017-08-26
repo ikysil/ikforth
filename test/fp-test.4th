@@ -8,6 +8,13 @@ cr .( Running FP Tests) cr
 
 requires" lib/~ik/float.4th"
 
+1. D>F
+1000000. D>F
+FDUP F/ F/
+FCONSTANT 1E-12
+
+0. D>F FCONSTANT 0E
+
 DEFER TEST-ROOT (S  -- c-addr count )
 
 : DEFAULT-TEST-ROOT

@@ -9,6 +9,8 @@ CR .( Loading FLOAT definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
+REQUIRES" sysdict/x86/486asm.4th"
+
 ONLY FORTH DEFINITIONS
 
 VOCABULARY FLOAT-PRIVATE
@@ -25,13 +27,13 @@ DECIMAL
 
 <ENV
              TRUE  CONSTANT FLOATING
-            FALSE  CONSTANT FLOATING-EXT
+             TRUE  CONSTANT FLOATING-EXT
          /FPSTACK  CONSTANT FLOATING-STACK
 ENV>
 
 \ floating point representation
-\ +1   least significant cell
-\ +2   most significant cell
+\ +1   most  significant cell
+\ +2   least significant cell
 \ unsigned mantissa is stored as double value, aligned to the most significant bit
 \ +3   exponent and flags cell
 
@@ -418,6 +420,69 @@ USER F/-XM   2 CELLS USER-ALLOC
    'FPX-E @ FPV-SIGN AND FPV-NEGATIVE = FPV-M>D DROP
    FDROP
 ;
+
+: F! (S f-addr -- ) (F r -- ) \ 12.6.1.1400 F!
+   \G Store r at f-addr.
+   1 ?FPSTACK-UNDERFLOW
+   FP@ SWAP 1 FLOATS MOVE
+   FDROP
+;
+
+: F@ (S f-addr -- ) (F -- r ) \ 12.6.1.1472 F@
+   \G r is the value stored at f-addr.
+   1 ?FPSTACK-OVERFLOW
+   0. D>F
+   FP@ 1 FLOATS MOVE
+;
+
+: FVARIABLE ( "<spaces>name" -- ) \ 12.6.1.1630 FVARIABLE
+   \G Skip leading space delimiters. Parse name delimited by a space.
+   \G Create a definition for name with the execution semantics defined below.
+   \G Reserve 1 FLOATS address units of data space at a float-aligned address.
+   \G
+   \G name is referred to as an "f-variable".
+   \G
+   \G name Execution: (S -- f-addr )
+   \G f-addr is the address of the data space reserved by FVARIABLE when it created name.
+   \G A program is responsible for initializing the contents of the reserved space.
+   CREATE HERE 1 FLOATS DUP ALLOT 0 FILL DOES>
+;
+
+: FCONSTANT ( "<spaces>name" -- ) (F r -- ) \ 2.6.1.1492 FCONSTANT
+   \G Skip leading space delimiters. Parse name delimited by a space.
+   \G Create a definition for name with the execution semantics defined below.
+   \G
+   \G name is referred to as an "f-constant".
+   \G
+   \G name Execution: (S -- ) (F -- r )
+   \G Place r on the floating-point stack.
+   1 ?FPSTACK-UNDERFLOW
+   CREATE HERE 1 FLOATS ALLOT F!
+   DOES> 1 ?FPSTACK-OVERFLOW F@
+;
+
+CODE FLIT
+   LODSD
+   PUSH        EAX
+   LODSD
+   PUSH        EAX
+   LODSD
+   PUSH        EAX
+   NEXT
+END-CODE COMPILE-ONLY
+
+: FLITERAL \ 12.6.1.1552 FLITERAL
+   \G Interpretation: Interpretation semantics for this word are undefined.
+   \G Compilation: ( F: r -- )
+   \G Append the run-time semantics given below to the current definition.
+   \G
+   \G Run-time: ( F: -- r )
+   \G Place r on the floating-point stack.
+   POSTPONE FLIT
+   HERE
+   1 FLOATS ALLOT
+   F!
+; IMMEDIATE/COMPILE-ONLY
 
 ONLY FORTH DEFINITIONS
 
