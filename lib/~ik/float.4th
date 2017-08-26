@@ -199,6 +199,11 @@ SYNONYM (F (F
 
 SYNONYM FDEPTH FDEPTH
 
+: FLOATS (S n1 -- n2 ) \ 12.6.1.1556 FLOATS
+   (G n2 is the size in address units of n1 floating-point numbers.)
+   B/FLOAT *
+;
+
 : FDROP (F r -- ) \ 12.6.1.1500 FDROP
    (G Remove r from the floating-point stack.)
    1 ?FPSTACK-UNDERFLOW
