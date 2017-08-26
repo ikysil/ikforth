@@ -459,7 +459,8 @@ USER F/-XM   2 CELLS USER-ALLOC
    \G name Execution: (S -- f-addr )
    \G f-addr is the address of the data space reserved by FVARIABLE when it created name.
    \G A program is responsible for initializing the contents of the reserved space.
-   CREATE HERE 1 FLOATS DUP ALLOT 0 FILL DOES>
+   CREATE  HERE 1 FLOATS DUP ALLOT ERASE
+   DOES>
 ;
 
 : FCONSTANT ( "<spaces>name" -- ) (F r -- ) \ 2.6.1.1492 FCONSTANT
@@ -471,8 +472,8 @@ USER F/-XM   2 CELLS USER-ALLOC
    \G name Execution: (S -- ) (F -- r )
    \G Place r on the floating-point stack.
    1 ?FPSTACK-UNDERFLOW
-   CREATE HERE 1 FLOATS ALLOT F!
-   DOES> 1 ?FPSTACK-OVERFLOW F@
+   CREATE  HERE 1 FLOATS ALLOT F!
+   DOES>   1 ?FPSTACK-OVERFLOW F@
 ;
 
 CODE FLIT
