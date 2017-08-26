@@ -87,24 +87,49 @@ DEFER (F IMMEDIATE ' ( IS (F
    FDEPTH > IF  EXC-FLOAT-STACK-UNDERFLOW THROW  THEN
 ;
 
+: 'FPX (S -- addr )
+   (G Return address of the top item on floating-point stack)
+   FP@
+;
+
 : 'FPX-M (S -- addr )
    (G Return address of the mantissa cell of the top item on floating-point stack)
-   FP@
+   'FPX
 ;
 
 : 'FPX-E (S -- addr )
    (G Return address of the exponent cell of the top item on floating-point stack)
-   'FPX-M FPV-EXP-OFFS +
+   'FPX FPV-EXP-OFFS +
+;
+
+: 'FPY (S -- addr )
+   (G Return address of the second item on floating-point stack)
+   FP@ [ B/FLOAT ] LITERAL +
 ;
 
 : 'FPY-M (S -- addr )
    (G Return address of the mantissa cell of the second item on floating-point stack)
-   FP@ B/FLOAT +
+   'FPY
 ;
 
 : 'FPY-E (S -- addr )
    (G Return address of the exponent cell of the second item on floating-point stack)
-   'FPY-M FPV-EXP-OFFS +
+   'FPY FPV-EXP-OFFS +
+;
+
+: 'FPZ (S -- addr )
+   (G Return address of the third item on floating-point stack)
+   FP@ [ 2 B/FLOAT * ] LITERAL +
+;
+
+: 'FPZ-M (S -- addr )
+   (G Return address of the mantissa cell of the third item on floating-point stack)
+   'FPZ
+;
+
+: 'FPZ-E (S -- addr )
+   (G Return address of the exponent cell of the third item on floating-point stack)
+   'FPZ FPV-EXP-OFFS +
 ;
 
 : FPFLAGS>EXP (S n1 -- n2 )
@@ -173,10 +198,13 @@ DEFER (F IMMEDIATE ' ( IS (F
 
 : T+ (S nlo nmi nhi mlo mmi mhi -- tlo tmi thi)
    (G Add triple-cell numbers.)
-   >R >R SWAP >R   \ S: nlo nmi mlo       R: mhi mmi nhi
-   M+              \ S: tlo tmi'          R: mhi mmi nhi
-   R> R> R>        \ S: tlo tmi' nhi mmi mhi
-   D+
+   >R ROT  >R        \ S: nlo nmi mlo mmi   R: mhi nhi
+   >R SWAP >R        \ S: nlo mlo           R: mhi nhi mmi nmi
+   0 SWAP OVER       \ S: nlo 0 mlo 0       R: mhi nhi mmi nmi
+   D+ 0              \ S: tlo tmi1 0        R: mhi nhi mmi nmi
+   R> 0 D+           \ S: tlo tmi2 thi1     R: mhi nhi mmi
+   R> 0 D+           \ S: tlo tmi thi2      R: mhi nhi
+   R> R> + +         \ S: tlo tmi thi       R:
 ;
 
 : T2/ (S nlo nmi nhi -- nlo' nmi' nhi')
@@ -190,6 +218,11 @@ DEFER (F IMMEDIATE ' ( IS (F
 : F.DUMP
    (G Dump the content of the floating-point stack)
    FP@ DUP FP0 SWAP - CELL+ DUMP
+;
+
+: ?FPV-NEGATIVE (S n -- flag)
+   \G flag is true if the sign flag in exponent cell n is set
+   FPV-SIGN AND FPV-NEGATIVE =
 ;
 
 \ ONLY FORTH DEFINITIONS ALSO FLOAT-PRIVATE
@@ -265,7 +298,8 @@ SYNONYM FDEPTH FDEPTH
 
 : F0< (S -- flag ) (F r -- ) \ 12.6.1.1440 F0<
    (G flag is true if and only if r is less than zero.)
-   FP> FPV-SIGN AND FPV-NEGATIVE =
+   1 ?FPSTACK-UNDERFLOW
+   FP> ?FPV-NEGATIVE
    >R OR 0<> R> AND
 ;
 
@@ -303,9 +337,11 @@ SYNONYM FDEPTH FDEPTH
    FPX0= IF  FDROP EXIT  THEN
    FPY0= IF  FNIP  EXIT  THEN
    F+PREPARE
-   'FPY-M 2@ 'FPY-E @ FPV-SIGN AND FPV-NEGATIVE = FPV-M>D
-   'FPX-M 2@ 'FPX-E @ FPV-SIGN AND FPV-NEGATIVE = FPV-M>D
+   'FPY-M 2@ 'FPY-E @ ?FPV-NEGATIVE FPV-M>D
+   'FPX-M 2@ 'FPX-E @ ?FPV-NEGATIVE FPV-M>D
+   \DEBUG S" F+-B1: " CR TYPE CR H.S CR
    T+ T2/
+   \DEBUG S" F+-B2: " CR TYPE CR H.S CR
    FDROP
    0<> FPV-SIGN AND FPV-M>D
    'FPX-E @ FPFLAGS>EXP 1+ FPV-EXP-MASK AND OR 'FPX-E !
@@ -430,7 +466,7 @@ USER F/-XM   2 CELLS USER-ALLOC
    \DEBUG CR S" F>D-C: " TYPE CR F.DUMP CR
    'FPX-M 2@
    \DEBUG CR S" F>D-D: " TYPE CR H.S CR
-   'FPX-E @ FPV-SIGN AND FPV-NEGATIVE = FPV-M>D DROP
+   'FPX-E @ ?FPV-NEGATIVE FPV-M>D DROP
    FDROP
    \DEBUG CR S" F>D-E: " TYPE CR H.S CR
 ;
@@ -493,11 +529,54 @@ END-CODE COMPILE-ONLY
    \G
    \G Run-time: ( F: -- r )
    \G Place r on the floating-point stack.
+   1 ?FPSTACK-UNDERFLOW
    POSTPONE FLIT
    HERE
    1 FLOATS ALLOT
    F!
 ; IMMEDIATE/COMPILE-ONLY
+
+: FABS (F r1 -- r2 ) \ 12.6.2.1474 FABS
+   \G r2 is the absolute value of r1.
+   1 ?FPSTACK-UNDERFLOW
+   'FPX-E @ FPV-SIGN INVERT AND 'FPX-E !
+;
+
+: F~ (S -- flag ) (F r1 r2 r3 -- ) \ 12.6.2.1640 F~
+   \G If r3 is positive, flag is true if the absolute value of (r1 minus r2) is less than r3.
+   \G
+   \G If r3 is zero, flag is true if the implementation-dependent encoding of r1 and r2 are exactly
+   \G identical (positive and negative zero are unequal if they have distinct encodings).
+   \G
+   \G If r3 is negative, flag is true if the absolute value of (r1 minus r2) is less than
+   \G the absolute value of r3 times the sum of the absolute values of r1 and r2.
+   3 ?FPSTACK-UNDERFLOW
+   \DEBUG CR S" F~-A1: " TYPE CR F.DUMP CR
+   FPX0= IF
+      FDROP
+      'FPX 'FPY 1 FLOATS TUCK COMPARE 0=
+      FDROP FDROP
+      EXIT
+   THEN
+   'FPX-E @ ?FPV-NEGATIVE IF
+      FABS FP>          \ F: r1 r2                                S: abs(r3)
+      FDUP FABS FP>     \ F: r1 r2                                S: abs(r3) abs(r2)
+      FOVER FABS FP>    \ F: r1 r2                                S: abs(r3) abs(r2) abs(r1)
+      \DEBUG CR S" F~-B1: " TYPE CR F.DUMP CR H.S CR
+      F- FABS           \ F: abs(r1-r2)                           S: abs(r3) abs(r2) abs(r1)
+      \DEBUG CR S" F~-B2: " TYPE CR F.DUMP CR H.S CR
+      >FP >FP F+        \ F: abs(r1-r2) abs(r1)+abs(r2)           S: abs(r3)
+      \DEBUG CR S" F~-B3: " TYPE CR F.DUMP CR H.S CR
+      >FP F*            \ F: abs(r1-r2) (abs(r1)+abs(r2))*abs(r3)
+      \DEBUG CR S" F~-B4: " TYPE CR F.DUMP CR H.S CR
+      F-
+      \DEBUG CR S" F~-B5: " TYPE CR F.DUMP CR H.S CR
+      F0<
+      \DEBUG CR S" F~-B6: " TYPE CR H.S CR
+   ELSE
+      FP> F- FABS >FP F<
+   THEN
+;
 
 ONLY FORTH DEFINITIONS
 
