@@ -130,7 +130,7 @@ BASE !
 : TNEGATE (S t1lo t1mid t1hi -- t2lo t2mid t2hi )
   INVERT >R
   INVERT >R
-  INVERT 0 -1. D+ S>D R> 0 D+
+  INVERT 0 1. D+ S>D R> 0 D+
   R> +
 ;
 

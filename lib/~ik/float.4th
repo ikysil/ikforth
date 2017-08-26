@@ -360,16 +360,23 @@ USER F/-XM   2 CELLS USER-ALLOC
    2 ?FPSTACK-UNDERFLOW
    FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
    FPY0= IF  FDROP EXIT  THEN
+   \DEBUG CR S" F/-A: " TYPE CR F.DUMP CR
    0. F/-Q 2!
    0 FPV-MSBIT F/-QBIT 2!
    'FPY-M 2@ F/-YM 2!
    'FPX-M 2@ F/-XM 2!
    BEGIN
       F/-QBIT 2@ OR 0<>
+      F/-YM 2@ OR 0<>
+      AND
    WHILE
       F/-YM 2@ 0
       F/-XM 2@ 0
-      T+ 0<>
+      \DEBUG CR S" F/-B1: " TYPE CR H.S CR
+      TNEGATE
+      \DEBUG CR S" F/-B2: " TYPE CR H.S CR
+      T+ 0<
+      \DEBUG CR S" F/-B3: " TYPE CR H.S CR
       IF
          2DROP
       ELSE
@@ -385,7 +392,9 @@ USER F/-XM   2 CELLS USER-ALLOC
    ROT SWAP - FPV-EXP-MASK AND
    >R XOR R> OR 'FPY-E !
    FDROP
+   \DEBUG CR S" F/-C: " TYPE CR F.DUMP CR
    FPX-NORMALIZE
+   \DEBUG CR S" F/-D: " TYPE CR F.DUMP CR
 ;
 
 : F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
@@ -413,12 +422,17 @@ USER F/-XM   2 CELLS USER-ALLOC
    (G An ambiguous condition exists if the integer portion of r cannot be represented as a double-cell signed integer.)
    (G Note: Rounding the floating-point value prior to calling F>D is advised, because F>D rounds towards zero.)
    1 ?FPSTACK-UNDERFLOW
+   \DEBUG CR S" F>D-A: " TYPE CR F.DUMP CR
    D>F-EXPONENT 'FPX-E @ FPFLAGS>EXP -
    DUP 0< IF  EXC-OUT-OF-RANGE THROW  THEN
+   \DEBUG CR S" F>D-B: " TYPE CR H.S CR
    FPX-DENORMALIZE
+   \DEBUG CR S" F>D-C: " TYPE CR F.DUMP CR
    'FPX-M 2@
+   \DEBUG CR S" F>D-D: " TYPE CR H.S CR
    'FPX-E @ FPV-SIGN AND FPV-NEGATIVE = FPV-M>D DROP
    FDROP
+   \DEBUG CR S" F>D-E: " TYPE CR H.S CR
 ;
 
 : F! (S f-addr -- ) (F r -- ) \ 12.6.1.1400 F!
