@@ -575,6 +575,135 @@ END-CODE COMPILE-ONLY
    THEN
 ;
 
+ 0. D>F FCONSTANT FZERO
+ 1. D>F FCONSTANT FONE
+10. D>F FCONSTANT FTEN
+
+USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
+USER >FLOAT-E-SIGN 1 CELLS USER-ALLOC
+USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
+
+: >FLOAT-EXPONENT (S c-addr u -- exp-sign udexp c-addr' u')
+   \G Parse exponent.
+   \G udexp - usigned exponent value
+   \G exp-sign - sign of the exponent (0/-1)
+   DUP 1 < IF  2>R 0 0. 2R> EXIT  THEN
+   OVER C@ CASE
+      'D' OF  1 /STRING  ENDOF
+      'd' OF  1 /STRING  ENDOF
+      'E' OF  1 /STRING  ENDOF
+      'e' OF  1 /STRING  ENDOF
+   ENDCASE
+   DUP 0> IF
+      OVER C@ CASE
+         '+' OF  1 /STRING  0  ENDOF
+         '-' OF  1 /STRING -1  ENDOF
+         >R 0 R>
+      ENDCASE
+   ELSE
+      0
+   THEN
+   -ROT
+   \ S: exp-sign c-addr" u"
+   \DEBUG S" >FLOAT-EXPONENT-A: " CR TYPE CR H.S CR
+   0. 2SWAP
+   \ S: exp-sign 0 0 c-addr" u"
+   \DEBUG S" >FLOAT-EXPONENT-B: " CR TYPE CR H.S CR
+   DUP 0> IF  >NUMBER  THEN
+   \ S: exp-sign udexp c-addr' u'
+   \DEBUG S" >FLOAT-EXPONENT-C: " CR TYPE CR H.S CR
+;
+
+: >FLOAT (S c-addr u -- true | false ) (F -- r | ~ ) \ 12.6.1.0558 >FLOAT
+   \G An attempt is made to convert the string specified by c-addr and u
+   \G to internal floating-point representation. If the string represents
+   \G a valid floating-point number in the syntax below, its value r and true are returned.
+   \G If the string does not represent a valid floating-point number only false is returned.
+   \G
+   \G A string of blanks should be treated as a special case representing zero.
+   \G
+   \G The syntax of a convertible string
+   \G :=	<significand>[<exponent>]
+   \G <significand> := [<sign>]{<digits>[.<digits0>] | .<digits> }
+   \G <exponent> := <marker><digits0>
+   \G <marker> := {<e-form> | <sign-form>}
+   \G <e-form> := <e-char>[<sign-form>]
+   \G <sign-form> :=	{ + | - }
+   \G <e-char> := { D | d | E | e }
+   SKIP-BLANK
+   DUP 0= IF  2DROP FZERO TRUE EXIT  THEN
+   BASE @ D# 10 <> IF  EXC-INVALID-FLOAT-BASE THROW  THEN
+   0 >FLOAT-M-SIGN !
+   0 >FLOAT-E-SIGN !
+   0 >FLOAT-E-CORR !
+   OVER C@ CASE
+      '+' OF   0 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
+      '-' OF  -1 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
+   ENDCASE
+   DUP 0= IF  2DROP FALSE EXIT  THEN
+   0. 2OVER >NUMBER  \ S: c-addr1 u1 udint c-addr2 u2
+   2ROT 2OVER D= IF  2DROP 2DROP FALSE EXIT  THEN 
+   \DEBUG S" >FLOAT-A: " CR TYPE CR H.S CR
+   DUP 0= IF  2DROP D>F TRUE EXIT  THEN
+   OVER C@ '.' = IF
+      1 /STRING
+      2SWAP 2OVER >NUMBER
+      \ S: c-addr2 u2 ud c-addr3 u3
+      2ROT NIP OVER -
+      \ S: ud c-addr3 u3 +exp-corr
+   ELSE
+      0
+   THEN
+   \ S: ud c-addr3 u3 +exp-corr
+   \DEBUG S" >FLOAT-B: " CR TYPE CR H.S CR
+   >FLOAT-E-CORR !
+   >FLOAT-EXPONENT
+   \ S: ud exp-sign udexp c-addr4 u4
+   \DEBUG S" >FLOAT-C: " CR TYPE CR H.S CR
+   DUP 0<> IF  2DROP 2DROP DROP 2DROP FALSE EXIT  THEN
+   2DROP
+   \ S: ud exp-sign udexp
+   \DEBUG S" >FLOAT-D: " CR TYPE CR H.S CR
+   ROT >FLOAT-E-SIGN !
+   2SWAP D>F
+   \ S: udexp           F: ud
+   \DEBUG S" >FLOAT-D2: " CR TYPE CR H.S CR F.DUMP CR
+   FTEN FSWAP \ S: udexp   F: 10. ud
+   \DEBUG S" >FLOAT-D4: " CR TYPE CR H.S CR F.DUMP CR
+   2DUP FPV-EXP-MAX S>D DU< INVERT IF  EXC-FLOAT-OUT-OF-RANGE THROW  THEN
+   D>S
+   \DEBUG S" >FLOAT-D5: " CR TYPE CR H.S CR F.DUMP CR
+   >FLOAT-E-SIGN @ 0< IF  ['] F/  ELSE  ['] F*  THEN SWAP
+   \ S: op-xt exp       F: 10. ud
+   \DEBUG S" >FLOAT-E: " CR TYPE CR H.S CR F.DUMP CR
+   BEGIN
+      DUP 0>
+   WHILE
+      FOVER
+      OVER CATCH THROW
+      \DEBUG S" >FLOAT-F: " CR TYPE CR H.S CR F.DUMP CR
+      1-
+   REPEAT
+   \ S: op-xt 0         F: 10. (fra+int)*10**exp
+   2DROP
+   >FLOAT-E-CORR @
+   \DEBUG S" >FLOAT-G: " CR TYPE CR H.S CR F.DUMP CR
+   BEGIN
+      DUP 0>
+   WHILE
+      FOVER
+      F/
+      \DEBUG S" >FLOAT-H: " CR TYPE CR H.S CR F.DUMP CR
+      1-
+   REPEAT
+   \ S: 0               F: 10. (fra+int)*10**(exp - exp-corr)
+   DROP
+   FNIP
+   >FLOAT-M-SIGN @ 0< IF  FNEGATE  THEN
+   TRUE
+   \DEBUG S" >FLOAT-I: " CR TYPE CR H.S CR F.DUMP CR
+;
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
