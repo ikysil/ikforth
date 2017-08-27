@@ -577,6 +577,7 @@ END-CODE COMPILE-ONLY
 
  0. D>F FCONSTANT FZERO
  1. D>F FCONSTANT FONE
+-1. D>F FCONSTANT FMONE
 10. D>F FCONSTANT FTEN
 
 USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
@@ -714,6 +715,58 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
 
    DEFERRED INTERPRET-WORD-NOT-FOUND
 ; IS INTERPRET-WORD-NOT-FOUND
+
+
+0 FPV-MSBIT 1. D- 2CONSTANT FLOOR-M-MASK
+D# 32 CONSTANT FPV-BITS/CELL
+
+: DRSHIFT (S xd n -- xd')
+   \G Shift double value xd to the right by n positions preserving most significant bit
+   FPV-BITS/CELL OVER U< IF  DROP 2DROP 0. EXIT  THEN
+   OVER OVER FPV-BITS/CELL SWAP -  \ S: xd n xhi FPV-BITS/CELL-n
+   LSHIFT >R                       \ S: xd n      R: xhi<<(FPV-BITS/CELL-n)
+   TUCK RSHIFT >R                  \ S: xlo n     R: xhi<<(FPV-BITS/CELL-n) xhi>>n
+   RSHIFT R> R>                    \ S: xlo>>n xhi>>n xhi<<(FPV-BITS/CELL-n)
+   ROT OR SWAP
+;
+
+: DAND (S xd1 xd2 -- xd3 )
+   \G xd3 is the result of bit AND between xd1 and xd2.
+   ROT AND
+   ROT ROT AND
+   SWAP
+;
+
+: DINVERT (S xd1 -- xd2)
+   \G xd2 is the result of bit INVERT on xd1.
+   INVERT SWAP
+   INVERT SWAP
+;
+
+: FLOOR (F r1 -- r2 ) \ 12.6.1.1558 FLOOR
+   \G Round r1 to an integral value using the "round toward negative infinity" rule, giving r2.
+   1 ?FPSTACK-UNDERFLOW
+   FLOOR-M-MASK
+   'FPX-E @ FPFLAGS>EXP
+   DUP 0< IF
+      DROP
+      D2*
+   ELSE
+      DRSHIFT
+   THEN
+   'FPX-M 2@                                \ S: mlo mhi rlo rhi
+   \DEBUG S" FLOOR-A: " CR TYPE CR H.S CR
+   2OVER 2OVER DAND
+   \DEBUG S" FLOOR-B: " CR TYPE CR H.S CR
+   OR 0<> 'FPX-E @ ?FPV-NEGATIVE AND >R     \ S: mlo mhi rlo rhi    R: ?neg-with-fraction
+   2SWAP DINVERT DAND
+   \DEBUG S" FLOOR-C: " CR TYPE CR H.S CR
+   'FPX-M 2!
+   FPX-NORMALIZE
+   \DEBUG S" FLOOR-C: " CR TYPE CR H.S CR F.DUMP CR
+   R> IF  FMONE F+  THEN
+;
+
 
 ONLY FORTH DEFINITIONS
 
