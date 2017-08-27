@@ -586,7 +586,7 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
 : >FLOAT-EXPONENT (S c-addr u -- exp-sign udexp c-addr' u')
    \G Parse exponent.
    \G udexp - usigned exponent value
-   \G exp-sign - sign of the exponent (0/-1)
+   \G exp-sign - sign of the exponent (1/0/-1), 0 if exponent value is absent
    DUP 1 < IF  2>R 0 0. 2R> EXIT  THEN
    OVER C@ CASE
       'D' OF  1 /STRING  ENDOF
@@ -596,9 +596,9 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    ENDCASE
    DUP 0> IF
       OVER C@ CASE
-         '+' OF  1 /STRING  0  ENDOF
+         '+' OF  1 /STRING  1  ENDOF
          '-' OF  1 /STRING -1  ENDOF
-         >R 0 R>
+         >R 1 R>
       ENDCASE
    ELSE
       0
@@ -612,6 +612,35 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    DUP 0> IF  >NUMBER  THEN
    \ S: exp-sign udexp c-addr' u'
    \DEBUG S" >FLOAT-EXPONENT-C: " CR TYPE CR H.S CR
+;
+
+: >FLOAT-FIX-EXPONENT (S +exp-corr exp-sign udexp -- ) (F r -- r')
+   \G Restore scale using unsigned exponent value udexp,
+   \G exponent sign exp-sign (1/0/-1), and correction +exp-corr.
+   \G exp-corr is the number of the positions after decimal dot.
+   \DEBUG S" >FLOAT-FIX-EXPONENT-A: " CR TYPE CR H.S CR F.DUMP CR
+   2DUP FPV-EXP-MAX S>D DU< INVERT IF  EXC-FLOAT-OUT-OF-RANGE THROW  THEN
+   D>S
+   \ S: +exp-corr exp-sign uexp
+   \DEBUG S" >FLOAT-FIX-EXPONENT-B: " CR TYPE CR H.S CR F.DUMP CR
+   * SWAP -
+   DUP 0= IF  DROP EXIT  THEN
+   DUP 0< IF  ['] F/  ELSE  ['] F*  THEN SWAP
+   ABS
+   FTEN FSWAP
+   \ S: op-xt abs(exp)      F: 10. ud
+   \DEBUG S" >FLOAT-FIX-EXPONENT-C: " CR TYPE CR H.S CR F.DUMP CR
+   BEGIN
+      DUP 0>
+   WHILE
+      FOVER
+      OVER CATCH THROW
+      \DEBUG S" >FLOAT-FIX-EXPONENT-D: " CR TYPE CR H.S CR F.DUMP CR
+      1-
+   REPEAT
+   \ S: op-xt 0             F: 10. (fra+int)*10**exp
+   2DROP
+   FNIP
 ;
 
 : >FLOAT (S c-addr u -- true | false ) (F -- r | ~ ) \ 12.6.1.0558 >FLOAT
@@ -634,7 +663,7 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    DUP 0= IF  2DROP FZERO TRUE EXIT  THEN
    BASE @ D# 10 <> IF  EXC-INVALID-FLOAT-BASE THROW  THEN
    0 >FLOAT-M-SIGN !
-   0 >FLOAT-E-SIGN !
+   1 >FLOAT-E-SIGN !
    0 >FLOAT-E-CORR !
    OVER C@ CASE
       '+' OF   0 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
@@ -666,39 +695,7 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    \DEBUG S" >FLOAT-D: " CR TYPE CR H.S CR
    ROT >FLOAT-E-SIGN !
    2SWAP D>F
-   \ S: udexp           F: ud
-   \DEBUG S" >FLOAT-D2: " CR TYPE CR H.S CR F.DUMP CR
-   FTEN FSWAP \ S: udexp   F: 10. ud
-   \DEBUG S" >FLOAT-D4: " CR TYPE CR H.S CR F.DUMP CR
-   2DUP FPV-EXP-MAX S>D DU< INVERT IF  EXC-FLOAT-OUT-OF-RANGE THROW  THEN
-   D>S
-   \DEBUG S" >FLOAT-D5: " CR TYPE CR H.S CR F.DUMP CR
-   >FLOAT-E-SIGN @ 0< IF  ['] F/  ELSE  ['] F*  THEN SWAP
-   \ S: op-xt exp       F: 10. ud
-   \DEBUG S" >FLOAT-E: " CR TYPE CR H.S CR F.DUMP CR
-   BEGIN
-      DUP 0>
-   WHILE
-      FOVER
-      OVER CATCH THROW
-      \DEBUG S" >FLOAT-F: " CR TYPE CR H.S CR F.DUMP CR
-      1-
-   REPEAT
-   \ S: op-xt 0         F: 10. (fra+int)*10**exp
-   2DROP
-   >FLOAT-E-CORR @
-   \DEBUG S" >FLOAT-G: " CR TYPE CR H.S CR F.DUMP CR
-   BEGIN
-      DUP 0>
-   WHILE
-      FOVER
-      F/
-      \DEBUG S" >FLOAT-H: " CR TYPE CR H.S CR F.DUMP CR
-      1-
-   REPEAT
-   \ S: 0               F: 10. (fra+int)*10**(exp - exp-corr)
-   DROP
-   FNIP
+   >FLOAT-E-CORR @ >FLOAT-E-SIGN @ 2SWAP >FLOAT-FIX-EXPONENT
    >FLOAT-M-SIGN @ 0< IF  FNEGATE  THEN
    TRUE
    \DEBUG S" >FLOAT-I: " CR TYPE CR H.S CR F.DUMP CR
