@@ -167,7 +167,13 @@ DEFER (F IMMEDIATE ' ( IS (F
 
 : FPX-NORMALIZE (F r -- r' )
    (G Normalize representation of r on the top of the stack)
-   FPX0= IF  EXIT  THEN
+   FPX0= IF
+      \ reset exponent on zero mantissa but preserve sign
+      'FPX-E @
+      FPV-EXP-MASK INVERT AND
+      'FPX-E !
+      EXIT
+   THEN
    'FPX-E @ FPFLAGS>EXP >R
    'FPX-M 2@
    BEGIN
@@ -578,7 +584,10 @@ END-CODE COMPILE-ONLY
  0. D>F FCONSTANT FZERO
  1. D>F FCONSTANT FONE
 -1. D>F FCONSTANT FMONE
+ 2. D>F FCONSTANT FTWO
 10. D>F FCONSTANT FTEN
+
+FONE FTWO F/ FCONSTANT FHALF
 
 USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
 
@@ -765,6 +774,41 @@ D# 32 CONSTANT FPV-BITS/CELL
    FPX-NORMALIZE
    \DEBUG S" FLOOR-C: " CR TYPE CR H.S CR F.DUMP CR
    R> IF  FMONE F+  THEN
+;
+
+
+: FTRUNC (F r1 -- r2 ) \ 12.6.2.1627 FTRUNC
+   \G Round r1 to an integral value using the "round towards zero" rule, giving r2.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   FDUP F0= 0=
+   IF
+      FDUP F0<
+      IF
+         FNEGATE FLOOR FNEGATE
+      ELSE
+         FLOOR
+      THEN
+   THEN
+;
+
+
+: FROUND (F r1 -- r2 ) \ 12.6.1.1612 FROUND
+   \G Round r1 to an integral value using the "round to nearest" rule, giving r2.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   FDUP F0< IF
+      FNEGATE RECURSE FNEGATE
+   ELSE
+      FDUP FLOOR
+      \DEBUG S" FROUND-A: " CR TYPE CR H.S CR F.DUMP CR
+      FSWAP FOVER F-
+      \DEBUG S" FROUND-B: " CR TYPE CR H.S CR F.DUMP CR
+      FHALF F< INVERT IF
+         FONE F+
+      THEN
+   THEN
+   \DEBUG S" FROUND-C: " CR TYPE CR H.S CR F.DUMP CR
 ;
 
 
