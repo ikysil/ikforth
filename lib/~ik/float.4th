@@ -642,7 +642,7 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
       DUP 0>
    WHILE
       FOVER
-      OVER CATCH THROW
+      OVER EXECUTE
       \DEBUG S" >FLOAT-FIX-EXPONENT-D: " CR TYPE CR H.S CR F.DUMP CR
       1-
    REPEAT
@@ -656,6 +656,76 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
    BASE @ D# 10 =
 ;
 
+USER >FLOAT-VALUE      2 CELLS USER-ALLOC
+USER >FLOAT-INT-DIGITS 1 CELLS USER-ALLOC
+USER >FLOAT-FRA-DIGITS 1 CELLS USER-ALLOC
+USER >FLOAT-FRA?       1 CELLS USER-ALLOC
+
+: >FLOAT-RESET (S -- )
+   0. >FLOAT-VALUE 2!
+   0 >FLOAT-INT-DIGITS !
+   0 >FLOAT-FRA-DIGITS !
+   FALSE >FLOAT-FRA? !
+;
+
+: >FLOAT-COUNT-DIGIT (S -- )
+   1
+   >FLOAT-FRA? @ IF  >FLOAT-FRA-DIGITS  ELSE  >FLOAT-INT-DIGITS  THEN
+   +!
+;
+
+\ DEBUG-ON
+: >FLOAT-PARSE-MANTISSA (S c-addr u -- c-addr' u' flag)
+   \G Attempt to parse mantissa.
+   \G flag is true if format was correct
+   DUP 0= IF  FALSE EXIT  THEN
+   \DEBUG S" >FLOAT-PARSE-MANTISSA-A: " CR TYPE CR H.S CR
+   BEGIN
+     2DUP
+     0>
+     DUP IF
+        SWAP C@
+        DUP D# 10 >DIGIT -1 >
+        SWAP '.' = OR
+        AND
+     ELSE
+        NIP
+     THEN
+     \DEBUG S" >FLOAT-PARSE-MANTISSA-B: " CR TYPE CR H.S CR
+   WHILE
+     OVER C@
+     DUP D# 10 >DIGIT DUP -1 > IF
+        \DEBUG S" >FLOAT-PARSE-MANTISSA-C: " CR TYPE CR H.S CR
+        >FLOAT-VALUE 2@
+        \DEBUG S" >FLOAT-PARSE-MANTISSA-D: " CR TYPE CR H.S CR
+        DUP H# E0000000 AND 0= IF
+           D# 10 UT* DROP
+           ROT S>D D+
+           >FLOAT-VALUE 2!
+           >FLOAT-COUNT-DIGIT
+        ELSE
+           2DROP DROP
+        THEN
+        \DEBUG S" >FLOAT-PARSE-MANTISSA-E: " CR TYPE CR H.S CR
+     ELSE
+        DROP
+     THEN
+     DUP '.' = IF
+        >FLOAT-FRA? @ IF  FALSE EXIT  THEN
+        TRUE >FLOAT-FRA? !
+     THEN
+     DROP
+     1 /STRING
+     \DEBUG S" >FLOAT-PARSE-MANTISSA-F: " CR TYPE CR H.S CR
+   REPEAT
+   >FLOAT-INT-DIGITS @
+   >FLOAT-FRA-DIGITS @
+   \DEBUG S" >FLOAT-PARSE-MANTISSA-G: " CR TYPE CR H.S CR
+   + 0<>
+;
+\DEBUG-OFF
+
+\ DEBUG-ON
 : >FLOAT (S c-addr u -- true | false ) (F -- r | ~ ) \ 12.6.1.0558 >FLOAT
    \G An attempt is made to convert the string specified by c-addr and u
    \G to internal floating-point representation. If the string represents
@@ -672,46 +742,48 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
    \G <e-form> := <e-char>[<sign-form>]
    \G <sign-form> :=	{ + | - }
    \G <e-char> := { D | d | E | e }
+   >FLOAT-RESET
+   ?DECIMAL INVERT IF  EXC-INVALID-FLOAT-BASE THROW  THEN
+
    SKIP-BLANK
    DUP 0= IF  2DROP FZERO TRUE EXIT  THEN
-   ?DECIMAL INVERT IF  EXC-INVALID-FLOAT-BASE THROW  THEN
+
    OVER C@ CASE
       '+' OF   0 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
       '-' OF  -1 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
       0 >FLOAT-M-SIGN !
    ENDCASE
-   DUP 0= IF  2DROP FALSE EXIT  THEN
-   0. 2OVER >NUMBER  \ S: c-addr1 u1 udint c-addr2 u2
-   2ROT 2OVER D= IF  2DROP 2DROP FALSE EXIT  THEN
+
+   \ S: c-addr2 u2
+   >FLOAT-PARSE-MANTISSA
+   \ S: c-addr2 u2 flag
    \DEBUG S" >FLOAT-A: " CR TYPE CR H.S CR
-   DUP 0= IF  2DROP D>F TRUE EXIT  THEN
-   OVER C@ '.' = IF
-      1 /STRING
-      2SWAP 2OVER >NUMBER
-      \ S: c-addr2 u2 ud c-addr3 u3
-      2ROT NIP OVER -
-      \ S: ud c-addr3 u3 +exp-corr
-   ELSE
-      0
-   THEN
-   \ S: ud c-addr3 u3 +exp-corr
+   INVERT IF  2DROP FALSE EXIT  THEN
+
+   \ S: c-addr2 u2
    \DEBUG S" >FLOAT-B: " CR TYPE CR H.S CR
-   >R 2SWAP D>F R>
-   -ROT
-   \ S: +exp-corr c-addr3 u3                   F: ud
    >FLOAT-PARSE-EXPONENT
-   \ S: +exp-corr exp-sign udexp c-addr4 u4    F: ud
+   \ S: exp-sign udexp c-addr4 u4
    \DEBUG S" >FLOAT-C: " CR TYPE CR H.S CR
-   DUP 0<> IF  6 NDROP FDROP FALSE EXIT  THEN
+   DUP 0<> IF  5 NDROP FALSE EXIT  THEN
+
    2DROP
-   \ S: +exp-corr exp-sign udexp               F: ud
-   \DEBUG S" >FLOAT-D: " CR TYPE CR H.S CR
+
+   >FLOAT-VALUE 2@ D>F
+   \ S:                F: ud
+   \DEBUG S" >FLOAT-D: " CR TYPE CR H.S CR F.DUMP CR
+
+   ROT >FLOAT-FRA-DIGITS @ SWAP 2SWAP
+   \ S: +exp-corr exp-sign udexp
+   \DEBUG S" >FLOAT-E: " CR TYPE CR H.S CR F.DUMP CR
    >FLOAT-FIX-EXPONENT
-   \ S:                                        F: ud'
+
    >FLOAT-M-SIGN @ 0< IF  FNEGATE  THEN
    TRUE
-   \DEBUG S" >FLOAT-I: " CR TYPE CR H.S CR F.DUMP CR
+   \ S: TRUE           F: ud'
+   \DEBUG S" >FLOAT-F: " CR TYPE CR H.S CR F.DUMP CR
 ;
+\DEBUG-OFF
 
 :NONAME (S c-addr u -- )
    ?DECIMAL IF
