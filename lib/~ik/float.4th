@@ -580,10 +580,8 @@ END-CODE COMPILE-ONLY
 10. D>F FCONSTANT FTEN
 
 USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
-USER >FLOAT-E-SIGN 1 CELLS USER-ALLOC
-USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
 
-: >FLOAT-EXPONENT (S c-addr u -- exp-sign udexp c-addr' u')
+: >FLOAT-PARSE-EXPONENT (S c-addr u -- exp-sign udexp c-addr' u')
    \G Parse exponent.
    \G udexp - usigned exponent value
    \G exp-sign - sign of the exponent (1/0/-1), 0 if exponent value is absent
@@ -605,13 +603,13 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    THEN
    -ROT
    \ S: exp-sign c-addr" u"
-   \DEBUG S" >FLOAT-EXPONENT-A: " CR TYPE CR H.S CR
+   \DEBUG S" >FLOAT-PARSE-EXPONENT-A: " CR TYPE CR H.S CR
    0. 2SWAP
    \ S: exp-sign 0 0 c-addr" u"
-   \DEBUG S" >FLOAT-EXPONENT-B: " CR TYPE CR H.S CR
+   \DEBUG S" >FLOAT-PARSE-EXPONENT-B: " CR TYPE CR H.S CR
    DUP 0> IF  >NUMBER  THEN
    \ S: exp-sign udexp c-addr' u'
-   \DEBUG S" >FLOAT-EXPONENT-C: " CR TYPE CR H.S CR
+   \DEBUG S" >FLOAT-PARSE-EXPONENT-C: " CR TYPE CR H.S CR
 ;
 
 : >FLOAT-FIX-EXPONENT (S +exp-corr exp-sign udexp -- ) (F r -- r')
@@ -662,16 +660,14 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    SKIP-BLANK
    DUP 0= IF  2DROP FZERO TRUE EXIT  THEN
    BASE @ D# 10 <> IF  EXC-INVALID-FLOAT-BASE THROW  THEN
-   0 >FLOAT-M-SIGN !
-   1 >FLOAT-E-SIGN !
-   0 >FLOAT-E-CORR !
    OVER C@ CASE
       '+' OF   0 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
       '-' OF  -1 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
+      0 >FLOAT-M-SIGN !
    ENDCASE
    DUP 0= IF  2DROP FALSE EXIT  THEN
    0. 2OVER >NUMBER  \ S: c-addr1 u1 udint c-addr2 u2
-   2ROT 2OVER D= IF  2DROP 2DROP FALSE EXIT  THEN 
+   2ROT 2OVER D= IF  2DROP 2DROP FALSE EXIT  THEN
    \DEBUG S" >FLOAT-A: " CR TYPE CR H.S CR
    DUP 0= IF  2DROP D>F TRUE EXIT  THEN
    OVER C@ '.' = IF
@@ -685,17 +681,18 @@ USER >FLOAT-E-CORR 1 CELLS USER-ALLOC
    THEN
    \ S: ud c-addr3 u3 +exp-corr
    \DEBUG S" >FLOAT-B: " CR TYPE CR H.S CR
-   >FLOAT-E-CORR !
-   >FLOAT-EXPONENT
-   \ S: ud exp-sign udexp c-addr4 u4
+   >R 2SWAP D>F R>
+   -ROT
+   \ S: +exp-corr c-addr3 u3                   F: ud
+   >FLOAT-PARSE-EXPONENT
+   \ S: +exp-corr exp-sign udexp c-addr4 u4    F: ud
    \DEBUG S" >FLOAT-C: " CR TYPE CR H.S CR
-   DUP 0<> IF  2DROP 2DROP DROP 2DROP FALSE EXIT  THEN
+   DUP 0<> IF  6 NDROP FDROP FALSE EXIT  THEN
    2DROP
-   \ S: ud exp-sign udexp
+   \ S: +exp-corr exp-sign udexp               F: ud
    \DEBUG S" >FLOAT-D: " CR TYPE CR H.S CR
-   ROT >FLOAT-E-SIGN !
-   2SWAP D>F
-   >FLOAT-E-CORR @ >FLOAT-E-SIGN @ 2SWAP >FLOAT-FIX-EXPONENT
+   >FLOAT-FIX-EXPONENT
+   \ S:                                        F: ud'
    >FLOAT-M-SIGN @ 0< IF  FNEGATE  THEN
    TRUE
    \DEBUG S" >FLOAT-I: " CR TYPE CR H.S CR F.DUMP CR
