@@ -641,6 +641,11 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
    FNIP
 ;
 
+: ?DECIMAL (S -- flag )
+   \G flag is true only if current BASE is DECIMAL
+   BASE @ D# 10 =
+;
+
 : >FLOAT (S c-addr u -- true | false ) (F -- r | ~ ) \ 12.6.1.0558 >FLOAT
    \G An attempt is made to convert the string specified by c-addr and u
    \G to internal floating-point representation. If the string represents
@@ -659,7 +664,7 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
    \G <e-char> := { D | d | E | e }
    SKIP-BLANK
    DUP 0= IF  2DROP FZERO TRUE EXIT  THEN
-   BASE @ D# 10 <> IF  EXC-INVALID-FLOAT-BASE THROW  THEN
+   ?DECIMAL INVERT IF  EXC-INVALID-FLOAT-BASE THROW  THEN
    OVER C@ CASE
       '+' OF   0 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
       '-' OF  -1 >FLOAT-M-SIGN ! 1 /STRING  ENDOF
@@ -697,6 +702,18 @@ USER >FLOAT-M-SIGN 1 CELLS USER-ALLOC
    TRUE
    \DEBUG S" >FLOAT-I: " CR TYPE CR H.S CR F.DUMP CR
 ;
+
+:NONAME (S c-addr u -- )
+   ?DECIMAL IF
+      2DUP
+      >FLOAT IF
+         STATE @ IF  POSTPONE FLITERAL  THEN
+         2DROP EXIT
+      THEN
+   THEN
+
+   DEFERRED INTERPRET-WORD-NOT-FOUND
+; IS INTERPRET-WORD-NOT-FOUND
 
 ONLY FORTH DEFINITIONS
 
