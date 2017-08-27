@@ -831,21 +831,25 @@ D# 32 CONSTANT FPV-BITS/CELL
    'FPX-E @ FPFLAGS>EXP
    DUP 0< IF
       DROP
-      D2*
+      2DROP -1.
    ELSE
       DRSHIFT
    THEN
    'FPX-M 2@                                \ S: mlo mhi rlo rhi
-   \DEBUG S" FLOOR-A: " CR TYPE CR H.S CR
+   \DEBUG S" FLOOR-A: " CR TYPE CR H.S CR F.DUMP CR
    2OVER 2OVER DAND
    \DEBUG S" FLOOR-B: " CR TYPE CR H.S CR
-   OR 0<> 'FPX-E @ ?FPV-NEGATIVE AND >R     \ S: mlo mhi rlo rhi    R: ?neg-with-fraction
+   OR 0<> 'FPX-E @ ?FPV-NEGATIVE AND
+   \DEBUG S" FLOOR-B1: " CR TYPE CR H.S CR
+   >R                                       \ S: mlo mhi rlo rhi    R: ?neg-with-fraction
    2SWAP DINVERT DAND
    \DEBUG S" FLOOR-C: " CR TYPE CR H.S CR
    'FPX-M 2!
    FPX-NORMALIZE
-   \DEBUG S" FLOOR-C: " CR TYPE CR H.S CR F.DUMP CR
-   R> IF  FMONE F+  THEN
+   \DEBUG S" FLOOR-C1: " CR TYPE CR H.S CR F.DUMP CR
+   R>
+   \DEBUG S" FLOOR-D: " CR TYPE CR H.S CR F.DUMP CR
+   IF  FMONE F+  THEN
 ;
 
 
