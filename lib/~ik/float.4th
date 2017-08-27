@@ -939,6 +939,141 @@ D# 32 CONSTANT FPV-BITS/CELL
 ;
 
 
+: FMOD (F r1 r2 -- r3)
+   \G r3 is floating point remainder of division r1 by r2.
+   \G The absolute value of r3 lays in range [0, r2).
+   \G r3 has the same sign as r1.
+   2 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
+   \ r3 = r1 - trunc(r1 / r2) * r2
+   FOVER FOVER F/ FTRUNC F* F-
+;
+
+3.1415926535897932384626433832795E FCONSTANT FPI
+FPI FTWO F* FCONSTANT FTWOPI
+FPI FTWO F/ FCONSTANT FHALFPI
+
+: FSCALE-TRIG (F r1 -- r2)
+   \G Scale r1 into range [0, 2*pi)
+   1 ?FPSTACK-UNDERFLOW
+   FTWOPI FMOD
+;
+
+ 0.99940307E FCONSTANT FCOS32-C1
+-0.49558072E FCONSTANT FCOS32-C2
+ 0.03679168E FCONSTANT FCOS32-C3
+
+: FCOS32-APPROX (F r1 -- r2 )
+   \G computes cosine (r1)
+   \G Accurate to about 3.2 decimal digits over the range [0, pi/2].
+   \G r1 is in radians.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \ cos(x)= c1 + x**2(c2 + c3*x**2)
+   FDUP F*
+   FCOS32-C3    FOVER F*
+   FCOS32-C2 F+ FOVER F*
+   FCOS32-C1 F+
+   FNIP
+;
+
+ 0.9999932946 FCONSTANT FCOS52-C1
+-0.4999124376 FCONSTANT FCOS52-C2
+ 0.0414877472 FCONSTANT FCOS52-C3
+-0.0012712095 FCONSTANT FCOS52-C4
+
+: FCOS52-APPROX (F r1 -- r2 )
+   \G computes cosine (r1)
+   \G Accurate to about 5.2 decimal digits over the range [0, pi/2].
+   \G r1 is in radians.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \ cos(x)= c1 + x**2(c2 + x**2(c3 + c4*x**2))
+   FDUP F*
+   FCOS52-C4    FOVER F*
+   FCOS52-C3 F+ FOVER F*
+   FCOS52-C2 F+ FOVER F*
+   FCOS52-C1 F+
+   FNIP
+;
+
+\ DEBUG-ON
+: FCOS (F r1 -- r2 ) \ 12.6.2.1493 FCOS
+   \G r2 is the cosine of the radian angle r1.
+   1 ?FPSTACK-UNDERFLOW
+   FPX0= IF
+      FDROP FONE
+      EXIT
+   THEN
+   2 ?FPSTACK-OVERFLOW
+   FSCALE-TRIG
+   FABS
+   \DEBUG S" FCOS-A: " CR TYPE CR F.DUMP CR
+   FDUP FHALFPI
+   \DEBUG S" FCOS-B: " CR TYPE CR H.S CR F.DUMP CR
+   F/ FLOOR
+   \DEBUG S" FCOS-C: " CR TYPE CR H.S CR F.DUMP CR
+   F>D
+   D>S
+   ['] FCOS52-APPROX SWAP
+   \DEBUG S" FCOS-D: " CR TYPE CR H.S CR F.DUMP CR
+   CASE
+      0 OF
+         EXECUTE
+      ENDOF
+      1 OF
+         FPI FSWAP F-
+         EXECUTE
+         FNEGATE
+      ENDOF
+      2 OF
+         FPI F-
+         EXECUTE
+         FNEGATE
+      ENDOF
+      3 OF
+         FTWOPI FSWAP F-
+         EXECUTE
+      ENDOF
+      ABORT
+   ENDCASE
+   \DEBUG S" FCOS-E: " CR TYPE CR H.S CR F.DUMP CR
+;
+\DEBUG-OFF
+
+
+: FSIN (F r1 -- r2 ) \ 12.6.2.1614 FSIN
+   \G r2 is the sine of the radian angle r1.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   FPX0= IF
+      FDROP FZERO
+   ELSE
+      FHALFPI FSWAP F- FCOS
+   THEN
+;
+
+
+: FSINCOS (F r1 -- r2 r3 ) \ 12.6.2.1616 FSINCOS
+   \G r2 is the sine of the radian angle r1. r3 is the cosine of the radian angle r1.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   FDUP FSIN
+   FSWAP FCOS
+;
+
+
+\ DEBUG-ON
+: FTAN (F r1 -- r2 ) \ 12.6.2.1625 FTAN
+   \G r2 is the tangent of the radian angle r1. An ambiguous condition exists if (r1) is zero.
+   FSINCOS
+   \DEBUG S" FTAN-A: " CR TYPE CR F.DUMP CR
+   F/
+;
+\DEBUG-OFF
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
