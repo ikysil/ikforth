@@ -1093,7 +1093,7 @@ FTWELFTHPI FTAN   FCONSTANT FTANTWELFTHPI
 ;
 
 \ DEBUG-ON
-: FATAN-ZERO-ONE-RANGE (F r1 -- r2 )
+: FATAN66-ZERO-ONE-RANGE (F r1 -- r2 )
    \G Calculate atan approximation of r1 in range [0,1].
    \DEBUG S" FATAN-ZERO-ONE-INPUT: " CR TYPE CR F.DUMP CR
    FTANTWELFTHPI FOVER F< IF
@@ -1108,28 +1108,75 @@ FTWELFTHPI FTAN   FCONSTANT FTANTWELFTHPI
    \DEBUG S" FATAN-ZERO-ONE-RESULT: " CR TYPE CR F.DUMP CR
 ;
 
-: FATAN-POSITIVE (F r1 -- r2 )
+: FATAN66-POSITIVE (F r1 -- r2 )
    \G Calculate atan approximation of r1 in range [0,+FLOAT-MAX).
    \DEBUG S" FATAN-POSITIVE-INPUT: " CR TYPE CR F.DUMP CR
    FONE FOVER F< IF
       FONE FSWAP F/
-      FATAN-ZERO-ONE-RANGE
+      FATAN66-ZERO-ONE-RANGE
       FHALFPI FSWAP F-
    ELSE
-      FATAN-ZERO-ONE-RANGE
+      FATAN66-ZERO-ONE-RANGE
    THEN
    \DEBUG S" FATAN-POSITIVE-RESULT: " CR TYPE CR F.DUMP CR
 ;
 
-: FATAN-FLOAT-RANGE (F r1 -- r2 )
+0.596227E  FCONSTANT FATAN-2NDORDER-B
+
+: FATAN-2NDORDER (F r1 -- r2 )
+   \G Calculate atan approximation of r1 in range [0,+FLOAT-MAX).
+   \G This is for x in [0, Infinity). When x is negative just use -atan_approx(-x).
+   \G atan_approx(x) = (Pi/2)*(b*x + x*x)/(1 + 2*b*x + x*x) where b = 0.596227,
+   \G with a maximum approximation error of 0.1620º
+   1 ?FPSTACK-UNDERFLOW
+   3 ?FPSTACK-OVERFLOW
+   FDUP FDUP F*
+   FSWAP FATAN-2NDORDER-B F* FSWAP
+   \ F: b*x x*x
+   FOVER F+
+   \ F: b*x b*x+x*x
+   FSWAP FOVER F+
+   \ F: b*x+x*x b*x+b*x+x*x
+   FONE F+
+   F/
+   FHALFPI F*
+;
+
+17. D>F FSQRT FONE F+ 8. D>F F/
+FCONSTANT FATAN-3RDORDER-C
+FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
+
+: FATAN-3RDORDER (F r1 -- r2 )
+   \G Calculate atan approximation of r1 in range [0,+FLOAT-MAX).
+   \G This is for x in [0, Infinity). When x is negative just use -atan_approx(-x).
+   \G atan_approx(x) = (Pi/2)*(c*x + x*x + x*x*x)/(1 + (c+1)*x + (c+1)x*x + x*x*x)
+   \G where c = (1 + sqrt(17))/8 and the maximum approximation error is 0.00811º
+   1 ?FPSTACK-UNDERFLOW
+   3 ?FPSTACK-OVERFLOW
+   FATAN-3RDORDER-C FOVER F*
+   FOVER FDUP F* FDUP FP> F+
+   FOVER >FP F* F+
+   FSWAP
+   \ F: (c*x + x*x + x*x*x) x
+   FATAN-3RDORDER-CP1 FOVER F*
+   FOVER FDUP F* FDUP FP> FATAN-3RDORDER-CP1 F* F+
+   FSWAP >FP F* F+
+   FONE F+
+   \ F: (c*x + x*x + x*x*x) (1 + (c+1)*x + (c+1)x*x + x*x*x)
+   F/
+   FHALFPI F*
+;
+
+: FATAN-FLOAT-RANGE (S xt -- ) (F r1 -- r2 )
    \G Calculate atan approximation of r1 in range (-FLOAT-MAX,+FLOAT-MAX).
+   \G xt is the word to calculate atan approximation of r1 in range [0,+FLOAT-MAX).
    \DEBUG S" FATAN-FLOAT-RANGE-INPUT: " CR TYPE CR F.DUMP CR
    'FPX-E @ ?FPV-NEGATIVE IF
       FNEGATE
-      FATAN-POSITIVE
+      EXECUTE
       FNEGATE
    ELSE
-      FATAN-POSITIVE
+      EXECUTE
    THEN
    \DEBUG S" FATAN-FLOAT-RANGE-RESULT: " CR TYPE CR F.DUMP CR
 ;
@@ -1139,6 +1186,9 @@ FTWELFTHPI FTAN   FCONSTANT FTANTWELFTHPI
    1 ?FPSTACK-UNDERFLOW
    3 ?FPSTACK-OVERFLOW
    \DEBUG S" FATAN-INPUT: " CR TYPE CR F.DUMP CR
+   \ ['] FATAN66-POSITIVE
+   \ ['] FATAN-2NDORDER
+   ['] FATAN-3RDORDER
    FATAN-FLOAT-RANGE
    \DEBUG S" FATAN-RESULT: " CR TYPE CR F.DUMP CR
 ;
