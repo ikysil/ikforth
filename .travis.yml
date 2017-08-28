@@ -10,8 +10,9 @@ before_install:
   - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c"
 
 env:
-  - ANSITEST_CMD="echo -e '123\n ' | scons itc ansitest"
-  - ANSITEST_CMD="echo -e '123\n ' | scons dtc ansitest"
+  - TEST_CMD="echo -e '123\n ' | scons itc ansitest"
+  - TEST_CMD="echo -e '123\n ' | scons dtc ansitest"
+  - TEST_CMD="echo -e 'bye\n ' | scons fptest"
 
 script:
-  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "${ANSITEST_CMD}"
+  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "${TEST_CMD}"
