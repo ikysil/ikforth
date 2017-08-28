@@ -1074,6 +1074,103 @@ FPI FTWO F/ FCONSTANT FHALFPI
 \DEBUG-OFF
 
 
+FPI 6. D>F    F/  FCONSTANT FSIXTHPI
+FSIXTHPI FTWO F/  FCONSTANT FTWELFTHPI
+FSIXTHPI   FTAN   FCONSTANT FTANSIXTHPI
+FTWELFTHPI FTAN   FCONSTANT FTANTWELFTHPI
+
+1.6867629106 FCONSTANT FATAN66-C1
+0.4378497304 FCONSTANT FATAN66-C2
+1.6867633134 FCONSTANT FATAN66-C3
+
+: FATAN66-APPROX (F r1 -- r2 )
+   \G r2 is atan(r1).
+   \G Accurate to about 6.6 decimal digits over the range [0, pi/12].
+   \G atan(x)= x*(c1 + c2*x**2)/(c3 + x**2)
+   FDUP FDUP F*
+   FDUP FATAN66-C2 F* FATAN66-C1 F+
+   FSWAP FATAN66-C3 F+ F/ F*
+;
+
+\ DEBUG-ON
+: FATAN-ZERO-ONE-RANGE (F r1 -- r2 )
+   \G Calculate atan approximation of r1 in range [0,1].
+   \DEBUG S" FATAN-ZERO-ONE-INPUT: " CR TYPE CR F.DUMP CR
+   FTANTWELFTHPI FOVER F< IF
+      FDUP  FTANSIXTHPI F-
+      FSWAP FTANSIXTHPI F* FONE F+
+      F/
+      FATAN66-APPROX
+      FSIXTHPI F+
+   ELSE
+      FATAN66-APPROX
+   THEN
+   \DEBUG S" FATAN-ZERO-ONE-RESULT: " CR TYPE CR F.DUMP CR
+;
+
+: FATAN-POSITIVE (F r1 -- r2 )
+   \G Calculate atan approximation of r1 in range [0,+FLOAT-MAX).
+   \DEBUG S" FATAN-POSITIVE-INPUT: " CR TYPE CR F.DUMP CR
+   FONE FOVER F< IF
+      FONE FSWAP F/
+      FATAN-ZERO-ONE-RANGE
+      FHALFPI FSWAP F-
+   ELSE
+      FATAN-ZERO-ONE-RANGE
+   THEN
+   \DEBUG S" FATAN-POSITIVE-RESULT: " CR TYPE CR F.DUMP CR
+;
+
+: FATAN-FLOAT-RANGE (F r1 -- r2 )
+   \G Calculate atan approximation of r1 in range (-FLOAT-MAX,+FLOAT-MAX).
+   \DEBUG S" FATAN-FLOAT-RANGE-INPUT: " CR TYPE CR F.DUMP CR
+   'FPX-E @ ?FPV-NEGATIVE IF
+      FNEGATE
+      FATAN-POSITIVE
+      FNEGATE
+   ELSE
+      FATAN-POSITIVE
+   THEN
+   \DEBUG S" FATAN-FLOAT-RANGE-RESULT: " CR TYPE CR F.DUMP CR
+;
+
+: FATAN (F r1 -- r2 ) \ 12.6.2.1488 FATAN
+   \G r2 is the principal radian angle whose tangent is r1.
+   1 ?FPSTACK-UNDERFLOW
+   3 ?FPSTACK-OVERFLOW
+   \DEBUG S" FATAN-INPUT: " CR TYPE CR F.DUMP CR
+   FATAN-FLOAT-RANGE
+   \DEBUG S" FATAN-RESULT: " CR TYPE CR F.DUMP CR
+;
+\DEBUG-OFF
+
+
+\ DEBUG-ON
+: FASIN (F r1 -- r2 ) \ 12.6.2.1486 FASIN
+   \G r2 is the principal radian angle whose sine is r1.
+   \G An ambiguous condition exists if | r1 | is greater than one.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   FDUP FABS FONE F- F0= IF
+      FHALFPI F*
+      EXIT
+   THEN
+   FDUP FDUP F* FONE FSWAP F- FSQRT
+   \DEBUG S" FASIN-A: " CR TYPE CR F.DUMP CR
+   F/ FATAN
+;
+\DEBUG-OFF
+
+
+: FACOS (F r1 -- r2 ) \ 12.6.2.1476 FACOS
+   \G r2 is the principal radian angle whose cosine is r1.
+   \G An ambiguous condition exists if | r1 | is greater than one.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   FASIN FHALFPI FSWAP F-
+;
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
