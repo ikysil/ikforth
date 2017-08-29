@@ -1221,6 +1221,51 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 ;
 
 
+\ DEBUG-ON
+: FATAN2 (F r1 r2 -- r3 ) \ 12.6.2.1489 FATAN2
+   \G r3 is the principal radian angle (between -π and π) whose tangent is r1/r2.
+   \G A system that returns false for "-0E 0E 0E F~" shall return a value
+   \G (approximating) -π when r1 = 0E and r2 is negative.
+   \G An ambiguous condition exists if r1 and r2 are zero.
+   2 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \DEBUG S" FATAN2-INPUT: " CR TYPE CR F.DUMP CR
+   FOVER F0= IF
+      FDUP F0= IF
+         EXC-FLOAT-INVALID-ARGUMENT THROW
+      THEN
+      FDUP F0< IF
+         FDROP FDROP FPI
+         FNEGATE
+         \DEBUG S" FATAN2-RESULT-1: " CR TYPE CR F.DUMP CR
+         EXIT
+      THEN
+   THEN
+   FDUP F0= IF
+      \ r2 = 0
+      FDROP F0< FPI
+      IF  FNEGATE  THEN
+   ELSE
+      FDUP FNEGATE F0< IF
+          \ r2 > 0
+          F/ FATAN
+      ELSE
+          \ r2 <= 0
+          FOVER FSWAP
+          \DEBUG S" FATAN2-C1: " CR TYPE CR F.DUMP CR
+          F/ FATAN
+          \DEBUG S" FATAN2-C2: " CR TYPE CR F.DUMP CR
+          FSWAP
+          \DEBUG S" FATAN2-C3: " CR TYPE CR F.DUMP CR
+          F0< FPI IF  FNEGATE  THEN
+          F+
+      THEN
+   THEN
+   \DEBUG S" FATAN2-RESULT-2: " CR TYPE CR F.DUMP CR
+;
+\DEBUG-OFF
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
