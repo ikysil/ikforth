@@ -1267,7 +1267,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 
 
 \ DEBUG-ON
-16 CONSTANT FEXPM1-ITERATIONS-DEFAULT
+18  CONSTANT  FEXPM1-ITERATIONS-DEFAULT
 
 : FEXPM1-APPROX (S +n -- ) (F r1 -- r2 )
    \G Approximate exp(r1 - 1) using +n iterations.
@@ -1313,6 +1313,110 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 ;
 
 1.E FEXP  FCONSTANT  FLNBASE
+\DEBUG-OFF
+
+
+\DEBUG-ON
+18  CONSTANT  FLN-ITERATIONS-DEFAULT
+
+: FLN-TAYLOR (S +n -- ) (F r1 -- r2 )
+   \G Approximate ln(r1) using +n iterations.
+   1 ?FPSTACK-UNDERFLOW
+   3 ?FPSTACK-OVERFLOW
+   FDUP F0< IF
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   \ calculate y = (r1-1)/(r1+1)
+   FDUP  FONE F-
+   FSWAP FONE F+ F/
+   \ S: +n             F: y
+   FZERO FOVER
+   FDUP F*
+   \ S: +n             F: y sum(=0) y**2
+   BEGIN
+      1 -
+      DUP 0>
+      \ S: n' flag        F: y sum y**2
+   WHILE
+      DUP S>D D2* 1. D-
+      \ S: n' dn'*2-1     F: y sum y**2
+      FSWAP FOVER F*
+      \ S: n' dn'*2-1     F: y y**2 sum*y**2
+      FONE D>F F/
+      \ S: n'             F: y y**2 sum*y**2 1/(dn'*2-1)
+      F+ FSWAP
+      \ S: n'             F: y sum' y**2
+   REPEAT
+   DROP
+   \ F: y sum' y**2
+   FDROP
+   F* FTWO F*
+;
+
+: FLN (F r1 -- r2 ) \ 12.6.2.1553 FLN
+   \G r2 is the natural logarithm of r1.
+   \G An ambiguous condition exists if r1 is less than or equal to zero.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \DEBUG S" FLN-INPUT: " CR TYPE CR F.DUMP CR
+   FDUP F0< IF
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   FLN-ITERATIONS-DEFAULT FLN-TAYLOR
+   \DEBUG S" FLN-RESULT: " CR TYPE CR F.DUMP CR
+;
+
+32  CONSTANT  FLNP1-ITERATIONS-DEFAULT
+
+: FLNP1-TAYLOR (S +n -- ) (F r1 -- r2 )
+   \G Approximate ln(1 + r1) using +n iterations.
+   1 ?FPSTACK-UNDERFLOW
+   3 ?FPSTACK-OVERFLOW
+   FONE FOVER FABS F- F0< IF
+      \ abs(r1) > 1
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   FDUP FNEGATE FOVER
+   \ F: sum(=r1) -r1 r1
+   1 2>R
+   BEGIN
+      2R> 1 +
+      2DUP >
+      \ S: n i flag    R:          F: r2(i-1)' r1 r1**(i-1)
+   WHILE
+      DUP S>D 2SWAP 2>R
+      \ S: di          R: n i      F: r2(i-1)' r1 r1**(i-1)
+      FOVER F* FDUP
+      D>F F/
+      \ S:             R: n i      F: r2(i-1)' r1 r1**(i) (r1**(i))/(i)
+      FP> FROT >FP F+
+      \ S:             R: n i      F: r1 r1**(i)/(i) r2'+(r1**(i))/(i)
+      FROT FROT
+      \ S:             R: n i      F: r2(i)' r1 (r1**(i))/(i)
+   REPEAT
+   2DROP
+   \ F: r2(i)' r1 (r1**(i))/(i)
+   FDROP FDROP
+;
+
+: FLNP1 (F r1 -- r2 ) \ 12.6.2.1554 FLNP1
+   \G r2 is the natural logarithm of the quantity r1 plus one.
+   \G An ambiguous condition exists if r1 is less than or equal to negative one.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \DEBUG S" FLNP1-INPUT: " CR TYPE CR F.DUMP CR
+   FDUP FMONE F< IF
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   FONE FOVER FABS F- F0< IF
+      \ abs(r1) > 1
+      FONE + FLN
+   ELSE
+      \ abs(r1) <= 1
+      FLNP1-ITERATIONS-DEFAULT FLNP1-TAYLOR
+   THEN
+   \DEBUG S" FLNP1-RESULT: " CR TYPE CR F.DUMP CR
+;
 \DEBUG-OFF
 
 
