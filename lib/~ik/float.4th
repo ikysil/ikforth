@@ -1506,6 +1506,38 @@ FTEN FLN  FCONSTANT  FLNTEN
 \DEBUG-OFF
 
 
+\ DEBUG-ON
+: F** (F r1 r2 -- r3 )  \ 12.6.2.1415 F**
+   \G Raise r1 to the power r2, giving the product r3.
+   \DEBUG S" F**-INPUT: " CR TYPE CR F.DUMP CR
+   2 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   FOVER F0= IF
+      FNIP
+      FDUP F0= IF
+         FDROP
+         FONE
+      ELSE
+         F0< IF
+            EXC-FLOAT-DIVISION-BY-ZERO THROW
+         ELSE
+            FZERO
+         THEN
+      THEN
+   ELSE
+      FDUP F0= IF
+         FDROP FDROP
+         FONE
+      ELSE
+         FSWAP
+         FABS FLN F* FEXP
+      THEN
+   THEN
+   \DEBUG S" F**-RESULT: " CR TYPE CR F.DUMP CR
+;
+\DEBUG-OFF
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
