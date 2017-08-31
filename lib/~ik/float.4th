@@ -21,14 +21,16 @@ ALSO FLOAT-PRIVATE DEFINITIONS
 
 DECIMAL
 
-6 CONSTANT /FPSTACK
-3 CELLS CONSTANT B/FLOAT
-63 CONSTANT D>F-EXPONENT
+6        CONSTANT  /FPSTACK
+3 CELLS  CONSTANT  B/FLOAT
+63       CONSTANT  D>F-EXPONENT
+18       CONSTANT  MAX-REPRESENT-DIGITS
 
 <ENV
-             TRUE  CONSTANT FLOATING
-             TRUE  CONSTANT FLOATING-EXT
-         /FPSTACK  CONSTANT FLOATING-STACK
+                   TRUE  CONSTANT  FLOATING
+                   TRUE  CONSTANT  FLOATING-EXT
+               /FPSTACK  CONSTANT  FLOATING-STACK
+   MAX-REPRESENT-DIGITS  CONSTANT  MAX-FLOAT-DIGITS
 ENV>
 
 \ floating point representation
@@ -1639,17 +1641,15 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
 
 
 \ DEBUG-ON
-18  CONSTANT  MAX-REPRESENT-DIGITS
-
 : REPRESENT-EXP (S -- n) (F r -- r')
    \G Scale the value r to lay in range [0.1, 1.0) and return decimal exponent n.
-   FPX0=
-   0
-   \ S: flag exp(=0)
+   FPX0= INVERT
+   0 SWAP
+   \ S: exp(=0) flag
    BEGIN
-      SWAP 0=
+      0<>
    WHILE
-      FDUP FONE F< 0= IF
+      FDUP FONE F< INVERT IF
          FTEN F/
          1
       ELSE
@@ -1661,8 +1661,8 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
          THEN
       THEN
       \ S: exp dexp
-      OVER +
-      \ S: dexp exp'
+      DUP >R + R>
+      \ S: exp' dexp
    REPEAT
 ;
 
@@ -1685,13 +1685,13 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G consist of graphic characters.
    1 ?FPSTACK-UNDERFLOW
    3 ?FPSTACK-OVERFLOW
-   ?DECIMAL INVERT IF  EXC-INVALID-FLOAT-BASE THROW  THEN
+   ?DECIMAL INVERT  IF  EXC-INVALID-FLOAT-BASE THROW  THEN
    MAX-REPRESENT-DIGITS MIN
    2DUP '0' FILL
    'FPX-E @ ?FPV-NEGATIVE >R
    FPX0=  IF
       DROP '0' SWAP C!
-      0
+      1
       R>
       TRUE
       FDROP
@@ -1700,13 +1700,16 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    FABS
    REPRESENT-EXP >R
    FONE DUP 0  ?DO  FTEN F*  LOOP  F*
+   \DEBUG S" REPRESENT-MAN1: " CR TYPE CR F.DUMP CR
    FROUND F>D
+   \DEBUG S" REPRESENT-MAN2: " CR TYPE CR H.S CR
    <# #S #>
    \ S: c-addr u' hld-addr hld-u
+   \DEBUG S" REPRESENT-HLD: " CR TYPE CR 2DUP TYPE CR
    2SWAP ROT 2DUP
    \ S: hld-addr c-addr u' hld-u u' hld-u
    SWAP - R> + >R
-   MIN MOVE
+   MIN 1 MAX MOVE
    R> R> TRUE
    \DEBUG S" REPRESENT-RESULT: " CR TYPE CR H.S CR
 ;
@@ -1719,6 +1722,16 @@ MAX-REPRESENT-DIGITS  VALUE  PRECISION (S -- u) \ 12.6.2.2035 PRECISION
 : SET-PRECISION (S u -- ) \ 12.6.2.2200 SET-PRECISION
    \G Set the number of significant digits currently used by F., FE., or FS. to u.
    0 MAX MAX-REPRESENT-DIGITS MIN TO PRECISION
+;
+
+
+: FALIGNED (S addr -- f-addr) \ 12.6.1.1483 FALIGNED
+   \G f-addr is the first float-aligned address greater than or equal to addr.
+;
+
+: FALIGN (S -- ) \ 12.6.1.1479 FALIGN
+   \G If the data-space pointer is not float aligned, reserve enough data space to make it so.
+   DP @ FALIGNED DP !
 ;
 
 
