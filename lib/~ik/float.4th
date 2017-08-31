@@ -1598,6 +1598,46 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
 \DEBUG-OFF
 
 
+\ DEBUG-ON
+: FASINH (F r1 -- r2 ) \ 12.6.2.1487 FASINH
+   \G r2 is the floating-point value whose hyperbolic sine is r1.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \DEBUG S" FASINH-INPUT: " CR TYPE CR F.DUMP CR
+   FDUP FDUP F* FONE F+ FSQRT
+   F+ FLN
+   \DEBUG S" FASINH-RESULT: " CR TYPE CR F.DUMP CR
+;
+
+: FACOSH (F r1 -- r2 ) \ 12.6.2.1477 FACOSH
+   \G r2 is the floating-point value whose hyperbolic cosine is r1.
+   \G An ambiguous condition exists if r1 is less than one.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \DEBUG S" FACOSH-INPUT: " CR TYPE CR F.DUMP CR
+   FDUP FDUP F* FONE F- FSQRT
+   F+ FLN
+   \DEBUG S" FACOSH-RESULT: " CR TYPE CR F.DUMP CR
+;
+
+: FATANH (F r1 -- r2 ) \ 12.6.2.1491 FATANH
+   \G r2 is the floating-point value whose hyperbolic tangent is r1.
+   \G An ambiguous condition exists if r1 is outside the range of -1E0 to 1E0.
+   1 ?FPSTACK-UNDERFLOW
+   2 ?FPSTACK-OVERFLOW
+   \DEBUG S" FATANH-INPUT: " CR TYPE CR F.DUMP CR
+   FONE FOVER FABS F< IF
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   FONE FOVER F+
+   FONE FROT F-
+   F/ FLN
+   FTWO F/
+   \DEBUG S" FATANH-RESULT: " CR TYPE CR F.DUMP CR
+;
+\DEBUG-OFF
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
