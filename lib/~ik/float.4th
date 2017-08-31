@@ -1713,6 +1713,15 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
 \DEBUG-OFF
 
 
+MAX-REPRESENT-DIGITS  VALUE  PRECISION (S -- u) \ 12.6.2.2035 PRECISION
+\G Return the number of significant digits currently used by F., FE., or FS. as u.
+
+: SET-PRECISION (S u -- ) \ 12.6.2.2200 SET-PRECISION
+   \G Set the number of significant digits currently used by F., FE., or FS. to u.
+   0 MAX MAX-REPRESENT-DIGITS MIN TO PRECISION
+;
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
