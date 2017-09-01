@@ -105,7 +105,9 @@ CREATE fbuf  mp# CHARS ALLOT
 
 \ get exponent, sign, flag2
 : (f1)  ( F: r -- r ) ( -- exp sign flag2 )
-   FDUP fbuf PRECISION REPRESENT ;
+   FDUP fbuf PRECISION REPRESENT
+   fbuf mp# CHARS ERASE
+    ;
 
 \ apply exponent factor
 : (f2)  ( exp -- offset exp2 )
@@ -115,7 +117,7 @@ CREATE fbuf  mp# CHARS ALLOT
 : (f3)  ( F: r -- ) ( places -- c-addr u flag )
    TO pl#  (f1) NIP AND ( exp & flag2 )
    pl# 0< IF
-      DROP PRECISION
+      DUP -1 <  IF  PRECISION +  ELSE  DROP PRECISION  THEN
    ELSE
       ef# 0> IF  1- (f2) DROP 1+  THEN  pl# +
    THEN  0 MAX  PRECISION MIN
