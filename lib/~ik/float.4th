@@ -1758,6 +1758,40 @@ MAX-REPRESENT-DIGITS  VALUE  PRECISION (S -- u) \ 12.6.2.2035 PRECISION
 ;
 
 
+: F+! \ (S addr -- ) (F r -- )
+   \G Add float r to float at addr
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   DUP >R F@ F+ R> F!
+;
+
+VALUE-METHOD FVALUE!  F!
+VALUE-METHOD FVALUE+! F+!
+
+CREATE FVALUE-VT
+   ' FVALUE! , ' FVALUE+! ,
+
+: FVALUE  (F r -- ) ( "<spaces>name" -- ) \ 12.6.2.1628 FVALUE
+   \G Skip leading space delimiters. Parse name delimited by a space. Create a
+   \G definition for name with the execution semantics defined below, with an
+   \G initial value equal to r.
+   \G
+   \G name is referred to as a "f-value".
+   \G
+   \G name Execution: ( F: -- r )
+   \G Place r on the floating point stack. The value of r is that given when
+   \G name was created, until the phrase "r TO name" is executed, causing a new
+   \G value of r to be assigned to name.
+   \G
+   \G TO name Run-time: ( F: r -- )
+   \G Assign the value r to name.
+   CREATE
+   FVALUE-VT ,
+   FALIGN HERE 1 FLOATS ALLOT F!
+   DOES> FALIGNED VALUE>DATA F@
+;
+
+
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
