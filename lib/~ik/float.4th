@@ -247,6 +247,13 @@ SYNONYM FDEPTH FDEPTH
    B/FLOAT *
 ;
 
+
+: FLOAT+ (S f-addr1 -- f-addr2 ) \ 12.6.1.1555 FLOAT+
+   \G Add the size in address units of a floating-point number to f-addr1, giving f-addr2.
+   [ 1 FLOATS ] LITERAL +
+;
+
+
 : FDROP (F r -- ) \ 12.6.1.1500 FDROP
    (G Remove r from the floating-point stack.)
    1 ?FPSTACK-UNDERFLOW
