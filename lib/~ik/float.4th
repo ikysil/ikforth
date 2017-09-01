@@ -367,10 +367,17 @@ USER F*-YH*XL  2 CELLS USER-ALLOC
 USER F*-YH*XH  2 CELLS USER-ALLOC
 
 : F* (F r1 r2 -- r3 ) \ 12.6.1.1410 F*
-   (G Multiply r1 by r2 giving r3.)
+   \G Multiply r1 by r2 giving r3.
    2 ?FPSTACK-UNDERFLOW
-   FPX0= IF  FNIP  EXIT  THEN
-   FPY0= IF  FDROP EXIT  THEN
+   FPX0=  IF
+      FSWAP
+      F0<  IF  FNEGATE  THEN
+      EXIT
+   THEN
+   FPY0=  IF
+      F0<  IF  FNEGATE  THEN
+      EXIT
+   THEN
    'FPY-M 2@ 'FPX-M 2@  \ S: yl yh xl xh
    ROT SWAP OVER        \ S: yl xl yh xh yh
    UM* F*-YH*XH 2!
@@ -442,8 +449,15 @@ USER F/-XM   2 CELLS USER-ALLOC
 ;
 
 : F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
-   (G flag is true if and only if r1 is less than r2.)
+   \G flag is true if and only if r1 is less than r2.
+   2 ?FPSTACK-UNDERFLOW
    F- F0<
+;
+
+: F> (S -- flag ) (F r1 r2 -- )
+   \G flag is true if and only if r1 is larger than r2.
+   2 ?FPSTACK-UNDERFLOW
+   FSWAP F<
 ;
 
 : FMIN (F r1 r2 -- r3 ) \ 12.6.1.1565 FMIN
