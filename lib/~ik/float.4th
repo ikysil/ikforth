@@ -21,7 +21,7 @@ ALSO FLOAT-PRIVATE DEFINITIONS
 
 DECIMAL
 
-6        CONSTANT  /FPSTACK
+32       CONSTANT  /FPSTACK
 3 CELLS  CONSTANT  B/FLOAT
 63       CONSTANT  D>F-EXPONENT
 18       CONSTANT  MAX-REPRESENT-DIGITS
@@ -46,8 +46,8 @@ HEX
 40000000 CONSTANT FPV-NAN-MASK
 \ infinity
 20000000 CONSTANT FPV-INF-MASK
-\ TODO - zero
-\ TODO - 10000000 CONSTANT FPV-ZERO-MASK
+\ zero
+10000000 CONSTANT FPV-ZERO-MASK
 
 \ exponent value mask
 0000FFFF CONSTANT FPV-EXP-MASK
@@ -238,6 +238,7 @@ DEFER (F IMMEDIATE ' ( IS (F
       \ reset exponent on zero mantissa but preserve sign
       'FPX-E @
       FPV-EXP-MASK INVERT AND
+      FPV-ZERO-MASK OR
       'FPX-E !
       EXIT
    THEN
@@ -256,7 +257,7 @@ DEFER (F IMMEDIATE ' ( IS (F
 : FPX-DENORMALIZE (S +n -- ) (F r -- r')
    (G De-normalize representation of r on the top of the stack by n bits)
    ?FPX0=  IF  DROP EXIT  THEN
-   DUP 0= IF  DROP EXIT  THEN
+   DUP 0=  IF  DROP EXIT  THEN
    'FPX-E @ FPFLAGS>EXP >R >R
    'FPX-M 2@
    BEGIN
@@ -265,6 +266,7 @@ DEFER (F IMMEDIATE ' ( IS (F
       D2/ FPV-MSBIT INVERT AND
       R> 1- R> 1+ >R >R
    REPEAT
+   2DUP OR 0=  IF  2DROP 1.  THEN
    'FPX-M 2!
    R> DROP R> FPV-EXP-MASK AND 'FPX-E @ FPV-EXP-MASK INVERT AND OR 'FPX-E !
 ;
@@ -368,6 +370,59 @@ SYNONYM FDEPTH FDEPTH
    >FP FPX-NORMALIZE
 ;
 
+
+: F! (S f-addr -- ) (F r -- ) \ 12.6.1.1400 F!
+   \G Store r at f-addr.
+   1 ?FPSTACK-UNDERFLOW
+   FP@ SWAP 1 FLOATS MOVE
+   FDROP
+;
+
+
+: F@ (S f-addr -- ) (F -- r ) \ 12.6.1.1472 F@
+   \G r is the value stored at f-addr.
+   1 ?FPSTACK-OVERFLOW
+   0. D>F
+   FP@ 1 FLOATS MOVE
+;
+
+
+: FVARIABLE ( "<spaces>name" -- ) \ 12.6.1.1630 FVARIABLE
+   \G Skip leading space delimiters. Parse name delimited by a space.
+   \G Create a definition for name with the execution semantics defined below.
+   \G Reserve 1 FLOATS address units of data space at a float-aligned address.
+   \G
+   \G name is referred to as an "f-variable".
+   \G
+   \G name Execution: (S -- f-addr )
+   \G f-addr is the address of the data space reserved by FVARIABLE when it created name.
+   \G A program is responsible for initializing the contents of the reserved space.
+   CREATE  HERE 1 FLOATS DUP ALLOT ERASE
+   DOES>
+;
+
+
+: FCONSTANT ( "<spaces>name" -- ) (F r -- ) \ 2.6.1.1492 FCONSTANT
+   \G Skip leading space delimiters. Parse name delimited by a space.
+   \G Create a definition for name with the execution semantics defined below.
+   \G
+   \G name is referred to as an "f-constant".
+   \G
+   \G name Execution: (S -- ) (F -- r )
+   \G Place r on the floating-point stack.
+   1 ?FPSTACK-UNDERFLOW
+   CREATE  HERE 1 FLOATS ALLOT F!
+   DOES>   1 ?FPSTACK-OVERFLOW F@
+;
+
+
+ 0. D>F FCONSTANT FZERO
+ 1. D>F FCONSTANT FONE
+-1. D>F FCONSTANT FMONE
+ 2. D>F FCONSTANT FTWO
+10. D>F FCONSTANT FTEN
+
+
 : FNEGATE (F r1 -- r2 ) \ 12.6.1.1567 FNEGATE
    (G r2 is the negation of r1.)
    1 ?FPSTACK-UNDERFLOW
@@ -379,12 +434,14 @@ SYNONYM FDEPTH FDEPTH
 : F0< (S -- flag ) (F r -- ) \ 12.6.1.1440 F0<
    (G flag is true if and only if r is less than zero.)
    1 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN  IF  FDROP FALSE  THEN
    ?FPX0< FDROP
 ;
 
 : F0= (S -- flag ) (F r -- ) \ 12.6.1.1450 F0=
    (G flag is true if and only if r is equal to zero.)
    1 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN  IF  FDROP FALSE  THEN
    ?FPX0= FDROP
 ;
 
@@ -476,8 +533,8 @@ USER F*-YH*XH  2 CELLS USER-ALLOC
    ROT DROP 0
    0 F*-YH*XH 2@ T+
    'FPY-M 2! DROP
-   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
-   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
+   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
+   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
    ROT + 1+ FPV-EXP-MASK AND
    >R XOR R> OR 'FPY-E !
    FDROP
@@ -495,7 +552,11 @@ USER F/-XM   2 CELLS USER-ALLOC
    (G or the quotient lies outside of the range of a floating-point number.)
    2 ?FPSTACK-UNDERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
-   ?FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
+   ?FPX0=  IF
+      ?FPY-INF  IF  FDROP FPX-NAN! EXIT  THEN
+      ?FPY0=    IF  FDROP FPX-NAN! EXIT  THEN
+      FDROP FPX-INF! EXIT
+   THEN
    ?FPY0= IF  FDROP EXIT  THEN
    \DEBUG CR S" F/-A: " TYPE CR F.DUMP CR
    0. F/-Q 2!
@@ -524,8 +585,8 @@ USER F/-XM   2 CELLS USER-ALLOC
       F/-QBIT 2@ 0 T2/ DROP F/-QBIT 2!
    REPEAT
    F/-Q 2@ 'FPY-M 2!
-   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
-   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
+   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
+   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
    ROT SWAP - FPV-EXP-MASK AND
    >R XOR R> OR 'FPY-E !
    FDROP
@@ -537,6 +598,14 @@ USER F/-XM   2 CELLS USER-ALLOC
 : F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
    \G flag is true if and only if r1 is less than r2.
    2 ?FPSTACK-UNDERFLOW
+   ?FP2OP-NAN  IF  FDROP FALSE EXIT  THEN
+   ?FPX0= ?FPY0= AND IF  FDROP FDROP FALSE EXIT  THEN
+   ?FPY0<  IF
+      ?FPX0< INVERT  IF  FDROP FDROP TRUE  EXIT  THEN
+   THEN
+   ?FPX0<  IF
+      ?FPY0< INVERT  IF  FDROP FDROP FALSE EXIT  THEN
+   THEN
    F- F0<
 ;
 
@@ -579,47 +648,6 @@ USER F/-XM   2 CELLS USER-ALLOC
    'FPX-E @ ?FPV-NEGATIVE FPV-M>D DROP
    FDROP
    \DEBUG CR S" F>D-E: " TYPE CR H.S CR
-;
-
-: F! (S f-addr -- ) (F r -- ) \ 12.6.1.1400 F!
-   \G Store r at f-addr.
-   1 ?FPSTACK-UNDERFLOW
-   FP@ SWAP 1 FLOATS MOVE
-   FDROP
-;
-
-: F@ (S f-addr -- ) (F -- r ) \ 12.6.1.1472 F@
-   \G r is the value stored at f-addr.
-   1 ?FPSTACK-OVERFLOW
-   0. D>F
-   FP@ 1 FLOATS MOVE
-;
-
-: FVARIABLE ( "<spaces>name" -- ) \ 12.6.1.1630 FVARIABLE
-   \G Skip leading space delimiters. Parse name delimited by a space.
-   \G Create a definition for name with the execution semantics defined below.
-   \G Reserve 1 FLOATS address units of data space at a float-aligned address.
-   \G
-   \G name is referred to as an "f-variable".
-   \G
-   \G name Execution: (S -- f-addr )
-   \G f-addr is the address of the data space reserved by FVARIABLE when it created name.
-   \G A program is responsible for initializing the contents of the reserved space.
-   CREATE  HERE 1 FLOATS DUP ALLOT ERASE
-   DOES>
-;
-
-: FCONSTANT ( "<spaces>name" -- ) (F r -- ) \ 2.6.1.1492 FCONSTANT
-   \G Skip leading space delimiters. Parse name delimited by a space.
-   \G Create a definition for name with the execution semantics defined below.
-   \G
-   \G name is referred to as an "f-constant".
-   \G
-   \G name Execution: (S -- ) (F -- r )
-   \G Place r on the floating-point stack.
-   1 ?FPSTACK-UNDERFLOW
-   CREATE  HERE 1 FLOATS ALLOT F!
-   DOES>   1 ?FPSTACK-OVERFLOW F@
 ;
 
 CODE FLIT
@@ -685,12 +713,6 @@ END-CODE COMPILE-ONLY
       FP> F- FABS >FP F<
    THEN
 ;
-
- 0. D>F FCONSTANT FZERO
- 1. D>F FCONSTANT FONE
--1. D>F FCONSTANT FMONE
- 2. D>F FCONSTANT FTWO
-10. D>F FCONSTANT FTEN
 
 FONE FTWO F/ FCONSTANT FHALF
 
@@ -1001,7 +1023,7 @@ D# 32 CONSTANT FPV-BITS/CELL
 ;
 
 
-6 CONSTANT FSQRT-ITERATIONS-DEFAULT
+12 CONSTANT FSQRT-ITERATIONS-DEFAULT
 
 : FSQRT-APPROX (F r1 -- r2 )
    \G r2 is the initial approximation of square root of r1.
