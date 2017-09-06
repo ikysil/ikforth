@@ -40,13 +40,27 @@ ENV>
 \ +2   exponent and flags cell
 
 HEX
+\ sign of mantissa
+80000000 CONSTANT FPV-SIGN-MASK
+\ Not A Number
+40000000 CONSTANT FPV-NAN-MASK
+\ infinity
+20000000 CONSTANT FPV-INF-MASK
+\ TODO - zero
+\ TODO - 10000000 CONSTANT FPV-ZERO-MASK
+
+\ exponent value mask
+0000FFFF CONSTANT FPV-EXP-MASK
+\ sign of exponent
+00008000 CONSTANT FPV-EXP-SIGN
+\ maximum (unsigned) value of exponent
+00007FFF CONSTANT FPV-EXP-MAX
+
 00000000 CONSTANT FPV-POSITIVE
 80000000 CONSTANT FPV-NEGATIVE
-80000000 CONSTANT FPV-SIGN
-00008000 CONSTANT FPV-EXP-SIGN
-00007FFF CONSTANT FPV-EXP-MAX
-0000FFFF CONSTANT FPV-EXP-MASK
+
 80000000 CONSTANT FPV-MSBIT
+
 DECIMAL
 
 2 CELLS CONSTANT FPV-EXP-OFFS
@@ -157,19 +171,70 @@ DEFER (F IMMEDIATE ' ( IS (F
    'FPX-M 2!
 ;
 
-: FPX0= (S -- flag ) (F r -- r)
+: ?FPX0= (S -- flag ) (F r -- r)
    (G flag is true if and only if r is equal to zero.)
    'FPX-M 2@ OR 0=
 ;
 
-: FPY0= (S -- flag ) (F r1 r2 -- r1 r2)
+: ?FPY0= (S -- flag ) (F r1 r2 -- r1 r2)
    (G flag is true if and only if r1 is equal to zero.)
    'FPY-M 2@ OR 0=
 ;
 
+
+: ?FPX0< (S -- flag ) (F r -- r)
+   \G flag is true if and only if sign of mantissa of r is negative
+   'FPX-E @ FPV-SIGN-MASK AND FPV-NEGATIVE =
+;
+
+: ?FPY0< (S -- flag ) (F r1 r2 -- r1 r2)
+   \G flag is true if and only if sign of mantissa of r1 is negative
+   'FPY-E @ FPV-SIGN-MASK AND FPV-NEGATIVE =
+;
+
+
+: ?FPX-NAN (S -- flag ) (F r -- r)
+   \G flag is true if and only if r is NAN
+   'FPX-E @ FPV-NAN-MASK AND 0<>
+;
+
+: ?FPY-NAN (S -- flag ) (F r1 r2 -- r1 r2)
+   \G flag is true if and only if r1 is NAN
+   'FPY-E @ FPV-NAN-MASK AND 0<>
+;
+
+
+: ?FPX-INF (S -- flag ) (F r -- r)
+   \G flag is true if and only if r is INFinity
+   'FPX-E @ FPV-INF-MASK AND 0<>
+;
+
+: ?FPY-INF (S -- flag ) (F r1 r2 -- r1 r2)
+   \G flag is true if and only if r1 is INFinity
+   'FPY-E @ FPV-INF-MASK AND 0<>
+;
+
+
+: FPX-NAN! (S -- ) (F r -- NAN )
+   \G Set top of FP stack to NAN.
+   FPV-NAN-MASK
+   FPV-EXP-MAX OR 'FPX-E !
+   -1. 'FPX-M 2!
+;
+
+
+: FPX-INF! (S -- ) (F r -- +/-inf )
+   \G Set top of FP stack to INFinity with sign copied from r.
+   ?FPX0<  IF  FPV-NEGATIVE  ELSE  FPV-POSITIVE  THEN
+   FPV-INF-MASK OR
+   FPV-EXP-MAX OR 'FPX-E !
+   -1. 'FPX-M 2!
+;
+
+
 : FPX-NORMALIZE (F r -- r' )
    (G Normalize representation of r on the top of the stack)
-   FPX0= IF
+   ?FPX0= IF
       \ reset exponent on zero mantissa but preserve sign
       'FPX-E @
       FPV-EXP-MASK INVERT AND
@@ -190,7 +255,7 @@ DEFER (F IMMEDIATE ' ( IS (F
 
 : FPX-DENORMALIZE (S +n -- ) (F r -- r')
    (G De-normalize representation of r on the top of the stack by n bits)
-   FPX0=  IF  DROP EXIT  THEN
+   ?FPX0=  IF  DROP EXIT  THEN
    DUP 0= IF  DROP EXIT  THEN
    'FPX-E @ FPFLAGS>EXP >R >R
    'FPX-M 2@
@@ -230,7 +295,7 @@ DEFER (F IMMEDIATE ' ( IS (F
 
 : ?FPV-NEGATIVE (S n -- flag)
    \G flag is true if the sign flag in exponent cell n is set
-   FPV-SIGN AND FPV-NEGATIVE =
+   FPV-SIGN-MASK AND FPV-NEGATIVE =
 ;
 
 ONLY FORTH DEFINITIONS ALSO FLOAT-PRIVATE
@@ -307,23 +372,23 @@ SYNONYM FDEPTH FDEPTH
    (G r2 is the negation of r1.)
    1 ?FPSTACK-UNDERFLOW
    'FPX-E @
-   FPV-SIGN XOR
+   FPV-SIGN-MASK XOR
    'FPX-E !
 ;
 
 : F0< (S -- flag ) (F r -- ) \ 12.6.1.1440 F0<
    (G flag is true if and only if r is less than zero.)
    1 ?FPSTACK-UNDERFLOW
-   FP> ?FPV-NEGATIVE
-   >R OR 0<> R> AND
+   ?FPX0< FDROP
 ;
 
 : F0= (S -- flag ) (F r -- ) \ 12.6.1.1450 F0=
    (G flag is true if and only if r is equal to zero.)
-   FPX0= FDROP
+   1 ?FPSTACK-UNDERFLOW
+   ?FPX0= FDROP
 ;
 
-: FNIP (F r1 r2 -- r2)
+: FNIP (F r1 r2 -- r2 )
    (G Drop the first item below the top of stack.)
    2 ?FPSTACK-UNDERFLOW
    FP> FDROP >FP
@@ -346,11 +411,22 @@ SYNONYM FDEPTH FDEPTH
    DUP IF  >R DNEGATE R>  THEN
 ;
 
+
+: ?FP2OP-NAN (S -- flag ) (F r1 r2 -- r1 r2 | NAN )
+   \G Flag is true only if either r1 or r2 is NAN.
+   \G FP stack remains untouched if neither r1 nor r1 is NAN, the values are replaced with NAN otherwise.
+   2 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN ?FPY-NAN OR DUP
+   IF  FDROP FPX-NAN!  THEN
+;
+
+
 : F+ (F r1 r2 -- r3 ) \ 12.6.1.1420 F+
    (G Add r1 to r2 giving the sum r3.)
    2 ?FPSTACK-UNDERFLOW
-   FPX0= IF  FDROP EXIT  THEN
-   FPY0= IF  FNIP  EXIT  THEN
+   ?FP2OP-NAN  IF  EXIT  THEN
+   ?FPX0= IF  FDROP EXIT  THEN
+   ?FPY0= IF  FNIP  EXIT  THEN
    F+PREPARE
    'FPY-M 2@ 'FPY-E @ ?FPV-NEGATIVE FPV-M>D
    'FPX-M 2@ 'FPX-E @ ?FPV-NEGATIVE FPV-M>D
@@ -358,7 +434,7 @@ SYNONYM FDEPTH FDEPTH
    T+ T2/
    \DEBUG S" F+-B2: " CR TYPE CR H.S CR
    FDROP
-   0<> FPV-SIGN AND FPV-M>D
+   0<> FPV-SIGN-MASK AND FPV-M>D
    'FPX-E @ FPFLAGS>EXP 1+ FPV-EXP-MASK AND OR 'FPX-E !
    'FPX-M 2!
    FPX-NORMALIZE
@@ -366,6 +442,7 @@ SYNONYM FDEPTH FDEPTH
 
 : F- (F r1 r2 -- r3 ) \ 12.6.1.1425 F-
    (G Subtract r2 from r1, giving r3.)
+   ?FP2OP-NAN  IF  EXIT  THEN
    FNEGATE F+
 ;
 
@@ -376,12 +453,13 @@ USER F*-YH*XH  2 CELLS USER-ALLOC
 : F* (F r1 r2 -- r3 ) \ 12.6.1.1410 F*
    \G Multiply r1 by r2 giving r3.
    2 ?FPSTACK-UNDERFLOW
-   FPX0=  IF
+   ?FP2OP-NAN  IF  EXIT  THEN
+   ?FPX0=  IF
       FSWAP
       F0<  IF  FNEGATE  THEN
       EXIT
    THEN
-   FPY0=  IF
+   ?FPY0=  IF
       F0<  IF  FNEGATE  THEN
       EXIT
    THEN
@@ -398,8 +476,8 @@ USER F*-YH*XH  2 CELLS USER-ALLOC
    ROT DROP 0
    0 F*-YH*XH 2@ T+
    'FPY-M 2! DROP
-   'FPY-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
-   'FPX-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
+   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
+   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
    ROT + 1+ FPV-EXP-MASK AND
    >R XOR R> OR 'FPY-E !
    FDROP
@@ -416,8 +494,9 @@ USER F/-XM   2 CELLS USER-ALLOC
    (G An ambiguous condition exists if r2 is zero, )
    (G or the quotient lies outside of the range of a floating-point number.)
    2 ?FPSTACK-UNDERFLOW
-   FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
-   FPY0= IF  FDROP EXIT  THEN
+   ?FP2OP-NAN  IF  EXIT  THEN
+   ?FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
+   ?FPY0= IF  FDROP EXIT  THEN
    \DEBUG CR S" F/-A: " TYPE CR F.DUMP CR
    0. F/-Q 2!
    0 FPV-MSBIT F/-QBIT 2!
@@ -445,8 +524,8 @@ USER F/-XM   2 CELLS USER-ALLOC
       F/-QBIT 2@ 0 T2/ DROP F/-QBIT 2!
    REPEAT
    F/-Q 2@ 'FPY-M 2!
-   'FPY-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
-   'FPX-E @ DUP FPV-SIGN AND SWAP FPV-EXP-MASK AND
+   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
+   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPV-EXP-MASK AND
    ROT SWAP - FPV-EXP-MASK AND
    >R XOR R> OR 'FPY-E !
    FDROP
@@ -471,6 +550,7 @@ USER F/-XM   2 CELLS USER-ALLOC
    (G r3 is the lesser of r1 and r2.)
    2 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FP2OP-NAN  IF  EXIT  THEN
    FOVER FOVER F< IF  FDROP  ELSE  FNIP  THEN
 ;
 
@@ -478,6 +558,7 @@ USER F/-XM   2 CELLS USER-ALLOC
    (G r3 is the greater of r1 and r2.)
    2 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FP2OP-NAN  IF  EXIT  THEN
    FOVER FOVER F< IF  FNIP  ELSE  FDROP  THEN
 ;
 
@@ -565,7 +646,8 @@ END-CODE COMPILE-ONLY
 : FABS (F r1 -- r2 ) \ 12.6.2.1474 FABS
    \G r2 is the absolute value of r1.
    1 ?FPSTACK-UNDERFLOW
-   'FPX-E @ FPV-SIGN INVERT AND 'FPX-E !
+   ?FPX-NAN  IF  EXIT  THEN
+   'FPX-E @ FPV-SIGN-MASK INVERT AND 'FPX-E !
 ;
 
 : F~ (S -- flag ) (F r1 r2 r3 -- ) \ 12.6.2.1640 F~
@@ -578,7 +660,7 @@ END-CODE COMPILE-ONLY
    \G the absolute value of r3 times the sum of the absolute values of r1 and r2.
    3 ?FPSTACK-UNDERFLOW
    \DEBUG CR S" F~-A1: " TYPE CR F.DUMP CR
-   FPX0= IF
+   ?FPX0= IF
       FDROP
       'FPX 'FPY 1 FLOATS TUCK COMPARE 0=
       FDROP FDROP
@@ -855,6 +937,7 @@ D# 32 CONSTANT FPV-BITS/CELL
 : FLOOR (F r1 -- r2 ) \ 12.6.1.1558 FLOOR
    \G Round r1 to an integral value using the "round toward negative infinity" rule, giving r2.
    1 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FLOOR-M-MASK
    'FPX-E @ FPFLAGS>EXP
    DUP 0< IF
@@ -885,6 +968,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    \G Round r1 to an integral value using the "round towards zero" rule, giving r2.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FDUP F0= 0=
    IF
       FDUP F0<
@@ -901,6 +985,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    \G Round r1 to an integral value using the "round to nearest" rule, giving r2.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FDUP F0< IF
       FNEGATE RECURSE FNEGATE
    ELSE
@@ -930,7 +1015,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    \G Perform step in Newton approximation for a square root.
    \G Calculate next approximation r3 for the square root of
    \G r1 given the previous approximation r2.
-   FPX0= IF  FNIP EXIT  THEN
+   ?FPX0= IF  FNIP EXIT  THEN
    FSWAP FOVER      \ F: r2 r1 r2
    F/ F+
    \ trick for speed - decrement exponent instead of dividing by two
@@ -945,7 +1030,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    1 ?FPSTACK-OVERFLOW
    BEGIN
       DUP 0>
-      FPX0= INVERT \ stop iterations if approximation eq. zero
+      ?FPX0= INVERT \ stop iterations if approximation eq. zero
       AND
    WHILE
       FOVER FSWAP
@@ -963,6 +1048,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    \G r2 is the square root of r1. An ambiguous condition exists if r1 is less than zero.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FSQRT-ITERATIONS-DEFAULT FDUP FSQRT-APPROX FSQRT-NEWTON
 ;
 
@@ -973,7 +1059,8 @@ D# 32 CONSTANT FPV-BITS/CELL
    \G r3 has the same sign as r1.
    2 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
-   FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
+   ?FP2OP-NAN  IF  EXIT  THEN
+   ?FPX0= IF  EXC-FLOAT-DIVISION-BY-ZERO THROW  THEN
    \ r3 = r1 - trunc(r1 / r2) * r2
    FOVER FOVER F/ FTRUNC F* F-
 ;
@@ -1030,7 +1117,8 @@ FPI FTWO F/ FCONSTANT FHALFPI
 : FCOS (F r1 -- r2 ) \ 12.6.2.1493 FCOS
    \G r2 is the cosine of the radian angle r1.
    1 ?FPSTACK-UNDERFLOW
-   FPX0= IF
+   ?FPX-NAN  IF  EXIT  THEN
+   ?FPX0= IF
       FDROP FONE
       EXIT
    THEN
@@ -1075,7 +1163,8 @@ FPI FTWO F/ FCONSTANT FHALFPI
    \G r2 is the sine of the radian angle r1.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
-   FPX0= IF
+   ?FPX-NAN  IF  EXIT  THEN
+   ?FPX0= IF
       FDROP FZERO
    ELSE
       FHALFPI FSWAP F- FCOS
@@ -1095,6 +1184,8 @@ FPI FTWO F/ FCONSTANT FHALFPI
 \ DEBUG-ON
 : FTAN (F r1 -- r2 ) \ 12.6.2.1625 FTAN
    \G r2 is the tangent of the radian angle r1. An ambiguous condition exists if (r1) is zero.
+   1 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FSINCOS
    \DEBUG S" FTAN-A: " CR TYPE CR F.DUMP CR
    F/
@@ -1213,6 +1304,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G r2 is the principal radian angle whose tangent is r1.
    1 ?FPSTACK-UNDERFLOW
    3 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FATAN-INPUT: " CR TYPE CR F.DUMP CR
    \ ['] FATAN66-POSITIVE
    \ ['] FATAN-2NDORDER
@@ -1229,6 +1321,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G An ambiguous condition exists if | r1 | is greater than one.
    1 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FDUP FABS FONE F- F0= IF
       FHALFPI F*
       EXIT
@@ -1245,6 +1338,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G An ambiguous condition exists if | r1 | is greater than one.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    FASIN FHALFPI FSWAP F-
 ;
 
@@ -1257,6 +1351,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G An ambiguous condition exists if r1 and r2 are zero.
    2 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FP2OP-NAN  IF  EXIT  THEN
    \DEBUG S" FATAN2-INPUT: " CR TYPE CR F.DUMP CR
    FOVER F0= IF
       FDUP F0= IF
@@ -1326,6 +1421,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 : FEXPM1 (F r1 -- r2 ) \ 12.6.2.1516 FEXPM1
    \G Raise e to the power r1 and subtract one, giving r2.
    1 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FEXPM1-INPUT: " CR TYPE CR F.DUMP CR
    FEXPM1-ITERATIONS-DEFAULT FEXPM1-APPROX
    \DEBUG S" FEXPM1-RESULT: " CR TYPE CR F.DUMP CR
@@ -1335,6 +1431,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G Raise e to the power r1, giving r2.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FEXP-INPUT: " CR TYPE CR F.DUMP CR
    FEXPM1 FONE F+
    \DEBUG S" FEXP-RESULT: " CR TYPE CR F.DUMP CR
@@ -1386,6 +1483,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G An ambiguous condition exists if r1 is less than or equal to zero.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FLN-INPUT: " CR TYPE CR F.DUMP CR
    FDUP F0< IF
       EXC-FLOAT-INVALID-ARGUMENT THROW
@@ -1499,6 +1597,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G An ambiguous condition exists if r1 is less than or equal to negative one.
    1 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FLNP1-INPUT: " CR TYPE CR F.DUMP CR
    FDUP FMONE F< IF
       EXC-FLOAT-INVALID-ARGUMENT THROW
@@ -1523,6 +1622,7 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
    \G An ambiguous condition exists if r1 is less than or equal to zero.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FLOG-INPUT: " CR TYPE CR F.DUMP CR
    FDUP F0< IF
       EXC-FLOAT-INVALID-ARGUMENT THROW
@@ -1539,6 +1639,7 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
    \G Raise r1 to the power r2, giving the product r3.
    2 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FP2OP-NAN  IF  EXIT  THEN
    \DEBUG S" F**-INPUT: " CR TYPE CR F.DUMP CR
    FOVER F0= IF
       FNIP
@@ -1575,8 +1676,9 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G Raise ten to the power r1, giving r2.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FALOG-INPUT: " CR TYPE CR F.DUMP CR
-   FPX0= IF
+   ?FPX0= IF
       FDROP
       FONE
    ELSE
@@ -1601,6 +1703,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G r2 is the hyperbolic sine of r1.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FSINH-INPUT: " CR TYPE CR F.DUMP CR
    FHYPEXP F- FTWO F/
    \DEBUG S" FSINH-RESULT: " CR TYPE CR F.DUMP CR
@@ -1610,6 +1713,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G r2 is the hyperbolic cosine of r1.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FCOSH-INPUT: " CR TYPE CR F.DUMP CR
    FHYPEXP F+ FTWO F/
    \DEBUG S" FCOSH-RESULT: " CR TYPE CR F.DUMP CR
@@ -1619,6 +1723,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G r2 is the hyperbolic tangent of r1.
    1 ?FPSTACK-UNDERFLOW
    3 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FTANH-INPUT: " CR TYPE CR F.DUMP CR
    FHYPEXP FOVER FOVER F+ FP> F- >FP F/
    \DEBUG S" FTANH-RESULT: " CR TYPE CR F.DUMP CR
@@ -1631,6 +1736,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G r2 is the floating-point value whose hyperbolic sine is r1.
    1 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FASINH-INPUT: " CR TYPE CR F.DUMP CR
    FDUP FDUP F* FONE F+ FSQRT
    F+ FLN
@@ -1642,6 +1748,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G An ambiguous condition exists if r1 is less than one.
    1 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FACOSH-INPUT: " CR TYPE CR F.DUMP CR
    FDUP FDUP F* FONE F- FSQRT
    F+ FLN
@@ -1653,6 +1760,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    \G An ambiguous condition exists if r1 is outside the range of -1E0 to 1E0.
    1 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FATANH-INPUT: " CR TYPE CR F.DUMP CR
    FONE FOVER FABS F< IF
       EXC-FLOAT-INVALID-ARGUMENT THROW
@@ -1669,7 +1777,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
 \ DEBUG-ON
 : REPRESENT-EXP (S -- n) (F r -- r')
    \G Scale the value r to lay in range [0.1, 1.0) and return decimal exponent n.
-   FPX0= INVERT
+   ?FPX0= INVERT
    0 SWAP
    \ S: exp(=0) flag
    BEGIN
@@ -1713,10 +1821,23 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    3 ?FPSTACK-OVERFLOW
    ?DECIMAL INVERT  IF  EXC-INVALID-FLOAT-BASE THROW  THEN
    \DEBUG S" REPRESENT-INPUT: " CR TYPE CR F.DUMP CR
+   2DUP BL FILL
+   ?FPX-NAN  IF
+      S" NaN" 2SWAP ROT MIN MOVE
+      0 FALSE FALSE
+      FDROP
+      EXIT
+   THEN
+   ?FPX-INF  IF
+      S" INF" 2SWAP ROT MIN MOVE
+      0 ?FPX0< FALSE
+      FDROP
+      EXIT
+   THEN
    MAX-REPRESENT-DIGITS MIN
    2DUP '0' FILL
    'FPX-E @ ?FPV-NEGATIVE >R
-   FPX0=  IF
+   ?FPX0=  IF
       DROP '0' SWAP C!
       1
       R>
