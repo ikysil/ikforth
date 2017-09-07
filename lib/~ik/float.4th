@@ -290,6 +290,14 @@ DEFER (F IMMEDIATE ' ( IS (F
    D2/
 ;
 
+: T2* (S nlo nmi nhi -- nlo' nmi' nhi')
+   \G Multiply triple-cell value by 2 - shift left
+   D2* 2>R
+   0 D2*
+   0 2R>
+   D+
+;
+
 : F.DUMP
    (G Dump the content of the floating-point stack)
    FP@ DUP FP0 SWAP - CELL+ DUMP
@@ -308,6 +316,8 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-PRIVATE
 SYNONYM (F (F
 
 SYNONYM FDEPTH FDEPTH
+
+SYNONYM F.DUMP F.DUMP
 
 : FLOATS (S n1 -- n2 ) \ 12.6.1.1556 FLOATS
    (G n2 is the size in address units of n1 floating-point numbers.)
@@ -451,24 +461,6 @@ SYNONYM FDEPTH FDEPTH
    FP> FDROP >FP
 ;
 
-: F+PREPARE (F r1 r2 -- r1' r2' )
-   (G Prepare operands for add/subtract operation)
-   (G - move operand with lesser exponent to the TOS)
-   (G - denormalize TOS)
-   'FPY-E @ FPFLAGS>EXP
-   'FPX-E @ FPFLAGS>EXP
-   < IF  FSWAP  THEN
-   'FPY-E @ FPFLAGS>EXP
-   'FPX-E @ FPFLAGS>EXP
-   - FPX-DENORMALIZE
-;
-
-: FPV-M>D (S mlo mhi sign -- mlo mhi sign)
-   (G Adjust the value of mantissa - negate if flag is true)
-   DUP IF  >R DNEGATE R>  THEN
-;
-
-
 : ?FP2OP-NAN (S -- flag ) (F r1 r2 -- r1 r2 | NAN )
    \G Flag is true only if either r1 or r2 is NAN.
    \G FP stack remains untouched if neither r1 nor r1 is NAN, the values are replaced with NAN otherwise.
@@ -478,24 +470,90 @@ SYNONYM FDEPTH FDEPTH
 ;
 
 
+: FPV-M>D (S umlo umhi flag -- mlo mhi sign)
+   \G Adjust the value of mantissa - negate if flag is true
+   DUP  IF  >R DNEGATE R>  THEN
+;
+
+: 3SWAP (S xl xm xh yl ym yh -- yl ym yh xl xm xh )
+   2>R              \ S: xl xm xh yl           R: ym yh
+   SWAP 2SWAP ROT   \ S: yl xl xm xh           R: ym yh
+   2R> 2SWAP 2>R    \ S: yl xl ym yh           R: xm xh
+   ROT 2R>          \ S: yl ym yh xl xm xh     R:
+;
+
+
+\ DEBUG-ON
+: (F+EXTRACT) (S -- t1 t2 e1 e2 ) (F r1 r2 -- r1 r2 )
+   \G Extract the mantissa of the two top items on the FP stack and sign-extend to triple-cell values.
+   \G e1 is exponent of r1 and e2 is exponent of r2.
+   'FPY-M 2@ ?FPY0< FPV-M>D
+   'FPX-M 2@ ?FPX0< FPV-M>D
+   'FPY-E @ FPFLAGS>EXP
+   'FPX-E @ FPFLAGS>EXP
+;
+
+: (F+ORDER) (S t1 t2 e1 e2 -- t1' t2' +diffexp )
+   \G Prepare operands for add/subtract operation.
+   \G Swap t1 and t2 if (e1-e2) < 0, +dexp is the absolute value of diffexp.
+   - DUP 0<  IF  NEGATE >R 3SWAP R>  THEN
+;
+
+1  CONSTANT  /F+GUARDBITS
+
+: (F+DENORM) (S t +diffexp -- t' )
+   \G Denormalize mantissa represented as triple-cell value t by +diffexp positions.
+   \DEBUG S" (F+DENORM)-INPUT: " CR TYPE CR H.S CR
+   0 MAX 64 MIN
+   DUP 0=  IF  DROP EXIT  THEN
+   \DEBUG S" (F+DENORM)-LOOP: " CR TYPE CR H.S CR
+   0  ?DO  T2/  LOOP
+   ROT 1 OR -ROT
+   \DEBUG S" (F+DENORM)-RESULT: " CR TYPE CR H.S CR
+;
+
+: (F+GD+) (S t -- t' )
+   \G Add guard bits - shift left for a predefined amount.
+   /F+GUARDBITS 0  ?DO  T2*  LOOP
+;
+
+: (F+GD-) (S t -- t' )
+   \G Remove guard bits - shift right for a predefined amount.
+   /F+GUARDBITS 0  ?DO  T2/  LOOP
+;
+
 : F+ (F r1 r2 -- r3 ) \ 12.6.1.1420 F+
    (G Add r1 to r2 giving the sum r3.)
    2 ?FPSTACK-UNDERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
    ?FPX0= IF  FDROP EXIT  THEN
    ?FPY0= IF  FNIP  EXIT  THEN
-   F+PREPARE
-   'FPY-M 2@ 'FPY-E @ ?FPV-NEGATIVE FPV-M>D
-   'FPX-M 2@ 'FPX-E @ ?FPV-NEGATIVE FPV-M>D
-   \DEBUG S" F+-B1: " CR TYPE CR H.S CR
+   \DEBUG S" F+-INPUT: " CR TYPE CR F.DUMP CR
+   (F+EXTRACT)
+   \DEBUG S" F+-EXTRACT: " CR TYPE CR H.S CR
+   2DUP MAX >R
+   (F+ORDER)
+   \DEBUG S" F+-ORDER: " CR TYPE CR H.S CR
+   >R
+   3SWAP (F+GD+)
+   3SWAP (F+GD+)
+   R>
+   (F+DENORM)
+   \DEBUG S" F+-DENORM: " CR TYPE CR H.S CR
    T+ T2/
-   \DEBUG S" F+-B2: " CR TYPE CR H.S CR
+   (F+GD-)
+   \DEBUG S" F+-SUM: " CR TYPE CR H.S CR
    FDROP
    0<> FPV-SIGN-MASK AND FPV-M>D
-   'FPX-E @ FPFLAGS>EXP 1+ FPV-EXP-MASK AND OR 'FPX-E !
+   R> FPFLAGS>EXP 1+ FPV-EXP-MASK AND OR
+   \DEBUG S" F+-RESULT: " CR TYPE CR H.S CR
+   'FPX-E !
    'FPX-M 2!
    FPX-NORMALIZE
+   \DEBUG S" F+-RESULT: " CR TYPE CR F.DUMP CR
 ;
+\DEBUG-OFF
+
 
 : F- (F r1 r2 -- r3 ) \ 12.6.1.1425 F-
    (G Subtract r2 from r1, giving r3.)
@@ -599,13 +657,9 @@ USER F/-XM   2 CELLS USER-ALLOC
    \G flag is true if and only if r1 is less than r2.
    2 ?FPSTACK-UNDERFLOW
    ?FP2OP-NAN  IF  FDROP FALSE EXIT  THEN
-   ?FPX0= ?FPY0= AND IF  FDROP FDROP FALSE EXIT  THEN
-   ?FPY0<  IF
-      ?FPX0< INVERT  IF  FDROP FDROP TRUE  EXIT  THEN
-   THEN
-   ?FPX0<  IF
-      ?FPY0< INVERT  IF  FDROP FDROP FALSE EXIT  THEN
-   THEN
+   ?FPX0= ?FPY0= AND         IF  FDROP FDROP FALSE EXIT  THEN
+   ?FPY0< ?FPX0< INVERT AND  IF  FDROP FDROP TRUE  EXIT  THEN
+   ?FPY0< INVERT ?FPX0< AND  IF  FDROP FDROP FALSE EXIT  THEN
    F- F0<
 ;
 
@@ -678,6 +732,8 @@ END-CODE COMPILE-ONLY
    'FPX-E @ FPV-SIGN-MASK INVERT AND 'FPX-E !
 ;
 
+
+\ DEBUG-ON
 : F~ (S -- flag ) (F r1 r2 r3 -- ) \ 12.6.2.1640 F~
    \G If r3 is positive, flag is true if the absolute value of (r1 minus r2) is less than r3.
    \G
@@ -687,14 +743,14 @@ END-CODE COMPILE-ONLY
    \G If r3 is negative, flag is true if the absolute value of (r1 minus r2) is less than
    \G the absolute value of r3 times the sum of the absolute values of r1 and r2.
    3 ?FPSTACK-UNDERFLOW
-   \DEBUG CR S" F~-A1: " TYPE CR F.DUMP CR
+   \DEBUG CR S" F~-INPUT: " TYPE CR F.DUMP CR
    ?FPX0= IF
       FDROP
       'FPX 'FPY 1 FLOATS TUCK COMPARE 0=
       FDROP FDROP
       EXIT
    THEN
-   'FPX-E @ ?FPV-NEGATIVE IF
+   ?FPX0< IF
       FABS FP>          \ F: r1 r2                                S: abs(r3)
       FDUP FABS FP>     \ F: r1 r2                                S: abs(r3) abs(r2)
       FOVER FABS FP>    \ F: r1 r2                                S: abs(r3) abs(r2) abs(r1)
@@ -710,9 +766,13 @@ END-CODE COMPILE-ONLY
       F0<
       \DEBUG CR S" F~-B6: " TYPE CR H.S CR
    ELSE
-      FP> F- FABS >FP F<
+      FP> F- FABS >FP
+      \DEBUG CR S" F~-C1: " TYPE CR F.DUMP CR
+      F<
    THEN
 ;
+\DEBUG-OFF
+
 
 FONE FTWO F/ FCONSTANT FHALF
 
