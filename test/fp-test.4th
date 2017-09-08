@@ -46,6 +46,7 @@ s" ak-fp-test.fth"     included
 s" fpzero-test.4th"    included
 \ s" fpio-test.4th"      included
 s" to-float-test.4th"  included
+123 SET-PRECISION
 s" paranoia.4th"       included
 
 cr cr
