@@ -237,6 +237,7 @@ DEFER (F IMMEDIATE ' ( IS (F
    \G Return signed INF representation.
    IF  FPV-NEGATIVE  ELSE  FPV-POSITIVE  THEN
    FPV-INF-MASK OR
+   FPV-EXP-MASK OR
    -1.
    ROT
 ;
@@ -1525,36 +1526,50 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    2 ?FPSTACK-OVERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
    \DEBUG S" FATAN2-INPUT: " CR TYPE CR F.DUMP CR
-   FOVER F0= IF
-      FDUP F0= IF
-         EXC-FLOAT-INVALID-ARGUMENT THROW
-      THEN
-      FDUP F0< IF
-         FDROP FDROP FPI
-         FNEGATE
-         \DEBUG S" FATAN2-RESULT-1: " CR TYPE CR F.DUMP CR
-         EXIT
-      THEN
-   THEN
-   FDUP F0= IF
-      \ r2 = 0
-      FDROP F0< FPI
+   ?FPX0= ?FPY0= AND  IF
+      ?FPY0< ?FPX0<
+      FDROP FDROP
+      IF  FPI  ELSE  FZERO  THEN
       IF  FNEGATE  THEN
+      \DEBUG S" FATAN2-RESULT-00: " CR TYPE CR F.DUMP CR
+      EXIT
+   THEN
+   ?FPX0= IF
+      \ r2 = 0
+      FDROP F0< FHALFPI
+      IF  FNEGATE  THEN
+      \DEBUG S" FATAN2-RESULT-2: " CR TYPE CR F.DUMP CR
+      EXIT
+   THEN
+   ?FPY-INF INVERT ?FPX-INF AND  IF
+      ?FPY0< ?FPX0<
+      FDROP FDROP
+      IF  FPI  ELSE  FZERO  THEN
+      IF  FNEGATE  THEN
+      \DEBUG S" FATAN2-RESULT-N-INF: " CR TYPE CR F.DUMP CR
+      EXIT
+   THEN
+   ?FPY-INF ?FPX-INF INVERT AND  IF
+      ?FPY0<
+      FDROP FDROP
+      FHALFPI
+      IF  FNEGATE  THEN
+      \DEBUG S" FATAN2-RESULT-INF-N: " CR TYPE CR F.DUMP CR
+      EXIT
+   THEN
+   FDUP FNEGATE F0< IF
+      \ r2 > 0
+      F/ FATAN
    ELSE
-      FDUP FNEGATE F0< IF
-          \ r2 > 0
-          F/ FATAN
-      ELSE
-          \ r2 <= 0
-          FOVER FSWAP
-          \DEBUG S" FATAN2-C1: " CR TYPE CR F.DUMP CR
-          F/ FATAN
-          \DEBUG S" FATAN2-C2: " CR TYPE CR F.DUMP CR
-          FSWAP
-          \DEBUG S" FATAN2-C3: " CR TYPE CR F.DUMP CR
-          F0< FPI IF  FNEGATE  THEN
-          F+
-      THEN
+      \ r2 <= 0
+      FOVER FSWAP
+      \DEBUG S" FATAN2-C1: " CR TYPE CR F.DUMP CR
+      F/ FATAN
+      \DEBUG S" FATAN2-C2: " CR TYPE CR F.DUMP CR
+      FSWAP
+      \DEBUG S" FATAN2-C3: " CR TYPE CR F.DUMP CR
+      F0< FPI IF  FNEGATE  THEN
+      F+
    THEN
    \DEBUG S" FATAN2-RESULT-2: " CR TYPE CR F.DUMP CR
 ;
