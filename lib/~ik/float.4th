@@ -54,7 +54,10 @@ HEX
 \ sign of exponent
 00008000 CONSTANT FPV-EXP-SIGN
 \ maximum (unsigned) value of exponent
-00007FFF CONSTANT FPV-EXP-MAX
+00007FFF DUP
+CONSTANT FPV-EXP-MAX
+NEGATE
+CONSTANT FPV-EXP-MIN
 
 00000000 CONSTANT FPV-POSITIVE
 80000000 CONSTANT FPV-NEGATIVE
@@ -636,15 +639,17 @@ USER F*-EXP    1 CELLS USER-ALLOC
 
 : (F*SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
    \G Compute the sign mask for float multiplication result.
-   'FPY-E @ FPV-SIGN-MASK AND
-   'FPX-E @ FPV-SIGN-MASK AND
-   XOR
+   'FPY-E @ 'FPX-E @ XOR
+   FPV-SIGN-MASK AND
 ;
 
 : (F*RESULT) (S ud exp sign -- ud nflags )
    \G Build result representation for the F*.
    \DEBUG S" (F*RESULT)-INPUT: " CR TYPE CR H.S CR
-   SWAP FPV-EXP-MASK AND
+   OVER FPV-EXP-MAX >  IF  2DROP 2DROP FINF EXIT  THEN
+   OVER FPV-EXP-MIN <  IF  2SWAP 2DROP NIP 0. ROT FPV-ZERO-MASK OR EXIT  THEN
+   SWAP
+   FPV-EXP-MASK AND
    OR
 ;
 
