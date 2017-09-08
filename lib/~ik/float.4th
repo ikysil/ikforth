@@ -454,6 +454,7 @@ SYNONYM F.DUMP F.DUMP
 : FNEGATE (F r1 -- r2 ) \ 12.6.1.1567 FNEGATE
    (G r2 is the negation of r1.)
    1 ?FPSTACK-UNDERFLOW
+   ?FPX-NAN  IF  EXIT  THEN
    'FPX-E @
    FPV-SIGN-MASK XOR
    'FPX-E !
@@ -668,6 +669,9 @@ USER F*-EXP    1 CELLS USER-ALLOC
    ?FPY0=  IF
       F0<  IF  FNEGATE  THEN
       EXIT
+   THEN
+   ?FPX-INF ?FPY-INF OR  IF
+      (F*/SIGN) FDROP 'FPX-E ! FPX-INF! EXIT
    THEN
    (F*/SIGN) >R
    (F*EXP)  >R
