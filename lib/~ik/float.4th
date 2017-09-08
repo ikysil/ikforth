@@ -566,6 +566,44 @@ SYNONYM F.DUMP F.DUMP
 USER F*-YL*XH  2 CELLS USER-ALLOC
 USER F*-YH*XL  2 CELLS USER-ALLOC
 USER F*-YH*XH  2 CELLS USER-ALLOC
+USER F*-EXP    1 CELLS USER-ALLOC
+
+: (F*RN) (S udlow udhigh -- ud exp-corr)
+   \G Round exact multiplication result to nearest.
+   \G exp-corr is exponent correct if required.
+   2SWAP OR 0<> 1 AND >R  \ S: dm     R: stiky
+   OVER 1 AND R> AND S>D
+   \DEBUG S" (F*RN)-CORR: " CR TYPE CR H.S CR
+   2>R 0 2R> 0
+   \DEBUG S" (F*RN)-ROUND: " CR TYPE CR H.S CR
+   T+
+   DUP 0<>  IF  T2/ 1  ELSE  0  THEN
+   NIP
+;
+
+: ---(F*EXP) (S -- exp ) (F r1 r2 -- r1 r2 )
+   \G Compute the exponent for float multiplication result.
+   'FPY-E @ FPFLAGS>EXP
+   'FPX-E @ FPFLAGS>EXP
+   + 1+
+;
+
+: ---(F*SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
+   \G Compute the sign mask for float multiplication result.
+   'FPY-E @ FPV-SIGN-MASK AND
+   'FPX-E @ FPV-SIGN-MASK AND
+   XOR
+;
+
+: (F*RESFLAGS) (S exp-correction -- nflags ) (F r1 r2 -- r1 r2 )
+   \G Compute the exponent and flags cell for float multiplication result.
+   \DEBUG S" (F*RESFLAGS)-INPUT: " CR TYPE CR H.S CR F.DUMP CR
+   >R
+   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
+   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
+   ROT + 1+ R> + FPV-EXP-MASK AND
+   >R XOR R> OR
+;
 
 : F* (F r1 r2 -- r3 ) \ 12.6.1.1410 F*
    \G Multiply r1 by r2 giving r3.
@@ -581,12 +619,12 @@ USER F*-YH*XH  2 CELLS USER-ALLOC
       F0<  IF  FNEGATE  THEN
       EXIT
    THEN
-   'FPY-M 2@ 'FPX-M 2@  \ S: yl yh xl xh
-   ROT SWAP OVER        \ S: yl xl yh xh yh
+   'FPY-M 2@ 'FPX-M 2@    \ S: yl yh xl xh
+   ROT SWAP OVER          \ S: yl xl yh xh yh
    UM* F*-YH*XH 2!
    UM* F*-YH*XL 2!
-   'FPX-M 2@            \ S: yl xl xh
-   ROT SWAP OVER        \ S: xl yl xh yl
+   'FPX-M 2@              \ S: yl xl xh
+   ROT SWAP OVER          \ S: xl yl xh yl
    UM* F*-YL*XH 2!
    UM* 0
    0 F*-YL*XH 2@
@@ -603,13 +641,13 @@ USER F*-YH*XH  2 CELLS USER-ALLOC
       T2*
       R> 1- >R
    REPEAT
-   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
-   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
-   ROT + 1+ R> + FPV-EXP-MASK AND
-   >R XOR R> OR
+   \DEBUG S" F*-EXACT: " CR TYPE CR H.S CR
+   (F*RN)
+   R> +
+   (F*RESFLAGS)
    \DEBUG S" F*-RESULT: " CR TYPE CR H.S CR
    'FPY-E !
-   'FPY-M 2! 2DROP
+   'FPY-M 2!
    FDROP
    \DEBUG S" F*-RESULT: " CR TYPE CR F.DUMP CR
 ;
