@@ -215,20 +215,33 @@ DEFER (F IMMEDIATE ' ( IS (F
 ;
 
 
+: FNAN (S -- ud n )
+   \G Return NAN representation.
+   FPV-NAN-MASK
+   FPV-EXP-MASK OR
+   -1.
+;
+
 : FPX-NAN! (S -- ) (F r -- NAN )
    \G Set top of FP stack to NAN.
-   FPV-NAN-MASK
-   FPV-EXP-MAX OR 'FPX-E !
-   -1. 'FPX-M 2!
+   FNAN
+   'FPX-E !
+   'FPX-M 2!
 ;
 
 
+: FINF (S sign -- ud n )
+   \G Return signed INF representation.
+   IF  FPV-NEGATIVE  ELSE  FPV-POSITIVE  THEN
+   FPV-EXP-MASK OR
+   -1.
+;
+
 : FPX-INF! (S -- ) (F r -- +/-inf )
    \G Set top of FP stack to INFinity with sign copied from r.
-   ?FPX0<  IF  FPV-NEGATIVE  ELSE  FPV-POSITIVE  THEN
-   FPV-INF-MASK OR
-   FPV-EXP-MAX OR 'FPX-E !
-   -1. 'FPX-M 2!
+   ?FPX0< FINF
+   'FPX-E !
+   'FPX-M 2!
 ;
 
 
@@ -568,9 +581,9 @@ USER F*-YH*XL  2 CELLS USER-ALLOC
 USER F*-YH*XH  2 CELLS USER-ALLOC
 USER F*-EXP    1 CELLS USER-ALLOC
 
-: (F*RN) (S udlow udhigh -- ud exp-corr)
+: (F*RN) (S udlow udhigh -- ud exp-corr )
    \G Round exact multiplication result to nearest.
-   \G exp-corr is exponent correct if required.
+   \G exp-corr is exponent correction if required.
    2SWAP OR 0<> 1 AND >R  \ S: dm     R: stiky
    OVER 1 AND R> AND S>D
    \DEBUG S" (F*RN)-CORR: " CR TYPE CR H.S CR
@@ -581,28 +594,58 @@ USER F*-EXP    1 CELLS USER-ALLOC
    NIP
 ;
 
-: ---(F*EXP) (S -- exp ) (F r1 r2 -- r1 r2 )
+: (F*EXACT) (S ud1 ud2 -- udlow udhigh )
+   \G Perform exact multiplication of unsigned double values.
+   \DEBUG S" (F*EXACT)-INPUT: " CR TYPE CR H.S CR
+   2DUP 2>R               \ S: yl yh xl xh     R: xl xh
+   ROT SWAP OVER          \ S: yl xl yh xh yh
+   UM* F*-YH*XH 2!
+   UM* F*-YH*XL 2!
+   2R>                    \ S: yl xl xh
+   ROT SWAP OVER          \ S: xl yl xh yl
+   UM* F*-YL*XH 2!
+   UM* 0
+   0 F*-YL*XH 2@
+   0 F*-YH*XL 2@
+   0
+   0 F*-YH*XH 2@
+   \DEBUG S" (F*EXACT)-PART: " CR TYPE CR H.S CR
+   T+ T+ T+
+   \DEBUG S" (F*EXACT)-SUM: " CR TYPE CR H.S CR
+;
+
+: (F*NORMALIZE) (S t1 -- t1' exp-corr )
+   \G Normalize exact multiplication result - most significant 3 cells.
+   \G exp-corr is exponent correction if required.
+   0 >R
+   BEGIN
+      DUP FPV-MSBIT AND 0=
+   WHILE
+      T2*
+      R> 1- >R
+   REPEAT
+   R>
+;
+
+: (F*EXP) (S -- exp ) (F r1 r2 -- r1 r2 )
    \G Compute the exponent for float multiplication result.
    'FPY-E @ FPFLAGS>EXP
    'FPX-E @ FPFLAGS>EXP
    + 1+
 ;
 
-: ---(F*SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
+: (F*SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
    \G Compute the sign mask for float multiplication result.
    'FPY-E @ FPV-SIGN-MASK AND
    'FPX-E @ FPV-SIGN-MASK AND
    XOR
 ;
 
-: (F*RESFLAGS) (S exp-correction -- nflags ) (F r1 r2 -- r1 r2 )
-   \G Compute the exponent and flags cell for float multiplication result.
-   \DEBUG S" (F*RESFLAGS)-INPUT: " CR TYPE CR H.S CR F.DUMP CR
-   >R
-   'FPY-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
-   'FPX-E @ DUP FPV-SIGN-MASK AND SWAP FPFLAGS>EXP
-   ROT + 1+ R> + FPV-EXP-MASK AND
-   >R XOR R> OR
+: (F*RESULT) (S ud exp sign -- ud nflags )
+   \G Build result representation for the F*.
+   \DEBUG S" (F*RESULT)-INPUT: " CR TYPE CR H.S CR
+   SWAP FPV-EXP-MASK AND
+   OR
 ;
 
 : F* (F r1 r2 -- r3 ) \ 12.6.1.1410 F*
@@ -619,32 +662,16 @@ USER F*-EXP    1 CELLS USER-ALLOC
       F0<  IF  FNEGATE  THEN
       EXIT
    THEN
-   'FPY-M 2@ 'FPX-M 2@    \ S: yl yh xl xh
-   ROT SWAP OVER          \ S: yl xl yh xh yh
-   UM* F*-YH*XH 2!
-   UM* F*-YH*XL 2!
-   'FPX-M 2@              \ S: yl xl xh
-   ROT SWAP OVER          \ S: xl yl xh yl
-   UM* F*-YL*XH 2!
-   UM* 0
-   0 F*-YL*XH 2@
-   0 F*-YH*XL 2@
-   0
-   0 F*-YH*XH 2@
-   \DEBUG S" F*-PART-MUL: " CR TYPE CR H.S CR
-   T+ T+ T+
-   \DEBUG S" F*-PART-SUM: " CR TYPE CR H.S CR
-   0 >R
-   BEGIN
-      DUP FPV-MSBIT AND 0=
-   WHILE
-      T2*
-      R> 1- >R
-   REPEAT
-   \DEBUG S" F*-EXACT: " CR TYPE CR H.S CR
+   (F*SIGN) >R
+   (F*EXP)  >R
+   'FPY-M 2@ 'FPX-M 2@
+   (F*EXACT)
+   (F*NORMALIZE)
+   R> + >R
+   \DEBUG S" F*-NORMALIZED: " CR TYPE CR H.S CR
    (F*RN)
-   R> +
-   (F*RESFLAGS)
+   R> + R>
+   (F*RESULT)
    \DEBUG S" F*-RESULT: " CR TYPE CR H.S CR
    'FPY-E !
    'FPY-M 2!
