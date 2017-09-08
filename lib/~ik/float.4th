@@ -220,9 +220,9 @@ DEFER (F IMMEDIATE ' ( IS (F
 
 : FNAN (S -- ud n )
    \G Return NAN representation.
+   -1.
    FPV-NAN-MASK
    FPV-EXP-MASK OR
-   -1.
 ;
 
 : FPX-NAN! (S -- ) (F r -- NAN )
@@ -236,8 +236,9 @@ DEFER (F IMMEDIATE ' ( IS (F
 : FINF (S sign -- ud n )
    \G Return signed INF representation.
    IF  FPV-NEGATIVE  ELSE  FPV-POSITIVE  THEN
-   FPV-EXP-MASK OR
+   FPV-INF-MASK OR
    -1.
+   ROT
 ;
 
 : FPX-INF! (S -- ) (F r -- +/-inf )
@@ -637,8 +638,8 @@ USER F*-EXP    1 CELLS USER-ALLOC
    + 1+
 ;
 
-: (F*SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
-   \G Compute the sign mask for float multiplication result.
+: (F*/SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
+   \G Compute the sign mask for float multiplication or division result.
    'FPY-E @ 'FPX-E @ XOR
    FPV-SIGN-MASK AND
 ;
@@ -667,7 +668,7 @@ USER F*-EXP    1 CELLS USER-ALLOC
       F0<  IF  FNEGATE  THEN
       EXIT
    THEN
-   (F*SIGN) >R
+   (F*/SIGN) >R
    (F*EXP)  >R
    'FPY-M 2@ 'FPX-M 2@
    (F*EXACT)
@@ -686,21 +687,22 @@ USER F*-EXP    1 CELLS USER-ALLOC
 \DEBUG-OFF
 
 
+\ DEBUG-ON
 USER F/-Q    2 CELLS USER-ALLOC
 USER F/-QBIT 2 CELLS USER-ALLOC
 USER F/-YM   2 CELLS USER-ALLOC
 USER F/-XM   2 CELLS USER-ALLOC
 
 : F/ (F r1 r2 -- r3 ) \ 12.6.1.1430 F/
-   (G Divide r1 by r2, giving the quotient r3. )
-   (G An ambiguous condition exists if r2 is zero, )
-   (G or the quotient lies outside of the range of a floating-point number.)
+   \G Divide r1 by r2, giving the quotient r3.
+   \G An ambiguous condition exists if r2 is zero,
+   \G or the quotient lies outside of the range of a floating-point number.
    2 ?FPSTACK-UNDERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
    ?FPX0=  IF
       ?FPY-INF  IF  FDROP FPX-NAN! EXIT  THEN
       ?FPY0=    IF  FDROP FPX-NAN! EXIT  THEN
-      FDROP FPX-INF! EXIT
+      (F*/SIGN) FDROP 'FPX-E ! FPX-INF! EXIT
    THEN
    ?FPY0= IF  FDROP EXIT  THEN
    \DEBUG CR S" F/-A: " TYPE CR F.DUMP CR
@@ -739,6 +741,7 @@ USER F/-XM   2 CELLS USER-ALLOC
    FPX-NORMALIZE
    \DEBUG CR S" F/-D: " TYPE CR F.DUMP CR
 ;
+\DEBUG-OFF
 
 : F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
    \G flag is true if and only if r1 is less than r2.
