@@ -42,7 +42,7 @@ s" ttester.fs"         included
 s" ak-fp-test.fth"     included
 123 SET-PRECISION
 s" fatan2-test.fs"     included
-\ s" ieee-arith-test.fs" included
+s" ieee-arith-test.fs" included
 \ s" ieee-fprox-test.fs" included
 s" fpzero-test.4th"    included
 \ s" fpio-test.4th"      included
