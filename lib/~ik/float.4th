@@ -463,7 +463,7 @@ SYNONYM F.DUMP F.DUMP
 : F0< (S -- flag ) (F r -- ) \ 12.6.1.1440 F0<
    (G flag is true if and only if r is less than zero.)
    1 ?FPSTACK-UNDERFLOW
-   ?FPX-NAN  IF  FDROP FALSE  THEN
+   ?FPX-NAN  IF  FDROP FALSE EXIT  THEN
    ?FPX0< FDROP
 ;
 
@@ -784,15 +784,21 @@ USER F/-XM   2 CELLS USER-ALLOC
 ;
 \DEBUG-OFF
 
+
+\ DEBUG-ON
 : F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
    \G flag is true if and only if r1 is less than r2.
    2 ?FPSTACK-UNDERFLOW
+   \DEBUG S" F<-INPUT: " CR TYPE CR F.DUMP CR
    ?FP2OP-NAN  IF  FDROP FALSE EXIT  THEN
    ?FPX0= ?FPY0= AND         IF  FDROP FDROP FALSE EXIT  THEN
    ?FPY0< ?FPX0< INVERT AND  IF  FDROP FDROP TRUE  EXIT  THEN
    ?FPY0< INVERT ?FPX0< AND  IF  FDROP FDROP FALSE EXIT  THEN
    F- F0<
+   \DEBUG S" F<-RESULT: " CR TYPE CR H.S CR
 ;
+\DEBUG-OFF
+
 
 : F> (S -- flag ) (F r1 r2 -- )
    \G flag is true if and only if r1 is larger than r2.
