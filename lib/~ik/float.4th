@@ -925,7 +925,10 @@ END-CODE COMPILE-ONLY
    \DEBUG CR S" F~-INPUT: " TYPE CR F.DUMP CR
    ?FPX0= IF
       FDROP
-      'FPX 'FPY 1 FLOATS TUCK COMPARE 0=
+      'FPX 'FPY 1 FLOATS TUCK
+      \DEBUG CR S" F~-ENC-INPUT: " TYPE CR H.S CR
+      COMPARE 0=
+      \DEBUG CR S" F~-ENC-RESULT: " TYPE CR H.S CR
       FDROP FDROP
       EXIT
    THEN
@@ -949,6 +952,21 @@ END-CODE COMPILE-ONLY
       \DEBUG CR S" F~-C1: " TYPE CR F.DUMP CR
       F<
    THEN
+;
+\DEBUG-OFF
+
+
+\ DEBUG-ON
+: F= (F r1 r2 -- ) (S -- flag )
+   \G flag is true if and only if r1 is equal to r2.
+   \G +0 = -0 as per IEEE.
+   2 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   \DEBUG S" F=-INPUT: " CR TYPE CR F.DUMP CR
+   ?FP2OP-NAN         IF  FDROP FALSE      EXIT  THEN
+   ?FPX0= ?FPY0= AND  IF  FDROP FDROP TRUE EXIT  THEN
+   0. D>F F~
+   \DEBUG S" F=-RESULT: " CR TYPE CR H.S CR
 ;
 \DEBUG-OFF
 
