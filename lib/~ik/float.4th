@@ -444,7 +444,7 @@ SYNONYM F.DUMP F.DUMP
 : F0= (S -- flag ) (F r -- ) \ 12.6.1.1450 F0=
    (G flag is true if and only if r is equal to zero.)
    1 ?FPSTACK-UNDERFLOW
-   ?FPX-NAN  IF  FDROP FALSE  THEN
+   ?FPX-NAN  IF  FDROP FALSE EXIT  THEN
    ?FPX0= FDROP
 ;
 
@@ -456,7 +456,7 @@ SYNONYM F.DUMP F.DUMP
 
 : ?FP2OP-NAN (S -- flag ) (F r1 r2 -- r1 r2 | NAN )
    \G Flag is true only if either r1 or r2 is NAN.
-   \G FP stack remains untouched if neither r1 nor r1 is NAN, the values are replaced with NAN otherwise.
+   \G FP stack remains untouched if neither r1 nor r1 is NAN, the values are replaced with one NAN otherwise.
    2 ?FPSTACK-UNDERFLOW
    ?FPX-NAN ?FPY-NAN OR DUP
    IF  FDROP FPX-NAN!  THEN
@@ -831,7 +831,7 @@ USER F/-XM   3 CELLS USER-ALLOC
    \G flag is true if and only if r1 is less than r2.
    2 ?FPSTACK-UNDERFLOW
    \DEBUG S" F<-INPUT: " CR TYPE CR F.DUMP CR
-   ?FP2OP-NAN  IF  FDROP FALSE EXIT  THEN
+   ?FP2OP-NAN                IF  FDROP FALSE EXIT        THEN
    ?FPX0= ?FPY0= AND         IF  FDROP FDROP FALSE EXIT  THEN
    ?FPY0< ?FPX0< INVERT AND  IF  FDROP FDROP TRUE  EXIT  THEN
    ?FPY0< INVERT ?FPX0< AND  IF  FDROP FDROP FALSE EXIT  THEN
