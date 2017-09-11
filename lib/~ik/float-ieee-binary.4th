@@ -87,8 +87,6 @@ USER FP  1 CELLS USER-ALLOC \ floats stack pointer
 ;
 DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
-DEFER (F IMMEDIATE ' ( IS (F
-
 : FDEPTH (S -- +n ) \ 12.6.1.1497 FDEPTH
    (G +n is the number of values contained on the floating-point stack. )
    (G If the system has an environmental restriction of keeping )
@@ -305,8 +303,6 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-IEEE-BINARY-PRIVATE
 \ public definitions go here
 \ private definitions are available for use
 
-SYNONYM (F (F
-
 SYNONYM FDEPTH FDEPTH
 
 SYNONYM F.DUMP F.DUMP
@@ -328,6 +324,17 @@ SYNONYM F.DUMP F.DUMP
    1 ?FPSTACK-UNDERFLOW
    FP@ B/FLOAT + FP!
 ;
+
+
+:NONAME
+   ?FPX-NAN FDROP
+; IS ?NAN
+
+
+:NONAME
+   ?FPX-INF FDROP
+; IS ?INF
+
 
 : FDUP (F r -- r r ) \ 12.6.1.1510 FDUP
    (G Duplicate r.)
