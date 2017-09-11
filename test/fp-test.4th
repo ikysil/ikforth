@@ -7,7 +7,6 @@
 cr .( Running FP Tests) cr
 
 requires" lib/~ik/float.4th"
-requires" lib/~ik/fpout.4th"
 
 DEFER TEST-ROOT (S  -- c-addr count )
 
