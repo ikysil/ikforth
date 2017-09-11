@@ -877,6 +877,8 @@ USER F/-XM   3 CELLS USER-ALLOC
    (G An ambiguous condition exists if the integer portion of r cannot be represented as a double-cell signed integer.)
    (G Note: Rounding the floating-point value prior to calling F>D is advised, because F>D rounds towards zero.)
    1 ?FPSTACK-UNDERFLOW
+   ?FPX-INF  IF  EXC-OUT-OF-RANGE THROW  THEN
+   ?FPX-NAN  IF  EXC-INVALID-NUM-ARGUMENT THROW  THEN
    \DEBUG CR S" F>D-A: " TYPE CR F.DUMP CR
    D>F-EXPONENT 'FPX-E @ FPFLAGS>EXP -
    DUP 0< IF  EXC-OUT-OF-RANGE THROW  THEN
@@ -1224,6 +1226,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    \G Round r1 to an integral value using the "round toward negative infinity" rule, giving r2.
    1 ?FPSTACK-UNDERFLOW
    ?FPX-NAN  IF  EXIT  THEN
+   ?FPX-INF  IF  EXIT  THEN
    FLOOR-M-MASK
    'FPX-E @ FPFLAGS>EXP
    DUP 0< IF
@@ -1255,6 +1258,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
    ?FPX-NAN  IF  EXIT  THEN
+   ?FPX-INF  IF  EXIT  THEN
    FDUP F0= 0=
    IF
       FDUP F0<
@@ -1272,6 +1276,7 @@ D# 32 CONSTANT FPV-BITS/CELL
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
    ?FPX-NAN  IF  EXIT  THEN
+   ?FPX-INF  IF  EXIT  THEN
    FDUP F0< IF
       FNEGATE RECURSE FNEGATE
    ELSE
@@ -1799,11 +1804,10 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G An ambiguous condition exists if r1 is less than or equal to zero.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
-   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FLN-INPUT: " CR TYPE CR F.DUMP CR
-   FDUP F0< IF
-      EXC-FLOAT-INVALID-ARGUMENT THROW
-   THEN
+   ?FPX-NAN  IF  EXIT  THEN
+   ?FPX0<    IF  FPX-NAN! EXIT  THEN
+   ?FPX-INF  IF  EXIT  THEN
    FLN-ITERATIONS-DEFAULT FLN-TAYLOR
    \DEBUG S" FLN-RESULT: " CR TYPE CR F.DUMP CR
 ;
@@ -1938,11 +1942,10 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
    \G An ambiguous condition exists if r1 is less than or equal to zero.
    1 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
-   ?FPX-NAN  IF  EXIT  THEN
    \DEBUG S" FLOG-INPUT: " CR TYPE CR F.DUMP CR
-   FDUP F0< IF
-      EXC-FLOAT-INVALID-ARGUMENT THROW
-   THEN
+   ?FPX-NAN  IF  EXIT  THEN
+   ?FPX0<    IF  FPX-NAN! EXIT  THEN
+   ?FPX-INF  IF  EXIT  THEN
    FLN
    FLOG-FLNTEN F/
    \DEBUG S" FLOG-RESULT: " CR TYPE CR F.DUMP CR
