@@ -1,7 +1,7 @@
 \
 \  template.4th
 \
-\  Copyright (C) 1999-2016 Illya Kysil
+\  Copyright (C) 1999-2017 Illya Kysil
 \
 
 CR .( Loading TEMPLATE definitions )
