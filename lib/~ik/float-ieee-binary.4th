@@ -35,10 +35,10 @@ DECIMAL
 ENV>
 
 \ floating point representation
-\ +0   most  significant cell
-\ +1   least significant cell
+\ +0   exponent and flags cell
+\ +1   most  significant cell
+\ +2   least significant cell
 \ unsigned mantissa is stored as double value, aligned to the most significant bit
-\ +2   exponent and flags cell
 
 HEX
 \ sign of mantissa
@@ -105,19 +105,31 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
    FDEPTH > IF  EXC-FLOAT-STACK-UNDERFLOW THROW  THEN
 ;
 
+: FPM@ (S addr -- ud )
+   \G Fetch mantissa from the float representation at addr.
+   [ 1 CELLS ] LITERAL +
+   2@
+;
+
+: FPM! (S ud addr -- )
+   \G Store mantissa to the float representation at addr.
+   [ 1 CELLS ] LITERAL +
+   2!
+;
+
+: FPE@ (S addr -- un )
+   \G Fetch exponent and flags from the float representation at addr.
+   @
+;
+
+: FPE! (S un addr -- )
+   \G Store exponent and flags to the float representation at addr.
+   !
+;
+
 : 'FPX (S -- addr )
-   (G Return address of the top item on floating-point stack)
+   \G Return address of the top item on floating-point stack)
    FP@
-;
-
-: 'FPX-M (S -- addr )
-   (G Return address of the mantissa cell of the top item on floating-point stack)
-   'FPX
-;
-
-: 'FPX-E (S -- addr )
-   (G Return address of the exponent cell of the top item on floating-point stack)
-   'FPX FPV-EXP-OFFS +
 ;
 
 : 'FPY (S -- addr )
@@ -125,29 +137,9 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
    FP@ [ B/FLOAT ] LITERAL +
 ;
 
-: 'FPY-M (S -- addr )
-   (G Return address of the mantissa cell of the second item on floating-point stack)
-   'FPY
-;
-
-: 'FPY-E (S -- addr )
-   (G Return address of the exponent cell of the second item on floating-point stack)
-   'FPY FPV-EXP-OFFS +
-;
-
 : 'FPZ (S -- addr )
    (G Return address of the third item on floating-point stack)
    FP@ [ 2 B/FLOAT * ] LITERAL +
-;
-
-: 'FPZ-M (S -- addr )
-   (G Return address of the mantissa cell of the third item on floating-point stack)
-   'FPZ
-;
-
-: 'FPZ-E (S -- addr )
-   (G Return address of the exponent cell of the third item on floating-point stack)
-   'FPZ FPV-EXP-OFFS +
 ;
 
 : FPFLAGS>EXP (S n1 -- n2 )
@@ -157,63 +149,63 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
    IF  FPV-EXP-MASK INVERT OR  THEN
 ;
 
-: FP> (S -- d n) (F r -- )
+: FP> (S -- ud n) (F r -- )
    (G Move float value from floating-point stack to data stack)
    1 ?FPSTACK-UNDERFLOW
-   'FPX-M 2@
-   'FPX-E @
+   'FPX FPM@
+   'FPX FPE@
    FP@ B/FLOAT + FP!
 ;
 
-: >FP (S d n -- ) (F -- r )
+: >FP (S ud n -- ) (F -- r )
    (G Move float value from data stack to floating-point stack)
    1 ?FPSTACK-OVERFLOW
    FP@ B/FLOAT - FP!
-   'FPX-E !
-   'FPX-M 2!
+   'FPX FPE!
+   'FPX FPM!
 ;
 
 : ?FPX0= (S -- flag ) (F r -- r)
    (G flag is true if and only if r is equal to zero.)
-   'FPX-M 2@ OR 0=
+   'FPX FPM@ OR 0=
 ;
 
 : ?FPY0= (S -- flag ) (F r1 r2 -- r1 r2)
    (G flag is true if and only if r1 is equal to zero.)
-   'FPY-M 2@ OR 0=
+   'FPY FPM@ OR 0=
 ;
 
 
 : ?FPX0< (S -- flag ) (F r -- r)
    \G flag is true if and only if sign of mantissa of r is negative
-   'FPX-E @ FPV-SIGN-MASK AND FPV-NEGATIVE =
+   'FPX FPE@ FPV-SIGN-MASK AND FPV-NEGATIVE =
 ;
 
 : ?FPY0< (S -- flag ) (F r1 r2 -- r1 r2)
    \G flag is true if and only if sign of mantissa of r1 is negative
-   'FPY-E @ FPV-SIGN-MASK AND FPV-NEGATIVE =
+   'FPY FPE@ FPV-SIGN-MASK AND FPV-NEGATIVE =
 ;
 
 
 : ?FPX-NAN (S -- flag ) (F r -- r)
    \G flag is true if and only if r is NAN
-   'FPX-E @ FPV-NAN-MASK AND 0<>
+   'FPX FPE@ FPV-NAN-MASK AND 0<>
 ;
 
 : ?FPY-NAN (S -- flag ) (F r1 r2 -- r1 r2)
    \G flag is true if and only if r1 is NAN
-   'FPY-E @ FPV-NAN-MASK AND 0<>
+   'FPY FPE@ FPV-NAN-MASK AND 0<>
 ;
 
 
 : ?FPX-INF (S -- flag ) (F r -- r)
    \G flag is true if and only if r is INFinity
-   'FPX-E @ FPV-INF-MASK AND 0<>
+   'FPX FPE@ FPV-INF-MASK AND 0<>
 ;
 
 : ?FPY-INF (S -- flag ) (F r1 r2 -- r1 r2)
    \G flag is true if and only if r1 is INFinity
-   'FPY-E @ FPV-INF-MASK AND 0<>
+   'FPY FPE@ FPV-INF-MASK AND 0<>
 ;
 
 
@@ -227,8 +219,8 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 : FPX-NAN! (S -- ) (F r -- NAN )
    \G Set top of FP stack to NAN.
    FNAN
-   'FPX-E !
-   'FPX-M 2!
+   'FPX FPE!
+   'FPX FPM!
 ;
 
 
@@ -244,8 +236,8 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 : FPX-INF! (S -- ) (F r -- +/-inf )
    \G Set top of FP stack to INFinity with sign copied from r.
    ?FPX0< FINF
-   'FPX-E !
-   'FPX-M 2!
+   'FPX FPE!
+   'FPX FPM!
 ;
 
 
@@ -253,30 +245,30 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
    (G Normalize representation of r on the top of the stack)
    ?FPX0= IF
       \ reset exponent on zero mantissa but preserve sign
-      'FPX-E @
+      'FPX FPE@
       FPV-EXP-MASK INVERT AND
       FPV-ZERO-MASK OR
-      'FPX-E !
+      'FPX FPE!
       EXIT
    THEN
-   'FPX-E @ FPFLAGS>EXP >R
-   'FPX-M 2@
+   'FPX FPE@ FPFLAGS>EXP >R
+   'FPX FPM@
    BEGIN
       DUP FPV-MSBIT AND 0=
    WHILE
       D2*
       R> 1- >R
    REPEAT
-   'FPX-M 2!
-   R> FPV-EXP-MASK AND 'FPX-E @ FPV-EXP-MASK INVERT AND OR 'FPX-E !
+   'FPX FPM!
+   R> FPV-EXP-MASK AND 'FPX FPE@ FPV-EXP-MASK INVERT AND OR 'FPX FPE!
 ;
 
 : FPX-DENORMALIZE (S +n -- ) (F r -- r')
    (G De-normalize representation of r on the top of the stack by n bits)
    ?FPX0=  IF  DROP EXIT  THEN
    DUP 0=  IF  DROP EXIT  THEN
-   'FPX-E @ FPFLAGS>EXP >R >R
-   'FPX-M 2@
+   'FPX FPE@ FPFLAGS>EXP >R >R
+   'FPX FPM@
    BEGIN
       R@ 0<>
    WHILE
@@ -284,8 +276,8 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
       R> 1- R> 1+ >R >R
    REPEAT
    2DUP OR 0=  IF  2DROP 1.  THEN
-   'FPX-M 2!
-   R> DROP R> FPV-EXP-MASK AND 'FPX-E @ FPV-EXP-MASK INVERT AND OR 'FPX-E !
+   'FPX FPM!
+   R> DROP R> FPV-EXP-MASK AND 'FPX FPE@ FPV-EXP-MASK INVERT AND OR 'FPX FPE!
 ;
 
 : F.DUMP
@@ -339,30 +331,30 @@ SYNONYM F.DUMP F.DUMP
 : FDUP (F r -- r r ) \ 12.6.1.1510 FDUP
    (G Duplicate r.)
    1 ?FPSTACK-UNDERFLOW
-   'FPX-M 2@
-   'FPX-E @
+   'FPX FPM@
+   'FPX FPE@
    >FP
 ;
 
 : FSWAP (F r1 r2 -- r2 r1 ) \ 12.6.1.1620 FSWAP
    (G Exchange the top two floating-point stack items.)
    2 ?FPSTACK-UNDERFLOW
-   'FPX-M 2@
-   'FPX-E @
-   'FPY-M 2@
-   'FPY-E @
-   'FPX-E !
-   'FPX-M 2!
-   'FPY-E !
-   'FPY-M 2!
+   'FPX FPM@
+   'FPX FPE@
+   'FPY FPM@
+   'FPY FPE@
+   'FPX FPE!
+   'FPX FPM!
+   'FPY FPE!
+   'FPY FPM!
 ;
 
 : FOVER (F r1 r2 -- r1 r2 r1 ) \ 12.6.1.1600 FOVER
    (G Place a copy of r1 on top of the floating-point stack.)
    2 ?FPSTACK-UNDERFLOW
    1 ?FPSTACK-OVERFLOW
-   'FPY-M 2@
-   'FPY-E @
+   'FPY FPM@
+   'FPY FPE@
    >FP
 ;
 
@@ -436,9 +428,9 @@ SYNONYM F.DUMP F.DUMP
    (G r2 is the negation of r1.)
    1 ?FPSTACK-UNDERFLOW
    ?FPX-NAN  IF  EXIT  THEN
-   'FPX-E @
+   'FPX FPE@
    FPV-SIGN-MASK XOR
-   'FPX-E !
+   'FPX FPE!
 ;
 
 : F0< (S -- flag ) (F r -- ) \ 12.6.1.1440 F0<
@@ -480,10 +472,10 @@ SYNONYM F.DUMP F.DUMP
 : (F+EXTRACT) (S -- t1 t2 e1 e2 ) (F r1 r2 -- r1 r2 )
    \G Extract the mantissa of the two top items on the FP stack and sign-extend to triple-cell values.
    \G e1 is exponent of r1 and e2 is exponent of r2.
-   'FPY-M 2@ 0 ?FPY0<  IF  TNEGATE  THEN
-   'FPX-M 2@ 0 ?FPX0<  IF  TNEGATE  THEN
-   'FPY-E @ FPFLAGS>EXP
-   'FPX-E @ FPFLAGS>EXP
+   'FPY FPM@ 0 ?FPY0<  IF  TNEGATE  THEN
+   'FPX FPM@ 0 ?FPX0<  IF  TNEGATE  THEN
+   'FPY FPE@ FPFLAGS>EXP
+   'FPX FPE@ FPFLAGS>EXP
 ;
 
 : (F+ORDER) (S t1 t2 e1 e2 -- t1' t2' +diffexp )
@@ -583,8 +575,8 @@ F+GUARDBIT 1-          CONSTANT  F+STICKYBITS
    R>
    R> FPFLAGS>EXP 1+ FPV-EXP-MASK AND OR
    \DEBUG S" F+-RESULT: " CR TYPE CR H.S CR
-   'FPX-E !
-   'FPX-M 2!
+   'FPX FPE!
+   'FPX FPM!
    FPX-NORMALIZE
    \DEBUG S" F+-RESULT: " CR TYPE CR F.DUMP CR
 ;
@@ -652,14 +644,14 @@ USER F*-EXP    1 CELLS USER-ALLOC
 
 : (F*EXP) (S -- exp ) (F r1 r2 -- r1 r2 )
    \G Compute the exponent for float multiplication result.
-   'FPY-E @ FPFLAGS>EXP
-   'FPX-E @ FPFLAGS>EXP
+   'FPY FPE@ FPFLAGS>EXP
+   'FPX FPE@ FPFLAGS>EXP
    + 1+
 ;
 
 : (F*/SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
    \G Compute the sign mask for float multiplication or division result.
-   'FPY-E @ 'FPX-E @ XOR
+   'FPY FPE@ 'FPX FPE@ XOR
    FPV-SIGN-MASK AND
 ;
 
@@ -689,11 +681,11 @@ USER F*-EXP    1 CELLS USER-ALLOC
    THEN
    ?FPX-INF ?FPY-INF OR  IF
       \DEBUG CR ." F*-INF: " DEPTH . CR
-      (F*/SIGN) FDROP 'FPX-E ! FPX-INF! EXIT
+      (F*/SIGN) FDROP 'FPX FPE! FPX-INF! EXIT
    THEN
    (F*/SIGN) >R
    (F*EXP)  >R
-   'FPY-M 2@ 'FPX-M 2@
+   'FPY FPM@ 'FPX FPM@
    (F*EXACT)
    (F*NORMALIZE)
    \DEBUG S" F*-NORMALIZED: " CR TYPE CR H.S CR
@@ -703,8 +695,8 @@ USER F*-EXP    1 CELLS USER-ALLOC
    R> + R>
    (F*RESULT)
    \DEBUG S" F*-RESULT: " CR TYPE CR H.S CR
-   'FPY-E !
-   'FPY-M 2!
+   'FPY FPE!
+   'FPY FPM!
    FDROP
    \DEBUG S" F*-RESULT: " CR TYPE CR F.DUMP CR
 ;
@@ -719,8 +711,8 @@ USER F/-XM   3 CELLS USER-ALLOC
 
 : (F/EXP) (S -- exp ) (F r1 r2 -- r1 r2 )
    \G Compute the exponent for float division result.
-   'FPY-E @ FPFLAGS>EXP
-   'FPX-E @ FPFLAGS>EXP
+   'FPY FPE@ FPFLAGS>EXP
+   'FPX FPE@ FPFLAGS>EXP
    - 1+
 ;
 
@@ -789,7 +781,7 @@ USER F/-XM   3 CELLS USER-ALLOC
    \DEBUG S" F/-INPUT: " CR TYPE CR F.DUMP CR
    ?FP2OP-NAN  IF  EXIT  THEN
    ?FPX-INF ?FPY-INF AND  IF
-      \ (F*/SIGN) FDROP 'FPX-E !
+      \ (F*/SIGN) FDROP 'FPX FPE!
       FDROP
       FPX-NAN! EXIT
    THEN
@@ -807,7 +799,7 @@ USER F/-XM   3 CELLS USER-ALLOC
    ?FPX0=  IF
       ?FPY-INF  IF  FDROP FPX-NAN! EXIT  THEN
       ?FPY0=    IF  FDROP FPX-NAN! EXIT  THEN
-      (F*/SIGN) FDROP 'FPX-E ! FPX-INF! EXIT
+      (F*/SIGN) FDROP 'FPX FPE! FPX-INF! EXIT
    THEN
    ?FPY0=  IF
       F0<  IF  FNEGATE  THEN
@@ -815,7 +807,7 @@ USER F/-XM   3 CELLS USER-ALLOC
    THEN
    (F*/SIGN) >R
    (F/EXP)  >R
-   'FPY-M 2@ 'FPX-M 2@
+   'FPY FPM@ 'FPX FPM@
    (F/EXACT)
    \DEBUG S" F/-EXACT: " CR TYPE CR H.S CR
    (F/NORMALIZE)
@@ -826,8 +818,8 @@ USER F/-XM   3 CELLS USER-ALLOC
    R> + R>
    (F*RESULT)
    \DEBUG S" F/-RESULT: " CR TYPE CR H.S CR
-   'FPY-E !
-   'FPY-M 2!
+   'FPY FPE!
+   'FPY FPM!
    FDROP
    \DEBUG S" F/-RESULT: " CR TYPE CR F.DUMP CR
 ;
@@ -880,14 +872,14 @@ USER F/-XM   3 CELLS USER-ALLOC
    ?FPX-INF  IF  EXC-OUT-OF-RANGE THROW  THEN
    ?FPX-NAN  IF  EXC-INVALID-NUM-ARGUMENT THROW  THEN
    \DEBUG CR S" F>D-A: " TYPE CR F.DUMP CR
-   D>F-EXPONENT 'FPX-E @ FPFLAGS>EXP -
+   D>F-EXPONENT 'FPX FPE@ FPFLAGS>EXP -
    DUP 0< IF  EXC-OUT-OF-RANGE THROW  THEN
    \DEBUG CR S" F>D-B: " TYPE CR H.S CR
    FPX-DENORMALIZE
    \DEBUG CR S" F>D-C: " TYPE CR F.DUMP CR
-   'FPX-M 2@
+   'FPX FPM@
    \DEBUG CR S" F>D-D: " TYPE CR H.S CR
-   'FPX-E @ ?FPV-NEGATIVE FPV-M>D DROP
+   'FPX FPE@ ?FPV-NEGATIVE FPV-M>D DROP
    FDROP
    \DEBUG CR S" F>D-E: " TYPE CR H.S CR
 ;
@@ -917,7 +909,7 @@ END-CODE COMPILE-ONLY
    \G r2 is the absolute value of r1.
    1 ?FPSTACK-UNDERFLOW
    ?FPX-NAN  IF  EXIT  THEN
-   'FPX-E @ FPV-SIGN-MASK INVERT AND 'FPX-E !
+   'FPX FPE@ FPV-SIGN-MASK INVERT AND 'FPX FPE!
 ;
 
 
@@ -1228,23 +1220,23 @@ D# 32 CONSTANT FPV-BITS/CELL
    ?FPX-NAN  IF  EXIT  THEN
    ?FPX-INF  IF  EXIT  THEN
    FLOOR-M-MASK
-   'FPX-E @ FPFLAGS>EXP
+   'FPX FPE@ FPFLAGS>EXP
    DUP 0< IF
       DROP
       2DROP -1.
    ELSE
       DRSHIFT
    THEN
-   'FPX-M 2@                                \ S: mlo mhi rlo rhi
+   'FPX FPM@                                \ S: mlo mhi rlo rhi
    \DEBUG S" FLOOR-A: " CR TYPE CR H.S CR F.DUMP CR
    2OVER 2OVER DAND
    \DEBUG S" FLOOR-B: " CR TYPE CR H.S CR
-   OR 0<> 'FPX-E @ ?FPV-NEGATIVE AND
+   OR 0<> 'FPX FPE@ ?FPV-NEGATIVE AND
    \DEBUG S" FLOOR-B1: " CR TYPE CR H.S CR
    >R                                       \ S: mlo mhi rlo rhi    R: ?neg-with-fraction
    2SWAP DINVERT DAND
    \DEBUG S" FLOOR-C: " CR TYPE CR H.S CR
-   'FPX-M 2!
+   'FPX FPM!
    FPX-NORMALIZE
    \DEBUG S" FLOOR-C1: " CR TYPE CR H.S CR F.DUMP CR
    R>
@@ -1296,10 +1288,10 @@ D# 32 CONSTANT FPV-BITS/CELL
 
 : FSQRT-APPROX (F r1 -- r2 )
    \G r2 is the initial approximation of square root of r1.
-   'FPX-E @ DUP
+   'FPX FPE@ DUP
    FPFLAGS>EXP 1 RSHIFT FPV-EXP-MASK AND
    SWAP FPV-EXP-MASK INVERT AND OR
-   'FPX-E !
+   'FPX FPE!
 ;
 
 : FSQRT-NEWTON-STEP (F r1 r2 -- r3 )
@@ -1310,10 +1302,10 @@ D# 32 CONSTANT FPV-BITS/CELL
    FSWAP FOVER      \ F: r2 r1 r2
    F/ F+
    \ trick for speed - decrement exponent instead of dividing by two
-   'FPX-E @ DUP
+   'FPX FPE@ DUP
    FPFLAGS>EXP 1- FPV-EXP-MASK AND
    SWAP FPV-EXP-MASK INVERT AND OR
-   'FPX-E !
+   'FPX FPE!
 ;
 
 : FSQRT-NEWTON (S +n -- ) (F r1 r2 -- r3 )
@@ -1585,7 +1577,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    \G Calculate atan approximation of r1 in range (-FLOAT-MAX,+FLOAT-MAX).
    \G xt is the word to calculate atan approximation of r1 in range [0,+FLOAT-MAX).
    \DEBUG S" FATAN-FLOAT-RANGE-INPUT: " CR TYPE CR F.DUMP CR
-   'FPX-E @ ?FPV-NEGATIVE IF
+   'FPX FPE@ ?FPV-NEGATIVE IF
       FNEGATE
       EXECUTE
       FNEGATE
@@ -2156,7 +2148,7 @@ FLNTWO 3.E F* 0.25E FLNP1 F+  FCONSTANT  FALOG-FLNTEN
    THEN
    MAX-REPRESENT-DIGITS MIN
    2DUP '0' FILL
-   'FPX-E @ ?FPV-NEGATIVE >R
+   'FPX FPE@ ?FPV-NEGATIVE >R
    ?FPX0=  IF
       DROP '0' SWAP C!
       1
