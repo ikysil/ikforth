@@ -35,22 +35,24 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
    PRECISION MIN
    2DUP 2>R
    REPRESENT
+   2R> -TRAILING 2>R
    IF
       \ r was in the implementation-defined range of floating-point numbers.
       IF  [CHAR] - EMIT  THEN
-      2R> -TRAILING
-      DUP 0=  IF  SPACE 2DROP EXIT  THEN
-      OVER C@ DUP [CHAR] 0 <> SWAP
-      EMIT [CHAR] . EMIT
+      2R> DUP 0=  IF  SPACE 2DROP DROP EXIT  THEN
+      OVER C@ DUP [CHAR] 0 <> SWAP EMIT
+      [CHAR] . EMIT
       IF
          1 /STRING
          TYPE
-         [CHAR] E EMIT
-         1- S>D (D.)
+      ELSE
+         2DROP
       THEN
+      [CHAR] E EMIT
+      1- S>D (D.)
    ELSE
       2DROP
-      2R> -TRAILING
+      2R>
       TYPE
    THEN
    SPACE
@@ -63,14 +65,55 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
    \G
    \G An ambiguous condition exists if the value of BASE is not (decimal) ten or if the character string representation exceeds
    \G the size of the pictured numeric output string buffer.
-   FS.
+   +S"BUFFER /S"BUFFER
+   2DUP BL FILL
+   PRECISION MIN
+   2DUP 2>R
+   REPRESENT
+   2R> -TRAILING 2>R
+   IF
+      \ r was in the implementation-defined range of floating-point numbers.
+      IF  [CHAR] - EMIT  THEN
+      2R> DUP 0=  IF  SPACE 2DROP DROP EXIT  THEN
+      OVER C@ DUP [CHAR] 0 <> SWAP EMIT
+      IF
+         1 /STRING
+         2>R
+         DUP 3 MOD 1- 3 + 3 MOD
+         DUP 2R@ NIP MIN
+         BEGIN
+            DUP 0>
+         WHILE
+            2R>
+            1 /STRING
+            OVER C@ EMIT
+            2>R
+            1-
+         REPEAT
+         DROP
+         [CHAR] . EMIT
+         2R>
+         TYPE
+      ELSE
+         2DROP
+         [CHAR] . EMIT
+         0
+      THEN
+      [CHAR] E EMIT
+      - 1- S>D (D.)
+   ELSE
+      2DROP
+      2R>
+      TYPE
+   THEN
+   SPACE
 ;
 
 
 : F. (F r -- ) \ 12.6.2.1427 F.
    \G Display, with a trailing space, the top number on the floating-point stack using fixed-point notation:
    \G
-   \G [-] <digits>.<digits0>
+   \G [-]<digits>.<digits0>
    \G An ambiguous condition exists if the value of BASE is not (decimal) ten or if the character string representation exceeds
    \G the size of the pictured numeric output string buffer.
    FS.
