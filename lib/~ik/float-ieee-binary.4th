@@ -1763,7 +1763,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 
 
 \ DEBUG-ON
-18  CONSTANT  FLN-ITERATIONS-DEFAULT
+64  CONSTANT  FLN-ITERATIONS-DEFAULT
 
 : FLN-TAYLOR (S +n -- ) (F r1 -- r2 )
    \G Approximate ln(r1) using +n iterations.
@@ -1780,23 +1780,59 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    FDUP F*
    \ S: +n             F: y sum(=0) y**2
    BEGIN
-      1 -
       DUP 0>
-      \ S: n' flag        F: y sum y**2
+      \ S: n flag         F: y sum y**2
    WHILE
-      DUP S>D D2* 1. D-
-      \ S: n' dn'*2-1     F: y sum y**2
+      DUP 1 LSHIFT 1- S>D
+      \ S: n  dn*2-1      F: y sum y**2
       FSWAP FOVER F*
-      \ S: n' dn'*2-1     F: y y**2 sum*y**2
+      \ S: n  dn*2-1      F: y y**2 sum*y**2
       FONE D>F F/
-      \ S: n'             F: y y**2 sum*y**2 1/(dn'*2-1)
+      \ S: n              F: y y**2 sum*y**2 1/(dn*2-1)
       F+ FSWAP
+      \ S: n              F: y sum' y**2
+      1-
       \ S: n'             F: y sum' y**2
    REPEAT
    DROP
    \ F: y sum' y**2
    FDROP
    F* FTWO F*
+;
+
+: FLN-TAYLOR2 (S +n -- ) (F r1 -- r2 )
+   \G Approximate ln(r1) using +n iterations.
+   1 ?FPSTACK-UNDERFLOW
+   3 ?FPSTACK-OVERFLOW
+   \DEBUG S" FLN-TAYLOR2-INPUT: " CR TYPE CR F.DUMP CR
+   ?FPX0< IF
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   \ calculate y = (r1-1)/(r1+1)
+   FDUP  FONE F-
+   \DEBUG S" FLN-TAYLOR2-R-1: " CR TYPE CR F.DUMP CR
+   FSWAP FONE F+
+   \DEBUG S" FLN-TAYLOR2-R+1: " CR TYPE CR F.DUMP CR
+    F/
+   \DEBUG S" FLN-TAYLOR2-Y: " CR TYPE CR F.DUMP CR
+   \ S: +n             F: y
+   FDUP FDUP F* FOVER
+   \ S: +n             F: sum(=y) y**2 y**(2i-1)
+   1 DO
+      \ DEBUG S" FLN-TAYLOR2-STEP: " CR TYPE CR FDEPTH . CR F.DUMP CR
+      \ F: sum y**2 y**(2i-1)
+      FOVER F* FDUP
+      \ F: sum y**2 y**(2i+1) y**(2i+1)
+      I 1 LSHIFT 1+
+      S>D D>F F/
+      \ F: sum y**2 y**(2i+1) y**(2i+1)/(2i+1)
+      FROT FROT FP> FP>
+      F+ >FP >FP
+      \ F: sum+y**(2i+1)/(2i+1) y**2 y**(2i+1)
+   LOOP
+   \ F: sum' y**2 y**(2n+1)
+   FDROP FDROP
+   FTWO F*
 ;
 
 : FLN (F r1 -- r2 ) \ 12.6.2.1553 FLN
@@ -1815,7 +1851,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
       FNEGATE
    ELSE
       \ abs(r1) <= 1
-      FLN-ITERATIONS-DEFAULT FLN-TAYLOR
+      FLN-ITERATIONS-DEFAULT FLN-TAYLOR2
    THEN
    \DEBUG S" FLN-RESULT: " CR TYPE CR F.DUMP CR
 ;
@@ -1823,7 +1859,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 
 
 \ DEBUG-ON
-18  CONSTANT  FLNP1-ITERATIONS-DEFAULT
+64  CONSTANT  FLNP1-ITERATIONS-DEFAULT
 
 : FLNP1-TAYLOR1 (S +n -- ) (F r1 -- r2 )
    \G Approximate ln(1 + r1) using +n iterations.
@@ -1845,7 +1881,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
       \ S: di          R: n i      F: r2(i-1)' r1 r1**(i-1)
       FOVER F* FDUP
       D>F
-      \ DEBUG S" FLNP1-TAYLOR-ITER: " CR TYPE CR F.DUMP CR
+      \DEBUG S" FLNP1-TAYLOR-ITER: " CR TYPE CR F.DUMP CR
       F/
       \ S:             R: n i      F: r2(i-1)' r1 r1**(i) (r1**(i))/(i)
       FP> FROT >FP F+
@@ -1920,6 +1956,38 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
    F* FTWO F*
 ;
 
+: FLNP1-TAYLOR4 (S +n -- ) (F r1 -- r2 )
+   \G Approximate ln(1+r1) using +n iterations.
+   1 ?FPSTACK-UNDERFLOW
+   4 ?FPSTACK-OVERFLOW
+   FONE FOVER FABS F- F0< IF
+      \ abs(r1) > 1
+      EXC-FLOAT-INVALID-ARGUMENT THROW
+   THEN
+   \ calculate y = r1 / (r1+2)
+   FDUP FTWO F+ F/
+   \ S: +n             F: y
+   \DEBUG S" FLNP1-TAYLOR4-Y: " CR TYPE CR F.DUMP CR
+   \ S: +n             F: y
+   FDUP FDUP F* FOVER
+   \ S: +n             F: sum(=y) y**2 y**(2i-1)
+   1 DO
+      \DEBUG S" FLNP1-TAYLOR4-STEP: " CR TYPE CR FDEPTH . CR F.DUMP CR
+      \ F: sum y**2 y**(2i-1)
+      FOVER F* FDUP
+      \ F: sum y**2 y**(2i+1) y**(2i+1)
+      I 1 LSHIFT 1+
+      S>D D>F F/
+      \ F: sum y**2 y**(2i+1) y**(2i+1)/(2i+1)
+      FROT FROT FP> FP>
+      F+ >FP >FP
+      \ F: sum+y**(2i+1)/(2i+1) y**2 y**(2i+1)
+   LOOP
+   \ F: sum' y**2 y**(2n+1)
+   FDROP FDROP
+   FTWO F*
+;
+
 : FLNP1 (F r1 -- r2 ) \ 12.6.2.1554 FLNP1
    \G r2 is the natural logarithm of the quantity r1 plus one.
    \G An ambiguous condition exists if r1 is less than or equal to negative one.
@@ -1936,7 +2004,7 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
       FONE F+ FLN
    ELSE
       \ abs(r1) <= 1
-      FLNP1-ITERATIONS-DEFAULT FLNP1-TAYLOR3
+      FLNP1-ITERATIONS-DEFAULT FLNP1-TAYLOR4
    THEN
    \DEBUG S" FLNP1-RESULT: " CR TYPE CR F.DUMP CR
 ;
