@@ -827,15 +827,100 @@ USER F/-XM   3 CELLS USER-ALLOC
 
 
 \ DEBUG-ON
+: FPCMP-SIGN (S -- flag1 flag2 ) (F r1 r2 -- r1 r2 )
+   \G Compare signs.
+   \G flag1 is result of comparation.
+   \G flag2 is true if sign comparation result is available.
+   ?FPY0= ?FPX0= AND  IF
+       0 TRUE EXIT
+   THEN
+   ?FPY0< ?FPX0< INVERT AND  IF
+      -1 TRUE EXIT
+   THEN
+   ?FPY0< INVERT ?FPX0< AND  IF
+      1 TRUE EXIT
+   THEN
+   0 FALSE
+;
+
+: FPCMP-INF (S -- flag1 flag2 ) (F r1 r2 -- r1 r2 )
+   \G Compare infinities.
+   \G flag1 is result of comparation.
+   \G flag2 is true if infinity comparation result is available.
+   ?FPX-INF ?FPY-INF INVERT AND  IF
+      -1 TRUE EXIT
+   THEN
+   ?FPY-INF ?FPX-INF INVERT AND  IF
+       1 TRUE EXIT
+   THEN
+   ?FPY-INF ?FPX-INF AND  IF
+      FPCMP-SIGN  IF
+         TRUE EXIT
+      ELSE
+         DROP
+      THEN
+   THEN
+   0 FALSE
+;
+
+: FPCMP (S -- flag1 flag2 ) (F r1 r2 -- r1 r2 )
+   \G Compare r1 and r2, output flag1 as follows:
+   \G -1 when r1<r2
+   \G  0 when r1=r2
+   \G  1 when r1>r2
+   \G flag2 is true if both r1 and r2 are comparable values,
+   \G false otherwise. flag1 is underfined if flag2 is false.
+   \G Comparable value is not a NaN.
+   \G Also, infinities of the same sign are not comparable.
+   \DEBUG S" FPCMP-INPUT: " CR TYPE CR F.DUMP CR
+   ?FPX-NAN ?FPY-NAN OR  IF
+      0 FALSE EXIT
+   THEN
+   FPCMP-INF  IF  DUP 0<> EXIT  THEN
+   DROP
+   FPCMP-SIGN  IF  TRUE EXIT  THEN
+   DROP
+   'FPY FPE@ FPFLAGS>EXP
+   'FPX FPE@ FPFLAGS>EXP
+   \DEBUG S" FPCMP-EXP: " CR TYPE CR 2DUP SWAP H.8 SPACE H.8 CR
+   - SGN
+   DUP 0=  IF
+      DROP
+      'FPY FPM@ 0
+      'FPX FPM@ 0
+      TNEGATE T+
+      SGN
+      DUP 0=  IF
+         DROP OR 0<> ABS
+      ELSE
+         >R 2DROP R>
+      THEN
+   ELSE
+      ?FPY0=  IF  DROP -1  THEN
+      ?FPX0=  IF  DROP  1  THEN
+   THEN
+   ?FPY0< ?FPX0< OR  IF  NEGATE  THEN
+   TRUE
+   \DEBUG S" FPCMP-RESULT: " CR TYPE CR 2DUP SWAP H.8 SPACE H.8 CR
+;
+
+: FCMP (S -- flag1 flag2 ) (F r1 r2 -- )
+   \G Compare r1 and r2, output flag1 as follows:
+   \G -1 when r1<r2
+   \G  0 when r1=r2
+   \G  1 when r1>r2
+   \G flag2 is true if both r1 and r2 are comparable (non-NaN) values,
+   \G false otherwise.
+   FPCMP
+   FDROP FDROP
+;
+
 : F< (S -- flag ) (F r1 r2 -- ) \ 2.6.1.1460 F<
    \G flag is true if and only if r1 is less than r2.
    2 ?FPSTACK-UNDERFLOW
    \DEBUG S" F<-INPUT: " CR TYPE CR F.DUMP CR
-   ?FP2OP-NAN                IF  FDROP FALSE EXIT        THEN
-   ?FPX0= ?FPY0= AND         IF  FDROP FDROP FALSE EXIT  THEN
-   ?FPY0< ?FPX0< INVERT AND  IF  FDROP FDROP TRUE  EXIT  THEN
-   ?FPY0< INVERT ?FPX0< AND  IF  FDROP FDROP FALSE EXIT  THEN
-   F- F0<
+   FCMP DROP
+   0<
    \DEBUG S" F<-RESULT: " CR TYPE CR H.S CR
 ;
 \DEBUG-OFF
@@ -844,24 +929,38 @@ USER F/-XM   3 CELLS USER-ALLOC
 : F> (S -- flag ) (F r1 r2 -- )
    \G flag is true if and only if r1 is larger than r2.
    2 ?FPSTACK-UNDERFLOW
-   FSWAP F<
+   \DEBUG S" F>-INPUT: " CR TYPE CR F.DUMP CR
+   FCMP DROP
+   0>
+   \DEBUG S" F>-RESULT: " CR TYPE CR H.S CR
 ;
+
 
 : FMIN (F r1 r2 -- r3 ) \ 12.6.1.1565 FMIN
    (G r3 is the lesser of r1 and r2.)
    2 ?FPSTACK-UNDERFLOW
-   2 ?FPSTACK-OVERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
-   FOVER FOVER F< IF  FDROP  ELSE  FNIP  THEN
+   FPCMP  IF
+      0< IF  FDROP  ELSE  FNIP  THEN
+   ELSE
+      FDROP
+      FPX-NAN!
+   THEN
 ;
+
 
 : FMAX (F r1 r2 -- r3 ) \ 12.6.1.1562 FMAX
    (G r3 is the greater of r1 and r2.)
    2 ?FPSTACK-UNDERFLOW
-   2 ?FPSTACK-OVERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
-   FOVER FOVER F< IF  FNIP  ELSE  FDROP  THEN
+   FPCMP  IF
+      0> IF  FDROP  ELSE  FNIP  THEN
+   ELSE
+      FDROP
+      FPX-NAN!
+   THEN
 ;
+
 
 : F>D ( -- d ) (F r -- ) \ 12.6.1.1470 F>D
    (G d is the double-cell signed-integer equivalent of the integer portion of r.)
