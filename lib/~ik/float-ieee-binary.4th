@@ -1862,6 +1862,25 @@ FATAN-3RDORDER-C FONE F+  FCONSTANT FATAN-3RDORDER-CP1
 
 
 \ DEBUG-ON
+: FREXP (S -- exp flag ) (F r -- fr )
+   \G Decompose given floating point value r into a normalized fraction and an integral power of two.
+   \G flag is true if r is not a special value - NaN or infinity.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN ?FPX-INF OR  IF
+      FPX-NAN! FALSE
+      EXIT
+   THEN
+   FP>
+   DUP FPFLAGS>EXP >R
+   FPV-EXP-MASK INVERT AND
+   >FP
+   R> TRUE
+;
+\DEBUG-OFF
+
+
+\ DEBUG-ON
 64  CONSTANT  FLN-ITERATIONS-DEFAULT
 
 : FLN-TAYLOR (S +n -- ) (F r1 -- r2 )
