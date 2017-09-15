@@ -2151,12 +2151,50 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
 
 
 \ DEBUG-ON
+: F**-INTEGER (S +n -- ) (F r1 -- r2 )
+   \G Raise r1 to the integer power +n.
+   \DEBUG CR ." F**-INTEGER-INPUT: " CR DUP H.8 CR F.DUMP CR
+   DUP 0=  IF  DROP FDROP FONE EXIT  THEN
+   FONE
+   BEGIN
+      DUP 0<>
+   WHILE
+      DUP 1 AND  IF  FOVER F*  THEN
+      1 RSHIFT
+      DUP 0<>  IF  FSWAP FDUP F* FSWAP  THEN
+   REPEAT
+   DROP
+   FNIP
+   \DEBUG CR ." F**-INTEGER-RESULT: " CR F.DUMP CR
+;
+
 : F** (F r1 r2 -- r3 )  \ 12.6.2.1415 F**
    \G Raise r1 to the power r2, giving the product r3.
    2 ?FPSTACK-UNDERFLOW
-   1 ?FPSTACK-OVERFLOW
+   2 ?FPSTACK-OVERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
    \DEBUG S" F**-INPUT: " CR TYPE CR F.DUMP CR
+   ?FPX0<  IF
+      FNEGATE
+      RECURSE
+      FONE FSWAP F/
+      \DEBUG S" F**-RESULT: " CR TYPE CR F.DUMP CR
+      EXIT
+   THEN
+   FDUP FDUP FLOOR F=  IF
+      F>D
+      SWAP
+      F**-INTEGER
+      DUP 0<>  IF
+         FDUP
+         F**-INTEGER
+         F*
+      ELSE
+         DROP
+      THEN
+      \DEBUG S" F**-RESULT: " CR TYPE CR F.DUMP CR
+      EXIT
+   THEN
    FOVER F0= IF
       FNIP
       FDUP F0= IF
