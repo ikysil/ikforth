@@ -721,9 +721,9 @@ USER F/-XM   3 CELLS USER-ALLOC
    \DEBUG S" (F/EXACT)-INPUT: " CR TYPE CR H.S CR
    2>R 2>R
    0 S>T F/-Q T!
-   0 0 FPV-MSBIT T2/ [ FPV-MSBIT INVERT ] LITERAL AND F/-QBIT T!
-   0 2R>         T2/ [ FPV-MSBIT INVERT ] LITERAL AND T2/ F/-YM T!
-   0 2R>         T2/ [ FPV-MSBIT INVERT ] LITERAL AND T2/ TNEGATE F/-XM T!
+   0 0 FPV-MSBIT 1 TRSHIFT F/-QBIT T!
+   0 2R>         2 TRSHIFT F/-YM T!
+   0 2R>         2 TRSHIFT TNEGATE F/-XM T!
    BEGIN
       F/-QBIT T@ T0<>
       F/-YM   T@ T0<>
@@ -1288,19 +1288,19 @@ USER >FLOAT-FRA?       1 CELLS USER-ALLOC
 
 
 0 FPV-MSBIT 1. D- 2CONSTANT FLOOR-M-MASK
-D# 32 CONSTANT FPV-BITS/CELL
 
-: DRSHIFT (S xd n -- xd')
-   \G Shift double value xd to the right by n positions preserving most significant bit
-   FPV-BITS/CELL OVER U< IF  DROP 2DROP 0. EXIT  THEN
-   OVER OVER FPV-BITS/CELL SWAP -  \ S: xd n xhi FPV-BITS/CELL-n
-   LSHIFT >R                       \ S: xd n      R: xhi<<(FPV-BITS/CELL-n)
-   TUCK RSHIFT >R                  \ S: xlo n     R: xhi<<(FPV-BITS/CELL-n) xhi>>n
-   RSHIFT R> R>                    \ S: xlo>>n xhi>>n xhi<<(FPV-BITS/CELL-n)
-   ROT OR SWAP
+: DRSHIFT (S ud1 u -- ud2)
+   \G Perform a logic right shift of u bit-places on ud1, giving ud2.
+   DUP 0=  IF  DROP EXIT  THEN
+\   DOUBLE-BITS OVER U<  IF  DROP 2DROP 0 S>D EXIT  THEN
+\   CELL-BITS   OVER U<  IF  >R NIP 0 R> CELL-BITS -  THEN
+   >R
+   R@ /RSHIFT          \ S: lo1 hi2 lo1'
+   ROT R> /RSHIFT      \ S: hi2 lo1' lo2 lo'
+   DROP OR SWAP
 ;
 
-: DAND (S xd1 xd2 -- xd3 )
+: DAND (S xd1 xd2 -- xd3)
    \G xd3 is the result of bit AND between xd1 and xd2.
    ROT AND
    ROT ROT AND

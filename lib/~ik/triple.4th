@@ -107,5 +107,36 @@ ONLY FORTH DEFINITIONS
    D+
 ;
 
+S" ADDRESS-UNITS-BITS" ENVIRONMENT?  [IF]
+DUP CELLS      CONSTANT  CELL-BITS
+CELL-BITS 2 *  CONSTANT  DOUBLE-BITS
+CELL-BITS 3 *  CONSTANT  TRIPLE-BITS
+[THEN]
+
+: /RSHIFT (S n u -- n1 n2)
+   \G Split the value n for logic right shift of u bit-places.
+   \G n1 is the same as n1 u RSHIFT.
+   \G n2 contains bits shifted out of the cell to the right.
+   >R
+   DUP R@ RSHIFT
+   SWAP
+   CELL-BITS R> - LSHIFT
+;
+
+: TRSHIFT (S t1 u -- t2)
+   \G Perform a logic right shift of u bit-places on t1, giving t2.
+   \G Put zeroes into the most significant bits vacated by the shift.
+   TRIPLE-BITS OVER U<  IF  DROP 3DROP 0 S>T EXIT  THEN
+   DOUBLE-BITS OVER U<  IF  2SWAP 2DROP 0. ROT DOUBLE-BITS -  THEN
+   CELL-BITS   OVER U<  IF  2>R NIP 2R> 0 SWAP CELL-BITS   -  THEN
+   >R
+   R@ /RSHIFT          \ S: lo1 mi1 hi2 mi1'
+   2SWAP R@ /RSHIFT    \ S: hi2 mi1' lo1 mi2' lo1'
+   ROT R> /RSHIFT      \ S: hi2 mi1' mi2' lo1' lo2' lo'
+   DROP
+   OR -ROT             \ S: hi2 lo2 mi1' mi2'
+   OR ROT              \ S: lo2 mi2 hi2
+;
+
 
 REPORT-NEW-NAME !
