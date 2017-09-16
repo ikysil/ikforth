@@ -1287,13 +1287,11 @@ USER >FLOAT-FRA?       1 CELLS USER-ALLOC
 ; IS INTERPRET-WORD-NOT-FOUND
 
 
-0 FPV-MSBIT 1. D- 2CONSTANT FLOOR-M-MASK
-
 : DRSHIFT (S ud1 u -- ud2)
    \G Perform a logic right shift of u bit-places on ud1, giving ud2.
    DUP 0=  IF  DROP EXIT  THEN
-\   DOUBLE-BITS OVER U<  IF  DROP 2DROP 0 S>D EXIT  THEN
-\   CELL-BITS   OVER U<  IF  >R NIP 0 R> CELL-BITS -  THEN
+   DOUBLE-BITS OVER U<  IF  DROP 2DROP 0 S>D EXIT  THEN
+   CELL-BITS   OVER U<  IF  >R NIP 0 R> CELL-BITS -  THEN
    >R
    R@ /RSHIFT          \ S: lo1 hi2 lo1'
    ROT R> /RSHIFT      \ S: hi2 lo1' lo2 lo'
@@ -1313,19 +1311,38 @@ USER >FLOAT-FRA?       1 CELLS USER-ALLOC
    INVERT SWAP
 ;
 
+: FLOOR-FR-MASK (S n -- ud)
+   \G Compute mask for fractional part of mantissa given the exponent n.
+   DUP 0<  IF  DROP -1. EXIT  THEN
+   1+
+   DOUBLE-BITS OVER U<  IF  DROP 0 S>D EXIT  THEN
+   CELL-BITS   OVER U<  IF
+      CELL-BITS SWAP -
+      1 SWAP LSHIFT 1-
+      0
+   ELSE
+      -1
+      CELL-BITS ROT -
+      1 SWAP LSHIFT 1-
+   THEN
+;
+
+: FLOOR-FR-MASK-TEST
+   66 -1  DO
+      I FLOOR-FR-MASK
+      CR I 3 .R SPACE H.8 H.8
+   LOOP
+;
+
+\ FLOOR-FR-MASK-TEST CR ABORT
+
 : FLOOR (F r1 -- r2 ) \ 12.6.1.1558 FLOOR
    \G Round r1 to an integral value using the "round toward negative infinity" rule, giving r2.
    1 ?FPSTACK-UNDERFLOW
    ?FPX-NAN  IF  EXIT  THEN
    ?FPX-INF  IF  EXIT  THEN
-   FLOOR-M-MASK
    'FPX FPE@ FPFLAGS>EXP
-   DUP 0< IF
-      DROP
-      2DROP -1.
-   ELSE
-      DRSHIFT
-   THEN
+   FLOOR-FR-MASK
    'FPX FPM@                                \ S: mlo mhi rlo rhi
    \DEBUG S" FLOOR-A: " CR TYPE CR H.S CR F.DUMP CR
    2OVER 2OVER DAND
