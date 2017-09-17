@@ -1040,7 +1040,7 @@ USER >FLOAT-FRA?       1 CELLS USER-ALLOC
 : FSQRT-APPROX (F r1 -- r2 )
    \G r2 is the initial approximation of square root of r1.
    'FPX FPE@ DUP
-   FPFLAGS>EXP 1 RSHIFT FPV-EXP-MASK AND
+   FPFLAGS>EXP 2/ FPV-EXP-MASK AND
    SWAP FPV-EXP-MASK INVERT AND OR
    'FPX FPE!
 ;
@@ -1052,11 +1052,7 @@ USER >FLOAT-FRA?       1 CELLS USER-ALLOC
    ?FPX0= IF  FNIP EXIT  THEN
    FSWAP FOVER      \ F: r2 r1 r2
    F/ F+
-   \ trick for speed - decrement exponent instead of dividing by two
-   'FPX FPE@ DUP
-   FPFLAGS>EXP 1- FPV-EXP-MASK AND
-   SWAP FPV-EXP-MASK INVERT AND OR
-   'FPX FPE!
+   FPX2/
 ;
 
 : FSQRT-NEWTON (S +n -- ) (F r1 r2 -- r3 )
