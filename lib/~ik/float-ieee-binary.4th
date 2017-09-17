@@ -290,6 +290,17 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
    FPV-SIGN-MASK AND FPV-NEGATIVE =
 ;
 
+
+: FPX2/ (F r1 -- r2)
+   \G r2 is r1 divided by two.
+   \ trick for speed - decrement exponent instead of dividing by two
+   'FPX FPE@ DUP
+   FPFLAGS>EXP 1- FPV-EXP-MASK AND
+   SWAP FPV-EXP-MASK INVERT AND OR
+   'FPX FPE!
+;
+
+
 ONLY FORTH DEFINITIONS ALSO FLOAT-IEEE-BINARY-PRIVATE
 
 \ public definitions go here
@@ -1792,19 +1803,19 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
 
 
 \ DEBUG-ON
-: F**-INTEGER (S +n -- ) (F r1 -- r2 )
-   \G Raise r1 to the integer power +n.
+: F**-INTEGER (S ud -- ) (F r1 -- r2 )
+   \G Raise r1 to the integer power ud.
    \DEBUG CR ." F**-INTEGER-INPUT: " CR DUP H.8 CR F.DUMP CR
-   DUP 0=  IF  DROP FDROP FONE EXIT  THEN
+   2DUP D0=  IF  2DROP FDROP FONE EXIT  THEN
    FONE
    BEGIN
-      DUP 0<>
+      2DUP OR 0<>
    WHILE
-      DUP 1 AND  IF  FOVER F*  THEN
-      1 RSHIFT
-      DUP 0<>  IF  FSWAP FDUP F* FSWAP  THEN
+      OVER 1 AND   IF  FOVER F*  THEN
+      1 DRSHIFT
+      2DUP OR 0<>  IF  FSWAP FDUP F* FSWAP  THEN
    REPEAT
-   DROP
+   2DROP
    FNIP
    \DEBUG CR ." F**-INTEGER-RESULT: " CR F.DUMP CR
 ;
@@ -1814,26 +1825,28 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
    2 ?FPSTACK-UNDERFLOW
    2 ?FPSTACK-OVERFLOW
    ?FP2OP-NAN  IF  EXIT  THEN
-   \DEBUG S" F**-INPUT: " CR TYPE CR F.DUMP CR
+   \DEBUG CR ." F**-INPUT: " CR F.DUMP CR
    ?FPX0<  IF
       FNEGATE
       RECURSE
       FONE FSWAP F/
-      \DEBUG S" F**-RESULT: " CR TYPE CR F.DUMP CR
+      \DEBUG CR ." F**-RESULT: " CR F.DUMP CR
       EXIT
    THEN
    FDUP FDUP FLOOR F=  IF
-      F>D
-      SWAP
+      0
+      BEGIN
+         ['] F>D CATCH
+         EXC-OUT-OF-RANGE =
+      WHILE
+         FPX2/
+         1+
+      REPEAT
       F**-INTEGER
-      DUP 0<>  IF
-         FDUP
-         F**-INTEGER
-         F*
-      ELSE
-         DROP
-      THEN
-      \DEBUG S" F**-RESULT: " CR TYPE CR F.DUMP CR
+      0 ?DO
+         FDUP F*
+      LOOP
+      \DEBUG CR ." F**-RESULT: " CR F.DUMP CR
       EXIT
    THEN
    FOVER F0= IF
@@ -1857,7 +1870,7 @@ FTEN FLN  FCONSTANT  FLOG-FLNTEN
          FABS FLN F* FEXP
       THEN
    THEN
-   \DEBUG S" F**-RESULT: " CR TYPE CR F.DUMP CR
+   \DEBUG CR ." F**-RESULT: " CR F.DUMP CR
 ;
 \DEBUG-OFF
 
