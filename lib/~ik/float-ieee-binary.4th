@@ -478,6 +478,7 @@ REQUIRES" lib/~ik/float-ieee-binary/f-compare-zero.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-plus-f-minus.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-star.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-slash.4th"
+\ REQUIRES" lib/~ik/float-ieee-binary/f-slash-goldschmidt.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-compare.4th"
 
 
