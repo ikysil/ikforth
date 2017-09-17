@@ -11,14 +11,18 @@ USER F/-XM   3 CELLS USER-ALLOC
    - 1+
 ;
 
+
+\ DEBUG-ON
 : (F/EXACT) (S ud1 ud2 -- udlow udhigh )
    \G Perform exact division of unsigned double values.
-   \DEBUG S" (F/EXACT)-INPUT: " CR TYPE CR H.S CR
+   \DEBUG CR ." (F/EXACT)-INPUT:   " 2OVER 2OVER 2SWAP H.8 H.8 SPACE H.8 H.8
    2>R 2>R
    0 S>T F/-Q T!
    0 0 FPV-MSBIT 1 TRSHIFT F/-QBIT T!
    0 2R>         2 TRSHIFT F/-YM T!
    0 2R>         2 TRSHIFT TNEGATE F/-XM T!
+   \DEBUG CR ." (F/EXACT)-F/-YM:   " F/-YM T@ H.8 SPACE H.8 SPACE H.8
+   \DEBUG CR ." (F/EXACT)-F/-XM:   " F/-XM T@ H.8 SPACE H.8 SPACE H.8
    BEGIN
       F/-QBIT T@ T0<>
       F/-YM   T@ T0<>
@@ -27,20 +31,27 @@ USER F/-XM   3 CELLS USER-ALLOC
       F/-YM T@
       F/-XM T@
       \ DEBUG CR S" F/-LOOP1: " TYPE CR H.S CR
-      T+ DUP 0<
-      \ DEBUG CR S" F/-LOOP2: " TYPE CR H.S CR
+      T+
+      \ DEBUG CR ." (F/EXACT)-LOOP:    " 3DUP H.8 SPACE H.8 SPACE H.8
+      DUP 0<
       IF
          3DROP
+         F/-XM T@
+         T2/
+         F/-XM T!
       ELSE
+         T2*
          F/-YM T!
          F/-Q T@ F/-QBIT T@ 3OR F/-Q T!
       THEN
-      F/-XM   T@ T2/ F/-XM   T!
       F/-QBIT T@ T2/ F/-QBIT T!
+      \ DEBUG CR ." (F/EXACT)-Q:       " F/-Q T@ H.8 SPACE H.8 SPACE H.8
    REPEAT
    0 F/-Q T@
-   \DEBUG S" (F/EXACT)-RESULT: " CR TYPE CR H.S CR
+   \DEBUG CR ." (F/EXACT)-RESULT:  " 2OVER 2OVER H.8 H.8 SPACE H.8 H.8 CR
 ;
+\DEBUG-OFF
+
 
 : (F/NORMALIZE) (S t1 -- t1' exp-corr )
    \G Normalize exact division result - most significant 3 cells.
@@ -114,8 +125,8 @@ USER F/-XM   3 CELLS USER-ALLOC
    (F/EXACT)
    \DEBUG S" F/-EXACT: " CR TYPE CR H.S CR
    (F/NORMALIZE)
-   \DEBUG S" F/-NORMALIZED: " CR TYPE CR H.S CR
    R> + >R
+   \DEBUG CR ." F/-NORM:  " 2OVER 2OVER H.8 H.8 SPACE H.8 H.8 CR
    (F/RN)
    \DEBUG S" F/-ROUND: " CR TYPE CR H.S CR
    R> + R>
