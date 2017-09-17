@@ -55,9 +55,15 @@ USER F/-XM   3 CELLS USER-ALLOC
    R>
 ;
 
+\ DEBUG-ON
 : (F/RN) (S udlo udhi -- ud exp-corr )
    \G Round exact division result to nearest.
    \G exp-corr is exponent correction if required.
+   \DEBUG CR ." (F/RN)-INPUT:  " 2OVER 2OVER H.8 H.8 SPACE H.8 H.8 CR
+   (F*RN)
+   \DEBUG CR ." (F/RN)-RESULT: " 3DUP H.8 SPACE H.8 H.8 CR
+   EXIT
+
    2SWAP OR 0<> 1 AND >R  \ S: dm     R: stiky
    OVER 1 AND R> AND S>D
    \DEBUG S" (F/RN)-CORR: " CR TYPE CR H.S CR
@@ -67,6 +73,8 @@ USER F/-XM   3 CELLS USER-ALLOC
    DUP 0<>  IF  T2/ 1  ELSE  0  THEN
    NIP
 ;
+\DEBUG-OFF
+
 
 : F/ (F r1 r2 -- r3 ) \ 12.6.1.1430 F/
    \G Divide r1 by r2, giving the quotient r3.
@@ -111,7 +119,7 @@ USER F/-XM   3 CELLS USER-ALLOC
    (F/RN)
    \DEBUG S" F/-ROUND: " CR TYPE CR H.S CR
    R> + R>
-   (F*RESULT)
+   (F*/RESULT)
    \DEBUG S" F/-RESULT: " CR TYPE CR H.S CR
    'FPY FPE!
    'FPY FPM!

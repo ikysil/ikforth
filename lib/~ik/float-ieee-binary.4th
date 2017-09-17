@@ -669,13 +669,13 @@ END-CODE COMPILE-ONLY
    \G If r3 is negative, flag is true if the absolute value of (r1 minus r2) is less than
    \G the absolute value of r3 times the sum of the absolute values of r1 and r2.
    3 ?FPSTACK-UNDERFLOW
-   \DEBUG CR S" F~-INPUT: " TYPE CR F.DUMP CR
+   \DEBUG CR ." F~-INPUT: " CR F.DUMP CR
    ?FPX0= IF
       FDROP
       'FPX 'FPY 1 FLOATS TUCK
-      \DEBUG CR S" F~-ENC-INPUT: " TYPE CR H.S CR
+      \DEBUG CR ." F~-ENC-INPUT: " CR H.S CR
       COMPARE 0=
-      \DEBUG CR S" F~-ENC-RESULT: " TYPE CR H.S CR
+      \DEBUG CR ." F~-RESULT: " DUP H.8 CR
       FDROP FDROP
       EXIT
    THEN
@@ -683,22 +683,23 @@ END-CODE COMPILE-ONLY
       FABS FP>          \ F: r1 r2                                S: abs(r3)
       FDUP FABS FP>     \ F: r1 r2                                S: abs(r3) abs(r2)
       FOVER FABS FP>    \ F: r1 r2                                S: abs(r3) abs(r2) abs(r1)
-      \DEBUG CR S" F~-B1: " TYPE CR F.DUMP CR H.S CR
+      \DEBUG CR ." F~-B1: " CR F.DUMP CR H.S CR
       F- FABS           \ F: abs(r1-r2)                           S: abs(r3) abs(r2) abs(r1)
-      \DEBUG CR S" F~-B2: " TYPE CR F.DUMP CR H.S CR
+      \DEBUG CR ." F~-B2: " CR F.DUMP CR H.S CR
       >FP >FP F+        \ F: abs(r1-r2) abs(r1)+abs(r2)           S: abs(r3)
-      \DEBUG CR S" F~-B3: " TYPE CR F.DUMP CR H.S CR
+      \DEBUG CR ." F~-B3: " CR F.DUMP CR H.S CR
       >FP F*            \ F: abs(r1-r2) (abs(r1)+abs(r2))*abs(r3)
-      \DEBUG CR S" F~-B4: " TYPE CR F.DUMP CR H.S CR
+      \DEBUG CR ." F~-B4: " CR F.DUMP CR H.S CR
       F-
-      \DEBUG CR S" F~-B5: " TYPE CR F.DUMP CR H.S CR
+      \DEBUG CR ." F~-B5: " CR F.DUMP CR H.S CR
       F0<
-      \DEBUG CR S" F~-B6: " TYPE CR H.S CR
+      \DEBUG CR ." F~-B6: " CR H.S CR
    ELSE
       FP> F- FABS >FP
-      \DEBUG CR S" F~-C1: " TYPE CR F.DUMP CR
+      \DEBUG CR ." F~-C1: " CR F.DUMP CR
       F<
    THEN
+   \DEBUG CR ." F~-RESULT: " DUP H.8 CR
 ;
 \DEBUG-OFF
 
@@ -933,30 +934,6 @@ USER >FLOAT-FRA?       1 CELLS USER-ALLOC
    DEFERRED INTERPRET-WORD-NOT-FOUND
 ; IS INTERPRET-WORD-NOT-FOUND
 
-
-: DRSHIFT (S ud1 u -- ud2)
-   \G Perform a logic right shift of u bit-places on ud1, giving ud2.
-   DUP 0=  IF  DROP EXIT  THEN
-   DOUBLE-BITS OVER U<  IF  DROP 2DROP 0 S>D EXIT  THEN
-   CELL-BITS   OVER U<  IF  >R NIP 0 R> CELL-BITS -  THEN
-   >R
-   R@ /RSHIFT          \ S: lo1 hi2 lo1'
-   ROT R> /RSHIFT      \ S: hi2 lo1' lo2 lo'
-   DROP OR SWAP
-;
-
-: DAND (S xd1 xd2 -- xd3)
-   \G xd3 is the result of bit AND between xd1 and xd2.
-   ROT AND
-   ROT ROT AND
-   SWAP
-;
-
-: DINVERT (S xd1 -- xd2)
-   \G xd2 is the result of bit INVERT on xd1.
-   INVERT SWAP
-   INVERT SWAP
-;
 
 : FLOOR-FR-MASK (S n -- ud)
    \G Compute mask for fractional part of mantissa given the exponent n.
