@@ -127,6 +127,7 @@ DROP
 : TRSHIFT (S t1 u -- t2)
    \G Perform a logic right shift of u bit-places on t1, giving t2.
    \G Put zeroes into the most significant bits vacated by the shift.
+   DUP 0=  IF  DROP EXIT  THEN
    TRIPLE-BITS OVER U<  IF  DROP 3DROP 0 S>T EXIT  THEN
    DOUBLE-BITS OVER U<  IF  2SWAP 2DROP 0. ROT DOUBLE-BITS -  THEN
    CELL-BITS   OVER U<  IF  2>R NIP 2R> 0 SWAP CELL-BITS   -  THEN
@@ -138,6 +139,29 @@ DROP
    OR -ROT             \ S: hi2 lo2 mi1' mi2'
    OR ROT              \ S: lo2 mi2 hi2
 ;
+
+
+: 3>R (S a b c -- ) (R -- a b c)
+   R>
+   2SWAP 2>R
+   SWAP >R >R
+; COMPILE-ONLY
+
+
+: 3R> (S -- a b c) (R a b c -- )
+   R>
+   2R> ROT
+   R> SWAP >R
+   -ROT
+; COMPILE-ONLY
+
+: 3<>R-TEST
+   1 2 3 3>R
+   3R> . . .
+;
+
+
+\ 3<>R-TEST ABORT
 
 
 REPORT-NEW-NAME !
