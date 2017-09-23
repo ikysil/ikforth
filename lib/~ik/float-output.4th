@@ -4,6 +4,8 @@
 \  Copyright (C) 1999-2017 Illya Kysil
 \
 
+REQUIRES" lib/~ik/sformat.4th"
+
 CR .( Loading FLOAT-OUTPUT definitions )
 
 REPORT-NEW-NAME @
