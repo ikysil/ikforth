@@ -60,11 +60,6 @@ ONLY FORTH DEFINITIONS ALSO SFORMAT-PRIVATE
 \ private definitions are available for use
 
 
-: NOT-IMPLEMENTED
-   TRUE ABORT" NOT IMPLEMENTED"
-;
-
-
 : <% (S -- )
    \G Initialize string formatting process.
    %POSINDEX @ 1+
@@ -142,111 +137,148 @@ INT/COMP: %S" (S chars" -- )
 ;
 
 
-: %N (S n -- )
-   \G Append string representation of signed number n to the current formatted string.
-   NOT-IMPLEMENTED
+: (%UD) (S ud -- c-addr u )
+   \G Format unsigned double ud and return string address and length.
+   <# #S #>
 ;
 
 
-: %NL (S n uw -- )
-   \G Append string representation of signed number n to the current formatted string.
-   \G The string representation is left justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
-;
-
-
-: %NR (S n uw -- )
-   \G Append string representation of signed number n to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
-;
-
-
-: %N0R (S n uw -- )
-   \G Append string representation of signed number n to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   NOT-IMPLEMENTED
-;
-
-
-: %U (S u -- )
-   \G Append string representation of unsigned number u to the current formatted string.
-   NOT-IMPLEMENTED
-;
-
-
-: %UL (S n uw -- )
-   \G Append string representation of unsigned number n to the current formatted string.
-   \G The string representation is left justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
-;
-
-
-: %UR (S n uw -- )
-   \G Append string representation of unsigned number n to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
-;
-
-
-: %U0R (S n uw -- )
-   \G Append string representation of unsigned number n to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   NOT-IMPLEMENTED
+: (%D) (S d -- c-addr u )
+   \G Format signed double d and return string address and length.
+   <#
+   DUP >R
+   DUP 0<  IF  DABS  THEN
+   #S
+   R> SIGN
+   #>
 ;
 
 
 : %D (S d -- )
    \G Append string representation of signed double number d to the current formatted string.
-   NOT-IMPLEMENTED
+   (%D) %S
 ;
 
 
 : %DL (S d uw -- )
    \G Append string representation of signed double number d to the current formatted string.
    \G The string representation is left justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
+   >R
+   (%D)
+   DUP >R
+   %S R> R> SWAP - 0 MAX %SPACES
 ;
 
 
 : %DR (S d uw -- )
    \G Append string representation of signed double number d to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
+   >R
+   (%D)
+   DUP R> SWAP - 0 MAX %SPACES
+   %S
 ;
 
 
 : %D0R (S d uw -- )
    \G Append string representation of signed double number d to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   NOT-IMPLEMENTED
+   >R
+   DUP %SIGN
+   DUP 0<  IF  DABS R> 1- >R  THEN
+   (%UD)
+   DUP R> SWAP - 0 MAX %ZEROES
+   %S
 ;
 
 
 : %DU (S ud -- )
    \G Append string representation of unsigned double number ud to the current formatted string.
-   NOT-IMPLEMENTED
+   (%UD) %S
 ;
 
 
-: %DUL (S d uw -- )
+: %DUL (S ud uw -- )
    \G Append string representation of unsigned double number ud to the current formatted string.
    \G The string representation is left justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
+   >R
+   (%UD)
+   DUP >R
+   %S R> R> SWAP - 0 MAX %SPACES
 ;
 
 
-: %DUR (S d uw -- )
+: %DUR (S ud uw -- )
    \G Append string representation of unsigned double number ud to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw.
-   NOT-IMPLEMENTED
+   >R
+   (%UD)
+   DUP R> SWAP - 0 MAX %SPACES
+   %S
 ;
 
 
-: %DU0R (S d uw -- )
+: %DU0R (S ud uw -- )
    \G Append string representation of unsigned double number ud to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   NOT-IMPLEMENTED
+   >R
+   (%UD)
+   DUP R> SWAP - 0 MAX %ZEROES
+   %S
+;
+
+
+: %N (S n -- )
+   \G Append string representation of signed number n to the current formatted string.
+   S>D %D
+;
+
+
+: %NL (S n uw -- )
+   \G Append string representation of signed number n to the current formatted string.
+   \G The string representation is left justified in the field of minimum width uw.
+   >R S>D R> %DL
+;
+
+
+: %NR (S n uw -- )
+   \G Append string representation of signed number n to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw.
+   >R S>D R> %DR
+;
+
+
+: %N0R (S n uw -- )
+   \G Append string representation of signed number n to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
+   >R S>D R> %D0R
+;
+
+
+: %U (S u -- )
+   \G Append string representation of unsigned number u to the current formatted string.
+   0 %DU
+;
+
+
+: %UL (S n uw -- )
+   \G Append string representation of unsigned number n to the current formatted string.
+   \G The string representation is left justified in the field of minimum width uw.
+   >R 0 R> %DUL
+;
+
+
+: %UR (S n uw -- )
+   \G Append string representation of unsigned number n to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw.
+   >R 0 R> %DUR
+;
+
+
+: %U0R (S n uw -- )
+   \G Append string representation of unsigned number n to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
+   >R 0 R> %DU0R
 ;
 
 
@@ -258,3 +290,67 @@ REPORT-NEW-NAME !
 
 CR <% %s" abc" <% char . %c %> %s %s" xyz" %>
 CR DUMP
+
+CR H.S
+
+CR -10. <% %S" | " %D %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 24 %DL %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 24 %DR %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 24 %D0R %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 14 %DL %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 14 %DR %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 14 %D0R %S"  |" %>
+64 MIN TYPE
+
+CR -10. <% %S" | " %DU %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 24 %DUL %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 24 %DUR %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 24 %DU0R %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 14 %DUL %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 14 %DUR %S"  |" %>
+64 MIN TYPE
+CR -10. <% %S" | " D# 14 %DU0R %S"  |" %>
+64 MIN TYPE
+
+CR -10 <% %S" | " %N %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 24 %NL %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 24 %NR %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 24 %N0R %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 14 %NL %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 14 %NR %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 14 %N0R %S"  |" %>
+64 MIN TYPE
+
+CR -10 <% %S" | " %U %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 24 %UL %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 24 %UR %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 24 %U0R %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 14 %UL %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 14 %UR %S"  |" %>
+64 MIN TYPE
+CR -10 <% %S" | " D# 14 %U0R %S"  |" %>
+64 MIN TYPE
+
+CR H.S
