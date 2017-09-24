@@ -59,6 +59,7 @@ ONLY FORTH DEFINITIONS ALSO SFORMAT-PRIVATE
 \ public definitions go here
 \ private definitions are available for use
 
+SYNONYM %CURR %CURR
 
 : <% (S -- )
    \G Initialize string formatting process.

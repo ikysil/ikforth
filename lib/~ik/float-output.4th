@@ -55,6 +55,31 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
 ;
 
 
+: %FSL (S uw -- ) (F r -- )
+   \G Append string representation of floating point number r to the current formatted string.
+   \G The string representation is left justified in the field of minimum width uw.
+   %CURR NIP + >R
+   %FS
+   %CURR NIP R> SWAP - 0 MAX %SPACES
+;
+
+
+: %FSR (S uw -- ) (F r -- )
+   \G Append string representation of floating point number r to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw.
+   %CURR CHARS + >R          \ S: uw                 R: c-addr1
+   %FS
+   %CURR CHARS +             \ S: uw c-addr2         R: c-addr1
+   DUP R@ - DUP >R           \ S: uw c-addr2 uf      R: c-addr1 uf
+   ROT CHARS SWAP - 0 MAX    \ S: c-addr2 usp        R: c-addr1
+   NIP DUP %SPACES           \ S: usp                R: c-addr1 uf
+   R> R@ ROT                 \ S: uf c-addr1 usp     R: c-addr1
+   DUP >R                    \ S: uf c-addr1 usp     R: c-addr1 usp
+   OVER + ROT MOVE           \ S:                    R: c-addr1 usp
+   R> R> SWAP BL FILL
+;
+
+
 : FS. (F r -- ) \ 12.6.2.1613 FS.
    \G Display, with a trailing space, the top number on the floating-point stack in scientific notation: <significand><exponent> where:
    \G
@@ -130,3 +155,14 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
+
+\EOF
+
+123.e  25  <% '|' %c %fsl '|' %c %> cr type
+123.e  25  <% '|' %c %fsl '|' %c %> cr type
+-123.e  25  <% '|' %c %fsr '|' %c %> cr type
+-123.e  25  <% '|' %c %fsr '|' %c %> cr type
+123.e 15  <% '|' %c %fsl '|' %c %> cr type
+123.e 15  <% '|' %c %fsr '|' %c %> cr type
+-123.e 15  <% '|' %c %fsl '|' %c %> cr type
+-123.e 15  <% '|' %c %fsr '|' %c %> cr type
