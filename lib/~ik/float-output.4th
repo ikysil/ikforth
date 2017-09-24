@@ -113,8 +113,8 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
             DUP 0>
          WHILE
             2R>
-            1 /STRING
             OVER C@ %C
+            1 /STRING
             2>R
             1-
          REPEAT
