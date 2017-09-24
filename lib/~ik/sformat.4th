@@ -144,6 +144,12 @@ INT/COMP: %S" (S chars" -- )
 ;
 
 
+: %CR (S -- )
+   \G Append characters to the current formatted string so that the characters which follow will appeara t the beginning of the next line of output.
+   13 %C 10 %C
+;
+
+
 : (%UD) (S ud -- c-addr u )
    \G Format unsigned double ud and return string address and length.
    <# #S #>
