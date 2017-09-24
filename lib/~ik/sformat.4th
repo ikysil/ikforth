@@ -7,7 +7,7 @@
 CR .( Loading SFORMAT definitions )
 
 REPORT-NEW-NAME @
-REPORT-NEW-NAME ON
+REPORT-NEW-NAME OFF
 
 ONLY FORTH DEFINITIONS
 
@@ -137,6 +137,12 @@ INT/COMP: %S" (S chars" -- )
 ;
 
 
+: %DOT (S -- )
+   \G Append character '.' (dot) to the current formatted string.
+   [CHAR] . %C
+;
+
+
 : (%UD) (S ud -- c-addr u )
    \G Format unsigned double ud and return string address and length.
    <# #S #>
@@ -156,34 +162,112 @@ INT/COMP: %S" (S chars" -- )
 
 : %D (S d -- )
    \G Append string representation of signed double number d to the current formatted string.
-   (%D) %S
+   (%D) %S %DOT
 ;
 
 
 : %DL (S d uw -- )
    \G Append string representation of signed double number d to the current formatted string.
    \G The string representation is left justified in the field of minimum width uw.
-   >R
+   1- >R
    (%D)
    DUP >R
-   %S R> R> SWAP - 0 MAX %SPACES
+   %S %DOT
+   R> R> SWAP - 0 MAX %SPACES
 ;
 
 
 : %DR (S d uw -- )
    \G Append string representation of signed double number d to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw.
-   >R
+   1- >R
    (%D)
    DUP R> SWAP - 0 MAX %SPACES
-   %S
+   %S %DOT
 ;
 
 
 : %D0R (S d uw -- )
    \G Append string representation of signed double number d to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
+   1- >R
+   DUP %SIGN
+   DUP 0<  IF  DABS R> 1- >R  THEN
+   (%UD)
+   DUP R> SWAP - 0 MAX %ZEROES
+   %S %DOT
+;
+
+
+: %DU (S ud -- )
+   \G Append string representation of unsigned double number ud to the current formatted string.
+   (%UD) %S %DOT
+;
+
+
+: %DUL (S ud uw -- )
+   \G Append string representation of unsigned double number ud to the current formatted string.
+   \G The string representation is left justified in the field of minimum width uw.
+   1- >R
+   (%UD)
+   DUP >R
+   %S %DOT
+   R> R> SWAP - 0 MAX %SPACES
+;
+
+
+: %DUR (S ud uw -- )
+   \G Append string representation of unsigned double number ud to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw.
+   1- >R
+   (%UD)
+   DUP R> SWAP - 0 MAX %SPACES
+   %S %DOT
+;
+
+
+: %DU0R (S ud uw -- )
+   \G Append string representation of unsigned double number ud to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
+   1- >R
+   (%UD)
+   DUP R> SWAP - 0 MAX %ZEROES
+   %S %DOT
+;
+
+
+: %N (S n -- )
+   \G Append string representation of signed number n to the current formatted string.
+   S>D (%D) %S
+;
+
+
+: %NL (S n uw -- )
+   \G Append string representation of signed number n to the current formatted string.
+   \G The string representation is left justified in the field of minimum width uw.
    >R
+   S>D (%D)
+   DUP >R
+   %S
+   R> R> SWAP - 0 MAX %SPACES
+;
+
+
+: %NR (S n uw -- )
+   \G Append string representation of signed number n to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw.
+   >R
+   S>D (%D)
+   DUP R> SWAP - 0 MAX %SPACES
+   %S
+;
+
+
+: %N0R (S n uw -- )
+   \G Append string representation of signed number n to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
+   >R
+   S>D
    DUP %SIGN
    DUP 0<  IF  DABS R> 1- >R  THEN
    (%UD)
@@ -192,93 +276,40 @@ INT/COMP: %S" (S chars" -- )
 ;
 
 
-: %DU (S ud -- )
-   \G Append string representation of unsigned double number ud to the current formatted string.
-   (%UD) %S
-;
-
-
-: %DUL (S ud uw -- )
-   \G Append string representation of unsigned double number ud to the current formatted string.
-   \G The string representation is left justified in the field of minimum width uw.
-   >R
-   (%UD)
-   DUP >R
-   %S R> R> SWAP - 0 MAX %SPACES
-;
-
-
-: %DUR (S ud uw -- )
-   \G Append string representation of unsigned double number ud to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw.
-   >R
-   (%UD)
-   DUP R> SWAP - 0 MAX %SPACES
-   %S
-;
-
-
-: %DU0R (S ud uw -- )
-   \G Append string representation of unsigned double number ud to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   >R
-   (%UD)
-   DUP R> SWAP - 0 MAX %ZEROES
-   %S
-;
-
-
-: %N (S n -- )
-   \G Append string representation of signed number n to the current formatted string.
-   S>D %D
-;
-
-
-: %NL (S n uw -- )
-   \G Append string representation of signed number n to the current formatted string.
-   \G The string representation is left justified in the field of minimum width uw.
-   >R S>D R> %DL
-;
-
-
-: %NR (S n uw -- )
-   \G Append string representation of signed number n to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw.
-   >R S>D R> %DR
-;
-
-
-: %N0R (S n uw -- )
-   \G Append string representation of signed number n to the current formatted string.
-   \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   >R S>D R> %D0R
-;
-
-
 : %U (S u -- )
    \G Append string representation of unsigned number u to the current formatted string.
-   0 %DU
+   0 (%UD) %S
 ;
 
 
 : %UL (S n uw -- )
    \G Append string representation of unsigned number n to the current formatted string.
    \G The string representation is left justified in the field of minimum width uw.
-   >R 0 R> %DUL
+   >R
+   0 (%UD)
+   DUP >R
+   %S
+   R> R> SWAP - 0 MAX %SPACES
 ;
 
 
 : %UR (S n uw -- )
    \G Append string representation of unsigned number n to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw.
-   >R 0 R> %DUR
+   >R
+   0 (%UD)
+   DUP R> SWAP - 0 MAX %SPACES
+   %S
 ;
 
 
 : %U0R (S n uw -- )
    \G Append string representation of unsigned number n to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw and padded using zeroes.
-   >R 0 R> %DU0R
+   >R
+   0 (%UD)
+   DUP R> SWAP - 0 MAX %ZEROES
+   %S
 ;
 
 
