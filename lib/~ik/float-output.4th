@@ -25,13 +25,8 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
 \ private definitions are available for use
 
 
-: FS. (F r -- ) \ 12.6.2.1613 FS.
-   \G Display, with a trailing space, the top number on the floating-point stack in scientific notation: <significand><exponent> where:
-   \G
-   \G <significand>	:=	[-]<digit>.<digits0>
-   \G <exponent>	:=	E[-]<digits>
-   \G An ambiguous condition exists if the value of BASE is not (decimal) ten or if the character string representation exceeds
-   \G the size of the pictured numeric output string buffer.
+: %FS (F r -- )
+   \G Append string representation of floating point number r to the current formatted string.
    +S"BUFFER /S"BUFFER
    2DUP BL FILL
    PRECISION MIN
@@ -40,24 +35,34 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
    2R> -TRAILING 2>R
    IF
       \ r was in the implementation-defined range of floating-point numbers.
-      IF  [CHAR] - EMIT  THEN
-      2R> DUP 0=  IF  SPACE 2DROP DROP EXIT  THEN
-      OVER C@ DUP [CHAR] 0 <> SWAP EMIT
-      [CHAR] . EMIT
+      %SIGN
+      2R> DUP 0=  IF  2DROP DROP EXIT  THEN
+      OVER C@ DUP [CHAR] 0 <> SWAP %C
+      %DOT
       IF
          1 /STRING
-         TYPE
+         %S
       ELSE
          2DROP
       THEN
-      [CHAR] E EMIT
-      1- S>D (D.)
+      [CHAR] E %C
+      1- %N
    ELSE
       2DROP
       2R>
-      TYPE
+      %S
    THEN
-   SPACE
+;
+
+
+: FS. (F r -- ) \ 12.6.2.1613 FS.
+   \G Display, with a trailing space, the top number on the floating-point stack in scientific notation: <significand><exponent> where:
+   \G
+   \G <significand>	:=	[-]<digit>.<digits0>
+   \G <exponent>	:=	E[-]<digits>
+   \G An ambiguous condition exists if the value of BASE is not (decimal) ten or if the character string representation exceeds
+   \G the size of the pictured numeric output string buffer.
+   <% %FS BL %C %> TYPE
 ;
 
 
