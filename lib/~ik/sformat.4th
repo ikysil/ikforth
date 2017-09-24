@@ -132,6 +132,34 @@ INT/COMP: %S" (S chars" -- )
 ;
 
 
+: %EXECUTE-JL (S uw xt -- )
+   \G Execute xt and append string representation produced by the execution of xt to the current formatted string.
+   \G xt is expected to produce the output to the current formatted string.
+   \G The string representation is left justified in the field of minimum width uw.
+   SWAP
+   %CURR NIP + >R
+   EXECUTE
+   %CURR NIP R> SWAP - 0 MAX %SPACES
+;
+
+
+: %EXECUTE-JR (S uw xt -- )
+   \G Execute xt and append string representation produced by the execution of xt to the current formatted string.
+   \G xt is expected to produce the output to the current formatted string.
+   \G The string representation is right justified in the field of minimum width uw.
+   %CURR CHARS + >R          \ S: uw xt              R: c-addr1
+   EXECUTE
+   %CURR CHARS +             \ S: uw c-addr2         R: c-addr1
+   DUP R@ - DUP >R           \ S: uw c-addr2 uf      R: c-addr1 uf
+   ROT CHARS SWAP - 0 MAX    \ S: c-addr2 usp        R: c-addr1
+   NIP DUP %SPACES           \ S: usp                R: c-addr1 uf
+   R> R@ ROT                 \ S: uf c-addr1 usp     R: c-addr1
+   DUP >R                    \ S: uf c-addr1 usp     R: c-addr1 usp
+   OVER + ROT MOVE           \ S:                    R: c-addr1 usp
+   R> R> SWAP BL FILL
+;
+
+
 : %SIGN (S n -- )
    \G Append character '-' (minus) to the current formatted string if n is negative.
    0<  IF  [CHAR] - %C  THEN

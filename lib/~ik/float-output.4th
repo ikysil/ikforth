@@ -58,25 +58,14 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
 : %FSL (S uw -- ) (F r -- )
    \G Append string representation of floating point number r to the current formatted string.
    \G The string representation is left justified in the field of minimum width uw.
-   %CURR NIP + >R
-   %FS
-   %CURR NIP R> SWAP - 0 MAX %SPACES
+   ['] %FS %EXECUTE-JL
 ;
 
 
 : %FSR (S uw -- ) (F r -- )
    \G Append string representation of floating point number r to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw.
-   %CURR CHARS + >R          \ S: uw                 R: c-addr1
-   %FS
-   %CURR CHARS +             \ S: uw c-addr2         R: c-addr1
-   DUP R@ - DUP >R           \ S: uw c-addr2 uf      R: c-addr1 uf
-   ROT CHARS SWAP - 0 MAX    \ S: c-addr2 usp        R: c-addr1
-   NIP DUP %SPACES           \ S: usp                R: c-addr1 uf
-   R> R@ ROT                 \ S: uf c-addr1 usp     R: c-addr1
-   DUP >R                    \ S: uf c-addr1 usp     R: c-addr1 usp
-   OVER + ROT MOVE           \ S:                    R: c-addr1 usp
-   R> R> SWAP BL FILL
+   ['] %FS %EXECUTE-JR
 ;
 
 
@@ -140,25 +129,14 @@ ONLY FORTH DEFINITIONS ALSO FLOAT-OUTPUT-PRIVATE
 : %FEL (S uw -- ) (F r -- )
    \G Append string representation of floating point number r using engineering notation to the current formatted string.
    \G The string representation is left justified in the field of minimum width uw.
-   %CURR NIP + >R
-   %FE
-   %CURR NIP R> SWAP - 0 MAX %SPACES
+   ['] %FE %EXECUTE-JL
 ;
 
 
 : %FER (S uw -- ) (F r -- )
    \G Append string representation of floating point number r using engineering notation to the current formatted string.
    \G The string representation is right justified in the field of minimum width uw.
-   %CURR CHARS + >R          \ S: uw                 R: c-addr1
-   %FE
-   %CURR CHARS +             \ S: uw c-addr2         R: c-addr1
-   DUP R@ - DUP >R           \ S: uw c-addr2 uf      R: c-addr1 uf
-   ROT CHARS SWAP - 0 MAX    \ S: c-addr2 usp        R: c-addr1
-   NIP DUP %SPACES           \ S: usp                R: c-addr1 uf
-   R> R@ ROT                 \ S: uf c-addr1 usp     R: c-addr1
-   DUP >R                    \ S: uf c-addr1 usp     R: c-addr1 usp
-   OVER + ROT MOVE           \ S:                    R: c-addr1 usp
-   R> R> SWAP BL FILL
+   ['] %FE %EXECUTE-JR
 ;
 
 
@@ -188,6 +166,7 @@ REPORT-NEW-NAME !
 
 \EOF
 
+123.e       <% %CR '|' %c %fs  '|' %c %> type
 123.e    25 <% %CR '|' %c %fsl '|' %c %> type
 123.e    25 <% %CR '|' %c %fsl '|' %c %> type
 -123.e   25 <% %CR '|' %c %fsr '|' %c %> type
