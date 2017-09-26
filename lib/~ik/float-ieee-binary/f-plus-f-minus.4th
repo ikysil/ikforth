@@ -64,23 +64,6 @@ F+RBIT 1 RSHIFT OR     CONSTANT  F+GRSBITS
 ;
 
 
-: ~~~(F+RN) (S t -- t')
-   \G Round exact addition result to nearest.
-   EXIT
-   \DEBUG S" (F+RN)-INPUT: " CR TYPE CR H.S CR
-   ROT DUP >R -ROT           \ S: t           R: tlo
-   R@ F+GUARDBIT   AND 0<>   \ S: t g         R: tlo
-   R@ F+EVENBIT    AND 0<>   \ S: t g e       R: tlo
-   R@ F+STICKYBITS AND 0<>   \ S: t g e s     R: tlo
-   \DEBUG S" (F+RN)-BITS: " CR TYPE CR H.S CR
-   R> DROP
-   AND OR F+EVENBIT AND
-   \DEBUG S" (F+RN)-CORR: " CR TYPE CR H.S CR
-   S>T T+
-   \DEBUG S" (F+RN)-RESULT: " CR TYPE CR H.S CR
-;
-
-
 : (F+GRSE) (S u -- grs e)
    \G Compute grs and e bits for result of F+/F- based on lowest cell of exact result.
    >R
@@ -145,6 +128,16 @@ F+RBIT 1 RSHIFT OR     CONSTANT  F+GRSBITS
 
 
 \ DEBUG-ON
+: (F+-RESULT) (S ud exp sign -- ud nflags )
+   \G Build result representation for the F+ and F-.
+   \DEBUG S" (F+-RESULT)-INPUT: " CR TYPE CR H.S CR
+   FP-RESULT
+   \DEBUG S" (F+-RESULT)-RESULT: " CR TYPE CR H.S CR
+;
+\DEBUG-OFF
+
+
+\ DEBUG-ON
 : F+ (F r1 r2 -- r3 ) \ 12.6.1.1420 F+
    (G Add r1 to r2 giving the sum r3.)
    2 ?FPSTACK-UNDERFLOW
@@ -197,14 +190,13 @@ F+RBIT 1 RSHIFT OR     CONSTANT  F+GRSBITS
    \DEBUG CR ." F+-ROUND:   " 3DUP H.8 H.8 H.8 CR
    (F+GD-)
    \DEBUG CR ." F+-SUM:     " 3DUP H.8 H.8 H.8 CR
-   FDROP
    ABORT" MUST BE ZERO IN F+!"
-   R> R> SWAP
-   FPFLAGS>EXP FPV-EXP-MASK AND OR
+   R> R>
+   (F+-RESULT)
    \DEBUG CR ." F+-RESULT:  " 3DUP H.8 SPACE H.8 H.8 CR
-   'FPX FPE!
-   'FPX FPM!
-   FPX-NORMALIZE
+   'FPY FPE!
+   'FPY FPM!
+   FDROP
    \DEBUG CR ." F+-RESULT: " CR F.DUMP CR
 ;
 \DEBUG-OFF

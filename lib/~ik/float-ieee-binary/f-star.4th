@@ -81,33 +81,9 @@ CELL-BITS 3 -       CONSTANT  /F*GRSSHIFT
    DUP 0<>  IF  T2/ 1  ELSE  0  THEN
    NIP
    \DEBUG CR ." (F*RN)-RESULT: " 3DUP H.8 SPACE H.8 H.8 CR
-   EXIT
-
-
-   2SWAP OR 0<> 1 AND >R  \ S: dm     R: stiky
-   OVER 1 AND R> AND S>D
-   \DEBUG S" (F*RN)-CORR: " CR TYPE CR H.S CR
-   2>R 0 2R> 0
-   \DEBUG S" (F*RN)-ROUND: " CR TYPE CR H.S CR
-   T+
-   DUP 0<>  IF  T2/ 1  ELSE  0  THEN
-   NIP
 ;
 \DEBUG-OFF
 
-
-: ~~~(F*RN) (S udlow udhigh -- ud exp-corr )
-   \G Round exact multiplication result to nearest.
-   \G exp-corr is exponent correction if required.
-   2SWAP OR 0<> 1 AND >R  \ S: dm     R: stiky
-   OVER 1 AND R> AND S>D
-   \DEBUG S" (F*RN)-CORR: " CR TYPE CR H.S CR
-   2>R 0 2R> 0
-   \DEBUG S" (F*RN)-ROUND: " CR TYPE CR H.S CR
-   T+
-   DUP 0<>  IF  T2/ 1  ELSE  0  THEN
-   NIP
-;
 
 : (F*EXACT) (S ud1 ud2 -- udlow udhigh )
    \G Perform exact multiplication of unsigned double values.
@@ -158,11 +134,8 @@ CELL-BITS 3 -       CONSTANT  /F*GRSSHIFT
 : (F*/RESULT) (S ud exp sign -- ud nflags )
    \G Build result representation for the F* and F/.
    \DEBUG S" (F*/RESULT)-INPUT: " CR TYPE CR H.S CR
-   OVER FPV-EXP-MAX >  IF  >R DROP 2DROP R> FINF EXIT  THEN
-   OVER FPV-EXP-MIN <  IF  2SWAP 2DROP NIP 0. ROT FPV-ZERO-MASK OR EXIT  THEN
-   SWAP
-   FPV-EXP-MASK AND
-   OR
+   FP-RESULT
+   \DEBUG S" (F*/RESULT)-RESULT: " CR TYPE CR H.S CR
 ;
 
 : F* (F r1 r2 -- r3 ) \ 12.6.1.1410 F*
