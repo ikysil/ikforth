@@ -654,7 +654,7 @@ REQUIRES" lib/~ik/float-ieee-binary/to-float.4th"
 ;
 
 
-12 CONSTANT FSQRT-ITERATIONS-DEFAULT
+32 CONSTANT FSQRT-ITERATIONS-DEFAULT
 
 : FSQRT-APPROX (F r1 -- r2 )
    \G r2 is the initial approximation of square root of r1.
