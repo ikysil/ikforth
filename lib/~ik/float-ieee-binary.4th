@@ -316,10 +316,23 @@ DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
    REPEAT
    ABORT" MUST BE ZERO IN FP-RESULT!"
    R> R>
+   2OVER D0=  IF  NIP FPV-ZERO-MASK OR EXIT  THEN
    OVER FPV-EXP-MIN <=  IF  NIP FPV-EXP-MIN OR EXIT  THEN
    SWAP
    FPV-EXP-MASK AND
    OR
+;
+
+
+: ?FPX-SUBN (S -- flag ) (F r -- r )
+   \G Flag is true if and only if r is a subnormal value.
+   'FPX FPE@ FPFLAGS>EXP FPV-EXP-MIN 1+ <=
+;
+
+
+: ?FPY-SUBN (S -- flag ) (F r1 r2 -- r1 r2 )
+   \G Flag is true if and only if r1 is a subnormal value.
+   'FPY FPE@ FPFLAGS>EXP FPV-EXP-MIN 1+ <=
 ;
 
 

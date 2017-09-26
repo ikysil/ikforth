@@ -35,6 +35,8 @@
    0 FALSE
 ;
 
+
+\ DEBUG-ON
 : FPCMP (S -- flag1 flag2 ) (F r1 r2 -- r1 r2 )
    \G Compare r1 and r2, output flag1 as follows:
    \G -1 when r1<r2
@@ -57,6 +59,11 @@
    \DEBUG S" FPCMP-EXP: " CR TYPE CR 2DUP SWAP H.8 SPACE H.8 CR
    - SGN
    DUP 0=  IF
+      ?FPY-SUBN ?FPX-SUBN AND  IF
+         DROP
+         0 FALSE
+         EXIT
+      THEN
       DROP
       'FPY FPM@ 0
       'FPX FPM@ 0
@@ -68,13 +75,15 @@
          >R 2DROP R>
       THEN
    ELSE
-      ?FPY0=  IF  DROP -1  THEN
-      ?FPX0=  IF  DROP  1  THEN
+      ?FPY0=  IF  DROP ?FPX-SUBN  IF  0  ELSE  -1  THEN  THEN
+      ?FPX0=  IF  DROP ?FPY-SUBN  IF  0  ELSE   1  THEN  THEN
    THEN
    ?FPY0< ?FPX0< OR  IF  NEGATE  THEN
    TRUE
    \DEBUG S" FPCMP-RESULT: " CR TYPE CR 2DUP SWAP H.8 SPACE H.8 CR
 ;
+\DEBUG-OFF
+
 
 : FCMP (S -- flag1 flag2 ) (F r1 r2 -- )
    \G Compare r1 and r2, output flag1 as follows:
@@ -187,7 +196,8 @@
    \DEBUG S" F=-INPUT: " CR TYPE CR F.DUMP CR
    ?FP2OP-NAN         IF  FDROP FALSE      EXIT  THEN
    ?FPX0= ?FPY0= AND  IF  FDROP FDROP TRUE EXIT  THEN
-   0. D>F F~
+   FPCMP DROP FDROP FDROP
+   0=
    \DEBUG S" F=-RESULT: " CR TYPE CR H.S CR
 ;
 \DEBUG-OFF
