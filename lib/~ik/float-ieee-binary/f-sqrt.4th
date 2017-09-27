@@ -37,20 +37,12 @@
    \G Calculate square root of r1 given the initial approximation r2 and number of iterations +n.
    \G xt calculates next approximation with stack effect (F r1 r2 -- r3 ).
    1 ?FPSTACK-OVERFLOW
-   >R
-   BEGIN
-      DUP 0>
-      ?FPX0= INVERT \ stop iterations if approximation eq. zero
-      AND
-   WHILE
+   SWAP
+   0 ?DO
       FOVER FSWAP
-      \DEBUG S" FSQRT-NEWTON-A1: " CR TYPE CR F.DUMP CR
-      R@ EXECUTE
-      \DEBUG S" FSQRT-NEWTON-A2: " CR TYPE CR F.DUMP CR
-      1-
-   REPEAT
+      DUP EXECUTE
+   LOOP
    DROP
-   R> DROP
    FNIP
    \DEBUG S" FSQRT-NEWTON-B: " CR TYPE CR F.DUMP CR
 ;
