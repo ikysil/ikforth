@@ -19,18 +19,17 @@
    \G Compare infinities.
    \G flag1 is result of comparation.
    \G flag2 is true if infinity comparation result is available.
-   ?FPX-INF ?FPY-INF INVERT AND  IF
-      -1 TRUE EXIT
+   ?FPY-INF ?FPX-INF AND  IF
+      FPCMP-SIGN DROP TRUE
+      EXIT
    THEN
    ?FPY-INF ?FPX-INF INVERT AND  IF
-       1 TRUE EXIT
+       1 ?FPY0< ?FPX0< OR  IF  NEGATE  THEN
+      TRUE EXIT
    THEN
-   ?FPY-INF ?FPX-INF AND  IF
-      FPCMP-SIGN  IF
-         TRUE EXIT
-      ELSE
-         DROP
-      THEN
+   ?FPX-INF ?FPY-INF INVERT AND  IF
+      -1 ?FPY0< ?FPX0< OR  IF  NEGATE  THEN
+      TRUE EXIT
    THEN
    0 FALSE
 ;
@@ -50,9 +49,9 @@
    ?FPX-NAN ?FPY-NAN OR  IF
       0 FALSE EXIT
    THEN
-   FPCMP-INF  IF  DUP 0<> EXIT  THEN
-   DROP
    FPCMP-SIGN  IF  TRUE EXIT  THEN
+   DROP
+   FPCMP-INF  IF  DUP 0<> EXIT  THEN
    DROP
    'FPY FPE@ FPFLAGS>EXP
    'FPX FPE@ FPFLAGS>EXP
