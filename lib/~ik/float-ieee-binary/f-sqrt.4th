@@ -33,20 +33,6 @@
 ;
 
 
-: FSQRT-NEWTON (S +n xt -- ) (F r1 r2 -- r3 )
-   \G Calculate square root of r1 given the initial approximation r2 and number of iterations +n.
-   \G xt calculates next approximation with stack effect (F r1 r2 -- r3 ).
-   1 ?FPSTACK-OVERFLOW
-   SWAP
-   0 ?DO
-      FOVER FSWAP
-      DUP EXECUTE
-   LOOP
-   DROP
-   FNIP
-   \DEBUG S" FSQRT-NEWTON-B: " CR TYPE CR F.DUMP CR
-;
-
 : FSQRT (F r1 -- r2 ) \ 12.6.2.1618 FSQRT
    \G r2 is the square root of r1. An ambiguous condition exists if r1 is less than zero.
    1 ?FPSTACK-UNDERFLOW
@@ -56,5 +42,5 @@
    ?FPX0<    IF  FPX-NAN! EXIT  THEN
    ?FPX-INF  IF  EXIT  THEN
    FDUP FSQRT-APPROX
-   FSQRT-ITERATIONS-DEFAULT ['] FSQRT-NEWTON-STEP2 FSQRT-NEWTON
+   FSQRT-ITERATIONS-DEFAULT ['] FSQRT-NEWTON-STEP2 FNEWTON
 ;

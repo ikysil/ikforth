@@ -699,10 +699,26 @@ REQUIRES" lib/~ik/float-ieee-binary/to-float.4th"
 \DEBUG-OFF
 
 
+: FNEWTON (S +n xt -- ) (F r1 r2 -- r3 )
+   \G Perform Newton iterations using over r1 given the initial approximation r2 and number of iterations +n.
+   \G xt calculates next approximation with stack effect (F r1 r2 -- r3 ).
+   1 ?FPSTACK-OVERFLOW
+   SWAP
+   0 ?DO
+      FOVER FSWAP
+      DUP EXECUTE
+   LOOP
+   DROP
+   FNIP
+   \DEBUG CR ." FNEWTON-RESULT: " CR FDUP F. CR
+;
+
+
 REQUIRES" lib/~ik/float-ieee-binary/f-exp.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-log.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-star-star.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-sqrt.4th"
+REQUIRES" lib/~ik/float-ieee-binary/f-isqrt.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-trig.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-hyptrig.4th"
 REQUIRES" lib/~ik/float-ieee-binary/represent.4th"
