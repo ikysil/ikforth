@@ -1,7 +1,7 @@
 \
 \  main.4th
 \
-\  Copyright (C) 1999-2016 Illya Kysil
+\  Copyright (C) 1999-2017 Illya Kysil
 \
 
 REQUIRES" sysdict/quit.4th"
@@ -24,7 +24,7 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-  CR ." IKForth 17.09"
+  CR ." IKForth 17.11"
   CR ." Copyright (C) 1999-2017 Illya Kysil"
 ;
 
