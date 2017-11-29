@@ -5,6 +5,7 @@
 \
 
 REQUIRES" sysdict/quit.4th"
+REQUIRES" sysdict/sformat.4th"
 
 CR .( Loading MAIN definitions )
 
@@ -12,15 +13,23 @@ REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
 : .COMPILED
-  CR ." Compiled: "
-  [
-    TIME&DATE DECIMAL
-    <# 5 ROLL S>D # # 2DROP CHAR : HOLD
-       4 ROLL S>D # # 2DROP CHAR : HOLD
-       3 ROLL S>D #S  2DROP
-       BL HOLD CHAR , HOLD
-       S>D #S 2DROP CHAR / HOLD MONTH>STR HOLDS CHAR / HOLD S>D #S #>
-  ] SLITERAL TYPE
+   CR ." Compiled: "
+   [
+      TIME&DATE DECIMAL
+      <%
+         4 %U0R   \ year
+         CHAR - %C
+         2 %U0R   \ month
+         CHAR - %C
+         2 %U0R   \ day
+         BL %C
+         2 %U0R   \ hour
+         CHAR : %C
+         2 %U0R   \ minute
+         CHAR : %C
+         2 %U0R   \ second
+      %>
+   ] SLITERAL TYPE
 ;
 
 : .VERSION
