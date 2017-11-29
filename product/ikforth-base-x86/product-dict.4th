@@ -51,7 +51,6 @@ S" sysdict/word.4th"           INCLUDED
 REQUIRES" sysdict/case.4th"
 REQUIRES" sysdict/block.4th"
 REQUIRES" sysdict/quotations.4th"
-REQUIRES" sysdict/see.4th"
 
 REQUIRES" sysdict/dynlib.4th"
 REQUIRES" sysdict/x86-windows.4th"
