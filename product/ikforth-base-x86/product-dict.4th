@@ -59,6 +59,7 @@ REQUIRES" sysdict/x86-linux.4th"
 
 REQUIRES" sysdict/term/ansiterm.4th"
 
+REQUIRES" sysdict/sformat.4th"
 REQUIRES" sysdict/locate.4th"
 REQUIRES" sysdict/locals-stack.4th"
 REQUIRES" sysdict/locals.4th"
