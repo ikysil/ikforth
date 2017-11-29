@@ -13,10 +13,10 @@ REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
 : .COMPILED
-   CR ." Compiled: "
    [
       TIME&DATE DECIMAL
       <%
+         %S" Compiled: "
          4 %U0R   \ year
          CHAR - %C
          2 %U0R   \ month
@@ -29,11 +29,12 @@ REPORT-NEW-NAME OFF
          CHAR : %C
          2 %U0R   \ second
       %>
-   ] SLITERAL TYPE
+   ] SLITERAL
+   CR TYPE
 ;
 
 : .VERSION
-  CR ." IKForth 17.11"
+  CR ." IKForth 18.NEXT"
   CR ." Copyright (C) 1999-2017 Illya Kysil"
 ;
 
