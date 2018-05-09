@@ -1,7 +1,7 @@
 \
 \  dynlib.4th
 \
-\  Copyright (C) 2016 Illya Kysil
+\  Copyright (C) 2016-2018 Illya Kysil
 \
 \  Interface to dynamic libraries.
 \
@@ -29,8 +29,23 @@ BASE @
    CELL+ !
 ;
 
+\ Check for errors after loading of dynamic library
+DEFER DYNLIB-INIT-CHECK (S lib-addr lib-id -- )
+
+:NONAME
+   0=  IF
+      CR ." Failed to load: "
+      DYNLIB-PATH@ TYPE CR
+      GetLastError THROW
+   ELSE
+      DROP
+   THEN
+; IS DYNLIB-INIT-CHECK
+
 : DYNLIB-INIT (S lib-addr -- )
-   DUP DYNLIB-PATH@ (LoadLibrary) GetLastError THROW
+   0 OVER DYNLIB-ID!
+   DUP DYNLIB-PATH@ (LoadLibrary)
+   2DUP DYNLIB-INIT-CHECK
    SWAP DYNLIB-ID!
 ;
 
@@ -69,7 +84,10 @@ BASE @
 
 : DYNLIB-SYMBOL-INIT
    (S sym-addr c-addr u lib-addr -- )
-   DYNLIB-ID@ (GetProcAddress) GetLastError THROW SWAP !
+   DYNLIB-ID@ (GetProcAddress)
+   >R 0 OVER ! R>
+   GetLastError THROW
+   SWAP !
 ;
 
 : DYNLIB-SYMBOL

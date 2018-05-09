@@ -34,20 +34,20 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-  CR ." IKForth 18.NEXT"
-  CR ." Copyright (C) 1999-2017 Illya Kysil"
+   CR ." IKForth 18.NEXT"
+   CR ." Copyright (C) 1999-2018 Illya Kysil"
 ;
 
 : .PLATFORM
-  CR ." Platform: " PLATFORM? TYPE
+   CR ." Platform: " PLATFORM? TYPE
 ;
 
 :NONAME
-  .VERSION .COMPILED CR .PLATFORM CR .ENV-INFO
+   .VERSION .COMPILED CR .PLATFORM CR .ENV-INFO
 ; STARTUP-CHAIN CHAIN.ADD
 
 :NONAME
-  CR ." Bye..." CR
+   CR ." Bye..." CR
 ; SHUTDOWN-CHAIN CHAIN.ADD
 
 0 VALUE GLOBAL-INIT-FLAG

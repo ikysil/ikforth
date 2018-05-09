@@ -18,6 +18,7 @@ S" libc.so.6" (LoadLibrary) [IF]
 
 ENV>
 
+REQUIRES" sysdict/x86-linux/lindynlib.4th"
 REQUIRES" sysdict/x86-linux/lincon.4th"
 REQUIRES" sysdict/x86-linux/libc.4th"
 REQUIRES" sysdict/x86-linux/libreadline.4th"
