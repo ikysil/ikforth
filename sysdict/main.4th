@@ -1,7 +1,7 @@
 \
 \  main.4th
 \
-\  Copyright (C) 1999-2017 Illya Kysil
+\  Copyright (C) 1999-2018 Illya Kysil
 \
 
 REQUIRES" sysdict/quit.4th"
@@ -34,7 +34,7 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-   CR ." IKForth 18.NEXT"
+   CR ." IKForth 18.05"
    CR ." Copyright (C) 1999-2018 Illya Kysil"
 ;
 
@@ -93,16 +93,16 @@ REPORT-NEW-NAME OFF
 ;
 
 :NONAME
-  INIT-USER
-  DECIMAL
-  GLOBAL-INIT-FLAG 0=
-  IF
-    1 TO GLOBAL-INIT-FLAG
-    STARTUP-CHAIN CHAIN.EXECUTE>
-    PROCESS-ARGS
-  THEN
-  DECIMAL
-  QUIT
+   INIT-USER
+   DECIMAL
+   GLOBAL-INIT-FLAG 0=
+   IF
+      1 TO GLOBAL-INIT-FLAG
+      STARTUP-CHAIN CHAIN.EXECUTE>
+      PROCESS-ARGS
+   THEN
+   DECIMAL
+   QUIT
 ; IS MAIN
 
 REPORT-NEW-NAME !
