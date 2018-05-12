@@ -34,7 +34,7 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-   CR ." IKForth 18.05"
+   CR ." IKForth 18.NEXT"
    CR ." Copyright (C) 1999-2018 Illya Kysil"
 ;
 
