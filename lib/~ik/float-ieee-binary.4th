@@ -1,16 +1,17 @@
 \
 \  float-ieee-binary.4th
 \
-\  Copyright (C) 2017 Illya Kysil
+\  Copyright (C) 2018 Illya Kysil
 \
 
 REQUIRES" sysdict/x86/486asm.4th"
 REQUIRES" lib/~ik/triple.4th"
+REQUIRES" lib/~ik/quadruple.4th"
 
 CR .( Loading FLOAT-IEEE-BINARY definitions )
 
 REPORT-NEW-NAME @
-REPORT-NEW-NAME OFF
+REPORT-NEW-NAME ON
 
 ONLY FORTH DEFINITIONS
 
@@ -509,11 +510,30 @@ SYNONYM F.DUMP F.DUMP
 ;
 
 
+\ DEBUG-ON
+: FREXP (S -- exp flag ) (F r -- fr )
+   \G Decompose given floating point value r into a normalized fraction and an integral power of two.
+   \G flag is true if r is not a special value - NaN or infinity.
+   1 ?FPSTACK-UNDERFLOW
+   1 ?FPSTACK-OVERFLOW
+   ?FPX-NAN ?FPX-INF OR  IF
+      FPX-NAN! FALSE
+      EXIT
+   THEN
+   FP>
+   DUP FPFLAGS>EXP >R
+   FPV-EXP-MASK INVERT AND
+   >FP
+   R> TRUE
+;
+\DEBUG-OFF
+
+
 REQUIRES" lib/~ik/float-ieee-binary/f-compare-zero.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-plus-f-minus.4th"
+REQUIRES" lib/~ik/float-ieee-binary/fused-mul-add.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-star.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-slash.4th"
-\ REQUIRES" lib/~ik/float-ieee-binary/f-slash-goldschmidt.4th"
 REQUIRES" lib/~ik/float-ieee-binary/f-compare.4th"
 
 
@@ -680,25 +700,6 @@ REQUIRES" lib/~ik/float-ieee-binary/to-float.4th"
 ;
 
 
-\ DEBUG-ON
-: FREXP (S -- exp flag ) (F r -- fr )
-   \G Decompose given floating point value r into a normalized fraction and an integral power of two.
-   \G flag is true if r is not a special value - NaN or infinity.
-   1 ?FPSTACK-UNDERFLOW
-   1 ?FPSTACK-OVERFLOW
-   ?FPX-NAN ?FPX-INF OR  IF
-      FPX-NAN! FALSE
-      EXIT
-   THEN
-   FP>
-   DUP FPFLAGS>EXP >R
-   FPV-EXP-MASK INVERT AND
-   >FP
-   R> TRUE
-;
-\DEBUG-OFF
-
-
 : FNEWTON (S +n xt -- ) (F r1 r2 -- r3 )
    \G Perform Newton iterations using over r1 given the initial approximation r2 and number of iterations +n.
    \G xt calculates next approximation with stack effect (F r1 r2 -- r3 ).
@@ -776,6 +777,9 @@ CREATE FVALUE-VT
    DOES> FALIGNED VALUE>DATA F@
 ;
 
+
+\ REQUIRES" lib/~ik/float-ieee-binary/f-slash-goldschmidt.4th"
+\ REQUIRES" lib/~ik/float-ieee-binary/f-slash-newton-raphson.4th"
 
 ONLY FORTH DEFINITIONS
 

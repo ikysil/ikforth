@@ -1,8 +1,4 @@
 \ DEBUG-ON
-USER F*-YL*XH  2 CELLS USER-ALLOC
-USER F*-YH*XL  2 CELLS USER-ALLOC
-USER F*-YH*XH  2 CELLS USER-ALLOC
-USER F*-EXP    1 CELLS USER-ALLOC
 
 HEX
 8000000000000000.  2CONSTANT  F*GBIT
@@ -22,19 +18,6 @@ CELL-BITS 3 -       CONSTANT  /F*GRSSHIFT
    R@ /RSHIFT          \ S: lo1 hi2 lo1'
    ROT R> /RSHIFT      \ S: hi2 lo1' lo2 lo'
    DROP OR SWAP
-;
-
-: DAND (S xd1 xd2 -- xd3)
-   \G xd3 is the result of bit AND between xd1 and xd2.
-   ROT AND
-   ROT ROT AND
-   SWAP
-;
-
-: DINVERT (S xd1 -- xd2)
-   \G xd2 is the result of bit INVERT on xd1.
-   INVERT SWAP
-   INVERT SWAP
 ;
 
 
@@ -85,26 +68,6 @@ CELL-BITS 3 -       CONSTANT  /F*GRSSHIFT
 \DEBUG-OFF
 
 
-: (F*EXACT) (S ud1 ud2 -- udlow udhigh )
-   \G Perform exact multiplication of unsigned double values.
-   \DEBUG S" (F*EXACT)-INPUT: " CR TYPE CR H.S CR
-   2DUP 2>R               \ S: yl yh xl xh     R: xl xh
-   ROT SWAP OVER          \ S: yl xl yh xh yh
-   UM* F*-YH*XH 2!
-   UM* F*-YH*XL 2!
-   2R>                    \ S: yl xl xh
-   ROT SWAP OVER          \ S: xl yl xh yl
-   UM* F*-YL*XH 2!
-   UM* 0
-   0 F*-YL*XH 2@
-   0 F*-YH*XL 2@
-   0
-   0 F*-YH*XH 2@
-   \DEBUG S" (F*EXACT)-PART: " CR TYPE CR H.S CR
-   T+ T+ T+
-   \DEBUG S" (F*EXACT)-SUM: " CR TYPE CR H.S CR
-;
-
 : (F*NORMALIZE) (S t1 -- t1' exp-corr )
    \G Normalize exact multiplication result - most significant 3 cells.
    \G exp-corr is exponent correction if required.
@@ -116,19 +79,6 @@ CELL-BITS 3 -       CONSTANT  /F*GRSSHIFT
       R> 1- >R
    REPEAT
    R>
-;
-
-: (F*EXP) (S -- exp ) (F r1 r2 -- r1 r2 )
-   \G Compute the exponent for float multiplication result.
-   'FPY FPE@ FPFLAGS>EXP
-   'FPX FPE@ FPFLAGS>EXP
-   + 1+
-;
-
-: (F*/SIGN) (S -- nflags ) (F r1 r2 -- r1 r2 )
-   \G Compute the sign mask for float multiplication or division result.
-   'FPY FPE@ 'FPX FPE@ XOR
-   FPV-SIGN-MASK AND
 ;
 
 : (F*/RESULT) (S ud exp sign -- ud nflags )
@@ -159,7 +109,7 @@ CELL-BITS 3 -       CONSTANT  /F*GRSSHIFT
    (F*/SIGN) >R
    (F*EXP)  >R
    'FPY FPM@ 'FPX FPM@
-   (F*EXACT)
+   UD*
    (F*NORMALIZE)
    \DEBUG S" F*-NORMALIZED: " CR TYPE CR H.S CR
    R> + >R

@@ -103,6 +103,22 @@ BASE !
   ROT XOR -ROT XOR SWAP
 ;
 
+
+: DAND (S xd1 xd2 -- xd3 )
+   \G xd3 is the result of bit AND between xd1 and xd2.
+   ROT AND
+   ROT ROT AND
+   SWAP
+;
+
+
+: DINVERT (S xd1 -- xd2 )
+   \G xd2 is the result of bit INVERT on xd1.
+   INVERT SWAP
+   INVERT SWAP
+;
+
+
 \ 8.6.1.1220 DMIN
 \ (S d1 d2 -- d3 )
 \ d3 is the lesser of d1 and d2.

@@ -49,13 +49,13 @@
    \DEBUG S" FLN-TAYLOR2-R-1: " CR TYPE CR F.DUMP CR
    FSWAP FONE F+
    \DEBUG S" FLN-TAYLOR2-R+1: " CR TYPE CR F.DUMP CR
-    F/
+   F/
    \DEBUG S" FLN-TAYLOR2-Y: " CR TYPE CR F.DUMP CR
    \ S: +n             F: y
    FDUP FDUP F* FOVER
    \ S: +n             F: sum(=y) y**2 y**(2i-1)
    1 DO
-      \ DEBUG S" FLN-TAYLOR2-STEP: " CR TYPE CR FDEPTH . CR F.DUMP CR
+      \DEBUG S" FLN-TAYLOR2-STEP: " CR TYPE CR FDEPTH . CR F.DUMP CR
       \ F: sum y**2 y**(2i-1)
       FOVER F* FDUP
       \ F: sum y**2 y**(2i+1) y**(2i+1)
