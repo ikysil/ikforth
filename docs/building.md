@@ -4,8 +4,11 @@
 
 * SConstruct 2.4+
 * flat assembler version 1.71.54
+  * Linux version for Linux environment
+  * Windows version for Windows and Cygwin environments
   * `listing` utility built from sources provided with flat assembler package
 * GCC (Linux)
+* cygwin32-gcc (Cygwin64)
 * mingw32 (Linux/Windows)
   * symbolic link `mingw32-g++` -> `/usr/bin/i686-w64-mingw32-g++`
 * wine 32 bits (Linux)

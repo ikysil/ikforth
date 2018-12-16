@@ -14,6 +14,9 @@ if 'dtc' in BUILD_TARGETS:
 if 'itc' in BUILD_TARGETS:
     env.Replace(CODE_THREADING_TYPE = 'ITC')
 
+if platform.system().startswith("CYGWIN_NT"):
+    env.Replace(HSYS = 'nt')
+
 if platform.system() == 'Windows':
     env.Replace(HSYS = 'nt')
 
