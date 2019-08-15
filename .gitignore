@@ -2,6 +2,7 @@
 *.exe
 *.obj
 *.lnk
+*.log
 *.map
 *.img
 *.o
@@ -12,4 +13,5 @@ IKForth
 fatest1.txt
 FATEST2.TXT
 .vscode
+/.ionide
 /build

@@ -1,5 +1,7 @@
 .git
 .vscode
+.ionide
 .scon*
 build/*
 core.*
+*.log
