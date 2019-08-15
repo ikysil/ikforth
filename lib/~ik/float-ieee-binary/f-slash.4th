@@ -15,7 +15,7 @@ USER F/-XM   3 CELLS USER-ALLOC
 \ DEBUG-ON
 : (F/EXACT) (S ud1 ud2 -- udlow udhigh )
    \G Perform exact division of unsigned double values.
-   \DEBUG CR ." (F/EXACT)-INPUT:   " 2OVER 2OVER 2SWAP H.8 H.8 SPACE H.8 H.8
+   \DEBUG CR ." (F/EXACT)-INPUT:   " 2OVER 2OVER 2SWAP H.8 SPACE H.8 SPACE H.8 H.8
    2>R 2>R
    0 S>T F/-Q T!
    0 0 FPV-MSBIT 1 TRSHIFT F/-QBIT T!
@@ -48,7 +48,7 @@ USER F/-XM   3 CELLS USER-ALLOC
       \ DEBUG CR ." (F/EXACT)-Q:       " F/-Q T@ H.8 SPACE H.8 SPACE H.8
    REPEAT
    0 F/-Q T@
-   \DEBUG CR ." (F/EXACT)-RESULT:  " 2OVER 2OVER H.8 H.8 SPACE H.8 H.8 CR
+   \DEBUG CR ." (F/EXACT)-RESULT:  " 2OVER 2OVER H.8 SPACE H.8 SPACE H.8 H.8 CR
 ;
 \DEBUG-OFF
 
