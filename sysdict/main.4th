@@ -34,8 +34,8 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-   CR ." IKForth 18.NEXT"
-   CR ." Copyright (C) 1999-2018 Illya Kysil"
+   CR ." IKForth 20.NEXT"
+   CR ." Unlicense since 1999 by Illya Kysil"
 ;
 
 : .PLATFORM
