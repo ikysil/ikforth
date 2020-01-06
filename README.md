@@ -14,3 +14,9 @@ A few facts:
 * CELL size is 32 bits
 * CHAR size is 8 bits
 * addressable unit - 1 byte (8 bits)
+
+----
+
+* https://forth-standard.org/
+* http://www.forth200x.org/
+
