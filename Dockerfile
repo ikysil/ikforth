@@ -22,12 +22,12 @@ RUN yum -y install \
 
 RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++
 
-RUN wget http://flatassembler.net/fasm-1.71.54.tgz && \
-    tar xf fasm-1.71.54.tgz && \
-    mv /tmp/fasm /opt/fasm-1.71.54 && \
-    ln -s /opt/fasm-1.71.54/fasm /usr/local/bin/fasm
+RUN wget http://flatassembler.net/fasm-1.73.21.tgz && \
+    tar xf fasm-1.73.21.tgz && \
+    mv /tmp/fasm /opt/fasm-1.73.21 && \
+    ln -s /opt/fasm-1.73.21/fasm /usr/local/bin/fasm
 
-WORKDIR /opt/fasm-1.71.54/tools/libc
+WORKDIR /opt/fasm-1.73.21/tools/libc
 
 RUN fasm listing.asm && \
     gcc -m32 -o ../../listing listing.o && \
