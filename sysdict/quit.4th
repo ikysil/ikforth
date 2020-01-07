@@ -1,7 +1,7 @@
 \
 \  quit.4th
 \
-\  Copyright (C) 1999-2016 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 
 REQUIRES" sysdict/console.4th"

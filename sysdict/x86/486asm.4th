@@ -1,7 +1,7 @@
 \
 \  486asm.4th
 \
-\  Copyright (C) 1999-2016 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 \  Definitions needed to load Jim Schneider's 486asm.f under IKForth
 \

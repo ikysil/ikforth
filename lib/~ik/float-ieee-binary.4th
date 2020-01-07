@@ -1,7 +1,7 @@
 \
 \  float-ieee-binary.4th
 \
-\  Copyright (C) 2018 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 
 REQUIRES" sysdict/x86/486asm.4th"

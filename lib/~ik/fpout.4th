@@ -41,7 +41,7 @@
 \
 \ This code is public domain.  Use at your own risk.
 \
-\ Adaptations for IKForth - Copyright (C) 2017 Illya Kysil.
+\ Adaptations for IKForth - Unlicense since 1999 by Illya Kysil.
 \
 
 CR .( Loading FPOUT v3.1  13-Nov-06 ... )

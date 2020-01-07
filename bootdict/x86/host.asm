@@ -3,7 +3,7 @@
 ;  host.asm
 ;  IKForth
 ;
-;  Copyright (C) 1999-2016 Illya Kysil
+;  Unlicense since 1999 by Illya Kysil
 ;
 ;******************************************************************************
 ;  Contains words, provided by hosting application.

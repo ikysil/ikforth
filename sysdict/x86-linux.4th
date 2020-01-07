@@ -1,7 +1,7 @@
 \
 \  linux.4th
 \
-\  Copyright (C) 2016 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 \  Linux specific definitions
 \

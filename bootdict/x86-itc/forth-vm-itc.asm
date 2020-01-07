@@ -3,7 +3,7 @@
 ;  forth-vm-itc.asm
 ;  IKForth
 ;
-;  Copyright (C) 2016 Illya Kysil
+;  Unlicense since 1999 by Illya Kysil
 ;
 ;******************************************************************************
 ;  Words and definitions for ITC (Indirect Threaded Code) system

@@ -1,7 +1,7 @@
 \
 \  winmisc.4th
 \
-\  Copyright (C) 1999-2016 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 
 CR .( Loading WINMISC definitions )

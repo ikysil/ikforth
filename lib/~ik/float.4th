@@ -1,7 +1,7 @@
 \
 \  float.4th
 \
-\  Copyright (C) 2017 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 
 CR .( Loading FLOAT definitions )

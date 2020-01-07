@@ -1,7 +1,7 @@
 \
 \  word.4th
 \
-\  Copyright (C) 1999-2017 Illya Kysil
+\  Unlicense since 1999 by Illya Kysil
 \
 
 \  6.1.2450 WORD
