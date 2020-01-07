@@ -70,13 +70,13 @@ DEFER B!
 ;
 
 \ The 16-bit quantity at addr is fetched with its MSB at the lower address.
-\ It is zero-filled if the cell width is greater than 16 bits. 
+\ It is zero-filled if the cell width is greater than 16 bits.
 : U@16B (S addr -- n )
   B@+ SWAP B@ SWAP COMBINE-16
 ;
 
 \ The 16-bit quantity at addr is fetched with its LSB at the lower address.
-\ It is zero-filled if the cell width is greater than 16 bits. 
+\ It is zero-filled if the cell width is greater than 16 bits.
 : U@16L (S addr -- n )
   B@+ SWAP B@ COMBINE-16
 ;
@@ -88,19 +88,19 @@ DEFER B!
 ;
 
 \ The 16-bit quantity at addr is fetched with its LSB at the lower address.
-\ It is sign-extended if the cell width is greater than 16 bits. 
+\ It is sign-extended if the cell width is greater than 16 bits.
 : @16L (S addr -- n )
   U@16L SIGN-EXTEND-16
 ;
 
 \ The 16-bit quantity is stored at addr with its MSB at the lower address.
-\ The high-order bits are discarded if the cell width is greater than 16 bits. 
+\ The high-order bits are discarded if the cell width is greater than 16 bits.
 : !16B (S n addr -- )
   SWAP SPLIT-16 ROT B!+ B!
 ;
 
 \ The 16-bit quantity is stored at addr with its LSB at the lower address.
-\ The high-order bits are discarded if the cell width is greater than 16 bits. 
+\ The high-order bits are discarded if the cell width is greater than 16 bits.
 : !16L (S n addr -- )
   SWAP SPLIT-16 SWAP ROT B!+ B!
 ;
@@ -110,16 +110,16 @@ DEFER B!
   B@+ SWAP B@+ SWAP B@+ SWAP B@ 32L>32B COMBINE-32
 ;
 
-\ The 32-bit quantity at addr is fetched with its LSB at the lower address. 
+\ The 32-bit quantity at addr is fetched with its LSB at the lower address.
 : @32L (S addr -- n )
   B@+ SWAP B@+ SWAP B@+ SWAP B@ COMBINE-32
 ;
 
-\ The 32-bit quantity at addr is fetched with its MSB at the lower address. 
+\ The 32-bit quantity at addr is fetched with its MSB at the lower address.
 DEFER U@32B (S addr -- n )
 ' @32B IS U@32B
 
-\ The 32-bit quantity at addr is fetched with its LSB at the lower address. 
+\ The 32-bit quantity at addr is fetched with its LSB at the lower address.
 DEFER U@32L (S addr -- n )
 ' @32L IS U@32L
 
@@ -133,7 +133,7 @@ DEFER U@32L (S addr -- n )
   >R SPLIT-32 32L>32B R> B!+ B!+ B!+ B!
 ;
 
-\ The 32-bit quantity at addr is fetched with its MSB at the lower address. 
+\ The 32-bit quantity at addr is fetched with its MSB at the lower address.
 : 2@32B (S addr -- d )
   DUP @32B SWAP 4 + @32B SWAP
 ;

@@ -42,14 +42,14 @@ TRUE REPORT-WIN32-EXCEPTION-CONTEXT !
   DUP H# 90 + @ ."  FS=" H.8
   DUP H# 8C + @ ."  GS=" H.8
   DROP
-; 
+;
 
 : .WIN32-EXCEPTION (S exc-id -- )
   >R 0
   Win32ErrorBufferSize
   Win32ErrorBuffer
-  0 
-  R@ 0 
+  0
+  R@ 0
   H# 1000 \ FORMAT_MESSAGE_FROM_SYSTEM
   H# FF   \ FORMAT_MESSAGE_MAX_WIDTH_MASK
   OR

@@ -21,7 +21,7 @@
                 $DEFER      'SOURCE',$SOURCE,$_SOURCE
 
 ;  (REPORT-SOURCE)
-;  D: c-addr u line-u -- 
+;  D: c-addr u line-u --
                 $COLON      '(REPORT-SOURCE)',$PREPORT_SOURCE
                 $WRITE      'LINE# H# '
                 CW          $HOUT8

@@ -68,7 +68,7 @@ PARA-ALIGN
 T-DATA-AREA-BASE ,              \ image base address
 HERE T-DATA-AREA-SIZE-ADDR !    \ address which will be returned by DATA-AREA-SIZE
 T-DATA-AREA-SIZE ,              \ data area size
-HERE T-START-ADDR !                   
+HERE T-START-ADDR !
 0 ,                             \ address of FORTH enter proc
 HERE T-THREAD-START-ADDR !
 0 ,                             \ address of THREAD enter proc
@@ -345,7 +345,7 @@ END-CODE
 CODE >R
                         POP     EAX
                         SUB     EBP , # 1 CELLS
-                        MOV     [EBP] , EAX    
+                        MOV     [EBP] , EAX
                         NEXT
 END-CODE COMPILE-ONLY
 

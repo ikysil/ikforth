@@ -25,9 +25,9 @@ REPORT-NEW-NAME OFF
    THEN
 ;
 
-H# 10000000 CONSTANT K-SHIFT-MASK   
-H# 20000000 CONSTANT K-CTRL-MASK   
-H# 40000000 CONSTANT K-ALT-MASK   
+H# 10000000 CONSTANT K-SHIFT-MASK
+H# 20000000 CONSTANT K-CTRL-MASK
+H# 40000000 CONSTANT K-ALT-MASK
 H# 80000000 CONSTANT EKEY-FLAG-FKEY
 H# 0FFFFFFF CONSTANT EKEY-EVENT-MASK
 H# FFFFFFFF CONSTANT EKEY-FLAG-INVALID
@@ -61,7 +61,7 @@ FKEY: K-F9
 FKEY: K-F10
 FKEY: K-F11
 FKEY: K-F12
-DROP   
+DROP
 
 WORDLIST CONSTANT term-raw-event-wordlist
 term-raw-event-wordlist (VOCABULARY) term-raw-event-voc
@@ -152,7 +152,7 @@ ONLY FORTH DEFINITIONS
       COMBINE-32 >R COMBINE-32 R>
       EXIT
    THEN
-   COMBINE-32 R> 
+   COMBINE-32 R>
 ;
 
 : DOES>xterm-mask-map \ S: index addr
@@ -203,7 +203,7 @@ DOES>xterm-mask-map
 ;
 
 : term-raw-event>ekey (S d -- x )
-   (G Convert RAW keyboard event as returned by term-raw-event 
+   (G Convert RAW keyboard event as returned by term-raw-event
       to the format suitable for EKEY result )
    2DUP ?trivial-raw-event IF  DROP EXIT  THEN
    2DUP extract-xterm-modifier xterm-modifier>mask -ROT remove-xterm-modifier
@@ -234,7 +234,7 @@ DOES>xterm-mask-map
 \ If the keyboard event x corresponds to a keypress in the implementation-defined
 \ special key set, return that key's id u and true. Otherwise return x and false.
 : term-ekey>fkey
-   DUP EKEY-FLAG-FKEY AND 0<> 
+   DUP EKEY-FLAG-FKEY AND 0<>
 ;
 
 REPORT-NEW-NAME !

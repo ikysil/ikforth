@@ -133,7 +133,7 @@ DEFER THIS ' THIS@ IS THIS
                        \ create new member
                        GET-CURRENT >R
                        SET-CURRENT
-                       (DO-CREATE) -ROT &USUAL CHECK-HEADER, 
+                       (DO-CREATE) -ROT &USUAL CHECK-HEADER,
                        R> SET-CURRENT
                      ELSE
                        >R DROP DROP DROP R>
@@ -198,7 +198,7 @@ USER MEMBER-ID 1 CELLS USER-ALLOC
 : ID>CFA (S member-id class -- CFA )
   ['] MEMBER-NOT-FOUND MEMBER-XT ! SWAP MEMBER-ID !
   BEGIN         \ S: class
-    DUP 
+    DUP
   WHILE
     DUP ['] (CLASS-MEMBER-ID>CFA) CATCH
     EXC-MEMBER-FOUND = IF 2DROP 0 ELSE SUPER THEN
