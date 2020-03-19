@@ -11,25 +11,6 @@ CR .( Loading libreadline definitions )
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
 
-
-S" libreadline.so.6" DYNLIB LIBREADLINE.SO.6
-
-0 VALUE DS-libc-readline.6
-
-LIBREADLINE.SO.6 S" readline" DYNLIB-SYMBOL
-DUP TO DS-libc-readline.6
-1 CDECL-C1 libc-readline.6
-
-
-S" libreadline.so.7" DYNLIB LIBREADLINE.SO.7
-
-0 VALUE DS-libc-readline.7
-
-LIBREADLINE.SO.7 S" readline" DYNLIB-SYMBOL
-DUP TO DS-libc-readline.7
-1 CDECL-C1 libc-readline.7
-
-
 (S z-prompt -- z-addr )
 \ readline will read a line from the terminal and return it,
 \ using prompt as a prompt.
@@ -39,18 +20,47 @@ DUP TO DS-libc-readline.7
 DEFER libc-readline
 
 :NONAME
-   CR ." Initializing libreadline" CR
-   DS-libc-readline.6 @ 0<> IF
-      ['] libc-readline.6
-      IS libc-readline
-      EXIT
+   -1 ABORT" FATAL: Can not initialize libreadline"
+; IS libc-readline
+
+0 VALUE LIBREADLINE.SO-ID
+
+0 VALUE DS-libc-readline
+
+: (LIBREADLINE-FIND) (S -- library-id )
+   S" libreadline.so.8" (LoadLibrary) ?DUP ?EXIT
+   S" libreadline.so.7" (LoadLibrary) ?DUP ?EXIT
+   S" libreadline.so.6" (LoadLibrary) ?DUP ?EXIT
+   0
+;
+
+: (LIBREADLINE-CALL-DS) (S z-prompt -- z-addr )
+   DS-libc-readline
+   ?DUP 0= IF
+      CR ." FATAL: Can not initialize libreadline" CR
+      0
    THEN
-   DS-libc-readline.7 @ 0<> IF
-       ['] libc-readline.7
-       IS libc-readline
-       EXIT
-   THEN
-   CR ." FATAL: Can not initialize libreadline" CR
+   1 SWAP CALL-CDECL-C1
+;
+
+: (LIBREADLINE-INIT) (S -- )
+   0 TO LIBREADLINE.SO-ID
+   0 TO DS-libc-readline
+   (LIBREADLINE-FIND) TO LIBREADLINE.SO-ID
+   LIBREADLINE.SO-ID 0= IF   EXIT   THEN
+   S" readline" LIBREADLINE.SO-ID (GetProcAddress)
+   GetLastError THROW
+   TO DS-libc-readline
+   ['] (LIBREADLINE-CALL-DS) IS libc-readline
+;
+
+:NONAME
+   (LIBREADLINE-INIT)
 ; DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
+
+:NONAME
+   LIBREADLINE.SO-ID 0= IF   EXIT   THEN
+   LIBREADLINE.SO-ID FreeLibrary
+; DUP SHUTDOWN-CHAIN CHAIN.ADD EXECUTE
 
 REPORT-NEW-NAME !

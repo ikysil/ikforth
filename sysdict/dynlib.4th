@@ -29,6 +29,13 @@ BASE @
    CELL+ !
 ;
 
+\ Print library path and id
+: .DYNLIB (S lib-addr -- )
+   DUP DYNLIB-PATH@ TYPE
+   [CHAR] @ EMIT
+   DYNLIB-ID@ H.8
+;
+
 \ Check for errors after loading of dynamic library
 DEFER DYNLIB-INIT-CHECK (S lib-addr lib-id -- )
 

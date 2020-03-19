@@ -12,6 +12,9 @@
 * mingw32 (Linux/Windows)
   * symbolic link `mingw32-g++` -> `/usr/bin/i686-w64-mingw32-g++`
 * wine 32 bits (Linux)
+* 32 bit packages (Linux):
+  * lib32readline8 (Ubuntu 19.10+)
+  * readline.i686 (CentOS 7+)
 
 ## Dockerized build environment
 ```bash
