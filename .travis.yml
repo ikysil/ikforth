@@ -1,6 +1,6 @@
 sudo: required
 
-language: forth
+language: minimal
 
 services:
   - docker
