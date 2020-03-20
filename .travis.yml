@@ -6,7 +6,7 @@ services:
   - docker
 
 git:
-  submodules: false
+  submodules: true
 
 before_install:
   - docker build --rm -f Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
