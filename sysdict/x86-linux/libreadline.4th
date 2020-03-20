@@ -20,7 +20,8 @@ REPORT-NEW-NAME OFF
 DEFER libc-readline
 
 :NONAME
-   -1 ABORT" FATAL: Can not initialize libreadline"
+   CR ." FATAL: Can not initialize libreadline" CR
+   0
 ; IS libc-readline
 
 0 VALUE LIBREADLINE.SO-ID
