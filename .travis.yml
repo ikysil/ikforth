@@ -1,19 +1,21 @@
-sudo: required
-
-language: minimal
+os: linux
+dist: bionic
+language: shell
 
 services:
   - docker
+
+git:
+  submodules: false
 
 before_install:
   - docker build --rm -f Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
   - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c"
 
 env:
-  matrix:
-    - TEST_CMD="echo -e '123\n ' | scons itc ansitest"
-    - TEST_CMD="echo -e '123\n ' | scons dtc ansitest"
-    - TEST_CMD="echo -e 'bye\n ' | scons fptest"
+  - TEST_CMD="echo -e '123\n ' | scons itc ansitest"
+  - TEST_CMD="echo -e '123\n ' | scons dtc ansitest"
+  - TEST_CMD="echo -e 'bye\n ' | scons fptest"
 
 script:
   - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "${TEST_CMD}"
