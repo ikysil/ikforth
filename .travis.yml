@@ -10,6 +10,7 @@ git:
 
 env:
   - DOCKER_FILE=Dockerfile
+  - DOCKER_FILE=Dockerfile.centos8
 
 before_install:
   - docker build --rm -f ${DOCKER_FILE} --build-arg RUNUID=$UID -t ikforth-build:latest .
