@@ -20,7 +20,7 @@ if senv['TSYS'] == 'nt':
 
 if senv['TSYS'] == 'linux':
     senv.Append(CPPFLAGS = ['-pthread'])
-    senv.Append(LINKFLAGS = ['-ldl', '-pthread'])
+    senv.Append(LINKFLAGS = ['-Wl,--no-as-needed', '-ldl', '-pthread'])
 
 fkernelPath = '#build/loader-$TSYS/' + fkernelExec
 senv.Program(fkernelExec, loader_src)
