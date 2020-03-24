@@ -8,7 +8,7 @@ senv.Append(LINKFLAGS = ['-m32'])
 loader_src = senv.Glob('*.cpp')
 loader_src.extend(senv.Glob('sys' + senv['TSYS'] + '/*.cpp'))
 
-senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-march=i586', '-m32', '-fpermissive', '-std=c++14', '-pedantic', '-nodefaultlibs', '-fno-exceptions', '-fno-pic'])
+senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-march=i586', '-m32', '-fpermissive', '-pedantic', '-nodefaultlibs', '-fno-exceptions', '-fno-pic'])
 
 fkernelExec = senv.execname('FKernel');
 
