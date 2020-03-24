@@ -4,9 +4,6 @@ Import('env')
 
 if 'debug' in BUILD_TARGETS:
     env.Replace(DEBUG = 'TRUE')
-    env.Append(LINKFLAGS = ['-gall'])
-else:
-    env.Append(LINKFLAGS = ['-s', '-g0'])
 
 if 'dtc' in BUILD_TARGETS:
     env.Replace(CODE_THREADING_TYPE = 'DTC')
