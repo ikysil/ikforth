@@ -41,3 +41,141 @@ docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ### `run`
 ### `term`
 ### `win32`
+
+## Build Environment Matrix
+
+### CentOS 7 - OK
+```
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
+Target: x86_64-redhat-linux
+Configured with: ../configure --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info
+    --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-bootstrap
+    --enable-shared --enable-threads=posix --enable-checking=release
+    --with-system-zlib --enable-__cxa_atexit
+    --disable-libunwind-exceptions --enable-gnu-unique-object
+    --enable-linker-build-id --with-linker-hash-style=gnu
+    --enable-languages=c,c++,objc,obj-c++,java,fortran,ada,go,lto
+    --enable-plugin --enable-initfini-array --disable-libgcj
+    --with-isl=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/isl-install
+    --with-cloog=/builddir/build/BUILD/gcc-4.8.5-20150702/obj-x86_64-redhat-linux/cloog-install
+    --enable-gnu-indirect-function --with-tune=generic
+    --with-arch_32=x86-64 --build=x86_64-redhat-linux
+Thread model: posix
+gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC)
+```
+
+### CentOS 8 - OK
+```
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/8/lto-wrapper
+OFFLOAD_TARGET_NAMES=nvptx-none
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-redhat-linux
+Configured with: ../configure --enable-bootstrap
+    --enable-languages=c,c++,fortran,lto
+    --prefix=/usr --mandir=/usr/share/man --infodir=/usr/share/info
+    --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-shared
+    --enable-threads=posix --enable-checking=release --enable-multilib
+    --with-system-zlib --enable-__cxa_atexit
+    --disable-libunwind-exceptions --enable-gnu-unique-object
+    --enable-linker-build-id --with-gcc-major-version-only
+    --with-linker-hash-style=gnu --enable-plugin --enable-initfini-array
+    --with-isl --disable-libmpx --enable-offload-targets=nvptx-none
+    --without-cuda-driver --enable-gnu-indirect-function --enable-cet
+    --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
+Thread model: posix
+gcc version 8.3.1 20190507 (Red Hat 8.3.1-4) (GCC)
+```
+
+### Ubuntu 16.04 - OK
+```
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 5.4.0-6ubuntu1~16.04.12'
+    --with-bugurl=file:///usr/share/doc/gcc-5/README.Bugs
+    --enable-languages=c,ada,c++,java,go,d,fortran,objc,obj-c++
+    --prefix=/usr --program-suffix=-5 --enable-shared
+    --enable-linker-build-id --libexecdir=/usr/lib
+    --without-included-gettext --enable-threads=posix --libdir=/usr/lib
+    --enable-nls --with-sysroot=/ --enable-clocale=gnu
+    --enable-libstdcxx-debug --enable-libstdcxx-time=yes
+    --with-default-libstdcxx-abi=new --enable-gnu-unique-object
+    --disable-vtable-verify --enable-libmpx --enable-plugin
+    --with-system-zlib --disable-browser-plugin --enable-java-awt=gtk
+    --enable-gtk-cairo --with-java-home=/usr/lib/jvm/java-1.5.0-gcj-5-amd64/jre
+    --enable-java-home --with-jvm-root-dir=/usr/lib/jvm/java-1.5.0-gcj-5-amd64
+    --with-jvm-jar-dir=/usr/lib/jvm-exports/java-1.5.0-gcj-5-amd64
+    --with-arch-directory=amd64 --with-ecj-jar=/usr/share/java/eclipse-ecj.jar
+    --enable-objc-gc --enable-multiarch --disable-werror
+    --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32
+    --enable-multilib --with-tune=generic --enable-checking=release
+    --build=x86_64-linux-gnu --host=x86_64-linux-gnu
+    --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)
+```
+
+### Ubuntu 18.04 - OK
+```
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
+OFFLOAD_TARGET_NAMES=nvptx-none
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.5.0-3ubuntu1~18.04'
+    --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs
+    --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++
+    --prefix=/usr --with-gcc-major-version-only --program-suffix=-7
+    --program-prefix=x86_64-linux-gnu- --enable-shared
+    --enable-linker-build-id --libexecdir=/usr/lib
+    --without-included-gettext --enable-threads=posix --libdir=/usr/lib
+    --enable-nls --enable-bootstrap --enable-clocale=gnu
+    --enable-libstdcxx-debug --enable-libstdcxx-time=yes
+    --with-default-libstdcxx-abi=new --enable-gnu-unique-object
+    --disable-vtable-verify --enable-libmpx --enable-plugin
+    --enable-default-pie --with-system-zlib --with-target-system-zlib
+    --enable-objc-gc=auto --enable-multiarch --disable-werror
+    --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32
+    --enable-multilib --with-tune=generic
+    --enable-offload-targets=nvptx-none --without-cuda-driver
+    --enable-checking=release --build=x86_64-linux-gnu
+    --host=x86_64-linux-gnu --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)
+```
+
+### Ubuntu 19.10 - OK
+```
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
+OFFLOAD_TARGET_NAMES=nvptx-none:hsa
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-linux-gnu
+Configured with: ../src/configure -v --with-pkgversion='Ubuntu 9.2.1-9ubuntu2'
+    --with-bugurl=file:///usr/share/doc/gcc-9/README.Bugs
+    --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,gm2
+    --prefix=/usr --with-gcc-major-version-only --program-suffix=-9
+    --program-prefix=x86_64-linux-gnu- --enable-shared
+    --enable-linker-build-id --libexecdir=/usr/lib
+    --without-included-gettext --enable-threads=posix --libdir=/usr/lib
+    --enable-nls --enable-bootstrap --enable-clocale=gnu
+    --enable-libstdcxx-debug --enable-libstdcxx-time=yes
+    --with-default-libstdcxx-abi=new --enable-gnu-unique-object
+    --disable-vtable-verify --enable-plugin --enable-default-pie
+    --with-system-zlib --with-target-system-zlib=auto --enable-multiarch
+    --disable-werror --with-arch-32=i686 --with-abi=m64
+    --with-multilib-list=m32,m64,mx32 --enable-multilib
+    --with-tune=generic --enable-offload-targets=nvptx-none,hsa
+    --without-cuda-driver --enable-checking=release
+    --build=x86_64-linux-gnu --host=x86_64-linux-gnu
+    --target=x86_64-linux-gnu
+Thread model: posix
+gcc version 9.2.1 20191008 (Ubuntu 9.2.1-9ubuntu2)
+```
