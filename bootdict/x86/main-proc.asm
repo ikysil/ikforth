@@ -10,9 +10,8 @@ START:
 ; } MainProcContext;
 ;
 ; typedef void __stdcall (* MainProc)(MainProcContext *);
-                POP         EAX     ; move return address away
-                POP         ESI     ; get address of MainProcContext
-                PUSH        EAX
+                $STDCALL_SAVE
+                MOV         ESI,[EBP + 8] ; get address of MainProcContext
                 MOV         EBX,IMAGE_BASE
                 CLD
                 LEA         EDI,[EBX + ARGC_VAR]
@@ -34,4 +33,5 @@ START:
                 PUSH        F_FALSE
                 PUSH        0
                 $CSYSCALL   START_THREAD
+                $STDCALL_RESTORE
                 RET

@@ -26,6 +26,20 @@
                 PUSHDS      EAX
                 }
 
+                MACRO       $STDCALL_SAVE {
+                PUSHDS      EBP
+                MOV         EBP,ESP
+                PUSHDS      EDI
+                PUSHDS      ESI
+                PUSHDS      EBX
+                }
+
+                MACRO       $STDCALL_RESTORE {
+                POPDS       EBX
+                POPDS       ESI
+                POPDS       EDI
+                POPDS       EBP
+                }
 ;******************************************************************************
 ;  FACILITY words
 ;******************************************************************************

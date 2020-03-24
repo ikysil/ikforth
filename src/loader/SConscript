@@ -8,7 +8,7 @@ senv.Append(LINKFLAGS = ['-m32'])
 loader_src = senv.Glob('*.cpp')
 loader_src.extend(senv.Glob('sys' + senv['TSYS'] + '/*.cpp'))
 
-senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-march=i586', '-m32', '-fpermissive', '-pedantic', '-nodefaultlibs', '-fno-exceptions', '-fno-pic'])
+senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-march=i586', '-m32', '-fpermissive', '-pedantic', '-nodefaultlibs', '-fno-exceptions'])
 
 fkernelExec = senv.execname('FKernel');
 
@@ -25,7 +25,7 @@ if senv['TSYS'] == 'nt':
 
 if senv['TSYS'] == 'linux':
     senv.Append(CPPFLAGS = ['-pthread'])
-    senv.Append(LINKFLAGS = ['-Wl,--no-as-needed', '-ldl', '-pthread', '-no-pie'])
+    senv.Append(LINKFLAGS = ['-Wl,--no-as-needed', '-ldl', '-pthread'])
 
 fkernelPath = '#build/loader-$TSYS/' + fkernelExec
 senv.Program(fkernelExec, loader_src)
