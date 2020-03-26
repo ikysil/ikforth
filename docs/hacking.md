@@ -22,11 +22,14 @@
    * `/*` - contributions, Forth
    * `*.4th`
 * `/docs` - system documentation
-* `/lincon` - LINux CONstants dynamic library, C sources
-* `/loader` - Loader for dictionaries, C/C++ sources
+* `/docker` - definitions for Dockerized build environments
+* `/lib` - libraries
 * `/product`
    * `ikforth-base-x86` - basic interactive system configuration, Forth
    * `ikforth-dev-x86` - developer's interactive configuration, Forth
+* `/src`
+  * `/lincon` - LINux CONstants dynamic library, C sources
+  * `/loader` - Loader for dictionaries, C/C++ sources
 * `/sysdict` - system dictionary, Forth
    * `/term` - terminal integration, Forth
    * `/x86` - x86-specific primitives, Forth
@@ -35,4 +38,5 @@
    * `*.4th`
 * `/test`
    * `/*` - tests, Forth
+   * `/forth2012-test-suite` - Gerry Jackson's Test programs for Forth 2012 and ANS Forth
    * `*.4th`
