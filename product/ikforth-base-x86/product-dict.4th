@@ -15,6 +15,7 @@ S" sysdict/x86/exit.4th"       INCLUDED
 S" sysdict/const.4th"          INCLUDED
 S" sysdict/core.4th"           INCLUDED
 S" sysdict/core-tools.4th"     INCLUDED
+S" sysdict/trace.4th"          INCLUDED
 S" sysdict/value.4th"          INCLUDED
 S" sysdict/recognizer.4th"     INCLUDED
 S" sysdict/string.4th"         INCLUDED
