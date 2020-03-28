@@ -83,10 +83,10 @@ USER FP  1 CELLS USER-ALLOC \ floats stack pointer
    FP !
 ;
 
-:NONAME
+: INIT-FLOAT-IEEE-BINARY
    FP0 FP!
 ;
-DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
+' INIT-FLOAT-IEEE-BINARY DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
 : FDEPTH (S -- +n ) \ 12.6.1.1497 FDEPTH
    (G +n is the number of values contained on the floating-point stack. )

@@ -24,8 +24,7 @@ S" sysdict/zchar.4th"          INCLUDED
 S" sysdict/args.4th"           INCLUDED
 S" sysdict/chain.4th"          INCLUDED
 
-:NONAME INIT-USER ;
-CHAIN STARTUP-CHAIN
+' INIT-USER CHAIN STARTUP-CHAIN
 
 :NONAME ;
 CHAIN SHUTDOWN-CHAIN

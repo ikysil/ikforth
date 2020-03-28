@@ -111,4 +111,12 @@ REPORT-NEW-NAME OFF
 : CHAIN.EXECUTE< (S chain -- )
   ['] (CHAIN.EXECUTE) CHAIN.FOR-EACH< ;
 
+: (CHAIN.SHOW) (S chain-element xt -- TRUE )
+  DUP H.8 SPACE .TRACE-WORD-NAME CR TRUE
+;
+
+\ Show chain
+: CHAIN.SHOW (S chain -- )
+  ['] (CHAIN.SHOW) CHAIN.FOR-EACH> ;
+
 REPORT-NEW-NAME !
