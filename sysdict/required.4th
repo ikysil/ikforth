@@ -18,41 +18,41 @@ VARIABLE TRACK-INCLUDED
 TRACK-INCLUDED ON
 
 : ?REPORT-INCLUDED (S c-addr count -- c-addr count )
-  REPORT-INCLUDED @ IF CR ." Including " 2DUP TYPE SPACE THEN
+   REPORT-INCLUDED @ IF CR ." Including " 2DUP TYPE SPACE THEN
 ;
 
 HERE 3 'S' C, '"' C, BL C, 2CONSTANT S"-NAME
 
 : DOES>INCLUDED
-  DOES> @ >HEAD H>#NAME
-  <# S"  INCLUDED" HOLDS '"' HOLD HOLDS S"-NAME HOLDS 0. #> TYPE
+   DOES> @ >HEAD H>#NAME
+   <# S"  INCLUDED" HOLDS '"' HOLD HOLDS S"-NAME HOLDS 0. #> TYPE
 ;
 
 : INCLUDED, (S c-addr count -- xt | 0 )
-  TRACK-INCLUDED @
-  IF
-    2>R
-    GET-CURRENT GET-ORDER
-    INCLUDED-WORDLIST SET-CURRENT
-    0 2R> &USUAL HEADER, DUP , DOES>INCLUDED
-    >R
-    SET-ORDER SET-CURRENT
-    R>
-  ELSE
-    2DROP 0
-  THEN
+   TRACK-INCLUDED @
+   IF
+      2>R
+      GET-CURRENT GET-ORDER
+      INCLUDED-WORDLIST SET-CURRENT
+      0 2R> &USUAL HEADER, DUP , DOES>INCLUDED
+      >R
+      SET-ORDER SET-CURRENT
+      R>
+   ELSE
+      2DROP 0
+   THEN
 ;
 
 : MARK-INCLUDE, \ S: -- addr
-  \ Reserve a cell in data space for INCLUDE mark and return the value of previous INCLUDE mark
-  HERE INCLUDE-MARK DUP @ -ROT ! 0 ,
+   \ Reserve a cell in data space for INCLUDE mark and return the value of previous INCLUDE mark
+   HERE INCLUDE-MARK DUP @ -ROT ! 0 ,
 ;
 
 : RESOLVE-INCLUDE \ S: xt addr --
-  \ xt of the word whose name provides included file name
-  \ addr if the value of the previous INCLUDE mark
-  SWAP INCLUDE-MARK @ ! \ store xt at current INCLUDE mark
-  INCLUDE-MARK !        \ restore previous INCLUDE mark
+   \ xt of the word whose name provides included file name
+   \ addr if the value of the previous INCLUDE mark
+   SWAP INCLUDE-MARK @ ! \ store xt at current INCLUDE mark
+   INCLUDE-MARK !        \ restore previous INCLUDE mark
 ;
 
 (G Modify file path provided to INCLUDED or REQUIRED )
@@ -75,7 +75,8 @@ DEFER INCLUDED-PATH (S c-addr1 count1 -- c-addr2 count2 )
 ; IS INCLUDED
 
 : REQUIRED? (S c-addr count -- c-addr count flag )
-  2DUP INCLUDED-WORDLIST SEARCH-WORDLIST DUP IF NIP THEN INVERT ;
+   2DUP INCLUDED-WORDLIST SEARCH-WORDLIST DUP IF NIP THEN INVERT
+;
 
 : REQUIRED (S x*i c-addr count -- y*j )
    INCLUDED-PATH
@@ -92,13 +93,13 @@ DEFER INCLUDED-PATH (S c-addr1 count1 -- c-addr2 count2 )
 ;
 
 : (REQUIRES) (S x*i c-addr count -- y*j )
-  ['] REQUIRED CATCH
-  ?DUP IF
-         -ROT 2DROP \ remove arguments on exception
-         DUP EXC-STACK-CHANGED = IF
-                                   ." Stack changed on REQUIRED" DROP
-                                 ELSE THROW THEN
-       THEN
+   ['] REQUIRED CATCH
+   ?DUP
+   IF
+      -ROT 2DROP \ remove arguments on exception
+      DUP EXC-STACK-CHANGED =
+      IF   ." Stack changed on REQUIRED" DROP   ELSE   THROW   THEN
+   THEN
 ;
 
 :NONAME PARSE-NAME (REQUIRES) ;
@@ -110,13 +111,13 @@ INT/COMP: REQUIRES  (S x*i "name" -- y*j )
 INT/COMP: REQUIRES" (S x*i "name" -- y*j )
 
 : REQUIRE-NAME \ S: <name> <path> --
-  \ Check if name is available using ', and include path if not
-  ['] ' CATCH 0= NIP
-  IF
-    POSTPONE \
-  ELSE
-    PARSE-NAME (REQUIRES)
-  THEN
+   \ Check if name is available using ', and include path if not
+   ['] ' CATCH 0= NIP
+   IF
+      POSTPONE \
+   ELSE
+      PARSE-NAME (REQUIRES)
+   THEN
 ;
 
 \  11.6.2.2144.10 REQUIRE

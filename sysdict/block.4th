@@ -47,7 +47,6 @@ DEFER BLOCK-ROOT (S  -- c-addr count )
 ' DEFAULT-BLOCK-ROOT IS BLOCK-ROOT
 
 : MAKE-BLOCK-FILE-NAME (S block-num -- c-addr count )
-\DEBUG   TRACE-WORD
    BLOCK-ROOT >S"BUFFER \ S: block-num c-addr u
    2>R
    8 0 DO BLOCK-NUM# LOOP
@@ -57,27 +56,20 @@ DEFER BLOCK-ROOT (S  -- c-addr count )
 ;
 
 : WRITE-BLOCK (S block-data block-num -- )
-\DEBUG   TRACE-WORD
    MAKE-BLOCK-FILE-NAME W/O CREATE-FILE THROW >R
    BLOCK-SIZE R@ WRITE-FILE THROW R> CLOSE-FILE THROW
 ;
 
 : READ-BLOCK (S block-data block-num -- )
-\DEBUG   TRACE-WORD
    OVER BLOCK-SIZE ERASE
-\DEBUG   TRACE-WORD
    MAKE-BLOCK-FILE-NAME R/O OPEN-FILE
-\DEBUG   TRACE-WORD
    IF   2DROP EXIT   THEN
-\DEBUG   TRACE-WORD
    >R
    BLOCK-SIZE
    R@ READ-FILE THROW DROP R> CLOSE-FILE THROW
-\DEBUG   TRACE-WORD
 ;
 
 : BLOCK (S u -- a-addr )
-\DEBUG   TRACE-WORD
    ?BLK
    BLOCK# @ 0<>
    IF
@@ -87,7 +79,6 @@ DEFER BLOCK-ROOT (S  -- c-addr count )
          FALSE BLOCK-UPDATED !
       THEN
    THEN
-\DEBUG   TRACE-WORD
    DUP BLOCK# @ <>
    IF
       DUP BLOCK# !
@@ -101,20 +92,22 @@ DEFER BLOCK-ROOT (S  -- c-addr count )
        SCR ! BLOCK BASE @ SWAP DECIMAL
        ." Block " SCR @ H.8
        16 0 DO CR I S>D <# # # #> TYPE ." . "
-               64 OVER OVER TYPE + LOOP DROP BASE ! ;
+               64 OVER OVER TYPE + LOOP DROP BASE !
+;
 
-: SAVE-BUFFERS BLOCK#        @ 0=     IF EXIT THEN
-               BLOCK-UPDATED @ INVERT IF EXIT THEN
+: SAVE-BUFFERS BLOCK#        @ 0=     IF   EXIT   THEN
+               BLOCK-UPDATED @ INVERT IF   EXIT   THEN
                BLOCK-DATA BLOCK# @ WRITE-BLOCK
-               FALSE BLOCK-UPDATED ! ;
+               FALSE BLOCK-UPDATED !
+;
 
 : FLUSH SAVE-BUFFERS EMPTY-BUFFERS ;
 
 : BUFFER (S blk -- addr )
-  SAVE-BUFFERS BLOCK# ! BLOCK-DATA ;
+   SAVE-BUFFERS BLOCK# ! BLOCK-DATA
+;
 
 : LOAD
-\DEBUG   TRACE-WORD
    ?BLK
    INPUT>R RESET-INPUT BLK !
    ['] INTERPRET CATCH
@@ -126,7 +119,6 @@ DEFER BLOCK-ROOT (S  -- c-addr count )
 : UPDATE BLOCK# @ 0<> BLOCK-UPDATED ! ;
 
 :NONAME
-\DEBUG   TRACE-WORD
    BLK @ 0>
    IF
       >IN @ 63 INVERT AND 64 + >IN !

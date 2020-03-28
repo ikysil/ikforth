@@ -138,7 +138,7 @@ DEFER ESCAPE\" (S c-addr u d-addr -- c-addr' u' d-addr' )
 ;
 
 : CONVERT\" (S c-addr1 u1 d-addr -- c-addr1' u1' d-u )
-  [CHAR] " SWAP 2SWAP ROT CONVERT\
+   [CHAR] " SWAP 2SWAP ROT CONVERT\
 ;
 
 : PARSE\ (S char "ccc<char>" -- c-addr u )
@@ -160,16 +160,16 @@ DEFER ESCAPE\" (S c-addr u d-addr -- c-addr' u' d-addr' )
 ;
 
 : C\"
-  PARSE\"
-  POSTPONE (C") ,C"
+   PARSE\"
+   POSTPONE (C") ,C"
 ; IMMEDIATE/COMPILE-ONLY
 
 :NONAME
-  PARSE\"
+   PARSE\"
 ;
 :NONAME
-  PARSE\"
-  POSTPONE (S") ,S"
+   PARSE\"
+   POSTPONE (S") ,S"
 ;
 INT/COMP: S\"
 

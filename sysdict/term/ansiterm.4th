@@ -27,19 +27,19 @@ ALSO ANSITERM-PRIVATE DEFINITIONS
 
 \ Execute #S with BASE set to decimal 10
 : D#S (S d -- d )
-  ['] #S 10 BASE-EXECUTE
+   ['] #S 10 BASE-EXECUTE
 ;
 
 : .ANSI-CUP (S x y -- )
-  SWAP
-  <#
-  'H' HOLD
-  1+ S>D D#S
-  2DROP
-  ';' HOLD
-  1+ S>D D#S
-  CSI-HOLD
-  #> TYPE
+   SWAP
+   <#
+   'H' HOLD
+   1+ S>D D#S
+   2DROP
+   ';' HOLD
+   1+ S>D D#S
+   CSI-HOLD
+   #> TYPE
 ;
 
 0 CONSTANT ANSI-ED-EOS  \ from cursor to End Of Screen
@@ -51,74 +51,74 @@ ALSO ANSITERM-PRIVATE DEFINITIONS
 \ If n is 1, clear from cursor to beginning of the screen.
 \ If n is 2, clear entire screen.
 : .ANSI-ED (S n -- )
-  <#
-  'J' HOLD
-  0 D#S
-  CSI-HOLD
-  #> TYPE
+   <#
+   'J' HOLD
+   0 D#S
+   CSI-HOLD
+   #> TYPE
 ;
 
 : ANSI-WAIT-CSI
-  BEGIN   KEY CSI0 =   UNTIL
-  BEGIN   KEY CSI1 =   UNTIL
+   BEGIN   KEY CSI0 =   UNTIL
+   BEGIN   KEY CSI1 =   UNTIL
 ;
 
 : CSI-END? (S c -- flag )
-  (G Check if c is the end of CSI )
-  (G The final character of these sequences is in the range ASCII 64-126 [@ to ~]. )
-  64 127 WITHIN
+   (G Check if c is the end of CSI )
+   (G The final character of these sequences is in the range ASCII 64-126 [@ to ~]. )
+   64 127 WITHIN
 ;
 
 64 CONSTANT /DSR-PAD
 USER DSR-PAD /DSR-PAD CHARS USER-ALLOC
 
 : .ANSI-DSR
-  <#
-  S" 6n" HOLDS
-  CSI-HOLD
-  0.
-  #> TYPE
+   <#
+   S" 6n" HOLDS
+   CSI-HOLD
+   0.
+   #> TYPE
 ;
 
 (G Return cursor position )
 : ANSI-AT-XY? (S -- x y )
-  .ANSI-DSR
-  DSR-PAD /DSR-PAD ERASE
-  DSR-PAD
-  ANSI-WAIT-CSI
-  BEGIN
-    KEY DUP
-    CSI-END? INVERT
-  WHILE
-    \ replace <;> with <space> to facilitate usage of EVALUATE
-    DUP ';' = IF DROP BL THEN
-    OVER C! CHAR+
-  REPEAT
-  'R' =
-  IF
-    BL SWAP C!
-    DSR-PAD /DSR-PAD ['] EVALUATE D# 10 BASE-EXECUTE
-    1- SWAP 1-
-  ELSE
-    0 DUP
-  THEN
+   .ANSI-DSR
+   DSR-PAD /DSR-PAD ERASE
+   DSR-PAD
+   ANSI-WAIT-CSI
+   BEGIN
+      KEY DUP
+      CSI-END? INVERT
+   WHILE
+      \ replace <;> with <space> to facilitate usage of EVALUATE
+      DUP ';' = IF   DROP BL   THEN
+      OVER C! CHAR+
+   REPEAT
+   'R' =
+   IF
+      BL SWAP C!
+      DSR-PAD /DSR-PAD ['] EVALUATE D# 10 BASE-EXECUTE
+      1- SWAP 1-
+   ELSE
+      0 DUP
+   THEN
 ;
 
 : ANSI-PAGE
-  ANSI-ED-FULL .ANSI-ED
-  1 1 AT-XY
+   ANSI-ED-FULL .ANSI-ED
+   1 1 AT-XY
 ;
 
 : ANSI-BACKSPACE
-  ANSI-AT-XY? SWAP \ S: y x
-  DUP 1 =
-  IF
-    DROP 1024 SWAP 1-
-  ELSE
-    1- SWAP
-  THEN
-  AT-XY
-  ANSI-ED-EOS .ANSI-ED
+   ANSI-AT-XY? SWAP \ S: y x
+   DUP 1 =
+   IF
+      DROP 1024 SWAP 1-
+   ELSE
+      1- SWAP
+   THEN
+   AT-XY
+   ANSI-ED-EOS .ANSI-ED
 ;
 
 ONLY FORTH DEFINITIONS ALSO ANSITERM-PRIVATE
@@ -128,19 +128,19 @@ ONLY FORTH DEFINITIONS ALSO ANSITERM-PRIVATE
 
 : ANSITERM-INIT
 
-  [DEFINED] WINCONSOLE-INIT [IF]
-    WINCONSOLE-INIT
-  [THEN]
+   [DEFINED] WINCONSOLE-INIT [IF]
+      WINCONSOLE-INIT
+   [THEN]
 
-  [DEFINED] LINCONSOLE-INIT [IF]
-    LINCONSOLE-INIT
-  [THEN]
+   [DEFINED] LINCONSOLE-INIT [IF]
+      LINCONSOLE-INIT
+   [THEN]
 
-  \DEBUG CR ." ANSITERM-INIT"
-  CR
-  ['] ANSI-BACKSPACE IS CONSOLE-BACKSPACE
-  ['] .ANSI-CUP      IS AT-XY
-  ['] ANSI-PAGE      IS PAGE
+   \DEBUG CR ." ANSITERM-INIT"
+   CR
+   ['] ANSI-BACKSPACE IS CONSOLE-BACKSPACE
+   ['] .ANSI-CUP      IS AT-XY
+   ['] ANSI-PAGE      IS PAGE
 ;
 
 ONLY TERMINIT DEFINITIONS

@@ -29,12 +29,12 @@ USER FILE-CHAR 1 CHARS USER-ALLOC
 \ (S file-id -- char flag ior )
 \ flag is true if char was read successfully
 : READ-FILE-CHAR (S file-id -- char flag ior )
-  FILE-CHAR SWAP [ 1 CHARS ] LITERAL SWAP READ-FILE
-  >R [ 1 CHARS ] LITERAL = FILE-CHAR C@ SWAP R>
+   FILE-CHAR SWAP [ 1 CHARS ] LITERAL SWAP READ-FILE
+   >R [ 1 CHARS ] LITERAL = FILE-CHAR C@ SWAP R>
 ;
 
 : ?EOL (S char -- flag )
-  13 OVER = SWAP 10 = OR
+   13 OVER = SWAP 10 = OR
 ;
 
 \ 11.6.1.2090 READ-LINE
@@ -65,39 +65,39 @@ USER FILE-CHAR 1 CHARS USER-ALLOC
 \ At the conclusion of the operation, FILE-POSITION returns the next file position
 \ after the last character read.
 : _READ-LINE (S c-addr u1 fileid -- u2 flag ior )
-  2>R 0 TRUE 0
-  BEGIN
-    2DROP
-    DUP 2R@ -ROT           \ S: c-addr u fileid u u1
-    =
-    IF                     \ end of input buffer
-      DROP TRUE 0
-      TRUE
-    ELSE
-      READ-FILE-CHAR       \ S: c-addr u char flag ior
-      ?DUP
-      IF                   \ if ior <> 0
-        >R 2DROP TRUE R>
-        TRUE
+   2>R 0 TRUE 0
+   BEGIN
+      2DROP
+      DUP 2R@ -ROT             \ S: c-addr u fileid u u1
+      =
+      IF                       \ end of input buffer
+         DROP TRUE 0
+         TRUE
       ELSE
-        IF                 \ if flag
-          DUP >R
-          ROT C!+ SWAP
-          R> ?EOL >R
-          R@ INVERT
-          IF               \ increment length if not EOL
-            1+
-          THEN
-          TRUE 0 R>
-        ELSE               \ end of file (ior = 0 & flag = false)
-          DROP DUP 0> 0 TRUE
-        THEN
+         READ-FILE-CHAR        \ S: c-addr u char flag ior
+         ?DUP
+         IF                    \ if ior <> 0
+            >R 2DROP TRUE R>
+            TRUE
+         ELSE
+            IF                 \ if flag
+               DUP >R
+               ROT C!+ SWAP
+               R> ?EOL >R
+               R@ INVERT
+               IF               \ increment length if not EOL
+                  1+
+               THEN
+               TRUE 0 R>
+            ELSE                \ end of file (ior = 0 & flag = false)
+               DROP DUP 0> 0 TRUE
+            THEN
+         THEN
       THEN
-    THEN
 \ S: c-addr u flag ior until-flag
-  UNTIL
-  2>R NIP 2R>
-  2R> 2DROP
+   UNTIL
+   2>R NIP 2R>
+   2R> 2DROP
 ;
 
 \ 11.6.1.1717 INCLUDE-FILE
@@ -118,25 +118,25 @@ USER FILE-CHAR 1 CHARS USER-ALLOC
 \ When an ambiguous condition exists, the status (open or closed) of any files
 \ that were being interpreted is implementation-defined.
 : (_INCLUDE-FILE) (S -- exc-id )
-  0
-  BEGIN
-    DUP 0= DUP          \ exc-id flag flag
-    IF
-      DROP
-      SOURCE-ID FILE-POSITION THROW CURRENT-FILE-POSITION 2!
-      REFILL
-    THEN
-  WHILE                 \ exc-id
-    DROP ['] INTERPRET CATCH
-  REPEAT
-  SOURCE-ID CLOSE-FILE THROW
+   0
+   BEGIN
+      DUP 0= DUP          \ exc-id flag flag
+      IF
+         DROP
+         SOURCE-ID FILE-POSITION THROW CURRENT-FILE-POSITION 2!
+         REFILL
+      THEN
+   WHILE                  \ exc-id
+      DROP ['] INTERPRET CATCH
+   REPEAT
+   SOURCE-ID CLOSE-FILE THROW
 ;
 
 : _INCLUDE-FILE (S i*x fileid -- j*x )
-  INPUT>R RESET-INPUT SOURCE-ID!
-  ['] (_INCLUDE-FILE) CATCH \ (S exc-id 0 | exc-id )
-  ?DUP DROP                 \ (S exc-id )
-  R>INPUT THROW
+   INPUT>R RESET-INPUT SOURCE-ID!
+   ['] (_INCLUDE-FILE) CATCH \ (S exc-id 0 | exc-id )
+   ?DUP DROP                 \ (S exc-id )
+   R>INPUT THROW
 ;
 
 \ 11.6.1.1718 INCLUDED
@@ -157,7 +157,7 @@ USER FILE-CHAR 1 CHARS USER-ALLOC
 \ When an ambiguous condition exists, the status (open or closed) of any files
 \ that were being interpreted is implementation-defined.
 : _INCLUDED (S i*x c-addr u -- j*x )
-  R/O OPEN-FILE THROW INCLUDE-FILE
+   R/O OPEN-FILE THROW INCLUDE-FILE
 ;
 
 REPORT-NEW-NAME !

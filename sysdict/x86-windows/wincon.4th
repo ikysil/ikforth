@@ -22,16 +22,17 @@ S" lib/win32/wincon.dll" DYNLIB WINCON.DLL
 WINCON.DLL S" FindWin32Constant" DYNLIB-SYMBOL STDCALL-C1 FindWin32Constant
 
 : GetWindowsConstant ( c-addr count -- value 1 | 0 )
-  SWAP 2>R CONST-VALUE 2R> FindWin32Constant
-  DUP IF CONST-VALUE @ SWAP THEN ;
+   SWAP 2>R CONST-VALUE 2R> FindWin32Constant
+   DUP IF CONST-VALUE @ SWAP THEN
+;
 
 :NONAME (S c-addr u -- )
-  2DUP GetWindowsConstant
-  IF
-    NIP NIP DO-LIT
-  ELSE
-    DEFERRED INTERPRET-WORD-NOT-FOUND
-  THEN
+   2DUP GetWindowsConstant
+   IF
+      NIP NIP DO-LIT
+   ELSE
+      DEFERRED INTERPRET-WORD-NOT-FOUND
+   THEN
 ; IS INTERPRET-WORD-NOT-FOUND
 
 REPORT-NEW-NAME !

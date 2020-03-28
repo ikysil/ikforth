@@ -24,7 +24,7 @@ REPORT-NEW-NAME OFF
 ' INIT-WINCONSOLE DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
 : WIN-AT-XY (S x y -- )
-  16 LSHIFT OR STDOUT SetConsoleCursorPosition WIN-ERR>IOR THROW
+   16 LSHIFT OR STDOUT SetConsoleCursorPosition WIN-ERR>IOR THROW
 ;
 
 \ 10.6.2.1307 EKEY? ( -- flag )
@@ -34,22 +34,22 @@ REPORT-NEW-NAME OFF
 \ After EKEY? returns with a value of true, subsequent executions of EKEY?
 \ prior to the execution of KEY, KEY? or EKEY also return true, referring to the same event.
 : WIN-CONSOLE-EKEY? ( -- flag )
-  0 SP@ STDIN GetNumberOfConsoleInputEvents WIN-ERR>IOR THROW
-  0<>
+   0 SP@ STDIN GetNumberOfConsoleInputEvents WIN-ERR>IOR THROW
+   0<>
 ;
 
 USER INPUT_RECORD 20 ( /INPUT_RECORD) USER-ALLOC
 
 \ Return control keys state from last keyboard event
 : CONTROL-STATE (S -- u )
-  INPUT_RECORD ( Event dwControlKeyState ) 16 + @
+   INPUT_RECORD ( Event dwControlKeyState ) 16 + @
 ;
 
 \ Return implementation specific key scan code and pressed/released state.
 \ Flag is true if key is pressed.
 : EKEY>SCAN (S u -- scan flag )
-  DUP 0x10 RSHIFT 0x000000FF AND
-  SWAP 0xFF000000 AND 0<>
+   DUP 0x10 RSHIFT 0x000000FF AND
+   SWAP 0xFF000000 AND 0<>
 ;
 
 \ 10.6.2.1305 EKEY ( -- u )
@@ -61,30 +61,30 @@ USER INPUT_RECORD 20 ( /INPUT_RECORD) USER-ALLOC
 \    2  ScanCod
 \    3  KeyDownFlag
 : WIN-CONSOLE-EKEY ( -- u ) \ 93 FACILITY EXT
-  0 SP@ 1 INPUT_RECORD STDIN ReadConsoleInput WIN-ERR>IOR THROW
-  DROP
-  INPUT_RECORD
-  DUP  ( EventType ) W@ KEY_EVENT <> IF DROP 0 EXIT THEN
-  DUP  ( Event AsciiChar       ) 14 + W@
-  OVER ( Event wVirtualScanCode) 12 + W@  16 LSHIFT OR
-  OVER ( Event bKeyDown        ) 04 + C@  24 LSHIFT OR
-  NIP
+   0 SP@ 1 INPUT_RECORD STDIN ReadConsoleInput WIN-ERR>IOR THROW
+   DROP
+   INPUT_RECORD
+   DUP  ( EventType ) W@ KEY_EVENT <> IF DROP 0 EXIT THEN
+   DUP  ( Event AsciiChar       ) 14 + W@
+   OVER ( Event wVirtualScanCode) 12 + W@  16 LSHIFT OR
+   OVER ( Event bKeyDown        ) 04 + C@  24 LSHIFT OR
+   NIP
 ;
 
 \ 10.6.2.1306 EKEY>CHAR ( u -- u false | char true )
 \ If the keyboard event u corresponds to a character in the implementation-defined
 \ character set, return that character and true. Otherwise return u and false.
 : WIN-CONSOLE-EKEY>CHAR ( u -- u false | char true )
-  DUP 0xFF000000 AND 0=  IF FALSE    EXIT THEN
-  DUP 0x000000FF AND DUP IF NIP TRUE EXIT THEN DROP
-  FALSE
+   DUP 0xFF000000 AND 0=  IF FALSE    EXIT THEN
+   DUP 0x000000FF AND DUP IF NIP TRUE EXIT THEN DROP
+   FALSE
 ;
 
 \ 10.6.2.1306.40 EKEY>FKEY ( x -- u flag )
 \ If the keyboard event x corresponds to a keypress in the implementation-defined
 \ special key set, return that key's id u and true. Otherwise return x and false.
 : WIN-CONSOLE-EKEY>FKEY ( u -- u false | char true )
-  DUP 0x00FF0000 AND 0<>
+   DUP 0x00FF0000 AND 0<>
 ;
 
 VARIABLE PENDING-CHAR
@@ -98,14 +98,14 @@ VARIABLE PENDING-CHAR
 \ After KEY? returns with a value of true, subsequent executions of KEY?
 \ prior to the execution of KEY or EKEY also return true, without discarding keyboard events.
 : WIN-CONSOLE-KEY? ( -- flag )
-  PENDING-CHAR @ 0 > IF TRUE EXIT THEN
-  BEGIN
-    EKEY?
-  WHILE
-    EKEY EKEY>CHAR
-    IF PENDING-CHAR ! TRUE EXIT THEN
-    DROP
-  REPEAT FALSE
+   PENDING-CHAR @ 0 > IF   TRUE EXIT   THEN
+   BEGIN
+      EKEY?
+   WHILE
+      EKEY EKEY>CHAR
+      IF   PENDING-CHAR ! TRUE EXIT   THEN
+      DROP
+   REPEAT FALSE
 ;
 
 \ 10.6.1.1755 KEY? ( -- flag )
@@ -130,13 +130,13 @@ VARIABLE PENDING-CHAR
 \ 3.1.2.1 Graphic characters. Programs that require the ability to receive control
 \ characters have an environmental dependency.
 : WIN-CONSOLE-KEY ( -- char )
-  PENDING-CHAR @ 0 >
-  IF PENDING-CHAR @ -1 PENDING-CHAR ! EXIT THEN
-  BEGIN
-    EKEY EKEY>CHAR 0=
-  WHILE
-    DROP
-  REPEAT
+   PENDING-CHAR @ 0 >
+   IF   PENDING-CHAR @ -1 PENDING-CHAR ! EXIT   THEN
+   BEGIN
+      EKEY EKEY>CHAR 0=
+   WHILE
+      DROP
+   REPEAT
 ;
 
 \ 6.1.1750 KEY ( -- char )
@@ -159,19 +159,19 @@ VARIABLE PENDING-CHAR
 CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
 
 : WIN-ERASE-CHAR
-  CSBI STDOUT GetConsoleScreenBufferInfo 0<>
-  IF
-    CSBI CONSOLE_SCREEN_BUFFER_INFO.dwCursorPosition DUP
-    COORD.X W@ 0=
-    IF
-      CSBI CONSOLE_SCREEN_BUFFER_INFO.srWindow SMALL_RECT.Right W@
-      SWAP COORD.Y W@ 1-
-    ELSE
-      DUP  COORD.X W@ 1-
-      SWAP COORD.Y W@
-    THEN
-    2DUP AT-XY SPACE AT-XY
-  THEN
+   CSBI STDOUT GetConsoleScreenBufferInfo 0<>
+   IF
+      CSBI CONSOLE_SCREEN_BUFFER_INFO.dwCursorPosition DUP
+      COORD.X W@ 0=
+      IF
+         CSBI CONSOLE_SCREEN_BUFFER_INFO.srWindow SMALL_RECT.Right W@
+         SWAP COORD.Y W@ 1-
+      ELSE
+         DUP  COORD.X W@ 1-
+         SWAP COORD.Y W@
+      THEN
+      2DUP AT-XY SPACE AT-XY
+   THEN
 ;
 
 \ 6.1.0695 ACCEPT
@@ -188,60 +188,60 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
 \
 \ +n2 is the length of the string stored at c-addr.
 : WIN-ACCEPT (S c-addr +n1 -- +n2 )
-  DUP 0=
-  OVER 0< OR
-  OVER 32767 > OR
-  IF EXC-INVALID-NUM-ARGUMENT THROW THEN
-  >R 0
-  BEGIN
-    KEY DUP                \ c-addr n key key
-    CASE
-      32 127 <OF<          \ graphics characters
-        OVER R@ <
-        IF
-          DUP EMIT
-          ROT C!+ SWAP 1+
-        THEN
-        FALSE
-      ENDOF
-      4 OF                 \ Ctrl+D
-        EXC-USER-INTERRUPT THROW
-      ENDOF
-      8 OF                 \ Ctrl+H or Backspace
-        DROP DUP
-        0>
-        IF
-          CONSOLE-BACKSPACE
-          1- SWAP [ 1 CHARS ] LITERAL - SWAP
-        THEN
-        FALSE
-      ENDOF
-      10 OF                \ LF
-        DROP
-        TRUE
-      ENDOF
-      13 OF                \ CR
-        DROP
-        TRUE
-      ENDOF
-      27 OF
-        DROP
-        BEGIN
-          \ drop all characters till the end of ESCape sequence
-          KEY >R
-          \DEBUG R@ H.2 SPACE
-          R@ 'z' <=
-          R@ 'a' >= AND
-          R@ 'Z' <=
-          R@ 'A' >= AND
-          OR R> DROP
-        UNTIL
-        FALSE
-      ENDOF
-      FALSE SWAP
-    ENDCASE
-  UNTIL
-  SWAP R> 2DROP
+   DUP 0=
+   OVER 0< OR
+   OVER 32767 > OR
+   IF   EXC-INVALID-NUM-ARGUMENT THROW   THEN
+   >R 0
+   BEGIN
+      KEY DUP                 \ c-addr n key key
+      CASE
+         32 127 <OF<          \ graphics characters
+            OVER R@ <
+            IF
+               DUP EMIT
+               ROT C!+ SWAP 1+
+            THEN
+            FALSE
+         ENDOF
+         4 OF                 \ Ctrl+D
+            EXC-USER-INTERRUPT THROW
+         ENDOF
+         8 OF                 \ Ctrl+H or Backspace
+            DROP DUP
+            0>
+            IF
+               CONSOLE-BACKSPACE
+               1- SWAP [ 1 CHARS ] LITERAL - SWAP
+            THEN
+            FALSE
+         ENDOF
+         10 OF                \ LF
+            DROP
+            TRUE
+         ENDOF
+         13 OF                \ CR
+            DROP
+            TRUE
+         ENDOF
+         27 OF
+            DROP
+            BEGIN
+               \ drop all characters till the end of ESCape sequence
+               KEY >R
+               \DEBUG R@ H.2 SPACE
+               R@ 'z' <=
+               R@ 'a' >= AND
+               R@ 'Z' <=
+               R@ 'A' >= AND
+               OR R> DROP
+            UNTIL
+            FALSE
+         ENDOF
+         FALSE SWAP
+      ENDCASE
+   UNTIL
+   SWAP R> 2DROP
 ;
 
 \ 10.6.1.2005 PAGE
@@ -250,11 +250,11 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
 \ On a terminal, PAGE clears the screen and resets the cursor position to the upper left corner.
 \ On a printer, PAGE performs a form feed.
 : WIN-PAGE (S -- )
-  CSBI STDOUT GetConsoleScreenBufferInfo WIN-ERR>IOR THROW
-  0 SP@ 0
-  CSBI CONSOLE_SCREEN_BUFFER_INFO.dwSize DUP COORD.X W@ SWAP COORD.Y W@ *
-  BL STDOUT FillConsoleOutputCharacter WIN-ERR>IOR THROW DROP
-  0 0 AT-XY
+   CSBI STDOUT GetConsoleScreenBufferInfo WIN-ERR>IOR THROW
+   0 SP@ 0
+   CSBI CONSOLE_SCREEN_BUFFER_INFO.dwSize DUP COORD.X W@ SWAP COORD.Y W@ *
+   BL STDOUT FillConsoleOutputCharacter WIN-ERR>IOR THROW DROP
+   0 0 AT-XY
 ;
 
 \ 10.6.2.1325 EMIT?
@@ -263,7 +263,7 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
 \ of EMIT in place of EMIT? would not have suffered an indefinite delay.
 \ If the device status is indeterminate, flag is true.
 : WIN-EMIT? (S -- flag )
-  TRUE
+   TRUE
 ;
 
 : WINCONSOLE-INIT

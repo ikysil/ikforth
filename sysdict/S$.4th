@@ -11,33 +11,33 @@ REPORT-NEW-NAME OFF
 
 \ Match delimiters for string
 : (S-DELIM) ( c1 -- c2)
-  CASE
-    [CHAR] < OF [CHAR] > ENDOF
-    [CHAR] { OF [CHAR] } ENDOF
-    [CHAR] [ OF [CHAR] ] ENDOF
-    [CHAR] ( OF [CHAR] ) ENDOF
-    DUP                    \ use same character for all others
-  ENDCASE
+   CASE
+      [CHAR] < OF [CHAR] > ENDOF
+      [CHAR] { OF [CHAR] } ENDOF
+      [CHAR] [ OF [CHAR] ] ENDOF
+      [CHAR] ( OF [CHAR] ) ENDOF
+      DUP                    \ use same character for all others
+   ENDCASE
 ;
 
 \ run-time routine for string parsing
 : PARSE-S$ ( <char1>ccc<char2> -- addr u)
-  >IN @
-  CHAR
-  SWAP >IN !
-  DUP PARSE 2DROP
-  (S-DELIM)                \ determine second delimiter
-  PARSE                    \ parse to  second delimiter
+   >IN @
+   CHAR
+   SWAP >IN !
+   DUP PARSE 2DROP
+   (S-DELIM)                \ determine second delimiter
+   PARSE                    \ parse to  second delimiter
 ;
 
 \ run-time routine for string parsing
 : PARSE-S\$ ( <char1>ccc<char2> -- addr u)
-  >IN @
-  CHAR
-  SWAP >IN !
-  DUP PARSE 2DROP
-  (S-DELIM)                \ determine second delimiter
-  PARSE\                   \ parse to  second delimiter
+   >IN @
+   CHAR
+   SWAP >IN !
+   DUP PARSE 2DROP
+   (S-DELIM)                \ determine second delimiter
+   PARSE\                   \ parse to  second delimiter
 ;
 
 \ parse string; if compiling, compile it as a literal.
@@ -52,12 +52,12 @@ INT/COMP: S\$
 
 \ parse string and print it
 : .$ ( <char1>ccc<char2> -- )
-  PARSE-S$ TYPE
+   PARSE-S$ TYPE
 ; IMMEDIATE
 
 \ parse string and print it
 : .\$ ( <char1>ccc<char2> -- )
-  PARSE-S\$ TYPE
+   PARSE-S\$ TYPE
 ; IMMEDIATE
 
 REPORT-NEW-NAME !

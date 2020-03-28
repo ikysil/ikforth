@@ -55,19 +55,19 @@ REPORT-NEW-NAME OFF
 0 VALUE GLOBAL-INIT-FLAG
 
 : STARTUP-INCLUDED
-  CR ." Loading startup include" CR
-  CATCH( SF @ #SF @ 2DUP TYPE CR INCLUDED )CATCH
-  CASE
-    0 OF
-\ no errors
-    ENDOF
-\    2 OF
+   CR ." Loading startup include" CR
+   CATCH( SF @ #SF @ 2DUP TYPE CR INCLUDED )CATCH
+   CASE
+      0 OF
+      \ no errors
+      ENDOF
+\     2 OF
 \ ignore file not found exception
-\    ENDOF
-    DUP
-    CR .EXCEPTION
-    CR REPORT-SOURCE
-  ENDCASE
+\     ENDOF
+      DUP
+      CR .EXCEPTION
+      CR REPORT-SOURCE
+   ENDCASE
 ;
 
 : PROCESS-ARGS

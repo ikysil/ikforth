@@ -16,7 +16,7 @@ FALSE REPORT-NEW-NAME !
 \ [
 (DO-:) &IMMEDIATE/COMPILE-ONLY PARSE-CHECK-HEADER, [ DROP
    TRUE STATE ! \ entering compilation state
-  FALSE STATE ! (;)
+   FALSE STATE ! (;)
 [
 
 \ ]
@@ -28,13 +28,13 @@ FALSE REPORT-NEW-NAME !
 \ ;
 (DO-:) &IMMEDIATE/COMPILE-ONLY PARSE-CHECK-HEADER, ; DROP
 ]
-  POSTPONE (;) &HIDDEN RESET-HFLAGS! 0 RECURSE-XT ! POSTPONE [ (;)
+   POSTPONE (;) &HIDDEN RESET-HFLAGS! 0 RECURSE-XT ! POSTPONE [ (;)
 [
 
 \ :
 (DO-:) &HIDDEN PARSE-CHECK-HEADER, : DROP
 ]
-  (DO-:) &HIDDEN PARSE-CHECK-HEADER, RECURSE-XT ! ]
+   (DO-:) &HIDDEN PARSE-CHECK-HEADER, RECURSE-XT ! ]
 ;
 
 \ -----------------------------------------------------------------------------
@@ -42,17 +42,17 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 
 : IMMEDIATE
-  &IMMEDIATE SET-HFLAGS!
+   &IMMEDIATE SET-HFLAGS!
 ;
 
 : IMMEDIATE?
-  \ (S xt -- flag )
-  \ (G Check if word identified by xt is an immediate word. )
-  >HEAD HFLAGS@ &IMMEDIATE AND 0<>
+   \ (S xt -- flag )
+   \ (G Check if word identified by xt is an immediate word. )
+   >HEAD HFLAGS@ &IMMEDIATE AND 0<>
 ;
 
 : COMPILE-ONLY
-  &COMPILE-ONLY SET-HFLAGS!
+   &COMPILE-ONLY SET-HFLAGS!
 ;
 
 : COMPILE-ONLY?
@@ -62,7 +62,7 @@ FALSE REPORT-NEW-NAME !
 ;
 
 : IMMEDIATE/COMPILE-ONLY
-  &IMMEDIATE/COMPILE-ONLY SET-HFLAGS!
+   &IMMEDIATE/COMPILE-ONLY SET-HFLAGS!
 ;
 
 \ -----------------------------------------------------------------------------
@@ -70,11 +70,11 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 
 : HIDE
-  &HIDDEN SET-HFLAGS!
+   &HIDDEN SET-HFLAGS!
 ;
 
 : REVEAL
-  &HIDDEN RESET-HFLAGS!
+   &HIDDEN RESET-HFLAGS!
 ;
 
 \ -----------------------------------------------------------------------------
@@ -82,8 +82,8 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 
 : $NEXT
-  \ Compile $NEXT primitive of inner interpreter at HERE
-  HERE $NEXT-CODE-SIZE ALLOT $NEXT!
+   \ Compile $NEXT primitive of inner interpreter at HERE
+   HERE $NEXT-CODE-SIZE ALLOT $NEXT!
 ;
 
 \ -----------------------------------------------------------------------------
@@ -93,52 +93,52 @@ FALSE REPORT-NEW-NAME !
 
 \ 6.1.0950 CONSTANT
 : CONSTANT
-  (DO-CONSTANT) &USUAL PARSE-CHECK-HEADER, DROP ,
+   (DO-CONSTANT) &USUAL PARSE-CHECK-HEADER, DROP ,
 ;
 
 : VARIABLE
-  (DO-VARIABLE) &USUAL PARSE-CHECK-HEADER, DROP 0 ,
+   (DO-VARIABLE) &USUAL PARSE-CHECK-HEADER, DROP 0 ,
 ;
 
 : USER       \ "name" --
-  (DO-USER) &USUAL PARSE-CHECK-HEADER, DROP USER-SIZE-VAR @ ,
+   (DO-USER) &USUAL PARSE-CHECK-HEADER, DROP USER-SIZE-VAR @ ,
 ;
 
 : USER-ALLOC \ user-size --
-  USER-SIZE-VAR SWAP OVER @ + SWAP !
+   USER-SIZE-VAR SWAP OVER @ + SWAP !
 ;
 
 : CODE \ (S "name" -- )
-  0 &USUAL PARSE-CHECK-HEADER, DROP
+   0 &USUAL PARSE-CHECK-HEADER, DROP
 ;
 
 : END-CODE
 ; IMMEDIATE \ do nothing
 
 : (;CODE)
-  R> LATEST-HEAD@ HEAD> CFA!
+   R> LATEST-HEAD@ HEAD> CFA!
 ;
 
 : ;CODE
-  &HIDDEN RESET-HFLAGS! POSTPONE (;CODE) POSTPONE [
+   &HIDDEN RESET-HFLAGS! POSTPONE (;CODE) POSTPONE [
 ; IMMEDIATE/COMPILE-ONLY
 
 : :NONAME
-  (DO-:) 0 0 &HIDDEN HEADER, DUP RECURSE-XT ! ]
+   (DO-:) 0 0 &HIDDEN HEADER, DUP RECURSE-XT ! ]
 ;
 
 : CREATE
-  (DO-CREATE) &USUAL PARSE-CHECK-HEADER, DROP
+   (DO-CREATE) &USUAL PARSE-CHECK-HEADER, DROP
 ;
 
 : (DOES)
-  R> LATEST-HEAD@ HEAD> CFA!
+   R> LATEST-HEAD@ HEAD> CFA!
 ;
 
 : DOES>
-  0 RECURSE-XT !
-  POSTPONE (DOES)
-  (DO-DOES>) CALL,
+   0 RECURSE-XT !
+   POSTPONE (DOES)
+   (DO-DOES>) CALL,
 ; IMMEDIATE/COMPILE-ONLY
 
 REPORT-NEW-NAME !

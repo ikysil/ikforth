@@ -11,9 +11,9 @@ FALSE REPORT-NEW-NAME !
 \  Constants to speed-up parsing
 \ -----------------------------------------------------------------------------
 
-  -2 CONSTANT -2
+   -2 CONSTANT -2
 
-  -1 CONSTANT -1
+   -1 CONSTANT -1
 
    1 CONSTANT  1
 

@@ -12,44 +12,44 @@ REPORT-NEW-NAME OFF
 \  11.6.1.2080 READ-FILE
 \  (S c-addr u1 fileid -- u2 ior )
 :NONAME (S c-addr u1 fileid -- u2 ior )
-  >R 2>R
-  0 SP@ NIL SWAP 2R> SWAP R> ReadFile
-  0= IF GetLastError ELSE 0 THEN
+   >R 2>R
+   0 SP@ NIL SWAP 2R> SWAP R> ReadFile
+   WIN-ERR>IOR
 ; IS READ-FILE
 
 :NONAME (S c-addr u1 fileid -- ior )
-  >R 2>R
-  0 SP@ NIL SWAP 2R> SWAP R> WriteFile SWAP DROP
-  0= IF GetLastError ELSE 0 THEN
+   >R 2>R
+   0 SP@ NIL SWAP 2R> SWAP R> WriteFile SWAP DROP
+   WIN-ERR>IOR
 ; IS WRITE-FILE
 
 : DELETE-FILE (S c-addr u -- ior )
-  S">Z" DUP DeleteFile
-  0= IF   GetLastError   ELSE   0   THEN
-  SWAP FREE THROW
+   S">Z" DUP DeleteFile
+   0= IF   GetLastError   ELSE   0   THEN
+   SWAP FREE THROW
 ;
 
 : RENAME-FILE (S c-addr1 u1 c-addr2 u2 -- ior )
-  S">Z" -ROT S">Z" 2DUP MoveFile DROP
-  FREE THROW FREE THROW GetLastError
+   S">Z" -ROT S">Z" 2DUP MoveFile DROP
+   FREE THROW FREE THROW GetLastError
 ;
 
 : FILE-STATUS (S c-addr u -- x ior )
-  S">Z" DUP GetFileAttributes
-  DUP INVALID_FILE_ATTRIBUTES = IF   GetLastError   ELSE   0   THEN
-  ROT FREE THROW
+   S">Z" DUP GetFileAttributes
+   DUP INVALID_FILE_ATTRIBUTES = IF   GetLastError   ELSE   0   THEN
+   ROT FREE THROW
 ;
 
 : FLUSH-FILE (S FileHandle -- ior )
-  FlushFileBuffers GetLastError
+   FlushFileBuffers GetLastError
 ;
 
 : FILE-SIZE (S FileHandle -- file-size-lo file-size-high ior )
-  0 SP@ ROT GetFileSize SWAP GetLastError
+   0 SP@ ROT GetFileSize SWAP GetLastError
 ;
 
 : WRITE-LINE (S c-addr u FileHandle -- ior )
-  DUP >R WRITE-FILE THROW CR-STR R> WRITE-FILE
+   DUP >R WRITE-FILE THROW CR-STR R> WRITE-FILE
 ;
 
 \  11.6.1.2147 RESIZE-FILE
@@ -61,23 +61,23 @@ REPORT-NEW-NAME OFF
 \  been written. At the conclusion of the operation, FILE-SIZE returns
 \  the value ud and FILE-POSITION returns an unspecified value.
 : RESIZE-FILE ( ud fileid -- ior )
-  >R 2>R
-  FILE_BEGIN NIL 2R> SWAP R@ SetFilePointerEx
-  0= IF R> DROP GetLastError EXIT THEN
-  R> SetEndOfFile
-  0= IF GetLastError ELSE 0 THEN
+   >R 2>R
+   FILE_BEGIN NIL 2R> SWAP R@ SetFilePointerEx
+   0= IF R> DROP GetLastError EXIT THEN
+   R> SetEndOfFile
+   WIN-ERR>IOR
 ;
 
 :NONAME
-  4 OR
+   4 OR
 ; IS BIN
 
 :NONAME
-  1
+   1
 ; IS W/O
 
 :NONAME
-  2
+   2
 ; IS R/W
 
 REPORT-NEW-NAME !

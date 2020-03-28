@@ -16,11 +16,11 @@ FALSE REPORT-NEW-NAME !
 : [CHAR] CHAR POSTPONE LITERAL ; IMMEDIATE/COMPILE-ONLY
 
 : PARSE)
-  [CHAR] ) PARSE
+   [CHAR] ) PARSE
 ;
 
 : .(
-  PARSE) TYPE
+   PARSE) TYPE
 ; IMMEDIATE
 
 13 EMIT 10 EMIT .( Loading CORE definitions )
@@ -35,22 +35,23 @@ FALSE REPORT-NEW-NAME !
 ;
 
 : @+ \ (S addr1 -- addr2 x )
-  DUP CELL+ SWAP @
+   DUP CELL+ SWAP @
 ;
 
 : !+ \ (S x addr1 -- addr2 )
-  DUP -ROT ! CELL+
+   DUP -ROT ! CELL+
 ;
 
 : C+! \ (S x addr -- )
-  SWAP OVER C@ + SWAP C! ;
+   SWAP OVER C@ + SWAP C!
+;
 
 : C@+ \ (S addr1 -- addr2 x )
-  DUP CHAR+ SWAP C@
+   DUP CHAR+ SWAP C@
 ;
 
 : C!+ \ (S x addr1 -- addr2 )
-  DUP -ROT C! CHAR+
+   DUP -ROT C! CHAR+
 ;
 
 \ -----------------------------------------------------------------------------
@@ -74,51 +75,51 @@ FALSE REPORT-NEW-NAME !
 \ -----------------------------------------------------------------------------
 
 : PARSE" \ (S string" -- c-addr count )
-  [CHAR] " PARSE
+   [CHAR] " PARSE
 ;
 
 : (C") R> DUP COUNT + ALIGNED >R ;
 
 \ compile string
 : ," \ (S c-addr count -- )
-  HERE OVER ALLOT SWAP CMOVE
+   HERE OVER ALLOT SWAP CMOVE
 ;
 
 \ compile counted string
 : ,C" \ (S c-addr count -- )
-  HERE             \ c-addr count here
-  OVER CHAR+ ALLOT \ c-addr count here
-  OVER SWAP        \ c-addr count count here
-  C!+              \ c-addr count here+char
-  SWAP             \
-  CMOVE
+   HERE             \ c-addr count here
+   OVER CHAR+ ALLOT \ c-addr count here
+   OVER SWAP        \ c-addr count count here
+   C!+              \ c-addr count here+char
+   SWAP             \
+   CMOVE
 ;
 
 \ parse string separated by " and compile it as counted string
 : C"
-  PARSE"
-  POSTPONE (C") ,C"
+   PARSE"
+   POSTPONE (C") ,C"
 ; IMMEDIATE/COMPILE-ONLY
 
 \ compile string
 : ,S" \ (S c-addr count -- )
-  HERE             \ c-addr count here
-  OVER CELL+ ALLOT \ c-addr count here
-  OVER SWAP        \ c-addr count count here
-  !+               \ c-addr count here+cell
-  SWAP             \
-  CMOVE
+   HERE             \ c-addr count here
+   OVER CELL+ ALLOT \ c-addr count here
+   OVER SWAP        \ c-addr count count here
+   !+               \ c-addr count here+cell
+   SWAP             \
+   CMOVE
 ;
 
 : SLITERAL
-  POSTPONE (S") ,S"
+   POSTPONE (S") ,S"
 ; IMMEDIATE/COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
 
 : ."
-  POSTPONE S"
-  POSTPONE TYPE
+   POSTPONE S"
+   POSTPONE TYPE
 ; IMMEDIATE/COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
@@ -127,19 +128,21 @@ FALSE REPORT-NEW-NAME !
 
 \ ?PAIRS
 (DO-DEFER) &USUAL PARSE-CHECK-HEADER, ?PAIRS DROP ]
-  2DROP
+   2DROP
 [
 
 \ Reserve space for forward reference
 : >MARK \ (S -- addr for >RESOLVE )
-  HERE 0 COMPILE, ; COMPILE-ONLY
+   HERE 0 COMPILE,
+; COMPILE-ONLY
 
 \ Patch forward reference created with >MARK
 : >RESOLVE HERE SWAP ! ; COMPILE-ONLY
 
 \ Mark an address for backward reference
 : <MARK \ (S -- addr for <RESOLVE )
-  HERE ; COMPILE-ONLY
+   HERE
+; COMPILE-ONLY
 
 \ Resolve backward reference to address marked by <MARK
 : <RESOLVE COMPILE, ; COMPILE-ONLY
@@ -196,7 +199,7 @@ VARIABLE DO-PAIRS
 \  Append the execution semantics of the current definition to the current definition.
 \  An ambiguous condition exists if RECURSE appears in a definition after DOES>.
 : RECURSE
-  RECURSE-XT @ ?DUP IF   COMPILE,   ELSE   EXC-INVALID-RECURSE THROW   THEN
+   RECURSE-XT @ ?DUP IF   COMPILE,   ELSE   EXC-INVALID-RECURSE THROW   THEN
 ; IMMEDIATE/COMPILE-ONLY
 
 \ -----------------------------------------------------------------------------
@@ -232,8 +235,9 @@ USER THROW-ADDRESS 1 CELLS USER-ALLOC
 USER THROW-WORD    1 CELLS USER-ALLOC
 
 : (COMP-THROW) \ (S exc-id throw-word -- )
-  R@ [ 1 CELLS ] LITERAL - THROW-ADDRESS ! THROW-WORD ! ?DUP
-  IF (THROW) ELSE 0 DUP THROW-ADDRESS ! THROW-WORD ! THEN ;
+   R@ [ 1 CELLS ] LITERAL - THROW-ADDRESS ! THROW-WORD ! ?DUP
+   IF  (THROW)  ELSE  0 DUP THROW-ADDRESS ! THROW-WORD !  THEN
+;
 
 :NONAME 0 DUP THROW-ADDRESS ! THROW-WORD ! THROW ;
 :NONAME LATEST-HEAD@ POSTPONE LITERAL POSTPONE (COMP-THROW) ;
@@ -253,25 +257,27 @@ USER ABORT"-MESSAGE 2 CELLS USER-ALLOC
 USER DEFER-NAME 2 CELLS USER-ALLOC
 
 :NONAME
-  DEFER-XT @ >HEAD H>#NAME DEFER-NAME 2!
-  EXC-UNINITIALIZED-DEFER THROW
+   DEFER-XT @ >HEAD H>#NAME DEFER-NAME 2!
+   EXC-UNINITIALIZED-DEFER THROW
 ; CONSTANT (DEFAULT-DEFER)
 
 \ 6.2.1173
 \ DEFER
 : DEFER \ (S "name" -- )
-  (DO-DEFER) &USUAL PARSE-CHECK-HEADER, DROP (DEFAULT-DEFER) COMPILE,
+   (DO-DEFER) &USUAL PARSE-CHECK-HEADER, DROP (DEFAULT-DEFER) COMPILE,
 ;
 
 \ 6.2.1175
 \ DEFER!
 : DEFER! \ (S xt2 xt1 -- )
-  >BODY ! ;
+   >BODY !
+;
 
 \ 6.2.1177
 \ DEFER@
 : DEFER@ \ (S xt1 -- xt2 )
-  >BODY @ ;
+   >BODY @
+;
 
 \ 6.2.1725
 \ IS
@@ -286,19 +292,19 @@ INT/COMP: IS
 INT/COMP: ACTION-OF
 
 : [ACTION-OF]
-  \ (S "<spaces>name" -- ) \ compiling
-  \ (S -- xt )             \ executing
-  \ (G xt is the present execution token that name is set to execute. )
-  \ (G I.e., this produces static binding as if name was not deferred. )
-  ' DEFER@ POSTPONE LITERAL
+   \ (S "<spaces>name" -- ) \ compiling
+   \ (S -- xt )             \ executing
+   \ (G xt is the present execution token that name is set to execute. )
+   \ (G I.e., this produces static binding as if name was not deferred. )
+   ' DEFER@ POSTPONE LITERAL
 ; IMMEDIATE/COMPILE-ONLY
 
 : DEFERRED
-  \ (S "<spaces>name" -- ) \ compiling
-  \ (S ... -- ... )        \ executing
-  \ (G Compile the execution of the present execution token that name is set to execute. )
-  \ (G I.e., this produces static binding as if name was not deferred. )
-  POSTPONE [ACTION-OF] POSTPONE EXECUTE
+   \ (S "<spaces>name" -- ) \ compiling
+   \ (S ... -- ... )        \ executing
+   \ (G Compile the execution of the present execution token that name is set to execute. )
+   \ (G I.e., this produces static binding as if name was not deferred. )
+   POSTPONE [ACTION-OF] POSTPONE EXECUTE
 ; IMMEDIATE/COMPILE-ONLY
 
 :NONAME - IF EXC-CONTROL-MISMATCH THROW THEN ; IS ?PAIRS
@@ -335,28 +341,28 @@ DEFER CR
 : WITHIN OVER - >R - R> U< ;
 
 : SIGN-FILL \ (S value -- sign)
-  31 RSHIFT 0 SWAP -
+   31 RSHIFT 0 SWAP -
 ;
 
 \ 6.1.0690 ABS
 \ D: a -- abs(a)
 \ Assuming 2-complement binary representation
 : ABS \ (S a -- abs(a))
-  DUP SIGN-FILL TUCK + XOR
+   DUP SIGN-FILL TUCK + XOR
 ;
 
 : FM/MOD
-  2DUP XOR 0<
-  IF
-    >R R@ SM/REM OVER
-    IF
-      1- SWAP R> + SWAP
-    ELSE
-      R> DROP
-    THEN
-  ELSE
-    SM/REM
-  THEN
+   2DUP XOR 0<
+   IF
+      >R R@ SM/REM OVER
+      IF
+         1- SWAP R> + SWAP
+      ELSE
+         R> DROP
+      THEN
+   ELSE
+      SM/REM
+   THEN
 ;
 
 : MAX 2DUP < IF SWAP THEN DROP ;
@@ -365,8 +371,8 @@ DEFER CR
 
 \ Assuming 2-complement binary representation
 : SGN \ (S a -- sign a)
-  DUP 31 RSHIFT NEGATE
-  SWAP NEGATE 31 RSHIFT OR
+   DUP 31 RSHIFT NEGATE
+   SWAP NEGATE 31 RSHIFT OR
 ;
 
 : CONVERT COUNT >NUMBER DROP ;
@@ -384,25 +390,25 @@ DEFER CR
 \ -----------------------------------------------------------------------------
 
 : (
-  SOURCE-ID 0>
-  IF
-    BEGIN
+   SOURCE-ID 0>
+   IF
+      BEGIN
+         PARSE) 2DROP
+         >IN @ 1- SOURCE DROP + C@ [CHAR] ) = IF   EXIT   THEN
+         REFILL INVERT
+      UNTIL
+   ELSE
       PARSE) 2DROP
-      >IN @ 1- SOURCE DROP + C@ [CHAR] ) = IF EXIT THEN
-      REFILL INVERT
-    UNTIL
-  ELSE
-    PARSE) 2DROP
-  THEN
+   THEN
 ; IMMEDIATE
 
 \ Ignore from this line until the end of stream
 : \EOF  ( -- )
-  SOURCE-ID 0>
-  IF
-    BEGIN REFILL INVERT UNTIL
-  THEN
-  POSTPONE \
+   SOURCE-ID 0>
+   IF
+      BEGIN REFILL INVERT UNTIL
+   THEN
+   POSTPONE \
 ;
 
 : SPACE BL EMIT ;
@@ -410,22 +416,22 @@ DEFER CR
 : SPACES BEGIN DUP 0> WHILE SPACE 1- REPEAT DROP ;
 
 : ROLL DUP 0>
-  IF
-    DUP 1+ PICK >R
-    DUP 1- BEGIN ROT >R 1- DUP 0< UNTIL DROP NIP
-    BEGIN R> SWAP 1- DUP 0= UNTIL DROP R>
-  ELSE
-    DROP
-  THEN
+   IF
+      DUP 1+ PICK >R
+      DUP 1- BEGIN ROT >R 1- DUP 0< UNTIL DROP NIP
+      BEGIN R> SWAP 1- DUP 0= UNTIL DROP R>
+   ELSE
+      DROP
+   THEN
 ;
 
 : MOVE
-  >R 2DUP U<
-  IF
-    R> CMOVE>
-  ELSE
-    R> CMOVE
-  THEN
+   >R 2DUP U<
+   IF
+      R> CMOVE>
+   ELSE
+      R> CMOVE
+   THEN
 ;
 
 \ -----------------------------------------------------------------------------
@@ -435,12 +441,12 @@ DEFER CR
 : NDROP \ (S xn ... x1 n -- )
 \ Take n off the data stack. Remove n items from the data stack.
 \ If n is zero, just remove n.
-  DUP 0>=
-  IF
-    DEPTH 1 - MIN 0 ?DO DROP LOOP
-  ELSE
-    EXC-INVALID-NUM-ARGUMENT THROW
-  THEN
+   DUP 0>=
+   IF
+      DEPTH 1 - MIN 0 ?DO DROP LOOP
+   ELSE
+      EXC-INVALID-NUM-ARGUMENT THROW
+   THEN
 ;
 
 \ -----------------------------------------------------------------------------
@@ -539,10 +545,10 @@ DEFER \G IMMEDIATE ' \ IS \G
 
 \ execute word while specified BASE is active
 : BASE-EXECUTE (S i*x xt u -- j*x )
-  BASE DUP @ >R !
-  CATCH
-  R> BASE !
-  THROW
+   BASE DUP @ >R !
+   CATCH
+   R> BASE !
+   THROW
 ;
 
 REPORT-NEW-NAME !

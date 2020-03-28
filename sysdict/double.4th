@@ -16,41 +16,41 @@ HEX
 \ (S d1|ud1 d2|ud2 -- d3|ud3 )
 \ Subtract d2|ud2 from d1|ud1, giving the difference d3|ud3.
 CODE D-
-  59 B,                    \ POP     ECX
-  5B B,                    \ POP     EBX
-  5A B,                    \ POP     EDX
-  58 B,                    \ POP     EAX
-  2B B, C3 B,              \ SUB     EAX,EBX
-  1B B, D1 B,              \ SBB     EDX,ECX
-  50 B,                    \ PUSH    EAX
-  52 B,                    \ PUSH    EDX
-  $NEXT
+   59 B,                    \ POP     ECX
+   5B B,                    \ POP     EBX
+   5A B,                    \ POP     EDX
+   58 B,                    \ POP     EAX
+   2B B, C3 B,              \ SUB     EAX,EBX
+   1B B, D1 B,              \ SBB     EDX,ECX
+   50 B,                    \ PUSH    EAX
+   52 B,                    \ PUSH    EDX
+   $NEXT
 END-CODE
 
 \ 8.6.1.1090 D2*
 \ (S xd1 -- xd2 )
 \ xd2 is the result of shifting xd1 one bit toward the most-significant bit, filling the vacated least-significant bit with zero.
 CODE D2*
-  5A B,                    \ POP     EDX
-  58 B,                    \ POP     EAX
-  D1 B, E0 B,              \ SAL     EAX,1
-  D1 B, D2 B,              \ RCL     EDX,1
-  50 B,                    \ PUSH    EAX
-  52 B,                    \ PUSH    EDX
-  $NEXT
+   5A B,                    \ POP     EDX
+   58 B,                    \ POP     EAX
+   D1 B, E0 B,              \ SAL     EAX,1
+   D1 B, D2 B,              \ RCL     EDX,1
+   50 B,                    \ PUSH    EAX
+   52 B,                    \ PUSH    EDX
+   $NEXT
 END-CODE
 
 \ 8.6.1.1100 D2/
 \ (S xd1 -- xd2 )
 \ xd2 is the result of shifting xd1 one bit toward the least-significant bit, leaving the most-significant bit unchanged.
 CODE D2/
-  5A B,                    \ POP     EDX
-  58 B,                    \ POP     EAX
-  D1 B, FA B,              \ SAR     EDX,1
-  D1 B, D8 B,              \ RCR     EAX,1
-  50 B,                    \ PUSH    EAX
-  52 B,                    \ PUSH    EDX
-  $NEXT
+   5A B,                    \ POP     EDX
+   58 B,                    \ POP     EAX
+   D1 B, FA B,              \ SAR     EDX,1
+   D1 B, D8 B,              \ RCR     EAX,1
+   50 B,                    \ PUSH    EAX
+   52 B,                    \ PUSH    EDX
+   $NEXT
 END-CODE
 
 \ 8.6.1.1830 M+
@@ -100,7 +100,7 @@ BASE !
 : D>S DROP ;
 
 : DXOR (S d1 d2 -- d1 xor d2 )
-  ROT XOR -ROT XOR SWAP
+   ROT XOR -ROT XOR SWAP
 ;
 
 
@@ -138,54 +138,54 @@ BASE !
 \ ud is the absolute value of d.
 \ Assuming 2-complement representation
 : DABS (S d -- ud )
-  DUP SIGN-FILL DUP \ d sd
-  2SWAP 2OVER       \ sd d sd
-  D+ DXOR
+   DUP SIGN-FILL DUP \ d sd
+   2SWAP 2OVER       \ sd d sd
+   D+ DXOR
 ;
 
 : TNEGATE (S t1lo t1mid t1hi -- t2lo t2mid t2hi )
-  INVERT >R
-  INVERT >R
-  INVERT 0 1. D+ S>D R> 0 D+
-  R> +
+   INVERT >R
+   INVERT >R
+   INVERT 0 1. D+ S>D R> 0 D+
+   R> +
 ;
 
 : UT* (S ulo uhi u -- utlo utmid uthi )
-  SWAP >R DUP >R
-  UM* 0 R> R> UM* D+
+   SWAP >R DUP >R
+   UM* 0 R> R> UM* D+
 ;
 
 : MT* (S lo hi n -- tlo tmid thi )
-  DUP 0<
-  IF
-    ABS OVER 0<
-    IF
-      >R DABS R> UT*
-    ELSE
-      UT* TNEGATE
-    THEN
-  ELSE
-    OVER 0<
-    IF
-      >R DABS R> UT* TNEGATE
-    ELSE
-      UT*
-    THEN
-  THEN
+   DUP 0<
+   IF
+      ABS OVER 0<
+      IF
+         >R DABS R> UT*
+      ELSE
+         UT* TNEGATE
+      THEN
+   ELSE
+      OVER 0<
+      IF
+         >R DABS R> UT* TNEGATE
+      ELSE
+         UT*
+      THEN
+   THEN
 ;
 
 : UT/ (S utlo utmid uthi n -- d1 )
-  DUP >R UM/MOD -ROT R> UM/MOD
-  NIP SWAP
+   DUP >R UM/MOD -ROT R> UM/MOD
+   NIP SWAP
 ;
 
 : M*/ (S d1 n1 +n2 -- d2 )
-  >R MT* DUP 0<
-  IF
-    TNEGATE R> UT/ DNEGATE
-  ELSE
-    R> UT/
-  THEN
+   >R MT* DUP 0<
+   IF
+      TNEGATE R> UT/ DNEGATE
+   ELSE
+      R> UT/
+   THEN
 ;
 
 : 2+! \ (S x1 x2 addr -- )

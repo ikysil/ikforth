@@ -25,11 +25,11 @@ DS-SIZE CELLS USER-ALLOC
 USER LP0 \ initial locals stack pointer
 
 : LP@ (S -- addr ) \ addr is locals stack pointer
-  LP @
+   LP @
 ;
 
 : LP! (S addr -- ) \ addr is locals stack pointer
-  LP !
+   LP !
 ;
 
 : LFP@ (S -- addr ) \ addr is locals frame pointer
@@ -41,8 +41,8 @@ USER LP0 \ initial locals stack pointer
 ;
 
 : INIT-LOCALS-STACK
-  LP0 LP!
-  LP0 LFP!
+   LP0 LP!
+   LP0 LFP!
 ;
 ' INIT-LOCALS-STACK DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
@@ -51,35 +51,35 @@ USER LP0 \ initial locals stack pointer
 ;
 
 : L@: (S n "name" -- n ) \ define word name to fetch the value of local with index n
-  CREATE DUP CELLS ,
-  DOES> (S -- x ) \ x is the value of local
-  @ L-ADDR @
+   CREATE DUP CELLS ,
+   DOES> (S -- x ) \ x is the value of local
+   @ L-ADDR @
 ;
 
 : L!: (S n "name" -- n ) \ define word name to store the value of local with index n
-  CREATE DUP CELLS ,
-  DOES> (S x -- ) \ x is the new value of local
-  @ L-ADDR !
+   CREATE DUP CELLS ,
+   DOES> (S x -- ) \ x is the new value of local
+   @ L-ADDR !
 ;
 
 : L@-N: (S n "name"*n -- )
-  BEGIN  DUP 0>  WHILE  1- L@:  REPEAT
-  DROP
+   BEGIN  DUP 0>  WHILE  1- L@:  REPEAT
+   DROP
 ;
 
 : L!-N: (S n "name"*n -- )
-  BEGIN  DUP 0>  WHILE  1- L!:  REPEAT
-  DROP
+   BEGIN  DUP 0>  WHILE  1- L!:  REPEAT
+   DROP
 ;
 
 : LOCALS-RESTORE
-  EXC> LP! EXC> LFP!
+   EXC> LP! EXC> LFP!
 ;
 
 :NONAME
-  DEFERRED EXC-FRAME-PUSH
-  LFP@ >EXC LP@ >EXC
-  ['] LOCALS-RESTORE >EXC
+   DEFERRED EXC-FRAME-PUSH
+   LFP@ >EXC LP@ >EXC
+   ['] LOCALS-RESTORE >EXC
 ; IS EXC-FRAME-PUSH
 
 ONLY FORTH DEFINITIONS ALSO LOCALS-HIDDEN
@@ -105,33 +105,33 @@ ONLY FORTH DEFINITIONS ALSO LOCALS-HIDDEN
 DEFER (L IMMEDIATE ' ( IS (L
 
 : LDEPTH (S -- +n ) \ +n is current locals stack depth
-  LP0 LP@ - [ 1 CELLS ] LITERAL /
+   LP0 LP@ - [ 1 CELLS ] LITERAL /
 ;
 
 : >L (S x -- ) (L -- x ) \ move item from data stack to locals stack
-  LP@ CELL-
-  SWAP OVER !
-  LP!
+   LP@ CELL-
+   SWAP OVER !
+   LP!
 ;
 
 : L> (S -- x ) (L x -- ) \ move item from locals stack to data stack
-  LP@ DUP @ SWAP
-  CELL+ LP0 MIN
-  LP!
+   LP@ DUP @ SWAP
+   CELL+ LP0 MIN
+   LP!
 ;
 
 : L@ (S -- x ) (L x -- x ) \ copy item from locals stack to data stack
-  LP@ @
+   LP@ @
 ;
 
 : LDROP (S -- ) (L x -- ) \ drop top item from locals stack
-  LP@
-  CELL+ LP0 MIN
-  LP!
+   LP@
+   CELL+ LP0 MIN
+   LP!
 ;
 
 : LSWAP (S -- ) (L x1 x2 -- x2 x1 ) \ swap two items on locals stack
-  L> L> SWAP >L >L
+   L> L> SWAP >L >L
 ;
 
 : LOCALS-FRAME (S n -- ) \ allocate locals frame for n cells
