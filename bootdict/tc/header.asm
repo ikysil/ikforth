@@ -134,7 +134,6 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                 $COLON      '(HEADER,)',$PHEADERC
-                CW          $OVER, $PLOCATEC
                 CW          $HERE
                 CW          $TOR
                 CW          $CCOMMA                 ; compile flags
@@ -192,6 +191,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  HEADER,
 ;  D: [ code-addr | 0 ] [ 0 0 | c-addr count ] flags -- xt
                 $COLON      'HEADER,',$HEADERC
+                CW          $OVER, $PLOCATEC
                 CW          $PHEADERC, $PCFA_C
                 $END_COLON
 

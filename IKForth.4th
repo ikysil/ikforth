@@ -62,3 +62,8 @@ REPORT-NEW-NAME OFF
 requires" lib/~ik/open-interpreter.4th"
 requires" lib/~ik/peimage.4th"
 
+CR .( Startup ) CR
+STARTUP-CHAIN CHAIN.SHOW
+
+CR .( Shutdown ) CR
+SHUTDOWN-CHAIN CHAIN.SHOW
