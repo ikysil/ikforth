@@ -11,6 +11,7 @@ git:
 env:
   - DOCKER_FILE=docker/Dockerfile
   - DOCKER_FILE=docker/Dockerfile.centos8
+  - DOCKER_FILE=docker/Dockerfile.fedora33
   - DOCKER_FILE=docker/Dockerfile.ubuntu1604
   - DOCKER_FILE=docker/Dockerfile.ubuntu1804
   - DOCKER_FILE=docker/Dockerfile.ubuntu1910
@@ -20,6 +21,4 @@ before_install:
   - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c"
 
 script:
-  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "echo -e '123\n ' | scons itc ansitest"
-  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "echo -e '123\n ' | scons dtc ansitest"
-  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "echo -e 'bye\n ' | scons fptest"
+  - ./docker/build-ci.sh

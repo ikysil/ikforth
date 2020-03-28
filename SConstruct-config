@@ -35,9 +35,9 @@ if env['TSYS'] == 'linux':
     env.Replace(TERMINIT = 'ANSITERM-INIT')
 
 if env['HSYS'] == 'linux' and env['TSYS'] == 'nt':
-    env.SetDefault(BUILD_LAUNCHER = 'WINEDEBUG=-all wine')
+    env.SetDefault(BUILD_LAUNCHER = 'WINEDEBUG=-all wine32')
     if 'term' in BUILD_TARGETS or 'test-stdin' in BUILD_TARGETS:
-        env.SetDefault(RUN_LAUNCHER = 'WINEDEBUG=-all wine')
+        env.SetDefault(RUN_LAUNCHER = 'WINEDEBUG=-all wine32')
     else:
         env.SetDefault(RUN_LAUNCHER = 'WINEDEBUG=-all wineconsole')
 
