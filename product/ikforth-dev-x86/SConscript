@@ -5,8 +5,8 @@ import os
 Import('env', 'fkernelPath')
 senv = env.Clone()
 
-senv['productname'] = 'ikforth-dev-x86' 
-senv['buildername'] = 'product-builder' 
+senv['productname'] = 'ikforth-dev-x86'
+senv['buildername'] = 'product-builder'
 
 fkernelExec = senv.execname('${buildername}');
 

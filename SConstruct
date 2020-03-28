@@ -22,7 +22,7 @@ env.SConscript(dirs = ['bootdict'],
 
 env.SConscript(dirs = ['product/ikforth-dev-x86'],
         exports = ['env', 'fkernelPath'],
-        variant_dir = 'build/ikforth-dev-$TERMINIT', duplicate = 1)
+        variant_dir = 'build/ikforth-dev-$TSYS-$TERMINIT', duplicate = 1)
 
 env.SConscript('SConscript',
         exports = ['env', 'fkernelPath'])

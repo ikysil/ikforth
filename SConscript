@@ -3,8 +3,8 @@
 Import('env', 'fkernelPath')
 senv = env.Clone()
 
-ikforthExec = senv.execname('IKForth');
-ikforthDict = 'IKForth.img'
+ikforthExec = senv.execname('IKForth-${TSYS}');
+ikforthDict = 'IKForth-${TSYS}.img'
 
 senv.Replace(RUN_CMD = '${RUN_LAUNCHER} ./' + ikforthExec)
 
@@ -23,7 +23,7 @@ def ansitest(source, target, env):
 def fptest(source, target, env):
     env.Execute('${RUN_CMD} \'S\" test/fp-test.4th\" INCLUDED\'')
 
-source_dir = '#build/ikforth-dev-$TERMINIT/'
+source_dir = '#build/ikforth-dev-$TSYS-$TERMINIT/'
 ikforthSrcDict = source_dir + 'ikforth-dev-x86.img'
 
 senv.Command(ikforthDict, ikforthSrcDict, Copy('$TARGET', '$SOURCE'))
@@ -33,7 +33,7 @@ senv.Alias('ikforth', [ikforthExec, ikforthDict])
 
 senv.Alias('all', 'ikforth')
 senv.Depends('all', [ikforthSrcDict])
-senv.Clean('all', ['#build', 'IKForth', 'IKForth.exe'])
+senv.Clean('all', ['#build', 'IKForth-*', 'IKForth-*.exe'])
 
 senv.Alias('run', [], run)
 senv.Alias('test', [], test)
