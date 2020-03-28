@@ -44,6 +44,8 @@ RUN useradd ${RUNUSER} --uid ${RUNUID} --user-group
 
 USER ${RUNUSER}
 
+RUN winecfg
+
 VOLUME ["/opt/ikforth"]
 
 WORKDIR /opt/ikforth
