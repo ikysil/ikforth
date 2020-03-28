@@ -3,7 +3,7 @@
 ## Pre-requisites
 
 * SConstruct 2.4+
-* flat assembler version 1.71.54
+* flat assembler version 1.73.21
   * Linux version for Linux environment
   * Windows version for Windows and Cygwin environments
   * `listing` utility built from sources provided with flat assembler package
