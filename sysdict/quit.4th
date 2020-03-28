@@ -16,6 +16,7 @@ BASE @
 DECIMAL
 
 DEFER QUIT
+DEFER BYE
 
 S" ABORTed"
 EXC-ABORT (EXCEPTION)
@@ -84,8 +85,7 @@ EXC-INVALID-NUM-ARGUMENT (EXCEPTION)
 \ -26 CONSTANT EXC-LOOP-NOT-AVAILABLE             \ loop parameters unavailable
 \ -27 CONSTANT EXC-INVALID-RECURSE                \ invalid recursion
 
-S" User interrupt"
-EXC-USER-INTERRUPT (EXCEPTION)
+' BYE EXC-USER-INTERRUPT (EXCEPTION-XT)
 
 \ -29 CONSTANT EXC-COMPILER-NESTING               \ compiler nesting
 \ -30 CONSTANT EXC-OBSOLESCENT                    \ obsolescent feature
@@ -196,9 +196,11 @@ DEFER .INPUT-PROMPT-INFO
 
 ' (QUIT) IS QUIT
 
-: BYE
+: (BYE)
    SHUTDOWN-CHAIN CHAIN.EXECUTE< (BYE)
 ;
+
+' (BYE) IS BYE
 
 : TERMINIT-WORD
    (S -- c-addr count )

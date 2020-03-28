@@ -110,7 +110,8 @@ VARIABLE PENDING-CHAR
       \ +n2 z-addr
       libc-free
    ELSE
-      2DROP 0
+      \ Ctrl+D
+      EXC-USER-INTERRUPT THROW
    THEN
 ;
 
