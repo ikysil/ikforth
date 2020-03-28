@@ -20,6 +20,7 @@ ENV>
 
 REQUIRES" sysdict/x86-windows/kernel32.4th"
 REQUIRES" sysdict/x86-windows/wincon.4th"
+REQUIRES" sysdict/x86-windows/winerr.4th"
 REQUIRES" sysdict/x86-windows/winexception.4th"
 REQUIRES" sysdict/term/winconsole.4th"
 REQUIRES" sysdict/x86-windows/winfile.4th"
