@@ -27,9 +27,6 @@ docker_run "echo -e 'bye\n ' | scons fptest"       || exit 1
 check_command "wine32" || skip ">>> WINE not installed, skipping..."
 check_command "mingw32-g++" || skip ">>> Mingw32 not installed, skipping..."
 
-docker_run "scons itc term win32 all" || exit 1
-docker_run "scons dtc term win32 all" || exit 1
-
-# docker_run "echo -e '123\n ' | scons itc term win32 ansitest" || exit 1
-# docker_run "echo -e '123\n ' | scons dtc term win32 ansitest" || exit 1
-# docker_run "echo -e 'bye\n ' | scons term win32 fptest"       || exit 1
+docker_run "echo -e '123\n ' | scons itc term win32 ansitest" || exit 1
+docker_run "echo -e '123\n ' | scons dtc term win32 ansitest" || exit 1
+docker_run "echo -e 'bye\n ' | scons term win32 fptest"       || exit 1
