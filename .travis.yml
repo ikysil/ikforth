@@ -23,23 +23,15 @@ before_install:
 script:
   - ./docker/build-ci.sh
 
-before_deploy:
-  - |
-    if [ -z "$TRAVIS_TAG" ]; then
-      # Set up git user name and tag this commit
-      git config --local user.name "Illya Kysil"
-      git config --local user.email "ikysil@ikysil.name"
-      export TRAVIS_TAG=${TRAVIS_TAG:-travis-${TRAVIS_BUILD_NUMBER}-$(date +'%Y%m%dT%H%M%S')-$(git log --format=%h -1)}
-      git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT";
-    fi
-
 deploy:
   provider: releases
   api_key:
     secure: QypaNVwnMk6vl+ahdOwrI0atse4+gjcE7dc0Ap4f+kFxXDdb+nAVEAAjuB1qrhOHef4lBcL9yNQwKQcJTPwc4BM0535jgVCjdvYdTO1lEzDzU936YWhZihW4/OLCvKWdHET5Vqh5mfSasbafCPg96lRTg0jupMYt9c2+YvvXQjwbdTv5p2EKfJ4l7xHRZbV3sI6TDFA2Ik9ar08DZENQorK75arx+Pp2wJM57Aqlqh/VXNlrBoTGqv4lNDQsKw5+qsi8/xdPs7nb6fjSeWk9N2dxhWxvOiFX6h8GySiD7b1E5XqfuAd7BENbRCrj1SzqW8UTJ1PR9AG9MkcpdQvu0E2kUvn0CW/3sGTnBbBGuc0/dbyZI/w41DokR+iZZxm/fA/lcL8KYj5KcvNMUvvIM+0dvLM1PJGEe8MxTXy83gWR8LFfXrYHlub0PGFb8oX1Vusp0vZGbGdt4qw1WnbDff/jOVZBbWMPk2/A0qk1iJO1uFXTueIARF+z7c0swuezyRvB66YkfXLMCvJEO58y0E/3dcWV1yfpg1CB7ePqN5VMaT+Il71nB9o4CwQMf5pMK/EDbZll3bk6BQzrKW7JbwIbuNYCFjFlfRExVJKYjzM36kmMSuppiGwZngUxqhio519/jN0tSrrHfx1/vCFnwYuEkQxBp1SKx1YeR5/U3fw=
-  file: build/ikforth-dist.tar.gz
+  file:
+    - build/ikforth-dist-${TRAVIS_TAG}.tar.gz
+    - build/ikforth-dist-${TRAVIS_TAG}.zip
   skip_cleanup: true
-  draft: true
   on:
-    condition: -f build/ikforth-dist.tar.gz
+    condition: -f build/ikforth-dist-${TRAVIS_TAG}.tar.gz
+    condition: -f build/ikforth-dist-${TRAVIS_TAG}.zip
     tags: true

@@ -1,9 +1,10 @@
 # ikforth
+import os
 
 Import('env', 'fkernelPath', 'linconPath')
 senv = env.Clone()
 
-ikforthExec = senv.execname('IKForth-${TSYS}');
+ikforthExec = senv.execname('IKForth-${TSYS}')
 ikforthDict = 'IKForth-${TSYS}.img'
 
 senv.Replace(RUN_CMD = '${RUN_LAUNCHER} ./' + ikforthExec)
@@ -39,9 +40,10 @@ dist_src.extend(senv.Glob('*.exe'))
 dist_src.extend(senv.Glob('*.img'))
 senv.Replace(TARFLAGS = '-c -z')
 senv.Replace(TARSUFFIX = '.tar.gz')
-senv.Tar('#build/ikforth-dist', dist_src)
+senv.Tar('#build/${DIST_FILE_NAME}', dist_src)
+senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
 
-senv.Alias('dist', ['#build/ikforth-dist.tar.gz'])
+senv.Alias('dist', ['#build/${DIST_FILE_NAME}.tar.gz', '#build/${DIST_FILE_NAME}.zip'])
 
 senv.Alias('all', ['ikforth'])
 senv.Depends('all', [ikforthSrcDict])

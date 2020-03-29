@@ -44,6 +44,10 @@ if env['HSYS'] == 'linux' and env['TSYS'] == 'nt':
 if 'term' in BUILD_TARGETS or 'test-stdin' in BUILD_TARGETS:
     env.Replace(TERMINIT = 'ANSITERM-INIT')
 
+if 'TRAVIS_TAG' in env['ENV']:
+    env.Replace(DIST_FILE_NAME = 'ikforth-dist-' + env['ENV']['TRAVIS_TAG'])
+
+env.SetDefault(DIST_FILE_NAME = 'ikforth-dist-HEAD')
 env.SetDefault(DEBUG = 'FALSE')
 env.SetDefault(CODE_THREADING_TYPE = 'DTC')
 
