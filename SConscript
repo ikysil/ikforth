@@ -33,7 +33,7 @@ senv.Alias('ikforth', ['lincon', ikforthExec, ikforthDict])
 
 senv.Alias('all', 'ikforth')
 senv.Depends('all', [ikforthSrcDict])
-senv.Clean('all', ['#build', 'IKForth-*', 'IKForth-*.exe'])
+senv.Clean('all', ['#build', '#IKForth-*.elf', '#IKForth-*.img', '#IKForth-*.exe'])
 
 senv.Alias('run', [], run)
 senv.Alias('test', [], test)

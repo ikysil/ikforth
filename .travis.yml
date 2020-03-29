@@ -18,7 +18,7 @@ env:
 
 before_install:
   - docker build --rm -f ${DOCKER_FILE} --build-arg RUNUID=$UID -t ikforth-build:latest .
-  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c"
+  - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c linux all && scons -c win32 all"
 
 script:
   - ./docker/build-ci.sh

@@ -50,8 +50,8 @@ env.SetDefault(CODE_THREADING_TYPE = 'DTC')
 def execname(env, basename):
     if env['TSYS'] == 'nt':
         return basename + '.exe'
-    else:
-        return basename
+    if env['TSYS'] == 'linux':
+        return basename + '.elf'
 
 env.AddMethod(execname)
 
