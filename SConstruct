@@ -10,7 +10,7 @@ fkernelPath = env.SConscript(dirs = ['src/loader'],
         exports = ['env'],
         variant_dir = 'build/loader-$TSYS', duplicate = 0)
 
-env.SConscript(dirs = ['src/lincon'],
+linconPath = env.SConscript(dirs = ['src/lincon'],
         exports = ['env'],
         variant_dir = 'build/lincon', duplicate = 0)
 
@@ -25,6 +25,6 @@ env.SConscript(dirs = ['product/ikforth-dev-x86'],
         variant_dir = 'build/ikforth-dev-$TSYS-$TERMINIT', duplicate = 1)
 
 env.SConscript('SConscript',
-        exports = ['env', 'fkernelPath'])
+        exports = ['env', 'fkernelPath', 'linconPath'])
 
 env.Default('all')

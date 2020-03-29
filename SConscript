@@ -1,6 +1,6 @@
 # ikforth
 
-Import('env', 'fkernelPath')
+Import('env', 'fkernelPath', 'linconPath')
 senv = env.Clone()
 
 ikforthExec = senv.execname('IKForth-${TSYS}');
@@ -29,7 +29,7 @@ ikforthSrcDict = source_dir + 'ikforth-dev-x86.img'
 senv.Command(ikforthDict, ikforthSrcDict, Copy('$TARGET', '$SOURCE'))
 senv.Command(ikforthExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
-senv.Alias('ikforth', [ikforthExec, ikforthDict])
+senv.Alias('ikforth', ['lincon', ikforthExec, ikforthDict])
 
 senv.Alias('all', 'ikforth')
 senv.Depends('all', [ikforthSrcDict])
