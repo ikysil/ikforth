@@ -4,19 +4,33 @@ Import('env')
 senv = env.Clone()
 senv['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = True
 
-senv.Append(LINKFLAGS = ['-m32'])
+senv.Append(LINKFLAGS = ['-m32', '-Wl,--no-as-needed', '-pthread'])
 
-senv.Append(CPPFLAGS = ['-mregparm=0', '-Wall', '-zq', '-O3', '-mtune=i586', '-m32'])
+senv.Append(CCFLAGS = ['-mregparm=0', '-Wall', '-zq', '-march=i586', '-m32', '-fpermissive', '-pedantic', '-nodefaultlibs', '-fno-exceptions'])
+
+if senv['DEBUG'] == 'TRUE':
+    senv.Append(LINKFLAGS = ['-g3', '-Og'])
+else:
+    senv.Append(LINKFLAGS = ['-Wl,--strip-all', '-g0', '-O3'])
 
 if senv['TSYS'] == 'nt':
     senv.Replace(tools = ['mingw'])
-    senv.Replace(CXX  = 'mingw32-g++')
-    senv.Replace(LINK = 'mingw32-g++')
-    senv.Append(CPPFLAGS = ['-mconsole'])
+    senv.Replace(CC   = 'mingw32-gcc')
+    senv.Replace(LINK = 'mingw32-gcc')
+    senv.Replace(SHLIBPREFIX = '')
+    senv.Replace(SHLIBSUFFIX = '.dll')
+    senv.Append(CCFLAGS = ['-mconsole'])
+    senv.Append(CPPPATH = ['/usr/include'])
 
 if senv['TSYS'] == 'linux':
     senv.Append(CPPFLAGS = [])
     senv.Append(LINKFLAGS = ['-ldl'])
+    senv.Replace(SHLIBSUFFIX = '.so')
+
+linconExec = '${SHLIBPREFIX}lincon${SHLIBSUFFIX}'
+linconPath = '#build/lincon/' + linconExec
 
 senv.SharedLibrary('lincon', 'lincon.c')
-senv.Alias('lincon', ['liblincon.so'])
+senv.Alias('lincon', [linconExec])
+
+Return('linconPath')
