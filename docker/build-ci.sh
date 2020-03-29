@@ -31,3 +31,5 @@ check_command "mingw32-gcc" || skip ">>> mingw32-gcc not installed, skipping..."
 docker_run "echo -e '123\n ' | scons win32 itc term all ansitest" || exit 1
 docker_run "echo -e '123\n ' | scons win32 dtc term all ansitest" || exit 1
 docker_run "echo -e 'bye\n ' | scons win32 term fptest"           || exit 1
+
+docker_run "scons dist" || exit 1

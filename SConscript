@@ -31,7 +31,19 @@ senv.Command(ikforthExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
 senv.Alias('ikforth', ['lincon', ikforthExec, ikforthDict])
 
-senv.Alias('all', 'ikforth')
+dist_src = senv.Glob('#lib/**')
+dist_src.extend(senv.Glob('#app/**'))
+dist_src.extend(senv.Glob('#docs/*.md'))
+dist_src.extend(senv.Glob('*.elf'))
+dist_src.extend(senv.Glob('*.exe'))
+dist_src.extend(senv.Glob('*.img'))
+senv.Replace(TARFLAGS = '-c -z')
+senv.Replace(TARSUFFIX = '.tar.gz')
+senv.Tar('#build/ikforth-dist', dist_src)
+
+senv.Alias('dist', ['#build/ikforth-dist.tar.gz'])
+
+senv.Alias('all', ['ikforth'])
 senv.Depends('all', [ikforthSrcDict])
 senv.Clean('all', ['#build', '#IKForth-*.elf', '#IKForth-*.img', '#IKForth-*.exe'])
 
@@ -41,10 +53,10 @@ senv.Alias('test-stdin', [], test_stdin)
 senv.Alias('ansitest', [], ansitest)
 senv.Alias('fptest', [], fptest)
 
-senv.Depends('run',        ['all'])
-senv.Depends('test',       ['all'])
-senv.Depends('test-stdin', ['all'])
-senv.Depends('ansitest',   ['all'])
-senv.Depends('fptest',     ['all'])
+senv.Depends('run',        ['ikforth'])
+senv.Depends('test',       ['ikforth'])
+senv.Depends('test-stdin', ['ikforth'])
+senv.Depends('ansitest',   ['ikforth'])
+senv.Depends('fptest',     ['ikforth'])
 
-senv.AlwaysBuild('run', 'test', 'test-stdin', 'ansitest', 'fptest')
+senv.AlwaysBuild('run', 'test', 'test-stdin', 'ansitest', 'fptest', 'dist')
