@@ -24,13 +24,13 @@ script:
   - ./docker/build-ci.sh
 
 before_deploy:
-  if ! [[ $TRAVIS_TAG ]]; then
-    # Set up git user name and tag this commit
-    git config --local user.name "Illya Kysil"
-    git config --local user.email "ikysil@ikysil.name"
-    export TRAVIS_TAG=${TRAVIS_TAG:-travis-${TRAVIS_BUILD_NUMBER}-$(date +'%Y%m%dT%H%M%S')-$(git log --format=%h -1)}
-    git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT";
-  fi
+  - if [ -z "$TRAVIS_TAG" ]; then
+      # Set up git user name and tag this commit
+      git config --local user.name "Illya Kysil"
+      git config --local user.email "ikysil@ikysil.name"
+      export TRAVIS_TAG=${TRAVIS_TAG:-travis-${TRAVIS_BUILD_NUMBER}-$(date +'%Y%m%dT%H%M%S')-$(git log --format=%h -1)}
+      git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT";
+    fi
 
 deploy:
   provider: releases
