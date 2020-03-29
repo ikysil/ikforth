@@ -21,6 +21,7 @@ before_install:
   - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c linux all && scons -c win32 all"
 
 script:
+  - export BUILD_TAG=${TRAVIS_TAG:-HEAD}
   - ./docker/build-ci.sh
 
 deploy:
