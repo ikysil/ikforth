@@ -30,7 +30,7 @@ ikforthSrcDict = source_dir + 'ikforth-dev-x86.img'
 senv.Command(ikforthDict, ikforthSrcDict, Copy('$TARGET', '$SOURCE'))
 senv.Command(ikforthExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
 
-senv.Alias('ikforth', ['lincon', ikforthExec, ikforthDict])
+senv.Alias('ikforth', [ikforthExec, ikforthDict])
 
 dist_src = senv.Glob('#lib/**')
 dist_src.extend(senv.Glob('#app/**'))
@@ -45,7 +45,7 @@ senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
 
 senv.Alias('dist', ['#build/${DIST_FILE_NAME}.tar.gz', '#build/${DIST_FILE_NAME}.zip'])
 
-senv.Alias('all', ['ikforth'])
+senv.Alias('all', ['ikforth', 'lincon'])
 senv.Depends('all', [ikforthSrcDict])
 senv.Clean('all', ['#build', '#IKForth-*.elf', '#IKForth-*.img', '#IKForth-*.exe'])
 
