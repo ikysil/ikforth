@@ -84,6 +84,10 @@ VARIABLE PENDING-CHAR
    [:
       BEGIN
          0 SP@ 1 CHARS STDIN READ-FILE THROW
+         DUP 0= IF
+            \ EOF
+            EXC-USER-INTERRUPT THROW
+         THEN
          1 <
       WHILE
       REPEAT
