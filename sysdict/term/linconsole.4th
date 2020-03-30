@@ -90,6 +90,7 @@ VARIABLE PENDING-CHAR
          THEN
          1 <
       WHILE
+         DROP
       REPEAT
    ;]
    ['] key-tcattr
