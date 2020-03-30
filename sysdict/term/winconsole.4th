@@ -139,6 +139,20 @@ VARIABLE PENDING-CHAR
    REPEAT
 ;
 
+\ Check for EOF conditions and throw EXC-USER-INTERRUPT if found.
+: WIN-REDIRECT-KEY-EOF? ( n ior -- )
+   DUP
+   ERROR_BROKEN_PIPE = IF
+      \ EOF
+      EXC-USER-INTERRUPT THROW
+   THEN
+   THROW
+   0= IF
+      \ EOF
+      EXC-USER-INTERRUPT THROW
+   THEN
+;
+
 \ 6.1.1750 KEY ( -- char )
 \ Receive one character char, a member of the implementation-defined character set.
 \ Keyboard events that do not correspond to such characters are discarded until a valid
@@ -150,11 +164,9 @@ VARIABLE PENDING-CHAR
 : WIN-REDIRECT-KEY ( -- char )
    PENDING-CHAR @ ?DUP IF   0 PENDING-CHAR ! EXIT   THEN
    BEGIN
-      0 SP@ 1 CHARS STDIN READ-FILE THROW
-      DUP 0= IF
-         \ EOF
-         EXC-USER-INTERRUPT THROW
-      THEN
+      0 SP@ 1 CHARS STDIN READ-FILE \ c n ior
+      OVER SWAP                     \ c n n ior
+      WIN-REDIRECT-KEY-EOF?         \ c n
       1 <
    WHILE
       DROP
