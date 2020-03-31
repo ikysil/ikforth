@@ -99,6 +99,9 @@ KERNEL32.DLL S" WriteConsoleW" DYNLIB-SYMBOL STDCALL-C0 WriteConsoleW
 DEFER WriteConsole
 ' WriteConsoleA IS WriteConsole
 
+KERNEL32.DLL S" SetConsoleMode" DYNLIB-SYMBOL STDCALL-C1 SetConsoleMode
+KERNEL32.DLL S" GetConsoleMode" DYNLIB-SYMBOL STDCALL-C1 GetConsoleMode
+
 KERNEL32.DLL S" GetNumberOfConsoleInputEvents" DYNLIB-SYMBOL STDCALL-C1 GetNumberOfConsoleInputEvents
 
 KERNEL32.DLL S" FlushConsoleInputBuffer" DYNLIB-SYMBOL STDCALL-C1 FlushConsoleInputBuffer

@@ -191,6 +191,11 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
    THEN
 ;
 
+\ 6.1.1320 EMIT
+\ Emit a char to output
+\ (S char -- )
+DEFER WIN-ACCEPT-EMIT
+
 \ 6.1.0695 ACCEPT
 \ (S c-addr +n1 -- +n2 )
 \ Receive a string of at most +n1 characters.
@@ -216,7 +221,7 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
          32 127 <OF<          \ graphics characters
             OVER R@ <
             IF
-               DUP EMIT
+               DUP WIN-ACCEPT-EMIT
                ROT C!+ SWAP 1+
             THEN
             FALSE
@@ -283,6 +288,15 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
    TRUE
 ;
 
+: WINCONSOLE-CHAR-INIT
+   0 SP@ STDIN GetConsoleMode WIN-ERR>IOR THROW
+   ENABLE_ECHO_INPUT
+   ENABLE_LINE_INPUT OR
+   ENABLE_PROCESSED_INPUT OR
+   INVERT AND
+   STDIN SetConsoleMode WIN-ERR>IOR THROW
+;
+
 : WINCONSOLE-INIT
    ['] WIN-ERASE-CHAR        IS CONSOLE-BACKSPACE
    ['] WIN-AT-XY             IS AT-XY
@@ -294,6 +308,8 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
       ['] WIN-CONSOLE-EKEY>FKEY IS EKEY>FKEY
       ['] WIN-CONSOLE-KEY?      IS KEY?
       ['] WIN-CONSOLE-KEY       IS KEY
+      ['] EMIT                  IS WIN-ACCEPT-EMIT
+      WINCONSOLE-CHAR-INIT
    ELSE
       \ ['] WIN-REDIRECT-EKEY?     IS EKEY?
       \ ['] WIN-REDIRECT-EKEY      IS EKEY
@@ -301,6 +317,7 @@ CREATE CSBI CONSOLE_SCREEN_BUFFER_INFO STRUCT-SIZEOF ALLOT
       \ ['] WIN-REDIRECT-EKEY>FKEY IS EKEY>FKEY
       ['] WIN-REDIRECT-KEY?      IS KEY?
       ['] WIN-REDIRECT-KEY       IS KEY
+      ['] DROP                   IS WIN-ACCEPT-EMIT
    THEN
    ['] WIN-ACCEPT            IS ACCEPT
    ['] WIN-PAGE              IS PAGE
