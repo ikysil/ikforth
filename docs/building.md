@@ -10,7 +10,8 @@
 * GCC (Linux)
 * cygwin32-gcc (Cygwin64)
 * mingw32 (Linux/Windows)
-  * symbolic link `mingw32-g++` -> `/usr/bin/i686-w64-mingw32-g++`
+  * symbolic link `/usr/local/bin/mingw32-g++` -> `/usr/bin/i686-w64-mingw32-g++`
+  * symbolic link `/usr/local/bin/mingw32-gcc` -> `/usr/bin/i686-w64-mingw32-gcc`
 * wine 32 bits (Linux)
 * 32 bit packages (Linux):
   * lib32readline8 (Ubuntu 19.10+)
@@ -36,7 +37,9 @@ docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ### `debug`
 ### `dtc`
 ### `fptest`
+### `ikforth`
 ### `itc`
+### `lincon`
 ### `loader`
 ### `run`
 ### `term`
