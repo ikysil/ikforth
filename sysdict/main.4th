@@ -34,7 +34,7 @@ REPORT-NEW-NAME OFF
 ;
 
 : .VERSION
-   CR ." IKForth 20.NEXT"
+   CR ." IKForth 20.03"
    CR ." Unlicense since 1999 by Illya Kysil"
 ;
 
