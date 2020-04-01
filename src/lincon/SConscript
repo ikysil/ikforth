@@ -23,19 +23,14 @@ if senv['TSYS'] == 'nt':
     senv.Append(CPPPATH = ['/usr/include'])
 
 if senv['TSYS'] == 'linux':
-    senv.Append(CCFLAGS = [])
+    senv.Append(CPPFLAGS = [])
     senv.Append(LINKFLAGS = ['-ldl'])
     senv.Replace(SHLIBSUFFIX = '.so')
 
-linconPreProcessSrc = ['lincon.c']
 linconExec = '${SHLIBPREFIX}lincon${SHLIBSUFFIX}'
 linconPath = '#build/lincon/' + linconExec
 
-penv = senv.Clone()
-penv.Replace(CCFLAGS = [])
-linconProcessSrc = penv.PreProcess(linconPreProcessSrc)
-
-linconLib = senv.SharedLibrary('lincon', linconProcessSrc)
-senv.Alias('lincon', linconLib)
+senv.SharedLibrary('lincon', 'lincon.c')
+senv.Alias('lincon', [linconExec])
 
 Return('linconPath')

@@ -35,7 +35,7 @@ typedef struct _Entry {
 
 // Table of names from generated wincon.i file
 Entry entry[] = {
-#include "lincon-entry.i"
+#include "lincon.i"
    {NULL,0}
 };
 
