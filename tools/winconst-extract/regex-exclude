@@ -22,8 +22,7 @@ __RPC_API
 [[:space:]]+IID_
 [[:space:]]+L"
 [[:space:]]+SID_
-\{
-\}
+[{}]
 #define[[:space:]]+[^[:space:]]+[[:space:]]+[(){}]+
 #define[[:space:]]+[^[:space:]]+[[:space:]]+void
 cdecl

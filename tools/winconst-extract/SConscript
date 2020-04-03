@@ -35,12 +35,11 @@ extractSrc2 = senv.Command('winconst-extract.E2',
         "sed -E 's/(.+)/CONSTANT\(\\1\)/' < ${SOURCE} > ${TARGET}")
 
 publishExecName = senv.execname('winconst-publish')
-# publishExec = penv.PreProcess('winconst-publish.c')
 publishExec = senv.Program(publishExecName, 'winconst-publish.c', LIBS=['urlmon'])
 senv.Depends(publishExec, [extractSrc2])
 
 winconstForth = senv.Command('winconst.f',
         publishExec,
-        '${BUILD_LAUNCHER} ${SOURCE} > ${TARGET}')
+        '${WIN_BUILD_LAUNCHER} ${SOURCE} > ${TARGET}')
 
 senv.Alias('winconst-extract', [winconstForth])
