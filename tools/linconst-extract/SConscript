@@ -1,0 +1,39 @@
+# extract
+
+Import('env')
+senv = env.Clone()
+senv['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = True
+
+senv.Append(CCFLAGS = ['-Wall', '-zq', '-fno-exceptions'])
+
+senv.Append(LINKFLAGS = ['-Wl,--no-as-needed'])
+
+extractPreProcessSrc = ['linconst-extract.c']
+
+extractRegExSrc = ['regex-include', 'regex-exclude', 'regex-exclude-names']
+
+penv = senv.Clone()
+penv.Replace(CCFLAGS = [])
+extractProcessSrc = penv.PreProcess(extractPreProcessSrc)
+
+extractSrc0 = senv.Command('linconst-extract.E0',
+        [extractProcessSrc, extractRegExSrc],
+        "cat ${SOURCE} | grep -E --file build/linconst-extract/regex-include | grep -Ev --file build/linconst-extract/regex-exclude | sort -u > ${TARGET}")
+
+extractSrc1 = senv.Command('linconst-extract.E1',
+        [extractSrc0, extractRegExSrc],
+        "cat ${SOURCE} | cut --delimiter ' ' -f 2 | sort -u | grep -Ev --file build/linconst-extract/regex-exclude-names > ${TARGET}")
+
+extractSrc2 = senv.Command('linconst-extract.E2',
+        [extractSrc1],
+        "sed -E 's/(.+)/CONSTANT\(\\1\)/' < ${SOURCE} > ${TARGET}")
+
+publishExecName = senv.execname('linconst-publish')
+publishExec = senv.Program(publishExecName, 'linconst-publish.c')
+
+linconstForth = senv.Command('linconst.f',
+        publishExec,
+        '${SOURCE} > ${TARGET}')
+
+senv.Alias('linconst-extract', [linconstForth])
+senv.Depends('linconst-extract', [linconstForth, publishExec, extractSrc2, extractSrc1, extractSrc0])

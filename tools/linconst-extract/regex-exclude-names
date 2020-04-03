@@ -1,0 +1,16 @@
+_POSIX[_[:alnum:]]+
+d_fileno
+GETLONG
+GETSHORT
+nsaddr
+PUTLONG
+PUTSHORT
+sched_priority
+SCM_SRCRT
+st_atime
+st_ctime
+st_mtime
+stderr
+stdin
+stdout
+TMP_MAX
