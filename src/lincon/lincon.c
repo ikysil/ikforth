@@ -33,7 +33,7 @@ typedef struct _Entry {
 #define SIZEOF(x,v)      DEFINE(x, sizeof(v))
 #define OFFSETOF(x,s,f)  DEFINE(x, offsetof(s,f))
 
-// Table of names from generated wincon.i file
+// Table of names from generated lincon.i file
 Entry entry[] = {
 #include "lincon.i"
    {NULL,0}
