@@ -1,0 +1,46 @@
+# extract
+
+Import('env')
+senv = env.Clone()
+senv['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = True
+
+senv.Replace(tools = ['mingw'])
+senv.Replace(CC   = 'mingw32-gcc')
+senv.Replace(LINK = 'mingw32-gcc')
+
+#senv.Append(CCFLAGS = ['-mconsole', '--verbose'])
+senv.Append(CCFLAGS = ['-m32', '-Wall', '-zq', '-fno-exceptions'])
+
+#senv.Append(LINKFLAGS = ['-mconsole'])
+senv.Append(LINKFLAGS = ['-Wl,--no-as-needed'])
+
+extractPreProcessSrc = ['winconst-extract.c']
+
+extractRegExSrc = ['regex-include', 'regex-exclude', 'regex-exclude-names']
+
+penv = senv.Clone()
+penv.Replace(CCFLAGS = [])
+extractProcessSrc = penv.PreProcess(extractPreProcessSrc)
+
+extractSrc0 = senv.Command('winconst-extract.E0',
+        [extractProcessSrc, extractRegExSrc],
+        "cat ${SOURCE} | grep -E --file build/winconst-extract/regex-include | grep -Ev --file build/winconst-extract/regex-exclude | sort -u > ${TARGET}")
+
+extractSrc1 = senv.Command('winconst-extract.E1',
+        [extractSrc0, extractRegExSrc],
+        "cat ${SOURCE} | cut --delimiter ' ' -f 2 | sort -u | grep -Ev --file build/winconst-extract/regex-exclude-names > ${TARGET}")
+
+extractSrc2 = senv.Command('winconst-extract.E2',
+        [extractSrc1],
+        "sed -E 's/(.+)/CONSTANT\(\\1\)/' < ${SOURCE} > ${TARGET}")
+
+publishExecName = senv.execname('winconst-publish')
+# publishExec = penv.PreProcess('winconst-publish.c')
+publishExec = senv.Program(publishExecName, 'winconst-publish.c', LIBS=['urlmon'])
+senv.Depends(publishExec, [extractSrc2])
+
+winconstForth = senv.Command('winconst.f',
+        publishExec,
+        '${BUILD_LAUNCHER} ${SOURCE} > ${TARGET}')
+
+senv.Alias('winconst-extract', [winconstForth])

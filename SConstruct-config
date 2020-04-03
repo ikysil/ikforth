@@ -59,6 +59,14 @@ def execname(env, basename):
 
 env.AddMethod(execname)
 
+def pre_process(env, source):
+    env = env.Clone()
+    env.Replace(OBJSUFFIX = '.E')
+    env.AppendUnique(CCFLAGS = ['-E', '-dM'])
+    return env.Object(source)
+
+env.AddMethod(pre_process, 'PreProcess')
+
 env.Alias('term')
 env.Alias('debug')
 env.Alias('dtc')
