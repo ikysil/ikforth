@@ -1,6 +1,10 @@
 #include "linconst.h"
 
+// Add entry to table
 #define CONSTANT(x)      {#x, (int)x},
+#define DEFINE(x,v)      {#x, (int)v},
+#define SIZEOF(x,v)      DEFINE(x, sizeof(v))
+#define OFFSETOF(x,s,f)  DEFINE(x, offsetof(s,f))
 
 typedef struct _Entry {
    char *name;
@@ -9,6 +13,7 @@ typedef struct _Entry {
 
 Entry entry[] = {
 #include "linconst-extract.E2"
+#include "linconst-publish.i"
    {NULL,0}
 };
 
