@@ -50,7 +50,18 @@ DEFER MS (S msecs -- )
 ; COMPILE-ONLY
 
 DEFER TIME&DATE (S -- +n1 +n2 +n3 +n4 +n5 +n6 )
-DEFER FILL      (S c-addr u char -- )
+
+: FILL (S c-addr u char -- )
+   (G If u is greater than zero, store char in each of u consecutive characters of memory beginning at c-addr.)
+   >R BEGIN
+      DUP 0<>
+   WHILE
+      OVER R@ SWAP C!
+      1 /STRING
+   REPEAT
+   2DROP
+   R> DROP
+;
 
 : ERASE (S c-addr u -- )
    0 FILL

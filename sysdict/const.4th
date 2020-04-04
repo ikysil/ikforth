@@ -117,6 +117,7 @@ FALSE REPORT-NEW-NAME !
 \ The values {-4095...-256} shall be used only as assigned by a system.
 -256 CONSTANT EXC-INVALID-LITERAL                \ Invalid literal
 -257 CONSTANT EXC-UNINITIALIZED-DEFER            \ Uninitialized DEFER
+-258 CONSTANT EXC-INVALID-DEFER                  \ IS invoked on a non-DEFER
 
 \ The first exception id allocated dynamically by word EXCEPTION
 -1024 CONSTANT EXC-DYNAMIC-ID

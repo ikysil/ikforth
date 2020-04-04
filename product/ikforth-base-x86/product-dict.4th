@@ -52,17 +52,18 @@ REQUIRES" sysdict/case.4th"
 REQUIRES" sysdict/block.4th"
 REQUIRES" sysdict/quotations.4th"
 
+REQUIRES" sysdict/sformat.4th"
+REQUIRES" sysdict/locate.4th"
+
+REQUIRES" sysdict/locals-stack.4th"
+REQUIRES" sysdict/locals.4th"
+REQUIRES" sysdict/locals-ext.4th"
+
 REQUIRES" sysdict/dynlib.4th"
 REQUIRES" sysdict/x86-windows.4th"
 REQUIRES" sysdict/x86-linux.4th"
 
 REQUIRES" sysdict/term/ansiterm.4th"
-
-REQUIRES" sysdict/sformat.4th"
-REQUIRES" sysdict/locate.4th"
-REQUIRES" sysdict/locals-stack.4th"
-REQUIRES" sysdict/locals.4th"
-REQUIRES" sysdict/locals-ext.4th"
 
 
 REQUIRES" sysdict/macro.4th"

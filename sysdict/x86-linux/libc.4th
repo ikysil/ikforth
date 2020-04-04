@@ -94,10 +94,6 @@ LIBC.SO S" free" DYNLIB-SYMBOL 1 CDECL-C0 libc-free
 \ void *memset(void *s, int c, size_t n);
 LIBC.SO S" memset" DYNLIB-SYMBOL 3 CDECL-C0 _memset
 
-:NONAME (S c-addr u char -- )
-   ROT _memset
-; IS FILL
-
 LIBC.SO S" usleep" DYNLIB-SYMBOL 1 CDECL-C0 _usleep
 
 :NONAME (S u -- )

@@ -23,8 +23,4 @@ USER TIME&DATE-STRUC 16 USER-ALLOC
    DROP
 ; IS TIME&DATE
 
-:NONAME (S c-addr u char -- )
-   SWAP ROT FillMemory
-; IS FILL
-
 REPORT-NEW-NAME !
