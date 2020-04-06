@@ -150,6 +150,19 @@
                 PUSHDS      EAX                     ; u3
                 $NEXT
 
+;  UMOD
+;  Divide u1 by u2, giving the remainder u3.
+;  All values and arithmetic are unsigned. An ambiguous condition exists if u2
+;  is zero.
+;  D: u1 u2 -- u3
+                $CODE       'UMOD',$UMOD,VEF_USUAL
+                POPDS       EBX                     ; u2
+                POPDS       EAX                     ; u1
+                XOR         EDX,EDX                 ; unsigned
+                DIV         EBX
+                PUSHDS      EDX                     ; u3
+                $NEXT
+
 ;******************************************************************************
 ;  Logic
 ;******************************************************************************

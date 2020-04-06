@@ -118,6 +118,8 @@ FALSE REPORT-NEW-NAME !
 -256 CONSTANT EXC-INVALID-LITERAL                \ Invalid literal
 -257 CONSTANT EXC-UNINITIALIZED-DEFER            \ Uninitialized DEFER
 -258 CONSTANT EXC-INVALID-DEFER                  \ IS invoked on a non-DEFER
+-259 CONSTANT EXC-INVALID-CONSTDICT              \ Invalid CONSTDICT
+-260 CONSTANT EXC-CONSTDICT-OVERFLOW             \ Invalid CONSTDICT
 
 \ The first exception id allocated dynamically by word EXCEPTION
 -1024 CONSTANT EXC-DYNAMIC-ID

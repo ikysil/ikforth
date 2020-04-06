@@ -140,8 +140,14 @@
                 CW          $RFROM
                 $END_COLON
 
+;  ,S"
+;  S: c-addr count --
+                $COLON      ',S"',$COMMA_SQUOTE
+                CW          $DUP, $COMMA, $HERE, $OVER, $ALLOT, $SWAP, $CMOVE
+                $END_COLON
+
 ;  (S")
-;  -- c-addr count
+;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
                 CW          $RFROM, $DUP, $FETCH, $SWAP, $CELLADD, $2DUP, $ADD, $TOR, $SWAP
                 $END_COLON
@@ -159,7 +165,8 @@
                 }
 
                 CWLIT       $PSQUOTE
-                CW          $COMPILEC, $DUP, $COMMA, $HERE, $OVER, $ALLOT, $SWAP, $CMOVE
+                CW          $COMPILEC
+                CW          $COMMA_SQUOTE
                 $END_COLON
 
 ;  +S"BUFFER
