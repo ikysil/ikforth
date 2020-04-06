@@ -1,4 +1,5 @@
 _POSIX[_[:alnum:]]+
+[_[:alnum:]]+_H
 d_fileno
 GETLONG
 GETSHORT
