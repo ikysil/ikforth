@@ -100,8 +100,6 @@ TRACE-BEGIN
    STEP-HASH-MODULO UMOD 1 OR
 ;
 
-TRACE-END
-
 : HT@ (S n -- x )
    CELLS LAST-HT + @
 ;
@@ -109,8 +107,6 @@ TRACE-END
 : HT! (S x n -- )
    CELLS LAST-HT + !
 ;
-
-TRACE-BEGIN
 
 : ?HT-FREE (S addr -- true | false )
    \G Check if hashtable bucket at addr is free.
@@ -145,8 +141,6 @@ TRACE-BEGIN
    EXC-CONSTDICT-OVERFLOW THROW
 ;
 
-TRACE-END
-
 : HT-CONSTDICT (S addr -- )
    \G Populate hash table at LAST-HT.
    \G addr is the address of last CONSTDICT CONSTANT structure.
@@ -159,6 +153,51 @@ TRACE-END
       C>LINK @
    REPEAT
    DROP
+;
+
+: CONSTDICT-HASH-UNPACK (S cdid -- ct-addr ht-addr n )
+   \G Unpack CONSTDICT-HASH cdid into the address if hastable and number of buckets.
+   \G ct-addr is address of the last constant.
+   \G ht-addr is address of the hastable.
+   \G n is number of buckets.
+   @+ SWAP @+
+;
+
+: HT>CONST (S ht-addr n -- x)
+   CELLS + @
+;
+
+: SEARCH-CONSTDICT-HASH (S c-addr u cdid -- false | x true )
+   \G Search hashtable-based constdict and return constant value and true if found, false otherwise.
+   \G x is the value of the constant.
+   >R
+   2DUP NAME-HASH                \ S: c-addr u nh        R: cdid
+   DUP STEP-HASH SWAP KEY-HASH   \ S: c-addr u sh kh     R: cdid
+   LOCAL kh                      \ key hash
+   LOCAL sh                      \ step hash
+   R>
+   CONSTDICT-HASH-UNPACK
+   DROP
+   LOCAL ht-addr                 \ hashtable address
+   DROP
+   0 LOCAL const-addr            \ constant address
+   BEGIN
+      \ S: c-addr u
+      ht-addr kh HT>CONST DUP TO const-addr
+      0<>
+      sh kh HT-STEP kh <>
+      AND
+   WHILE
+      const-addr C>NAME COUNT
+      2OVER COMPARE 0=
+      IF
+         2DROP
+         const-addr C>VALUE @
+         TRUE EXIT
+      THEN
+      sh kh HT-STEP TO kh
+   REPEAT
+   2DROP FALSE
 ;
 
 ONLY FORTH DEFINITIONS ALSO CONSTDICT-PRIVATE ALSO CONSTDICT-DEF
@@ -191,6 +230,13 @@ ONLY FORTH DEFINITIONS ALSO CONSTDICT-PRIVATE ALSO CONSTDICT-DEF
    HT-CONSTDICT
    0 TO LAST-HT
 ;
+
+(S c-addr u cdid -- false | x true)
+\G Search hashtable-based constdict and return constant value and true if found, false otherwise.
+\G x is the value of the constant.
+SYNONYM SEARCH-CONSTDICT-HASH SEARCH-CONSTDICT-HASH
+
+TRACE-END
 
 ONLY FORTH DEFINITIONS
 
