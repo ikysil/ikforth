@@ -30,7 +30,7 @@ ALSO CONSTDICT-PRIVATE DEFINITIONS
 \   +4   buckets    number of buckets in hashtable
 \   +8   hastable   hashtable data, buckets CELLS, absolute address of the CONSTDICT CONSTANT structure, 0 if empty
 
-VALUE LAST-CONST
+0 VALUE LAST-CONST
 \G Address of the previous defined constant
 
 : C>LINK (S addr -- addr')
@@ -62,7 +62,7 @@ ALSO CONSTDICT-DEF DEFINITIONS
 
 PREVIOUS DEFINITIONS
 
-VALUE LAST-HT
+0 VALUE LAST-HT
 
 DECIMAL
 
