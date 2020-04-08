@@ -77,7 +77,6 @@ TRACE-BEGIN
 
 : NAME-HASH (S c-addr n -- hash)
    \ calculate hash based on input string
-   2DUP CR TYPE SPACE
    0 >R
    BEGIN
       DUP 0>
@@ -148,7 +147,9 @@ TRACE-BEGIN
       DUP 0<>
    WHILE
       \DEBUG DUP CR 64 DUMP CR
-      DUP C>NAME COUNT NAME-HASH
+      DUP C>NAME COUNT
+      2DUP CR TYPE SPACE
+      NAME-HASH
       OVER HT-INSERT
       C>LINK @
    REPEAT
@@ -235,6 +236,29 @@ ONLY FORTH DEFINITIONS ALSO CONSTDICT-PRIVATE ALSO CONSTDICT-DEF
 \G Search hashtable-based constdict and return constant value and true if found, false otherwise.
 \G x is the value of the constant.
 SYNONYM SEARCH-CONSTDICT-HASH SEARCH-CONSTDICT-HASH
+
+: DOES>SEARCH-CONSTDICT-HASH:
+   \G Runtime semantics of words defined with SEARCH-CONSTDICT-HASH:.
+   \G Parse next word, search it in CONSTDICT, use result with semantics of LITERAL.
+   DOES>
+   @
+   PARSE-NAME
+   2DUP S">POCKET DROP     \ for diagnostics
+   ROT SEARCH-CONSTDICT-HASH
+   IF
+      STATE @ IF   POSTPONE LITERAL   THEN
+   ELSE
+      EXC-UNDEFINED THROW
+   THEN
+;
+
+: SEARCH-CONSTDICT-HASH: (S cdid "name" -- )
+   \G Parse name and create a word with following runtime semantics:
+   \G Parse next word, search it in CONSTDICT, use result with semantics of LITERAL.
+   \G cdid is the CONSTDICT ID.
+   CREATE , IMMEDIATE
+   DOES>SEARCH-CONSTDICT-HASH:
+;
 
 TRACE-END
 
