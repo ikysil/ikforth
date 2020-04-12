@@ -37,16 +37,17 @@ S" sysdict/exception.4th"      INCLUDED
 S" sysdict/exception-ext.4th"  INCLUDED
 S" sysdict/search-order.4th"   INCLUDED
 S" sysdict/required.4th"       INCLUDED
-S" sysdict/environment.4th"    INCLUDED
-S" sysdict/platform.4th"       INCLUDED
-S" sysdict/hostenv.4th"        INCLUDED
 
-S" sysdict/fetchstore-ext.4th" INCLUDED
-S" sysdict/tools.4th"          INCLUDED
-S" sysdict/misc.4th"           INCLUDED
-S" sysdict/file.4th"           INCLUDED
-S" sysdict/struct.4th"         INCLUDED
-S" sysdict/word.4th"           INCLUDED
+REQUIRES" sysdict/environment.4th"
+REQUIRES" sysdict/platform.4th"
+REQUIRES" sysdict/hostenv.4th"
+
+REQUIRES" sysdict/fetchstore-ext.4th"
+REQUIRES" sysdict/tools.4th"
+REQUIRES" sysdict/misc.4th"
+REQUIRES" sysdict/file.4th"
+REQUIRES" sysdict/struct.4th"
+REQUIRES" sysdict/word.4th"
 
 REQUIRES" sysdict/case.4th"
 REQUIRES" sysdict/block.4th"
