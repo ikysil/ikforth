@@ -160,6 +160,28 @@ VOCABULARY ASSEMBLER
 
 VOCABULARY EDITOR
 
+: [DEFINED] (S "name" -- flag )
+   ['] ' CATCH ?DUP
+   IF
+      DUP EXC-UNDEFINED = IF   DROP FALSE   ELSE   THROW   THEN
+   ELSE
+      DROP TRUE
+   THEN
+; IMMEDIATE
+
+: [UNDEFINED] (S "name" -- flag )
+   ['] ' CATCH ?DUP
+   IF
+      DUP EXC-UNDEFINED = IF   DROP TRUE   ELSE   THROW   THEN
+   ELSE
+      DROP FALSE
+   THEN
+; IMMEDIATE
+
+: [VOID] (S -- FALSE )
+   FALSE
+; IMMEDIATE
+
 : [ELSE]
    1 BEGIN
       BEGIN
