@@ -182,35 +182,27 @@ VOCABULARY EDITOR
    FALSE
 ; IMMEDIATE
 
-: [ELSE]
-   1 BEGIN
-      BEGIN
-         PARSE-NAME DUP
-      WHILE
-         2DUP S" [IF]" NAME=
-         IF
-            2DROP 1+
-         ELSE
-            2DUP S" [ELSE]" NAME=
-            IF
-               2DROP 1- DUP
-               IF   1+   THEN
-            ELSE
-               S" [THEN]" NAME=
-               IF   1-   THEN
-            THEN
-         THEN
-         ?DUP 0= IF   EXIT   THEN
-      REPEAT 2DROP
-      REFILL 0=
-   UNTIL DROP
+\ -----------------------------------------------------------------------------
+\   [IF] [ELSE] [THEN]
+\ -----------------------------------------------------------------------------
+WORDLIST DUP CONSTANT BRACKET-FLOW-WL GET-CURRENT SWAP SET-CURRENT
+
+: [IF]   ( level1 -- level2 ) 1+ ;
+: [ELSE] ( level1 -- level2 ) DUP 1 = IF   1-   THEN ;
+: [THEN] ( level1 -- level2 ) 1- ;
+SET-CURRENT
+
+: [ELSE] ( -- )
+   1 BEGIN BEGIN PARSE-NAME DUP WHILE
+      BRACKET-FLOW-WL SEARCH-WORDLIST IF
+         EXECUTE DUP 0= IF   DROP EXIT   THEN
+      THEN
+   REPEAT 2DROP REFILL 0= UNTIL DROP
 ; IMMEDIATE
 
-: [IF]
-   0= IF POSTPONE [ELSE] THEN
-; IMMEDIATE
+: [THEN] ( -- ) ; IMMEDIATE
 
-: [THEN] ; IMMEDIATE
+: [IF] ( flag -- ) 0= IF   POSTPONE [ELSE]   THEN ; IMMEDIATE
 
 DEFER CS-PICK
 ' 2PICK IS CS-PICK
