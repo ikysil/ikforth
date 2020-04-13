@@ -50,4 +50,11 @@ linconst SEARCH-CONSTDICT-HASH CR H.8
 s" ALG_SID_DSS_PKCS2"
 linconst SEARCH-CONSTDICT-HASH CR H.8
 
+winconst cdh{: ABS_AUTOHIDE :} CR H.8
+winconst cdh{: ABS_ALWAYSONTOP :} CR H.8
+winconst cdh{: ABS_AUTOHIDE ABS_ALWAYSONTOP :} CR H.8
+
+: test winconst cdh{: ABS_AUTOHIDE ABS_ALWAYSONTOP :} LITERAL CR H.8 ;
+test
+
 CR H.S
