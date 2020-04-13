@@ -11,7 +11,7 @@ git:
 env:
   - DOCKER_FILE=docker/Dockerfile
   - DOCKER_FILE=docker/Dockerfile.centos8
-  - DOCKER_FILE=docker/Dockerfile.fedora33
+  - DOCKER_FILE=docker/Dockerfile.fedora31
   - DOCKER_FILE=docker/Dockerfile.ubuntu1604
   - DOCKER_FILE=docker/Dockerfile.ubuntu1804
   - DOCKER_FILE=docker/Dockerfile.ubuntu1910
