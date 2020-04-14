@@ -1,1 +1,1 @@
-#define[[:space:]]+[^[:space:](]+[[:space:]]+[^[:space:](]+
+#define[[:space:]]+[_[:alnum:]]+([[:space:]]+[_[:alnum:]()~-]+)+

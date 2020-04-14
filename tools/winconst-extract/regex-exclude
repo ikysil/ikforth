@@ -15,6 +15,7 @@ __RPC_API
 ([_[:alnum:]]+)_W[[:space:]]+\1W
 ([_[:alnum:]]+)[[:space:]]+\1[AW]
 ([_[:alnum:]]+)[[:space:]]+Rtl\1
+[(][)][)=]
 [[:space:]]+_CRT
 [[:space:]]+'
 [[:space:]]+"
@@ -23,7 +24,6 @@ __RPC_API
 [[:space:]]+L"
 [[:space:]]+SID_
 [{}]
-#define[[:space:]]+[^[:space:]]+[[:space:]]+[(){}]+
 #define[[:space:]]+[^[:space:]]+[[:space:]]+void
 cdecl
 DECLSPEC_
@@ -33,9 +33,10 @@ POINTER_
 STDAPICALLTYPE
 STDAPIVCALLTYPE
 stdcall
+STDMETHOD
 STDMETHODVCALLTYPE
 thiscall
-ua_([_[:alnum:]]+)[[:space:]]+\1
+ua_[_[:alnum:]]+
 WINAPI
 WINBASEAPI
 WINIMPM
