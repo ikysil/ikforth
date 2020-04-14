@@ -30,10 +30,14 @@ extractSrc2 = senv.Command('linconst-extract.E2',
 
 publishExecName = senv.execname('linconst-publish')
 publishExec = senv.Program(publishExecName, 'linconst-publish.c')
+senv.Depends(publishExec, [extractSrc2])
 
-linconstForth = senv.Command('linconst.f',
+linconstForth = senv.Command('linconst.4th',
         publishExec,
-        '${SOURCE} > ${TARGET}')
+        "${SOURCE} | sed 's/\\r//' > ${TARGET}")
+senv.Depends(linconstForth, [publishExec])
 
-senv.Alias('linconst-extract', [linconstForth])
-senv.Depends('linconst-extract', [linconstForth, publishExec, extractSrc2, extractSrc1, extractSrc0])
+linconstForthLib = senv.Command('#lib/linconst.4th', linconstForth, Copy('$TARGET', '$SOURCE'))
+
+senv.Alias('linconst-extract', [linconstForthLib])
+senv.AlwaysBuild(linconstForthLib)
