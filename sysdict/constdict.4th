@@ -261,7 +261,8 @@ SYNONYM SEARCH-CONSTDICT-HASH SEARCH-CONSTDICT-HASH
 ;
 
 : CDH{: (S cdid "name"*i ":}" -- x )
-   \G Parse names until :} is found, resolve them in provided constdict, join values with OR.
+   \G Parse names until :} is found, resolve them in provided constdict, join values with OR,
+   \G use result with semantics of LITERAL.
    >R
    0 PARSE-NAME
    BEGIN
@@ -271,6 +272,7 @@ SYNONYM SEARCH-CONSTDICT-HASH SEARCH-CONSTDICT-HASH
       PARSE-NAME
    AGAIN THEN
    R> DROP 2DROP
+   STATE @ IF   POSTPONE LITERAL   THEN
 ; IMMEDIATE
 
 TRACE-END

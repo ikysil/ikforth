@@ -60,6 +60,8 @@ REQUIRES" sysdict/locals-stack.4th"
 REQUIRES" sysdict/locals.4th"
 REQUIRES" sysdict/locals-ext.4th"
 
+REQUIRES" sysdict/constdict.4th"
+
 REQUIRES" sysdict/dynlib.4th"
 REQUIRES" sysdict/x86-windows.4th"
 REQUIRES" sysdict/x86-linux.4th"

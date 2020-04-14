@@ -1,12 +1,7 @@
-REQUIRES" lib/~ik/constdict.4th"
 
 \ TRACE-STACK
 \ TRACE-WORD
 
-BEGIN-CONST
-INCLUDE" build/linconst-extract/linconst.f"
-END-CONST
-CONSTDICT-HASH LINCONST
 
 BEGIN-CONST
 INCLUDE" build/winconst-extract/winconst.f"
@@ -54,7 +49,7 @@ winconst cdh{: ABS_AUTOHIDE :} CR H.8
 winconst cdh{: ABS_ALWAYSONTOP :} CR H.8
 winconst cdh{: ABS_AUTOHIDE ABS_ALWAYSONTOP :} CR H.8
 
-: test winconst cdh{: ABS_AUTOHIDE ABS_ALWAYSONTOP :} LITERAL CR H.8 ;
+: test winconst cdh{: ABS_AUTOHIDE ABS_ALWAYSONTOP :} CR H.8 ;
 test
 
 CR H.S
