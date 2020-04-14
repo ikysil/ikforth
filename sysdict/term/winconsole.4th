@@ -17,9 +17,9 @@ REPORT-NEW-NAME OFF
 0 VALUE STDERR
 
 : INIT-WINCONSOLE
-   STD_INPUT_HANDLE  GetStdHandle TO STDIN
-   STD_OUTPUT_HANDLE GetStdHandle TO STDOUT
-   STD_ERROR_HANDLE  GetStdHandle TO STDERR
+   WINCONST: STD_INPUT_HANDLE  GetStdHandle TO STDIN
+   WINCONST: STD_OUTPUT_HANDLE GetStdHandle TO STDOUT
+   WINCONST: STD_ERROR_HANDLE  GetStdHandle TO STDERR
 ;
 ' INIT-WINCONSOLE DUP STARTUP-CHAIN CHAIN.ADD EXECUTE
 
@@ -64,7 +64,7 @@ USER INPUT_RECORD 20 ( /INPUT_RECORD) USER-ALLOC
    0 SP@ 1 INPUT_RECORD STDIN ReadConsoleInput WIN-ERR>IOR THROW
    DROP
    INPUT_RECORD
-   DUP  ( EventType ) W@ KEY_EVENT <> IF DROP 0 EXIT THEN
+   DUP  ( EventType ) W@ WINCONST: KEY_EVENT <> IF DROP 0 EXIT THEN
    DUP  ( Event AsciiChar       ) 14 + W@
    OVER ( Event wVirtualScanCode) 12 + W@  16 LSHIFT OR
    OVER ( Event bKeyDown        ) 04 + C@  24 LSHIFT OR
@@ -142,7 +142,7 @@ VARIABLE PENDING-CHAR
 \ Check for EOF conditions and throw EXC-USER-INTERRUPT if found.
 : WIN-REDIRECT-KEY-EOF? ( n ior -- )
    DUP
-   ERROR_BROKEN_PIPE = IF
+   WINCONST: ERROR_BROKEN_PIPE = IF
       \ EOF
       EXC-USER-INTERRUPT THROW
    THEN
@@ -229,7 +229,7 @@ DEFER WIN-ACCEPT-EMIT
          4 OF                 \ Ctrl+D
             EXC-USER-INTERRUPT THROW
          ENDOF
-         8 OF                 \ Ctrl+H or Backspace
+         WINCONST: VK_BACK OF \ Ctrl+H or Backspace
             DROP DUP
             0>
             IF
@@ -242,11 +242,11 @@ DEFER WIN-ACCEPT-EMIT
             DROP
             TRUE
          ENDOF
-         13 OF                \ CR
+         WINCONST: VK_RETURN OF
             DROP
             TRUE
          ENDOF
-         27 OF
+         WINCONST: VK_ESCAPE OF
             DROP
             BEGIN
                \ drop all characters till the end of ESCape sequence
@@ -290,9 +290,7 @@ DEFER WIN-ACCEPT-EMIT
 
 : WINCONSOLE-CHAR-INIT
    0 SP@ STDIN GetConsoleMode WIN-ERR>IOR THROW
-   ENABLE_ECHO_INPUT
-   ENABLE_LINE_INPUT OR
-   ENABLE_PROCESSED_INPUT OR
+   WINCONST CDH{: ENABLE_ECHO_INPUT ENABLE_LINE_INPUT ENABLE_PROCESSED_INPUT :}
    INVERT AND
    STDIN SetConsoleMode WIN-ERR>IOR THROW
 ;
@@ -301,7 +299,7 @@ DEFER WIN-ACCEPT-EMIT
    ['] WIN-ERASE-CHAR        IS CONSOLE-BACKSPACE
    ['] WIN-AT-XY             IS AT-XY
    STDIN GetFileType
-   FILE_TYPE_CHAR = IF
+   WINCONST: FILE_TYPE_CHAR = IF
       ['] WIN-CONSOLE-EKEY?     IS EKEY?
       ['] WIN-CONSOLE-EKEY      IS EKEY
       ['] WIN-CONSOLE-EKEY>CHAR IS EKEY>CHAR

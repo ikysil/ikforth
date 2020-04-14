@@ -17,7 +17,7 @@ REPORT-NEW-NAME OFF
 
 : HANDLE-ERR>IOR (S INVALID_HANDLE_VALUE -- ior | x -- 0 )
    (G Check HANDLE result and convert it to ior if failed )
-   INVALID_HANDLE_VALUE = IF   GetLastError   ELSE   0   THEN
+   WINCONST: INVALID_HANDLE_VALUE = IF   GetLastError   ELSE   0   THEN
 ;
 
 

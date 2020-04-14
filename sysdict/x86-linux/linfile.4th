@@ -31,13 +31,13 @@ REPORT-NEW-NAME OFF
 ;
 
 : FILE-SIZE (S fileid -- file-size-lo file-size-high ior )
-   SIZEOF_STRUCT_STAT64
+   LINCONST: SIZEOF_STRUCT_STAT64
    [: (S fileid addr -- file-size-lo file-size-high ior )
       DUP ROT MAGIC__fxstat64 __fxstat64 0<> \ S: addr flag
       IF
          DROP -1. GetLastError
       ELSE
-         OFFSETOF_ST_SIZE64 + 2@ SWAP 0
+         LINCONST: OFFSETOF_ST_SIZE64 + 2@ SWAP 0
       THEN
    ;]
    ALLOCATE-EXECUTE
@@ -85,7 +85,7 @@ REPORT-NEW-NAME OFF
 \  If the file exists, ior is zero; otherwise ior is the implementation-defined I/O result code.
 \  x contains implementation-defined information about the file.
 : FILE-STATUS (S c-addr u -- x ior )
-   SIZEOF_STRUCT_STAT64
+   LINCONST: SIZEOF_STRUCT_STAT64
    [: (S c-addr u addr -- x ior )
       DUP 2SWAP S">Z" DUP >R  \ S: addr addr z-addr       R: z-addr
       MAGIC__xstat64          \ S: addr addr z-addr ver   R: z-addr
@@ -93,7 +93,7 @@ REPORT-NEW-NAME OFF
       IF
          DROP 0 GetLastError
       ELSE
-         OFFSETOF_ST_MODE64 + @ 0
+         LINCONST: OFFSETOF_ST_MODE64 + @ 0
       THEN
       R> FREE THROW
    ;]

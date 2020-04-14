@@ -1,0 +1,36 @@
+\
+\  linconst.4th
+\
+\  Unlicense since 1999 by Illya Kysil
+\
+
+REQUIRES" sysdict/constdict.4th"
+
+CR .( Loading LINCONST definitions )
+
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
+
+ONLY FORTH DEFINITIONS
+
+VOCABULARY LINCONST-PRIVATE
+
+ALSO LINCONST-PRIVATE DEFINITIONS
+
+\ private definitions go here
+
+ONLY FORTH DEFINITIONS ALSO LINCONST-PRIVATE
+
+\ public definitions go here
+\ private definitions are available for use
+
+BEGIN-CONST
+REQUIRES" lib/linconst.4th"
+END-CONST
+CONSTDICT-HASH LINCONST
+
+LINCONST SEARCH-CONSTDICT-HASH: LINCONST:
+
+ONLY FORTH DEFINITIONS
+
+REPORT-NEW-NAME !

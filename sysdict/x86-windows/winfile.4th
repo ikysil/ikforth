@@ -36,7 +36,7 @@ REPORT-NEW-NAME OFF
 
 : FILE-STATUS (S c-addr u -- x ior )
    S">Z" DUP GetFileAttributes
-   DUP INVALID_FILE_ATTRIBUTES = IF   GetLastError   ELSE   0   THEN
+   DUP WINCONST: INVALID_FILE_ATTRIBUTES = IF   GetLastError   ELSE   0   THEN
    ROT FREE THROW
 ;
 
@@ -62,7 +62,7 @@ REPORT-NEW-NAME OFF
 \  the value ud and FILE-POSITION returns an unspecified value.
 : RESIZE-FILE ( ud fileid -- ior )
    >R 2>R
-   FILE_BEGIN NIL 2R> SWAP R@ SetFilePointerEx
+   WINCONST: FILE_BEGIN NIL 2R> SWAP R@ SetFilePointerEx
    0= IF R> DROP GetLastError EXIT THEN
    R> SetEndOfFile
    WIN-ERR>IOR

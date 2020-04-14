@@ -1,0 +1,36 @@
+\
+\  winconst.4th
+\
+\  Unlicense since 1999 by Illya Kysil
+\
+
+REQUIRES" sysdict/constdict.4th"
+
+CR .( Loading WINCONST definitions )
+
+REPORT-NEW-NAME @
+REPORT-NEW-NAME OFF
+
+ONLY FORTH DEFINITIONS
+
+VOCABULARY WINCONST-PRIVATE
+
+ALSO WINCONST-PRIVATE DEFINITIONS
+
+\ private definitions go here
+
+ONLY FORTH DEFINITIONS ALSO WINCONST-PRIVATE
+
+\ public definitions go here
+\ private definitions are available for use
+
+BEGIN-CONST
+REQUIRES" lib/winconst.4th"
+END-CONST
+CONSTDICT-HASH WINCONST
+
+WINCONST SEARCH-CONSTDICT-HASH: WINCONST:
+
+ONLY FORTH DEFINITIONS
+
+REPORT-NEW-NAME !
