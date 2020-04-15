@@ -6,7 +6,7 @@ env.SConscriptChdir(0)
 env.SConscript('SConstruct-config',
         exports = ['env'])
 
-fkernelPath = env.SConscript(dirs = ['src/loader'],
+fkernelPath = env.SConscript(dirs = ['tools/loader'],
         exports = ['env'],
         variant_dir = 'build/loader-$TSYS', duplicate = 0)
 
