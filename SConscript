@@ -1,7 +1,7 @@
 # ikforth
 import os
 
-Import('env', 'fkernelPath', 'linconPath')
+Import('env', 'fkernelPath')
 senv = env.Clone()
 
 ikforthExec = senv.execname('IKForth-${TSYS}')
@@ -45,7 +45,7 @@ senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
 
 senv.Alias('dist', ['#build/${DIST_FILE_NAME}.tar.gz', '#build/${DIST_FILE_NAME}.zip'])
 
-senv.Alias('all', ['ikforth', 'lincon'])
+senv.Alias('all', ['ikforth'])
 senv.Depends('all', [ikforthSrcDict])
 senv.Clean('all', ['#build', '#IKForth-*.elf', '#IKForth-*.img', '#IKForth-*.exe'])
 
