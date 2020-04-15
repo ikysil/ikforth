@@ -20,7 +20,6 @@ S" kernel32.dll" (LoadLibrary) [IF]
 ENV>
 
 REQUIRES" sysdict/x86-windows/kernel32.4th"
-\ FIXME - remove - #53 REQUIRES" sysdict/x86-windows/wincon.4th"
 REQUIRES" sysdict/x86-windows/winerr.4th"
 REQUIRES" sysdict/x86-windows/winexception.4th"
 REQUIRES" sysdict/term/winconsole.4th"
