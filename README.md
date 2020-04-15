@@ -1,6 +1,6 @@
 # ikforth
 
-**ikforth** is an idiomatic Forth implementation written from scratch.
+**ikforth** is an idiomatic Forth implementation.
 
 [![Build Status](https://travis-ci.org/ikysil/ikforth.svg?branch=master)](https://travis-ci.org/ikysil/ikforth)
 
