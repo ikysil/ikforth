@@ -8,7 +8,7 @@ DESIRED_BASE_EQU        EQU     20000000h
 
 IMAGE_BASE              =       DESIRED_BASE_EQU
 
-DESIRED_SIZE_EQU        EQU     00200000h               ; 2MiB
+DESIRED_SIZE_EQU        EQU     00040000h               ; 256KB
 
 DATA_STACK_SIZE         EQU     00001000h               ; 4KB
 RETURN_STACK_SIZE       EQU     00001000h               ; 4KB
