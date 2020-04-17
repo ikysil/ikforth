@@ -40,9 +40,9 @@ senv.Depends(publishExec, [extractSrc2])
 winconstForth = senv.Command('winconst.4th',
         publishExec,
         "${WINCONST_BUILD_LAUNCHER} ${SOURCE} | sed 's/\\r//' > ${TARGET}")
-senv.Depends(winconstForth, [publishExec])
 
 forthLib = senv.Install('#lib', winconstForth)
 senv.NoClean(forthLib)
+senv.Precious(forthLib)
 
-senv.Alias('winconst', [forthLib])
+senv.Alias('winconst', [forthLib, publishExec])

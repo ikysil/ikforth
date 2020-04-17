@@ -16,13 +16,15 @@ bootdict = env.SConscript(dirs = ['bootdict'],
         exports = ['env_bootdict'],
         variant_dir = 'build/bootdict', duplicate = 0)
 
-env.SConscript(dirs = ['tools/winconst-extract'],
-        exports = ['env'],
-        variant_dir = 'build/winconst-extract', duplicate = 1)
+if 'winconst' in BUILD_TARGETS:
+    env.SConscript(dirs = ['tools/winconst-extract'],
+            exports = ['env'],
+            variant_dir = 'build/winconst-extract', duplicate = 1)
 
-env.SConscript(dirs = ['tools/linconst-extract'],
-        exports = ['env'],
-        variant_dir = 'build/linconst-extract', duplicate = 1)
+if 'linconst' in BUILD_TARGETS:
+    env.SConscript(dirs = ['tools/linconst-extract'],
+            exports = ['env'],
+            variant_dir = 'build/linconst-extract', duplicate = 1)
 
 productdict = env.SConscript(dirs = ['product/ikforth-dev-x86'],
         exports = ['env', 'fkernelPath', 'bootdict'],

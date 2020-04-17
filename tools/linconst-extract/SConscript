@@ -34,9 +34,9 @@ senv.Depends(publishExec, [extractSrc2])
 linconstForth = senv.Command('linconst.4th',
         publishExec,
         "${SOURCE} | sed 's/\\r//' > ${TARGET}")
-senv.Depends(linconstForth, [publishExec])
 
 forthLib = senv.Install('#lib', linconstForth)
 senv.NoClean(forthLib)
+senv.Precious(forthLib)
 
-senv.Alias('linconst', [forthLib])
+senv.Alias('linconst', [forthLib, publishExec])
