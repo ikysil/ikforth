@@ -25,6 +25,10 @@ typedef uint32_t CELL;
 #define __stdcall __attribute__((stdcall))
 #endif
 
+#ifndef nullptr
+#define nullptr (0)
+#endif
+
 const CELL fFALSE = 0;
 const CELL fTRUE  = 0xFFFFFFFF;
 
