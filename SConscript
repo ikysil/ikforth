@@ -27,8 +27,8 @@ def fptest(source, target, env):
 source_dir = '#build/ikforth-dev-$TSYS-$TERMINIT/'
 ikforthSrcDict = source_dir + 'ikforth-dev-x86.img'
 
-senv.Command(ikforthDict, ikforthSrcDict, Copy('$TARGET', '$SOURCE'))
-senv.Command(ikforthExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
+senv.InstallAs(ikforthDict, ikforthSrcDict)
+senv.InstallAs(ikforthExec, fkernelPath)
 
 senv.Alias('ikforth', [ikforthExec, ikforthDict])
 

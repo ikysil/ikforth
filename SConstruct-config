@@ -50,7 +50,7 @@ if 'BUILD_TAG' in env['ENV']:
 env.SetDefault(DIST_FILE_NAME = 'ikforth-dist-HEAD')
 env.SetDefault(DEBUG = 'FALSE')
 env.SetDefault(CODE_THREADING_TYPE = 'DTC')
-env.SetDefault(WIN_BUILD_LAUNCHER = '${BUILD_LAUNCHER}')
+env.SetDefault(WINCONST_BUILD_LAUNCHER = 'WINEDEBUG=-all wine32')
 
 def execname(env, basename):
     if env['TSYS'] == 'nt':

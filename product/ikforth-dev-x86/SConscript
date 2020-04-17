@@ -10,13 +10,14 @@ senv['buildername'] = 'product-builder'
 
 fkernelExec = senv.execname('${buildername}')
 
-senv.Command('${buildername}.img', '#build/bootdict/bootdict-x86.img',  Copy('$TARGET', '$SOURCE'))
-senv.Command(fkernelExec, fkernelPath, Copy('$TARGET', '$SOURCE'))
+senv.InstallAs('${buildername}.img', '#build/bootdict/bootdict-x86.img')
+senv.InstallAs(fkernelExec, fkernelPath)
 
 sysdict_deps = senv.SConscript('#sysdict/SConstruct-config', exports = ['env'])
 
 product_src = []
 product_src.extend(sysdict_deps)
+product_src.extend(senv.Glob('#lib/*.4th'))
 product_src.extend(senv.Glob('#lib/~ik/*.4th'))
 product_src.extend(senv.Glob('#lib/~js/486asm/*.F'))
 product_src.extend(senv.Glob('#lib/~js/486asm/*.4th'))

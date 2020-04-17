@@ -2,7 +2,7 @@
 
 Import('env_bootdict')
 senv = env_bootdict.Clone()
-senv['bootdictname'] = 'bootdict-${ARCH}' 
+senv['bootdictname'] = 'bootdict-${ARCH}'
 
 bootdict_src = []
 bootdict_src.extend(senv.Glob('#bootdict/*.asm'))
