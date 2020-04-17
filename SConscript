@@ -13,16 +13,16 @@ def run(source, target, env):
     env.Execute('${RUN_CMD}')
 
 def test(source, target, env):
-    env.Execute('${RUN_CMD} \'S\" IKForth-test.4th\" INCLUDED\'')
+    env.Execute('${RUN_CMD} -f IKForth-test.4th')
 
 def test_stdin(source, target, env):
-    env.Execute('echo \'S\" fine!\" TYPE\' | ${RUN_CMD} \'S\" test/stdin-test.4th\" INCLUDED\'')
+    env.Execute('echo \'S\" fine!\" TYPE\' | ${RUN_CMD} -f test/stdin-test.4th')
 
 def ansitest(source, target, env):
-    env.Execute('${RUN_CMD} \'S\" test/forth2012-test.4th\" INCLUDED\'')
+    env.Execute('${RUN_CMD} -f test/forth2012-test.4th')
 
 def fptest(source, target, env):
-    env.Execute('${RUN_CMD} \'S\" test/fp-test.4th\" INCLUDED\'')
+    env.Execute('${RUN_CMD} -f test/fp-test.4th')
 
 senv.InstallAs(ikforthDict, productdict)
 senv.InstallAs(ikforthExec, fkernelPath)
