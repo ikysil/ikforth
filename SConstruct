@@ -12,7 +12,7 @@ fkernelPath = env.SConscript(dirs = ['tools/loader'],
 
 env_bootdict = env.Clone()
 env_bootdict['ARCH'] = 'x86'
-env.SConscript(dirs = ['bootdict'],
+bootdict = env.SConscript(dirs = ['bootdict'],
         exports = ['env_bootdict'],
         variant_dir = 'build/bootdict', duplicate = 0)
 
@@ -24,11 +24,11 @@ env.SConscript(dirs = ['tools/linconst-extract'],
         exports = ['env'],
         variant_dir = 'build/linconst-extract', duplicate = 1)
 
-env.SConscript(dirs = ['product/ikforth-dev-x86'],
-        exports = ['env', 'fkernelPath'],
+productdict = env.SConscript(dirs = ['product/ikforth-dev-x86'],
+        exports = ['env', 'fkernelPath', 'bootdict'],
         variant_dir = 'build/ikforth-dev-$TSYS-$TERMINIT', duplicate = 1)
 
 env.SConscript('SConscript',
-        exports = ['env', 'fkernelPath'])
+        exports = ['env', 'fkernelPath', 'productdict'])
 
 env.Default('all')

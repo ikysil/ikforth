@@ -1,5 +1,3 @@
-# image
-
 Import('env_bootdict')
 senv = env_bootdict.Clone()
 senv['bootdictname'] = 'bootdict-${ARCH}'
@@ -11,7 +9,7 @@ bootdict_src.extend(senv.Glob('#bootdict/${ARCH}/*.asm'))
 bootdict_src.extend(senv.Glob('#bootdict/${ARCH}-itc/*.asm'))
 bootdict_src.extend(senv.Glob('#bootdict/${ARCH}-dtc/*.asm'))
 
-senv.Command('${bootdictname}.img',
+bootdict = senv.Command('${bootdictname}.img',
         bootdict_src,
         'fasm -d CODE_THREADING=${CODE_THREADING_TYPE} -d DEBUG=${DEBUG} bootdict/${bootdictname}.asm -s ${TARGET.dir}/${bootdictname}.sym $TARGET')
 
@@ -21,3 +19,5 @@ senv.Command('${bootdictname}.lst',
 
 senv.SideEffect('${bootdictname}.sym', '${bootdictname}.img')
 senv.Alias('${bootdictname}', ['${bootdictname}.img', '${bootdictname}.lst'])
+
+Return('bootdict')

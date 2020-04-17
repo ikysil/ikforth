@@ -1,8 +1,6 @@
-# kernel.0
-
 import os
 
-Import('env', 'fkernelPath')
+Import('env', 'fkernelPath', 'bootdict')
 senv = env.Clone()
 
 senv['productname'] = 'ikforth-dev-x86'
@@ -10,7 +8,7 @@ senv['buildername'] = 'product-builder'
 
 fkernelExec = senv.execname('${buildername}')
 
-senv.InstallAs('${buildername}.img', '#build/bootdict/bootdict-x86.img')
+senv.InstallAs('${buildername}.img', bootdict)
 senv.InstallAs(fkernelExec, fkernelPath)
 
 sysdict_deps = senv.SConscript('#sysdict/SConstruct-config', exports = ['env'])
@@ -27,7 +25,9 @@ product_deps.extend(senv.Glob('*.4th'))
 product_deps.extend(senv.Glob('#product/ikforth-base-x86/*.4th'))
 product_deps.extend(product_src)
 
-senv.Command('${productname}.img',
+productdict = senv.Command('${productname}.img',
         fkernelExec,
         'IKFORTHTERMINIT=${TERMINIT} ${BUILD_LAUNCHER} ${SOURCE} --dict-size 2M -- ${TARGET}')
 senv.Depends('${productname}.img', ['${buildername}.img', fkernelExec, product_deps])
+
+Return('productdict')
