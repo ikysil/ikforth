@@ -3,10 +3,10 @@
 
 #include "IKFCommon.hpp"
 #include "IKFunc.hpp"
+#include "args.hpp"
 
 void ShowLastError(char const * where);
 
-int StartForth(int const argc, char const * argv[], char const * envp[],
-               char const * ImageFileName, char const * StartFileName);
+int StartForth(const parsed_args * args, char const * envp[]);
 
 #endif
