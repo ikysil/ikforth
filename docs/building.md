@@ -39,11 +39,12 @@ docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ### `fptest`
 ### `ikforth`
 ### `itc`
-### `lincon`
+### `linconst`
 ### `loader`
 ### `run`
 ### `term`
 ### `win32`
+### `winconst`
 
 ## Build Environment Matrix
 
@@ -91,6 +92,30 @@ Configured with: ../configure --enable-bootstrap
     --with-tune=generic --with-arch_32=x86-64 --build=x86_64-redhat-linux
 Thread model: posix
 gcc version 8.3.1 20190507 (Red Hat 8.3.1-4) (GCC)
+```
+
+### Fedora 31 - OK
+```
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/9/lto-wrapper
+OFFLOAD_TARGET_NAMES=nvptx-none
+OFFLOAD_TARGET_DEFAULT=1
+Target: x86_64-redhat-linux
+Configured with: ../configure --enable-bootstrap
+    --enable-languages=c,c++,fortran,objc,obj-c++,ada,go,d,lto --prefix=/usr
+    --mandir=/usr/share/man --infodir=/usr/share/info
+    --with-bugurl=http://bugzilla.redhat.com/bugzilla --enable-shared
+    --enable-threads=posix --enable-checking=release --enable-multilib
+    --with-system-zlib --enable-__cxa_atexit --disable-libunwind-exceptions
+    --enable-gnu-unique-object --enable-linker-build-id
+    --with-gcc-major-version-only --with-linker-hash-style=gnu
+    --enable-plugin --enable-initfini-array --with-isl
+    --enable-offload-targets=nvptx-none --without-cuda-driver
+    --enable-gnu-indirect-function --enable-cet --with-tune=generic
+    --with-arch_32=i686 --build=x86_64-redhat-linux
+Thread model: posix
+gcc version 9.3.1 20200317 (Red Hat 9.3.1-1) (GCC)
 ```
 
 ### Ubuntu 16.04 - OK
