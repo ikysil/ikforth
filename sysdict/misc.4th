@@ -90,9 +90,22 @@ DECIMAL
    HOST-DTC? IF ." Host code: DTC (Direct Threaded Code)"   THEN
 ;
 
+: .UNUSED
+   UNUSED DUP
+   [ 1MB 10 * ] LITERAL > IF
+      1MB /
+      8 U.R
+      ."  MiB free/data area"
+   ELSE
+      1KB /
+      8 U.R
+      ."  KiB free/data area"
+   THEN
+;
+
 : .ENV-INFO
    CR ." Environment information:"
-   CR UNUSED 1KB /                          8 U.R ." KBytes free/data area"
+   CR .UNUSED
    CR (.ENV-INFO-NUM) STACK-CELLS           8 U.R ."  cells/data stack"
    CR (.ENV-INFO-NUM) RETURN-STACK-CELLS    8 U.R ."  cells/return stack"
    CR (.ENV-INFO-NUM) EXCEPTION-STACK-CELLS 8 U.R ."  cells/exception stack"
