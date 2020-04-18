@@ -43,6 +43,12 @@ senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
 
 senv.Alias('dist', ['#build/${DIST_FILE_NAME}.tar.gz', '#build/${DIST_FILE_NAME}.zip'])
 
+senv.Clean("dist", [
+    ".sconsign.dblite",
+    ".sconf_temp",
+    "config.log",
+])
+
 senv.Alias('all', ['ikforth'])
 senv.Clean('all', ['#build', '#IKForth-*.elf', '#IKForth-*.img', '#IKForth-*.exe'])
 
