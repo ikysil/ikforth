@@ -19,7 +19,7 @@
 
 ## Dockerized build environment
 ```bash
-docker build --rm -f docker/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+docker build --rm -f docker/fedora-31/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
 docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c && scons all"
 ```
 
