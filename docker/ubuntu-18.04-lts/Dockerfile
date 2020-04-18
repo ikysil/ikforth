@@ -1,4 +1,3 @@
-# FROM i386/ubuntu:18.04
 FROM ubuntu:18.04
 LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 
