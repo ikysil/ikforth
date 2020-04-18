@@ -13,7 +13,6 @@ RUN apt-get -y install \
         scons \
         libreadline8 libreadline8:i386 \
         libc6-dev libc6-dev-i386 \
-#        libgcc1 libgcc1:i386 \
         libgcc1 \
         libstdc++-9-dev libstdc++-9-dev:i386 \
         linux-libc-dev linux-libc-dev:i386 \
@@ -23,17 +22,9 @@ RUN apt-get -y install \
     apt-get clean && \
     apt-get autoclean
 
-RUN wget http://flatassembler.net/fasm-1.73.21.tgz && \
-    tar xf fasm-1.73.21.tgz && \
-    mv /tmp/fasm /opt/fasm-1.73.21 && \
-    ln -s /opt/fasm-1.73.21/fasm /usr/local/bin/fasm
+ADD docker /opt/docker
 
-WORKDIR /opt/fasm-1.73.21/tools/libc
-
-RUN fasm listing.asm && \
-    gcc -m32 -o ../../listing listing.o && \
-    chmod +x ../../listing && \
-    ln -s $PWD/../../listing /usr/local/bin/listing
+RUN /opt/docker/install-fasm.sh
 
 ARG RUNUSER=ikforth
 

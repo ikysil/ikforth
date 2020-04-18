@@ -22,17 +22,9 @@ RUN yum -y install \
 
 RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++
 
-RUN wget http://flatassembler.net/fasm-1.73.21.tgz && \
-    tar xf fasm-1.73.21.tgz && \
-    mv /tmp/fasm /opt/fasm-1.73.21 && \
-    ln -s /opt/fasm-1.73.21/fasm /usr/local/bin/fasm
+ADD docker /opt/docker
 
-WORKDIR /opt/fasm-1.73.21/tools/libc
-
-RUN fasm listing.asm && \
-    gcc -m32 -o ../../listing listing.o && \
-    chmod +x ../../listing && \
-    ln -s $PWD/../../listing /usr/local/bin/listing
+RUN /opt/docker/install-fasm.sh
 
 ARG RUNUSER=ikforth
 
