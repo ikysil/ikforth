@@ -167,4 +167,9 @@ USER PAD PAD-SIZE USER-ALLOC
    @ EXECUTE
 ;
 
+: #! (S -- )
+   \G Skip the line - support for scripting.
+   POSTPONE \
+;
+
 REPORT-NEW-NAME !

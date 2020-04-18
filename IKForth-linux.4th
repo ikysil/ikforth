@@ -1,0 +1,1 @@
+#! ./IKForth-linux.elf -f
