@@ -26,22 +26,27 @@ def fptest(source, target, env):
 
 senv.InstallAs(ikforthDict, productdict)
 senv.InstallAs(ikforthExec, fkernelPath)
+senv.NoClean([ikforthDict, ikforthExec])
 
 senv.Alias('ikforth', [ikforthExec, ikforthDict])
 
-dist_src = senv.Glob('#lib/**')
+dist_src = []
 dist_src.extend(senv.Glob('#app/**'))
+dist_src.extend(senv.Glob('#blocks/**'))
+dist_src.extend(senv.Glob('#lib/**'))
 dist_src.extend(senv.Glob('#docs/*.md'))
+dist_src.extend(senv.Glob('*.md'))
+dist_src.extend(senv.Glob('LICENSE'))
 dist_src.extend(senv.Glob('IKForth-*.elf'))
 dist_src.extend(senv.Glob('IKForth-*.exe'))
 dist_src.extend(senv.Glob('IKForth-*.img'))
 dist_src.extend(senv.Glob('IKForth*.4th'))
 senv.Replace(TARFLAGS = '-c -z')
 senv.Replace(TARSUFFIX = '.tar.gz')
-senv.Tar('#build/${DIST_FILE_NAME}', dist_src)
-senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
+dist_tar = senv.Tar('#build/${DIST_FILE_NAME}', dist_src)
+dist_zip = senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
 
-senv.Alias('dist', ['#build/${DIST_FILE_NAME}.tar.gz', '#build/${DIST_FILE_NAME}.zip'])
+senv.Alias('dist', [dist_tar, dist_zip])
 
 senv.Clean("dist", [
     ".sconsign.dblite",
@@ -50,7 +55,7 @@ senv.Clean("dist", [
 ])
 
 senv.Alias('all', ['ikforth'])
-senv.Clean('all', ['#build', '#IKForth-*.elf', '#IKForth-*.img', '#IKForth-*.exe'])
+senv.Clean('all', ['#build'])
 
 senv.Alias('run', [], run)
 senv.Alias('test', [], test)
