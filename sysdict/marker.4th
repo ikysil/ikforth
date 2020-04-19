@@ -1,10 +1,5 @@
-\
-\  marker.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading MARKER definitions )
+PURPOSE: MARKER definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

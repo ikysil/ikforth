@@ -1,8 +1,5 @@
-\
-\  core.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: CORE definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 FALSE REPORT-NEW-NAME !
@@ -22,8 +19,6 @@ FALSE REPORT-NEW-NAME !
 : .(
    PARSE) TYPE
 ; IMMEDIATE
-
-13 EMIT 10 EMIT .( Loading CORE definitions )
 
 \ -----------------------------------------------------------------------------
 \  +! @+ !+ C+! C@+ C!+

@@ -1,10 +1,5 @@
-\
-\  win32.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  Win32 specific definitions
-\
+PURPOSE: Win32 specific definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/dynlib.4th"
 REQUIRES" sysdict/x86-windows/winconst.4th"

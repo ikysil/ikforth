@@ -1,10 +1,5 @@
-\
-\  required.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading REQUIRED definitions )
+PURPOSE: REQUIRED definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

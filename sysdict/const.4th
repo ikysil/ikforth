@@ -1,8 +1,5 @@
-\
-\  const.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: CONST definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 FALSE REPORT-NEW-NAME !

@@ -1,12 +1,7 @@
-\
-\  float-output.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: FLOAT-OUTPUT definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/sformat.4th"
-
-CR .( Loading FLOAT-OUTPUT definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

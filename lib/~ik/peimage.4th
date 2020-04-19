@@ -1,14 +1,7 @@
-\
-\  peimage.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  Win32 Portable Executable utils
-\
+PURPOSE: PEIMAGE definitions - Win32 Portable Executable utils
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/struct.4th"
-
-CR .( Loading PEIMAGE definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

@@ -1,8 +1,5 @@
-\
-\  product-builder.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: ikforth-dev-x86 builder
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 HERE
 

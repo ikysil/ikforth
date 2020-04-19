@@ -1,12 +1,7 @@
-\
-\  ansiterm.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: ANSITERM definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/console.4th"
-
-CR .( Loading ANSITERM definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

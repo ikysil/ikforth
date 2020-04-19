@@ -1,14 +1,9 @@
-\
-\  float-ieee-binary.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: FLOAT-IEEE-BINARY definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/x86/486asm.4th"
 REQUIRES" lib/~ik/triple.4th"
 REQUIRES" lib/~ik/quadruple.4th"
-
-CR .( Loading FLOAT-IEEE-BINARY definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME ON

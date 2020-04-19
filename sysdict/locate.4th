@@ -1,12 +1,7 @@
-\
-\  locate.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: LOCATE definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRE-NAME INCLUDED-WORDLIST sysdict/required.4th
-
-CR .( Loading LOCATE definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

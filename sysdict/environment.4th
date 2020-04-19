@@ -1,12 +1,5 @@
-\
-\  environment.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  ENVIRONMENT? queries support
-\
-
-CR .( Loading ENVIRONMENT definitions )
+PURPOSE: ENVIRONMENT definitions - ENVIRONMENT? queries support
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

@@ -1,12 +1,7 @@
-\
-\  locals.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: LOCALS definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/locals-stack.4th"
-
-CR .( Loading LOCALS definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

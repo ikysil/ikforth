@@ -1,14 +1,9 @@
-\
-\  main.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: MAIN definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/hostenv.4th"
 REQUIRES" sysdict/sformat.4th"
 REQUIRES" sysdict/quit.4th"
-
-CR .( Loading MAIN definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

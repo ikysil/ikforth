@@ -1,10 +1,5 @@
-\
-\  double.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading DOUBLE definitions )
+PURPOSE: DOUBLE definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

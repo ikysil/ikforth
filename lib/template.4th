@@ -1,10 +1,5 @@
-\
-\  template.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading TEMPLATE definitions )
+PURPOSE: TEMPLATE
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

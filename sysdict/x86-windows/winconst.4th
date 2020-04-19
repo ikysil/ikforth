@@ -1,12 +1,7 @@
-\
-\  winconst.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: WINCONST definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/constdict.4th"
-
-CR .( Loading WINCONST definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

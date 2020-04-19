@@ -1,12 +1,7 @@
-\ ------------------------------------------------------------------------------
-\  locals-test.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\ ------------------------------------------------------------------------------
+PURPOSE: LOCALS-TEST definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
-REQUIRES" lib/~ik/locals.4th"
-
-CR .( Loading LOCALS-TEST definitions )
+REQUIRES" sysdict/locals.4th"
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME ON

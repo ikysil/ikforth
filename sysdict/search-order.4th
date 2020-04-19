@@ -1,12 +1,5 @@
-\
-\  search-order.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  SEARCH-ORDER and SEARCH-ORDER-EXT wordsets
-\
-
-CR .( Loading SEARCH-ORDER definitions )
+PURPOSE: SEARCH-ORDER definitions - SEARCH-ORDER and SEARCH-ORDER-EXT wordsets
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

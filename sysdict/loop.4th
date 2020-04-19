@@ -1,16 +1,7 @@
-\
-\  loop.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-\ -----------------------------------------------------------------------------
-\ LOOPS EXT
-\ -----------------------------------------------------------------------------
+PURPOSE: LOOP definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/macro.4th"
-
-CR .( Loading LOOP definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

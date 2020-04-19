@@ -1,10 +1,5 @@
-\
-\  winexception.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading WINEXCEPTION definitions )
+PURPOSE: WINEXCEPTION definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

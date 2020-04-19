@@ -1,10 +1,7 @@
-\
-\  winerr.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: WINERR definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
-CR .( Loading WINERR definitions )
+REQUIRES" sysdict/x86-windows/winconst.4th"
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

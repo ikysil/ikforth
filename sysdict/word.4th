@@ -1,8 +1,5 @@
-\
-\  word.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: WORD definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 \  6.1.2450 WORD
 \  ( char "<chars>ccc<char>" -- c-addr )

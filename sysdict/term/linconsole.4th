@@ -1,15 +1,10 @@
-\
-\  linconsole.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: linconsole definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/console.4th"
 REQUIRES" sysdict/x86-linux/libc.4th"
 REQUIRES" sysdict/x86-linux/libreadline.4th"
 REQUIRES" sysdict/term/linterm-ekey.4th"
-
-CR .( Loading linconsole definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

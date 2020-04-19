@@ -1,12 +1,7 @@
-\
-\  block.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: BLOCK definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/file.4th"
-
-CR .( Loading BLOCK definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

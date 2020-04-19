@@ -1,12 +1,7 @@
-\
-\  lindynlib.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: lindynlib definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/dynlib.4th"
-
-CR .( Loading lindynlib definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

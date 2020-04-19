@@ -1,10 +1,5 @@
-\
-\  core-tools.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  Debugging helpers
-\
+PURPOSE: CORE-TOOLS definitions - Debugging helpers
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 FALSE REPORT-NEW-NAME !

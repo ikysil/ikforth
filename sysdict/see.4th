@@ -1,10 +1,5 @@
-\
-\  see.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading SEE definitions )
+PURPOSE: SEE definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

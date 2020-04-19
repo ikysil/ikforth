@@ -1,10 +1,5 @@
-\
-\  winconst-test.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading WINCONST-TEST definitions )
+PURPOSE: WINCONST-TEST definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

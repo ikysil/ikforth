@@ -1,8 +1,5 @@
-\
-\  product-dict.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: ikforth-base-x86 builder
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 S" sysdict/primitives.4th"     INCLUDED
 S" sysdict/int-slash-comp-colon.4th" INCLUDED

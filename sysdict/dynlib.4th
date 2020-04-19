@@ -1,12 +1,5 @@
-\
-\  dynlib.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  Interface to dynamic libraries.
-\
-
-CR .( Loading DYNLIB definitions )
+PURPOSE: DYNLIB definitions - Interface to dynamic libraries.
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

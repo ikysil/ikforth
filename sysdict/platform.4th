@@ -1,10 +1,5 @@
-\
-\  platform.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading PLATFORM definitions )
+PURPOSE: PLATFORM definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

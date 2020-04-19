@@ -1,12 +1,7 @@
-\
-\  linconst.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: LINCONST definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/constdict.4th"
-
-CR .( Loading LINCONST definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

@@ -1,13 +1,8 @@
-\
-\  console.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: CONSOLE definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
-
-CR .( Loading CONSOLE definitions )
 
 VOCABULARY TERMINIT
 

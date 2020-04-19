@@ -1,10 +1,5 @@
-\
-\  misc.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading MISC definitions )
+PURPOSE: MISC definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

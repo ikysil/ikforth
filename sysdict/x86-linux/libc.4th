@@ -1,12 +1,7 @@
-\
-\  libc.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: libc definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/dynlib.4th"
-
-CR .( Loading libc definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

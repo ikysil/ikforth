@@ -84,6 +84,7 @@
                 $INCLUDED   "bootdict/tc/file.asm"
                 $INCLUDED   "bootdict/x86/paren-parse-paren.asm"
                 $INCLUDED   "bootdict/tc/parse.asm"
+                $INCLUDED   "bootdict/tc/purpose.asm"
                 INCLUDE_HEADER_TC
                 $INCLUDED   "bootdict/x86/latest-head-fetch.asm"
                 $INCLUDED   "bootdict/x86/latest-head-store.asm"

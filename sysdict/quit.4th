@@ -1,12 +1,7 @@
-\
-\  quit.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: QUIT definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/console.4th"
-
-CR .( Loading QUIT definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

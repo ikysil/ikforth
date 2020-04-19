@@ -1,10 +1,5 @@
-\
-\  linux.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  Linux specific definitions
-\
+PURPOSE: Linux specific definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/dynlib.4th"
 REQUIRES" sysdict/x86-linux/linconst.4th"

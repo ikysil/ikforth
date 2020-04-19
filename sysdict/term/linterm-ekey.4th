@@ -1,12 +1,7 @@
-\
-\  linterm-ekey.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
+PURPOSE: linterm-ekey definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/console.4th"
-
-CR .( Loading linterm-ekey definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

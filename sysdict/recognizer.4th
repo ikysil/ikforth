@@ -1,11 +1,5 @@
-\
-\  recognizer.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\  with contributions from http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html
-\
-
-CR .( Loading RECOGNIZER definitions )
+PURPOSE: RECOGNIZER definitions
+LICENSE: Unlicense since 1999 by Illya Kysil - with contributions from http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

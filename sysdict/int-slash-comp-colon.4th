@@ -1,3 +1,6 @@
+PURPOSE: INT/COMP: definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
+
 \ -----------------------------------------------------------------------------
 \  IS-INT/COMP? INT/COMP>INT INT/COMP>COMP INT/COMP:
 \ -----------------------------------------------------------------------------

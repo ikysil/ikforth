@@ -1,10 +1,5 @@
-\
-\  args.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-
-CR .( Loading ARGS definitions )
+PURPOSE: ARGS definitions
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

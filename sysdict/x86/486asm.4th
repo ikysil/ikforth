@@ -1,12 +1,5 @@
-\
-\  486asm.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  Definitions needed to load Jim Schneider's 486asm.f under IKForth
-\
-
-CR .( Loading 486ASM definitions )
+PURPOSE: 486ASM definitions - needed to load Jim Schneider's 486asm.f under IKForth
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF

@@ -1,14 +1,7 @@
-\
-\  tools.4th
-\
-\  Unlicense since 1999 by Illya Kysil
-\
-\  TOOLS and TOOLS-EXT wordsets
-\
+PURPOSE: TOOLS definitions - TOOLS and TOOLS-EXT wordsets
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 REQUIRES" sysdict/console.4th"
-
-CR .( Loading TOOLS definitions )
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME OFF
