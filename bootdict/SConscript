@@ -13,11 +13,13 @@ bootdict = senv.Command('${bootdictname}.img',
         bootdict_src,
         'fasm -d CODE_THREADING=${CODE_THREADING_TYPE} -d DEBUG=${DEBUG} bootdict/${bootdictname}.asm -s ${TARGET.dir}/${bootdictname}.sym $TARGET')
 
-senv.Command('${bootdictname}.lst',
+bootdict_listing = senv.Command('${bootdictname}.lst',
         ['${bootdictname}.sym', '${bootdictname}.img'],
         'listing $SOURCE $TARGET')
 
-senv.SideEffect('${bootdictname}.sym', '${bootdictname}.img')
-senv.Alias('${bootdictname}', ['${bootdictname}.img', '${bootdictname}.lst'])
+senv.Alias('bootdict-listing', bootdict_listing)
+
+senv.SideEffect('${bootdictname}.sym', bootdict)
+senv.Alias('bootdict', [bootdict, bootdict_listing])
 
 Return('bootdict')
