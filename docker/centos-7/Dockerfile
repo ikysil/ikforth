@@ -5,7 +5,7 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
-WORKDIR /tmp
+ADD docker /opt/docker
 
 RUN yum -y install \
         epel-release \
@@ -22,8 +22,6 @@ RUN yum -y install \
     yum clean all
 
 RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++
-
-ADD docker /opt/docker
 
 RUN /opt/docker/install-fasm.sh
 

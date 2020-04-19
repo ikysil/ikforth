@@ -4,7 +4,7 @@ LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-WORKDIR /tmp
+ADD docker /opt/docker
 
 RUN dpkg --add-architecture i386 && apt-get update
 
@@ -20,8 +20,6 @@ RUN apt-get -y install --no-install-recommends \
         && \
     apt-get clean && \
     apt-get autoclean
-
-ADD docker /opt/docker
 
 RUN /opt/docker/install-fasm.sh
 

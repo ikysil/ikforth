@@ -5,7 +5,7 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
-WORKDIR /tmp
+ADD docker /opt/docker
 
 RUN yum -y install \
         epel-release \
@@ -23,8 +23,6 @@ RUN yum -y install \
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
 RUN pip3 install scons==3.1.2
-
-ADD docker /opt/docker
 
 RUN /opt/docker/install-fasm.sh
 

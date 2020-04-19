@@ -5,7 +5,7 @@ ENV LANG=C.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=C.UTF-8
 
-WORKDIR /tmp
+ADD docker /opt/docker
 
 RUN dnf -y install \
         git \
@@ -18,8 +18,6 @@ RUN dnf -y install \
         wine.i686 \
         && \
     dnf clean all
-
-ADD docker /opt/docker
 
 RUN /opt/docker/install-fasm.sh
 
