@@ -27,7 +27,7 @@ product_deps.extend(product_src)
 
 productdict = senv.Command('${productname}.img',
         fkernelExec,
-        'IKFORTHTERMINIT=${TERMINIT} ${BUILD_LAUNCHER} ${SOURCE} --dict-size 2M -- ${TARGET}')
+        'IKFORTHTERMINIT=${TERMINIT} VERSION_STRING=${GIT_DESC} ${BUILD_LAUNCHER} ${SOURCE} --dict-size 2M -- ${TARGET}')
 senv.Depends('${productname}.img', ['${buildername}.img', fkernelExec, product_deps])
 
 Return('productdict')

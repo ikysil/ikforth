@@ -22,7 +22,7 @@ before_install:
   - docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c linux all && scons -c win32 all"
 
 script:
-  - export GIT_DESC=`git describe --tags --always --abbrev=8`
+  - export GIT_DESC=`git describe --tags --always --abbrev=8 --dirty=-wip`
   - export BUILD_TAG=${TRAVIS_TAG:-${GIT_DESC}}
   - ./docker/build-ci.sh
 

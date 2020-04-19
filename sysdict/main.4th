@@ -4,8 +4,9 @@
 \  Unlicense since 1999 by Illya Kysil
 \
 
-REQUIRES" sysdict/quit.4th"
+REQUIRES" sysdict/hostenv.4th"
 REQUIRES" sysdict/sformat.4th"
+REQUIRES" sysdict/quit.4th"
 
 CR .( Loading MAIN definitions )
 
@@ -33,8 +34,30 @@ REPORT-NEW-NAME OFF
    CR TYPE
 ;
 
+: VERSION-STRING?
+   (S -- c-addr count )
+   (G Seach host environment for version string variable )
+   (G and return value as counted string )
+   S" BUILD_TAG"      ENVP? IF   EXIT   THEN
+   S" VERSION_STRING" ENVP? IF   EXIT   THEN
+   S" VERSION-STRING" ENVP? IF   EXIT   THEN
+   S" HEAD"
+;
+
+: VERSION-STRING
+   (S -- c-addr count )
+   (G Return version string )
+   [
+      VERSION-STRING?
+      <%
+         %S" IKForth "
+         %S
+      %>
+   ] SLITERAL
+;
+
 : .VERSION
-   CR ." IKForth 20.03/NEXT"
+   CR VERSION-STRING TYPE
    CR ." Unlicense since 1999 by Illya Kysil"
 ;
 

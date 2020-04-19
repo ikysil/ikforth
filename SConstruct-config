@@ -50,7 +50,7 @@ if 'BUILD_TAG' in env['ENV']:
     env.Replace(GIT_DESC = env['ENV']['BUILD_TAG'])
 
 def getGitDesc():
-    return Popen('git describe --tags --always --abbrev=8', stdout=PIPE, shell=True).stdout.read().strip().decode("utf-8", errors="ignore")
+    return Popen('git describe --tags --always --abbrev=8 --dirty=-wip', stdout=PIPE, shell=True).stdout.read().strip().decode("utf-8", errors="ignore")
 
 conf = Configure(env)
 if conf.CheckProg('git'):
