@@ -117,6 +117,9 @@ TRACE-BEGIN
    + CONSTDICT-ENTRIES UMOD
 ;
 
+\G Flag to control the output of the hashing process.
+0 VALUE ?CONSTDICT-REPORT-NAME
+
 : HT-INSERT (S n addr -- )
    \G Insert reference to CONSTDICT CONSTANT structure at addr to index n.
    >R
@@ -126,7 +129,7 @@ TRACE-BEGIN
       \ S: sh' kh'    R: kh addr
       2DUP HT-STEP R@ <>
    WHILE
-      ." ."
+      ?CONSTDICT-REPORT-NAME IF   ." ."   THEN
       DUP ?HT-FREE
       IF
          R> DROP R>
@@ -148,7 +151,9 @@ TRACE-BEGIN
    WHILE
       \DEBUG DUP CR 64 DUMP CR
       DUP C>NAME COUNT
-      2DUP CR TYPE SPACE
+      ?CONSTDICT-REPORT-NAME IF
+         2DUP CR TYPE SPACE
+      THEN
       NAME-HASH
       OVER HT-INSERT
       C>LINK @
@@ -206,9 +211,20 @@ ONLY FORTH DEFINITIONS ALSO CONSTDICT-PRIVATE ALSO CONSTDICT-DEF
 \ public definitions go here
 \ private definitions are available for use
 
+: CONSTDICT-REPORT-NAME-ON
+   \G Enable CONSTDICT name reporting.
+   1 TO ?CONSTDICT-REPORT-NAME
+;
+
+: CONSTDICT-REPORT-NAME-OFF
+   \G Disable CONSTDICT name reporting.
+   0 TO ?CONSTDICT-REPORT-NAME
+;
+
 : BEGIN-CONST (S -- )
    \G Begin constant dictionary definitions.
    0 TO LAST-CONST
+   CONSTDICT-REPORT-NAME-OFF
    ALSO CONSTDICT-DEF
 ;
 
