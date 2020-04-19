@@ -4,7 +4,7 @@
 set +e
 set -o pipefail
 
-fasm_version=1.73.21
+fasm_version=1.73.23
 workdir=`mktemp -d fasm.XXXXXXXXXX`
 
 cd ${workdir}
