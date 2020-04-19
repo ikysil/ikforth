@@ -91,15 +91,17 @@ DECIMAL
 ;
 
 : .UNUSED
-   UNUSED DUP
-   [ 1MB 10 * ] LITERAL > IF
-      1MB /
+   UNUSED 0 2DUP
+   [ 1MB 10 * ] LITERAL S>D D> IF
+      1MB UM/MOD
       8 U.R
       ."  MiB free/data area"
+      DROP
    ELSE
-      1KB /
+      1KB UM/MOD
       8 U.R
       ."  KiB free/data area"
+      DROP
    THEN
 ;
 
