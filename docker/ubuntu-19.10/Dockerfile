@@ -8,7 +8,8 @@ WORKDIR /tmp
 
 RUN dpkg --add-architecture i386 && apt-get update
 
-RUN apt-get -y install \
+RUN apt-get -y install --no-install-recommends \
+        git \
         wget \
         scons \
         libreadline8 libreadline8:i386 \

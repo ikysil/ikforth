@@ -11,6 +11,7 @@ RUN yum -y install \
         epel-release \
         && \
     yum -y install \
+        git \
         wget \
         gcc-c++ \
         glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686 \

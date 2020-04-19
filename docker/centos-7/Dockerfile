@@ -11,6 +11,7 @@ RUN yum -y install \
         epel-release \
         && \
     yum -y install \
+        git \
         wget \
         gcc-c++ \
         mingw32-gcc mingw32-gcc-c++ \

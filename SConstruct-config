@@ -1,4 +1,6 @@
 import platform
+import os, sys
+from subprocess import *
 
 Import('env')
 
@@ -45,9 +47,19 @@ if 'term' in BUILD_TARGETS or 'test-stdin' in BUILD_TARGETS:
     env.Replace(TERMINIT = 'ANSITERM-INIT')
 
 if 'BUILD_TAG' in env['ENV']:
-    env.Replace(DIST_FILE_NAME = 'ikforth-dist-' + env['ENV']['BUILD_TAG'])
+    env.Replace(GIT_DESC = env['ENV']['BUILD_TAG'])
 
-env.SetDefault(DIST_FILE_NAME = 'ikforth-dist-HEAD')
+def getGitDesc():
+    return Popen('git describe --tags --always --abbrev=8', stdout=PIPE, shell=True).stdout.read().strip().decode("utf-8", errors="ignore")
+
+conf = Configure(env)
+if conf.CheckProg('git'):
+    env.Replace(GIT_DESC = getGitDesc())
+
+env = conf.Finish()
+
+env.SetDefault(GIT_DESC = 'HEAD')
+env.SetDefault(DIST_FILE_NAME = 'ikforth-dist-${GIT_DESC}')
 env.SetDefault(DEBUG = 'FALSE')
 env.SetDefault(CODE_THREADING_TYPE = 'DTC')
 env.SetDefault(WINCONST_BUILD_LAUNCHER = 'WINEDEBUG=-all wine32')

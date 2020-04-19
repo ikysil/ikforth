@@ -8,6 +8,7 @@ ENV LANG=C.UTF-8 \
 WORKDIR /tmp
 
 RUN dnf -y install \
+        git \
         wget \
         gcc-c++ \
         glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686 \
