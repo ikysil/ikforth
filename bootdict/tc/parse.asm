@@ -210,7 +210,7 @@
                 CW          $SQ_COMP
 
 ;  \ (filler text)
-                $COLON      '(\)',$PBSLASH,VEF_IMMEDIATE
+                $COLON      '(\)',$PBSLASH
                 CW          $ZERO, $PARSE, $2DROP
                 $END_COLON
 
