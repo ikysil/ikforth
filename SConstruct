@@ -33,4 +33,8 @@ productdict = env.SConscript(dirs = ['product/ikforth-dev-x86'],
 env.SConscript('SConscript',
         exports = ['env', 'fkernelPath', 'productdict'])
 
+env.SConscript(dirs = ['product/ikforth-dist'],
+        exports = ['env'],
+        variant_dir = 'build', duplicate = 0)
+
 env.Default('all')

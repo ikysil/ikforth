@@ -30,30 +30,6 @@ senv.NoClean([ikforthDict, ikforthExec])
 
 senv.Alias('ikforth', [ikforthExec, ikforthDict])
 
-dist_src = []
-dist_src.extend(senv.Glob('#app/**'))
-dist_src.extend(senv.Glob('#blocks/**'))
-dist_src.extend(senv.Glob('#lib/**'))
-dist_src.extend(senv.Glob('#docs/*.md'))
-dist_src.extend(senv.Glob('*.md'))
-dist_src.extend(senv.Glob('LICENSE'))
-dist_src.extend(senv.Glob('IKForth-*.elf'))
-dist_src.extend(senv.Glob('IKForth-*.exe'))
-dist_src.extend(senv.Glob('IKForth-*.img'))
-dist_src.extend(senv.Glob('IKForth*.4th'))
-senv.Replace(TARFLAGS = '-c -z')
-senv.Replace(TARSUFFIX = '.tar.gz')
-dist_tar = senv.Tar('#build/${DIST_FILE_NAME}', dist_src)
-dist_zip = senv.Zip('#build/${DIST_FILE_NAME}', dist_src)
-
-senv.Alias('dist', [dist_tar, dist_zip])
-
-senv.Clean("dist", [
-    ".sconsign.dblite",
-    ".sconf_temp",
-    "config.log",
-])
-
 senv.Alias('all', ['ikforth'])
 senv.Clean('all', ['#build'])
 
@@ -69,4 +45,4 @@ senv.Depends('test-stdin', ['ikforth'])
 senv.Depends('ansitest',   ['ikforth'])
 senv.Depends('fptest',     ['ikforth'])
 
-senv.AlwaysBuild('run', 'test', 'test-stdin', 'ansitest', 'fptest', 'dist')
+senv.AlwaysBuild('run', 'test', 'test-stdin', 'ansitest', 'fptest')

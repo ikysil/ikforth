@@ -1,0 +1,28 @@
+import os
+
+Import('env')
+senv = env.Clone()
+
+dist_src = []
+dist_src.extend(senv.Glob('#app/**'))
+dist_src.extend(senv.Glob('#blocks/**'))
+dist_src.extend(senv.Glob('#lib/**'))
+dist_src.extend(senv.Glob('#docs/*.md'))
+dist_src.extend(senv.Glob('#/*.md'))
+dist_src.extend(senv.Glob('#/LICENSE'))
+dist_src.extend(senv.Glob('#/IKForth-*.elf'))
+dist_src.extend(senv.Glob('#/IKForth-*.exe'))
+dist_src.extend(senv.Glob('#/IKForth-*.img'))
+dist_src.extend(senv.Glob('#/IKForth*.4th'))
+senv.Replace(TARFLAGS = '-c -z')
+senv.Replace(TARSUFFIX = '.tar.gz')
+dist_tar = senv.Tar('${DIST_FILE_NAME}', dist_src)
+dist_zip = senv.Zip('${DIST_FILE_NAME}', dist_src)
+
+senv.Alias('dist', [dist_tar, dist_zip])
+
+senv.Clean("dist", [
+    "#.sconsign.dblite",
+    "#.sconf_temp",
+    "#config.log",
+])
