@@ -31,10 +31,10 @@ deploy:
   api_key:
     secure: QypaNVwnMk6vl+ahdOwrI0atse4+gjcE7dc0Ap4f+kFxXDdb+nAVEAAjuB1qrhOHef4lBcL9yNQwKQcJTPwc4BM0535jgVCjdvYdTO1lEzDzU936YWhZihW4/OLCvKWdHET5Vqh5mfSasbafCPg96lRTg0jupMYt9c2+YvvXQjwbdTv5p2EKfJ4l7xHRZbV3sI6TDFA2Ik9ar08DZENQorK75arx+Pp2wJM57Aqlqh/VXNlrBoTGqv4lNDQsKw5+qsi8/xdPs7nb6fjSeWk9N2dxhWxvOiFX6h8GySiD7b1E5XqfuAd7BENbRCrj1SzqW8UTJ1PR9AG9MkcpdQvu0E2kUvn0CW/3sGTnBbBGuc0/dbyZI/w41DokR+iZZxm/fA/lcL8KYj5KcvNMUvvIM+0dvLM1PJGEe8MxTXy83gWR8LFfXrYHlub0PGFb8oX1Vusp0vZGbGdt4qw1WnbDff/jOVZBbWMPk2/A0qk1iJO1uFXTueIARF+z7c0swuezyRvB66YkfXLMCvJEO58y0E/3dcWV1yfpg1CB7ePqN5VMaT+Il71nB9o4CwQMf5pMK/EDbZll3bk6BQzrKW7JbwIbuNYCFjFlfRExVJKYjzM36kmMSuppiGwZngUxqhio519/jN0tSrrHfx1/vCFnwYuEkQxBp1SKx1YeR5/U3fw=
   file:
-    - build/ikforth-dist-${BUILD_TAG}.tar.gz
-    - build/ikforth-dist-${BUILD_TAG}.zip
+    - build/ikforth-dist/ikforth-dist-${BUILD_TAG}.tar.gz
+    - build/ikforth-dist/ikforth-dist-${BUILD_TAG}.zip
   skip_cleanup: true
   on:
-    condition: -f build/ikforth-dist-${BUILD_TAG}.tar.gz
-    condition: -f build/ikforth-dist-${BUILD_TAG}.zip
+    condition: -f build/ikforth-dist/ikforth-dist-${BUILD_TAG}.tar.gz
+    condition: -f build/ikforth-dist/ikforth-dist-${BUILD_TAG}.zip
     tags: true

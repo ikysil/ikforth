@@ -35,6 +35,6 @@ env.SConscript('SConscript',
 
 env.SConscript(dirs = ['product/ikforth-dist'],
         exports = ['env'],
-        variant_dir = 'build', duplicate = 0)
+        variant_dir = 'build/ikforth-dist', duplicate = 0)
 
 env.Default('all')
