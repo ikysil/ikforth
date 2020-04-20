@@ -2,8 +2,8 @@
 
 ## Pre-requisites
 
-* SConstruct 2.4+
-* flat assembler version 1.73.21
+* SConstruct 3.1+
+* flat assembler version 1.73.23
   * Linux version for Linux environment
   * Windows version for Windows and Cygwin environments
   * `listing` utility built from sources provided with flat assembler package
@@ -33,7 +33,7 @@ docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ### `all`
 ### `ansitest`
 ### `bootdict`
-### `bootdict-x86`
+### `bootdict-listing`
 ### `debug`
 ### `dtc`
 ### `fptest`
