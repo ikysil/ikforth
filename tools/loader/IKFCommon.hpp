@@ -25,6 +25,15 @@ typedef uint32_t CELL;
 #define __stdcall __attribute__((stdcall))
 #endif
 
+#if defined( WIN32 )
+#   if defined( __MINGW32__ )
+#       define lseek _lseeki64
+#   endif
+#   if defined( _MSC_VER )
+#       define lseek lseek64
+#   endif
+#endif
+
 #ifndef nullptr
 #define nullptr (0)
 #endif

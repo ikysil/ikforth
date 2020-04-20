@@ -35,7 +35,7 @@ HANDLE  __stdcall fFileCreate(CELL fileAccessMethod, CELL nameLen, char const * 
 
 __int64 __stdcall fFilePosition(HANDLE fileId) {
     errno = 0;
-    return lseek64(fileId, 0, SEEK_CUR);
+    return lseek(fileId, 0, SEEK_CUR);
 }
 
 HANDLE __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * nameAddr) {
@@ -47,7 +47,7 @@ HANDLE __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * nam
 
 void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
     errno = 0;
-    lseek64(fileId, ((__int64) HWord << 32) | LWord, SEEK_SET);
+    lseek(fileId, ((__int64) HWord << 32) | LWord, SEEK_SET);
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
@@ -95,7 +95,7 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
         i++;
     }
     if (rewind > 0) {
-        lseek64(fileId, -rewind, SEEK_CUR);
+        lseek(fileId, -rewind, SEEK_CUR);
     }
     flag = (eof && (i == 0)) ? fFALSE : fTRUE;
     return ((__int64)flag << 32) | i;
