@@ -2,7 +2,7 @@ PURPOSE: Forth-Assisted Assembler for x86 32 bits and 16 bits mode
 LICENSE: Unlicense since 1999 by Illya Kysil
 
 \ Goals:
-\ * begin able to compile x86 32 bits instructions
+\ * compile x86 32 bits instructions
 \ * self-hosting meta-compiler for IKForth
 \ Non-goals:
 \ * syntax compatibility with existing assemblers
@@ -29,19 +29,19 @@ DEFER asm8,
 \G Compile a 16-bits value - always LSB first (S x -- )
 \G Uses asm8, for actual compilation.
 : asm16,
-   SPLIT-8
-   2DROP
-   SWAP
-   asm8, asm8,
+   DUP
+   H# FF AND asm8, 8 RSHIFT
+   H# FF AND asm8,
 ;
 
 \G Compile a 32-bits value - always LSB first (S x -- )
 \G Uses asm8, for actual compilation.
 : asm32,
-   SPLIT-8
-   2SWAP
-   SWAP asm8, asm8,
-   SWAP asm8, asm8,
+   DUP
+   H# FF AND asm8, 8 RSHIFT DUP
+   H# FF AND asm8, 8 RSHIFT DUP
+   H# FF AND asm8, 8 RSHIFT
+   H# FF AND asm8,
 ;
 
 \ Conditions
