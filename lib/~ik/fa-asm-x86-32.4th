@@ -106,10 +106,39 @@ B# 1110  CONSTANT ?NG
 B# 1111  CONSTANT ?NLE
 ?NLE     CONSTANT ?G
 
+\ Defining words for instruction classes
+
+: I1B: (S op-code "name" -- )
+   \G Create a word which compiles one byte op-code into the definition at runtime.
+   CREATE C,
+   DOES> C@ asm8,
+;
+
+: I2B: (S l-op-code m-op-code "name" -- )
+   \G Create a word which compiles two bytes byte op-code into the definition at runtime.
+   \G l-op-code is compiled first, m-op-code second.
+   CREATE C, C,
+   DOES> C@+ asm8, C@ asm8,
+;
+
 \ AAA – ASCII Adjust after Addition
+B# 00110111
+   I1B:  AAA,
+
 \ AAD – ASCII Adjust AX before Division
+B# 11010101
+B# 00001010
+   I2B:  AAD,
+
 \ AAM – ASCII Adjust AX after Multiply
+B# 11010100
+B# 00001010
+   I2B:  AAM,
+
 \ AAS – ASCII Adjust AL after Subtraction
+B# 00111111
+   I1B:  AAS,
+
 \ ADC – ADD with Carry
 \ ADD – Add
 \ AND – Logical AND
@@ -125,23 +154,53 @@ B# 1111  CONSTANT ?NLE
 \ CALL – Call Procedure (in same segment)
 \ CALL – Call Procedure (in other segment)
 \ CBW – Convert Byte to Word
+B# 10011000
+   I1B:  CBW,
+
 \ CDQ – Convert Doubleword to Qword
+B# 10011001
+   I1B:  CDQ,
+
 \ CLC – Clear Carry Flag
+B# 11111000
+   I1B:  CLC,
+
 \ CLD – Clear Direction Flag
+B# 11111100
+   I1B:  CLD,
+
 \ CLI – Clear Interrupt Flag
 \ CLTS – Clear Task-Switched Flag in CR0
 \ CMC – Complement Carry Flag
+B# 11110101
+   I1B:  CMC,
+
 \ CMP – Compare Two Operands
 \ CMPS/CMPSB/CMPSW/CMPSD – Compare String Operands
 \ CMPXCHG – Compare and Exchange
 \ CPUID – CPU Identification
 \ CWD – Convert Word to Doubleword
+B# 10011001
+   I1B:  CWD,
+
 \ CWDE – Convert Word to Doubleword
+B# 10011000
+   I1B:  CWDE,
+
 \ DAA – Decimal Adjust AL after Addition
+B# 00100111
+   I1B:  DAA,
+
 \ DAS – Decimal Adjust AL after Subtraction
+B# 00101111
+   I1B:  DAS,
+
 \ DEC – Decrement by 1
 \ DIV – Unsigned Divide
 \ HLT – Halt
+B# 11110100
+   I1B:  HLT,
+
 \ IDIV – Signed Divide
 \ IMUL – Signed Multiply
 \ IN – Input From Port
@@ -149,20 +208,37 @@ B# 1111  CONSTANT ?NLE
 \ INS – Input from DX Port
 \ INT n – Interrupt Type n
 \ INT – Single-Step Interrupt 3
+B# 11001100
+   I1B:  INT,
+
 \ INTO – Interrupt 4 on Overflow
+B# 11001110
+   I1B:  INTO,
+
 \ INVD – Invalidate Cache
 \ INVLPG – Invalidate TLB Entry
 \ INVPCID – Invalidate Process-Context Identifier
 \ IRET/IRETD – Interrupt Return
+B# 11001111
+   I1B:  IRET,
+
+SYNONYM IRETD, IRET,
+
 \ Jcc – Jump if Condition is Met
 \ JCXZ/JECXZ – Jump on CX/ECX Zero
 \ JMP – Unconditional Jump (to same segment)
 \ JMP – Unconditional Jump (to other segment)
 \ LAHF – Load Flags into AHRegister
+B# 10011111
+   I1B:  LAHF,
+
 \ LAR – Load Access Rights Byte
 \ LDS – Load Pointer to DS
 \ LEA – Load Effective Address
 \ LEAVE – High Level Procedure Exit
+B# 11001001
+   I1B:  LEAVE,
+
 \ LES – Load Pointer to ES
 \ LFS – Load Pointer to FS
 \ LGDT – Load Global Descriptor Table Register
@@ -171,6 +247,9 @@ B# 1111  CONSTANT ?NLE
 \ LLDT – Load Local Descriptor Table Register
 \ LMSW – Load Machine Status Word
 \ LOCK – Assert LOCK# Signal Prefix
+B# 11110000
+   I1B:  LOCK,
+
 \ LODS/LODSB/LODSW/LODSD – Load String Operand
 \ LOOP – Loop Count
 \ LOOPZ/LOOPE – Loop Count while Zero/Equal
@@ -189,6 +268,9 @@ B# 1111  CONSTANT ?NLE
 \ MUL – Unsigned Multiply
 \ NEG – Two's Complement Negation
 \ NOP – No Operation
+B# 10010000
+   I1B:  NOP,
+
 \ NOP – Multi-byte No Operation 1
 \ NOT – One's Complement Negation
 \ OR – Logical Inclusive OR
@@ -197,11 +279,31 @@ B# 1111  CONSTANT ?NLE
 \ POP – Pop a Word from the Stack
 \ POP – Pop a Segment Register from the Stack (Note: CS cannot be sreg2 in this usage.)
 \ POPA/POPAD – Pop All General Registers
+B# 01100001
+   I1B:  POPA,
+
+SYNONYM POPAD, POPA,
+
 \ POPF/POPFD – Pop Stack into FLAGS or EFLAGS Register
+B# 10011101
+   I1B:  POPF,
+
+SYNONYM POPFD, POPF,
+
 \ PUSH – Push Operand onto the Stack
 \ PUSH – Push Segment Register onto the Stack
 \ PUSHA/PUSHAD – Push All General Registers
+B# 01100000
+   I1B:  PUSHA,
+
+SYNONYM PUSHAD, PUSHA,
+
 \ PUSHF/PUSHFD – Push Flags Register onto the Stack
+B# 10011100
+   I1B:  PUSHF,
+
+SYNONYM PUSHFD, PUSHF,
+
 \ RCL – Rotate thru Carry Left
 \ RCR – Rotate thru Carry Right
 \ RDMSR – Read from Model-Specific Register
@@ -223,6 +325,9 @@ B# 1111  CONSTANT ?NLE
 \ ROR – Rotate Right
 \ RSM – Resume from System Management Mode
 \ SAHF – Store AH into Flags
+B# 10011110
+   I1B:  SAHF,
+
 \ SAL – Shift Arithmetic Left same instruction as SHL
 \ SAR – Shift Arithmetic Right
 \ SBB – Integer Subtraction with Borrow
@@ -237,23 +342,45 @@ B# 1111  CONSTANT ?NLE
 \ SLDT – Store Local Descriptor Table Register
 \ SMSW – Store Machine Status Word
 \ STC – Set Carry Flag
+B# 11111001
+   I1B:  STC,
+
 \ STD – Set Direction Flag
+B# 11111101
+   I1B:  STD,
+
 \ STI – Set Interrupt Flag
 \ STOS/STOSB/STOSW/STOSD – Store String Data
 \ STR – Store Task Register
 \ SUB – Integer Subtraction
 \ TEST – Logical Compare
 \ UD0 – Undefined instruction
+B# 00001111
+B# 11111111
+   I2B:  UD0,
+
 \ UD1 – Undefined instruction
+B# 00001111
+B# 00001011
+   I2B:  UD1,
+
 \ UD2 – Undefined instruction
 \ VERR – Verify a Segment for Reading
 \ VERW – Verify a Segment for Writing
 \ WAIT – Wait
+B# 10011011
+   I1B:  WAIT,
+
 \ WBINVD – Writeback and Invalidate Data Cache
 \ WRMSR – Write to Model-Specific Register
 \ XADD – Exchange and Add
 \ XCHG – Exchange Register/Memory with Register
 \ XLAT/XLATB – Table Look-up Translation
+B# 11010111
+   I1B:  XLAT,
+
+SYNONYM XLATB, XLAT,
+
 \ XOR – Logical Exclusive OR
 \ Prefix Bytes
 \ address size 0110 0111
