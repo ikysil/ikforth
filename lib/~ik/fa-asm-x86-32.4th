@@ -11,7 +11,7 @@ LICENSE: Unlicense since 1999 by Illya Kysil
 \ * Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 2D: Instruction Set Reference
 
 REPORT-NEW-NAME @
-REPORT-NEW-NAME OFF
+REPORT-NEW-NAME ON
 
 ONLY FORTH DEFINITIONS
 
@@ -43,6 +43,68 @@ DEFER asm8,
    SWAP asm8, asm8,
    SWAP asm8, asm8,
 ;
+
+\ Conditions
+
+\G Overflow
+B# 0000  CONSTANT ?O
+
+\G No overflow
+B# 0001  CONSTANT ?NO
+
+\G Below, Not above or equal
+B# 0010  CONSTANT ?B
+?B       CONSTANT ?NAE
+
+\G Not below, Above or equal
+B# 0011  CONSTANT ?NB
+?NB      CONSTANT ?AE
+
+\G Equal, Zero
+B# 0100  CONSTANT ?Z
+?Z       CONSTANT ?E
+
+\G Not equal, Not zero
+B# 0101  CONSTANT ?NZ
+?NZ      CONSTANT ?NE
+
+\G Below or equal, Not above
+B# 0110  CONSTANT ?NA
+?NA      CONSTANT ?BE
+
+\G Not below or equal, Above
+B# 0111  CONSTANT ?A
+?A       CONSTANT ?NBE
+
+\G Sign
+B# 1000  CONSTANT ?S
+
+\G Not sign
+B# 1001  CONSTANT ?NS
+
+\G Parity, Parity Even
+B# 1010  CONSTANT ?P
+?P       CONSTANT ?PE
+
+\G Not parity, Parity Odd
+B# 1011  CONSTANT ?PO
+?PO      CONSTANT ?NP
+
+\G Less than, Not greater than or equal to
+B# 1100  CONSTANT ?L
+?L       CONSTANT ?NGE
+
+\G Not less than, Greater than or equal to
+B# 1101  CONSTANT ?NL
+?NL      CONSTANT ?GE
+
+\G Less than or equal to, Not greater than
+B# 1110  CONSTANT ?NG
+?NG      CONSTANT ?LE
+
+\G Not less than or equal to, Greater than
+B# 1111  CONSTANT ?NLE
+?NLE     CONSTANT ?G
 
 \ AAA – ASCII Adjust after Addition
 \ AAD – ASCII Adjust AX before Division
