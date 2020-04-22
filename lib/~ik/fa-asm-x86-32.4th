@@ -9,6 +9,8 @@ LICENSE: Unlicense since 1999 by Illya Kysil
 \ * support for full set of instructions
 \ References:
 \ * Intel® 64 and IA-32 Architectures Software Developer’s Manual Volume 2D: Instruction Set Reference
+\ Guidelines:
+\ * all words ending with COMMA (,) compile to the dictionary
 
 REPORT-NEW-NAME @
 REPORT-NEW-NAME ON
@@ -362,8 +364,19 @@ B# 10011100
 \ REP STOS – Store String
 \ REPE CMPS – Compare String
 \ REPE SCAS – Scan String
+H# F3
+   I1B:  REPE,
+
+SYNONYM REP, REPE,
+SYNONYM REPZ, REPE,
+
 \ REPNE CMPS – Compare String
 \ REPNE SCAS – Scan String
+H# F2
+   I1B:  REPNE,
+
+SYNONYM REPNZ, REPNE,
+
 \ RET – Return from Procedure (to same segment)
 \ RET – Return from Procedure (to other segment)
 \ ROL – Rotate Left
