@@ -185,6 +185,16 @@ B# 101   CONSTANT EBP
 B# 110   CONSTANT ESI
 B# 111   CONSTANT EDI
 
+\ Segment Registers
+
+B# 000   CONSTANT ES
+B# 001   CONSTANT CS
+B# 010   CONSTANT SS
+B# 011   CONSTANT DS
+B# 100   CONSTANT FS
+B# 101   CONSTANT GS
+\ B# 110   RESERVED
+\ B# 111   RESERVED
 
 \ Defining words for instruction classes
 
