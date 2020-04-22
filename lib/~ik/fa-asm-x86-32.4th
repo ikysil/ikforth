@@ -74,6 +74,21 @@ TRUE VALUE MODE32
    MODE32 INVERT ?OPSIZE,
 ;
 
+: ?ADDRSIZE, (S flag -- )
+   \G Conditionaly compile address size prefix
+   IF   H# 67 ASM8,   THEN
+;
+
+: ?ADDR16, (S -- )
+   \G Conditionaly compile prefix for 16-bits addresses in 32-bits mode
+   MODE32 ?ADDRSIZE,
+;
+
+: ?ADDR32,
+   \G Conditionaly compile prefix for 32-bits addresses in 16-bits mode
+   MODE32 INVERT ?ADDRSIZE,
+;
+
 \ Conditions
 
 \G Overflow
