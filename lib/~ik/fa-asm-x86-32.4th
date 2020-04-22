@@ -445,11 +445,29 @@ SYNONYM XLATB, XLAT,
 \ LOCK 1111 0000
 \ operand size 0110 0110
 \ CS segment override 0010 1110
+H# 2E
+   I1B:  CS:,
+
 \ DS segment override 0011 1110
+H# 3E
+   I1B:  DS:,
+
 \ ES segment override 0010 0110
+H# 26
+   I1B:  ES:,
+
 \ FS segment override 0110 0100
+H# 64
+   I1B:  FS:,
+
 \ GS segment override 0110 0101
+H# 65
+   I1B:  GS:,
+
 \ SS segment override 0011 0110
+H# 36
+   I1B:  SS:,
+
 
 ONLY FORTH DEFINITIONS ALSO FAASM8632-PRIVATE
 
