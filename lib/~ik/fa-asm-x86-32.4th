@@ -22,26 +22,54 @@ ALSO FAASM8632-PRIVATE DEFINITIONS
 \ private definitions go here
 
 \G Compile a 8-bits value (S x -- )
-DEFER asm8,
+DEFER ASM8,
 
-' C, IS asm8,
+' C, IS ASM8,
 
 \G Compile a 16-bits value - always LSB first (S x -- )
-\G Uses asm8, for actual compilation.
-: asm16,
+\G Uses ASM8, for actual compilation.
+: ASM16,
    DUP
-   H# FF AND asm8, 8 RSHIFT
-   H# FF AND asm8,
+   H# FF AND ASM8, 8 RSHIFT
+   H# FF AND ASM8,
 ;
 
 \G Compile a 32-bits value - always LSB first (S x -- )
-\G Uses asm8, for actual compilation.
-: asm32,
+\G Uses ASM8, for actual compilation.
+: ASM32,
    DUP
-   H# FF AND asm8, 8 RSHIFT DUP
-   H# FF AND asm8, 8 RSHIFT DUP
-   H# FF AND asm8, 8 RSHIFT
-   H# FF AND asm8,
+   H# FF AND ASM8, 8 RSHIFT DUP
+   H# FF AND ASM8, 8 RSHIFT DUP
+   H# FF AND ASM8, 8 RSHIFT
+   H# FF AND ASM8,
+;
+
+\G Assembly mode - 32-bits address and operands by default.
+\G TRUE for 32-bits address and operands
+\G FALSE for 16-bits address and operands
+TRUE VALUE MODE32
+
+: USE32
+   TRUE TO MODE32
+;
+
+: USE16
+   FALSE TO MODE32
+;
+
+: ?OPSIZE, (S flag -- )
+   \G Conditionaly compile operands size prefix
+   IF   H# 66 ASM8,   THEN
+;
+
+: ?OP16, (S -- )
+   \G Conditionaly compile prefix for 16-bits operands in 32-bits mode
+   MODE32 ?OPSIZE,
+;
+
+: ?OP32,
+   \G Conditionaly compile prefix for 32-bits operands in 16-bits mode
+   MODE32 INVERT ?OPSIZE,
 ;
 
 \ Conditions
@@ -111,14 +139,26 @@ B# 1111  CONSTANT ?NLE
 : I1B: (S op-code "name" -- )
    \G Create a word which compiles one byte op-code into the definition at runtime.
    CREATE C,
-   DOES> C@ asm8,
+   DOES> C@ ASM8,
+;
+
+: I1B-OP16: (S op-code "name" -- )
+   \G Create a word which compiles one byte op-code with 16-bits operands into the definition at runtime.
+   CREATE C,
+   DOES> ?OP16, C@ ASM8,
+;
+
+: I1B-OP32: (S op-code "name" -- )
+   \G Create a word which compiles one byte op-code with 32-bits operands into the definition at runtime.
+   CREATE C,
+   DOES> ?OP32, C@ ASM8,
 ;
 
 : I2B: (S l-op-code m-op-code "name" -- )
    \G Create a word which compiles two bytes byte op-code into the definition at runtime.
    \G l-op-code is compiled first, m-op-code second.
    CREATE C, C,
-   DOES> C@+ asm8, C@ asm8,
+   DOES> C@+ ASM8, C@ ASM8,
 ;
 
 \ AAA – ASCII Adjust after Addition
@@ -220,9 +260,10 @@ B# 11001110
 \ INVPCID – Invalidate Process-Context Identifier
 \ IRET/IRETD – Interrupt Return
 B# 11001111
-   I1B:  IRET,
+   I1B-OP16:   IRET,
 
-SYNONYM IRETD, IRET,
+B# 11001111
+   I1B-OP32:   IRETD,
 
 \ Jcc – Jump if Condition is Met
 \ JCXZ/JECXZ – Jump on CX/ECX Zero
@@ -280,29 +321,33 @@ B# 10010000
 \ POP – Pop a Segment Register from the Stack (Note: CS cannot be sreg2 in this usage.)
 \ POPA/POPAD – Pop All General Registers
 B# 01100001
-   I1B:  POPA,
+   I1B-OP16:   POPA,
 
-SYNONYM POPAD, POPA,
+B# 01100001
+   I1B-OP32:   POPAD,
 
 \ POPF/POPFD – Pop Stack into FLAGS or EFLAGS Register
 B# 10011101
-   I1B:  POPF,
+   I1B-OP16:   POPF,
 
-SYNONYM POPFD, POPF,
+B# 10011101
+   I1B-OP32:   POPFD,
 
 \ PUSH – Push Operand onto the Stack
 \ PUSH – Push Segment Register onto the Stack
 \ PUSHA/PUSHAD – Push All General Registers
 B# 01100000
-   I1B:  PUSHA,
+   I1B-OP16:   PUSHA,
 
-SYNONYM PUSHAD, PUSHA,
+B# 01100000
+   I1B-OP32:   PUSHAD,
 
 \ PUSHF/PUSHFD – Push Flags Register onto the Stack
 B# 10011100
-   I1B:  PUSHF,
+   I1B-OP16:   PUSHF,
 
-SYNONYM PUSHFD, PUSHF,
+B# 10011100
+   I1B-OP32:   PUSHFD,
 
 \ RCL – Rotate thru Carry Left
 \ RCR – Rotate thru Carry Right
