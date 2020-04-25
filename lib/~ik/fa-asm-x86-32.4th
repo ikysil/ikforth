@@ -242,6 +242,66 @@ B# 00111111
    I1B:  AAS,
 
 \ ADC – ADD with Carry
+
+B# 00000001 CONSTANT ALU-W-BIT
+B# 00000010 CONSTANT ALU-D-BIT
+B# 00000010 CONSTANT ALU-S-BIT
+
+: ALURR8: (S alu-op-code -- )
+   \G Create a word which compiles ALU operation between two 8 bit registers
+   \G when executed with following stack effect:
+   \G (S reg1 reg2 -- )
+   CREATE C,
+   DOES> C@ [ ALU-W-BIT INVERT ] LITERAL AND ASM8,
+   SWAP 3 LSHIFT OR
+   B# 11000000 OR
+   ASM8,
+;
+
+: ALURR16: (S alu-op-code -- )
+   \G Create a word which compiles ALU operation between two 16 bit registers
+   \G when executed with following stack effect:
+   \G (S reg1 reg2 -- )
+   CREATE C,
+   DOES>
+   ?OP16,
+   C@ ALU-W-BIT OR ASM8,
+   SWAP 3 LSHIFT OR
+   B# 11000000 OR
+   ASM8,
+;
+
+: ALURR32: (S alu-op-code -- )
+   \G Create a word which compiles ALU operation between two 32 bit registers
+   \G when executed with following stack effect:
+   \G (S reg1 reg2 -- )
+   CREATE C,
+   DOES>
+   ?OP32,
+   C@ ALU-W-BIT OR ASM8,
+   SWAP 3 LSHIFT OR
+   B# 11000000 OR
+   ASM8,
+;
+
+\G Append operation ADC reg2, reg1 between two 8 bit registers
+B# 00010000 ALURR8: ADCRR8->, (S reg1 reg2 -- )
+
+\G Append operation ADC reg1, reg2 between two 8 bit registers
+B# 00010010 ALURR8: ADCRR8<-, (S reg1 reg2 -- )
+
+\G Append operation ADC reg2, reg1 between two 16 bit registers
+B# 00010000 ALURR16: ADCRR16->, (S reg1 reg2 -- )
+
+\G Append operation ADC reg1, reg2 between two 16 bit registers
+B# 00010010 ALURR16: ADCRR16<-, (S reg1 reg2 -- )
+
+\G Append operation ADC reg2, reg1 between two 32 bit registers
+B# 00010000 ALURR32: ADCRR32->, (S reg1 reg2 -- )
+
+\G Append operation ADC reg1, reg2 between two 32 bit registers
+B# 00010010 ALURR32: ADCRR32<-, (S reg1 reg2 -- )
+
 \ ADD – Add
 \ AND – Logical AND
 \ ARPL – Adjust RPL Field of Selector
@@ -537,3 +597,28 @@ ONLY FORTH DEFINITIONS ALSO FAASM8632-PRIVATE
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
+
+\ EOF
+
+ALSO FAASM8632-PRIVATE
+
+CR
+
+here dl dh ADCRR8->, 8 dump
+here dl dh ADCRR8<-, 8 dump
+
+here dx bx ADCRR16->, 8 dump
+here dx bx ADCRR16<-, 8 dump
+
+here edx ebx ADCRR32->, 8 dump
+here edx ebx ADCRR32<-, 8 dump
+
+use16
+
+here dx bx ADCRR16->, 8 dump
+here dx bx ADCRR16<-, 8 dump
+
+here edx ebx ADCRR32->, 8 dump
+here edx ebx ADCRR32<-, 8 dump
+
+use32
