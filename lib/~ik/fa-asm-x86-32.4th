@@ -730,6 +730,22 @@ ALURR32: SUBRR32<-, (S reg1 reg2 -- )
 
 
 \ TEST – Logical Compare
+
+B# 10000100 CONSTANT ALUOP-TEST
+
+ALUOP-TEST
+ALURR8: TESTRR8, (S reg1 reg2 -- )
+\G Append operation TEST reg1, reg2 between two 8 bit registers
+
+ALUOP-TEST
+ALURR16: TESTRR16, (S reg1 reg2 -- )
+\G Append operation TEST reg1, reg2 between two 16 bit registers
+
+ALUOP-TEST
+ALURR32: TESTRR32, (S reg1 reg2 -- )
+\G Append operation TEST reg1, reg2 between two 32 bit registers
+
+
 \ UD0 – Undefined instruction
 B# 00001111
 B# 11111111
@@ -955,3 +971,19 @@ here dx bx SUBRR16<-, 8 dump
 
 here edx ebx SUBRR32->, 8 dump
 here edx ebx SUBRR32<-, 8 dump
+
+use32 .( use32 TEST) cr
+
+here dl dh TESTRR8, 8 dump
+
+here dx bx TESTRR16, 8 dump
+
+here edx ebx TESTRR32, 8 dump
+
+use16 .( use16 TEST) cr
+
+here dl dh TESTRR8, 8 dump
+
+here dx bx TESTRR16, 8 dump
+
+here edx ebx TESTRR32, 8 dump
