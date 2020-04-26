@@ -247,60 +247,79 @@ B# 00000001 CONSTANT ALU-W-BIT
 B# 00000010 CONSTANT ALU-D-BIT
 B# 00000010 CONSTANT ALU-S-BIT
 
-: ALURR8: (S alu-op-code -- )
+: ALURR, (S reg1 reg2 alu-opcode -- )
+   \G Append ALU operation between two registers to the current definition.
+   ASM8,
+   SWAP 3 LSHIFT OR
+   B# 11000000 OR
+   ASM8,
+;
+
+: ALURR8: (S alu-opcode -- )
    \G Create a word which compiles ALU operation between two 8 bit registers
    \G when executed with following stack effect:
    \G (S reg1 reg2 -- )
-   CREATE C,
-   DOES> C@ [ ALU-W-BIT INVERT ] LITERAL AND ASM8,
-   SWAP 3 LSHIFT OR
-   B# 11000000 OR
-   ASM8,
+   CREATE
+      [ ALU-W-BIT INVERT ] LITERAL AND C,
+   DOES>
+      C@ ALURR,
 ;
 
-: ALURR16: (S alu-op-code -- )
+: ALURR16: (S alu-opcode -- )
    \G Create a word which compiles ALU operation between two 16 bit registers
    \G when executed with following stack effect:
    \G (S reg1 reg2 -- )
-   CREATE C,
+   CREATE
+      ALU-W-BIT OR C,
    DOES>
-   ?OP16,
-   C@ ALU-W-BIT OR ASM8,
-   SWAP 3 LSHIFT OR
-   B# 11000000 OR
-   ASM8,
+      ?OP16, C@ ALURR,
 ;
 
-: ALURR32: (S alu-op-code -- )
+: ALURR32: (S alu-opcode -- )
    \G Create a word which compiles ALU operation between two 32 bit registers
    \G when executed with following stack effect:
    \G (S reg1 reg2 -- )
-   CREATE C,
+   CREATE
+      ALU-W-BIT OR C,
    DOES>
-   ?OP32,
-   C@ ALU-W-BIT OR ASM8,
-   SWAP 3 LSHIFT OR
-   B# 11000000 OR
-   ASM8,
+      ?OP32, C@ ALURR,
 ;
 
+: ALUOP-> (S alu-opcode -- alu-opcode' )
+   \G Modify direction of alu-opcode to left-to-right.
+   [ ALU-D-BIT INVERT ] LITERAL AND
+;
+
+: ALUOP<- (S alu-opcode -- alu-opcode' )
+   \G Modify direction of alu-opcode to right-to-left.
+   ALU-D-BIT OR
+;
+
+B# 00010000 CONSTANT ALUOP-ADC
+
+ALUOP-ADC ALUOP->
+ALURR8: ADCRR8->, (S reg1 reg2 -- )
 \G Append operation ADC reg2, reg1 between two 8 bit registers
-B# 00010000 ALURR8: ADCRR8->, (S reg1 reg2 -- )
 
+ALUOP-ADC ALUOP<-
+ALURR8: ADCRR8<-, (S reg1 reg2 -- )
 \G Append operation ADC reg1, reg2 between two 8 bit registers
-B# 00010010 ALURR8: ADCRR8<-, (S reg1 reg2 -- )
 
+ALUOP-ADC ALUOP->
+ALURR16: ADCRR16->, (S reg1 reg2 -- )
 \G Append operation ADC reg2, reg1 between two 16 bit registers
-B# 00010000 ALURR16: ADCRR16->, (S reg1 reg2 -- )
 
+ALUOP-ADC ALUOP<-
+ALURR16: ADCRR16<-, (S reg1 reg2 -- )
 \G Append operation ADC reg1, reg2 between two 16 bit registers
-B# 00010010 ALURR16: ADCRR16<-, (S reg1 reg2 -- )
 
+ALUOP-ADC ALUOP->
+ALURR32: ADCRR32->, (S reg1 reg2 -- )
 \G Append operation ADC reg2, reg1 between two 32 bit registers
-B# 00010000 ALURR32: ADCRR32->, (S reg1 reg2 -- )
 
+ALUOP-ADC ALUOP<-
+ALURR32: ADCRR32<-, (S reg1 reg2 -- )
 \G Append operation ADC reg1, reg2 between two 32 bit registers
-B# 00010010 ALURR32: ADCRR32<-, (S reg1 reg2 -- )
 
 \ ADD – Add
 \ AND – Logical AND
@@ -604,6 +623,8 @@ ALSO FAASM8632-PRIVATE
 
 CR
 
+use32 .( use32) cr
+
 here dl dh ADCRR8->, 8 dump
 here dl dh ADCRR8<-, 8 dump
 
@@ -613,12 +634,13 @@ here dx bx ADCRR16<-, 8 dump
 here edx ebx ADCRR32->, 8 dump
 here edx ebx ADCRR32<-, 8 dump
 
-use16
+use16 .( use16) cr
+
+here dl dh ADCRR8->, 8 dump
+here dl dh ADCRR8<-, 8 dump
 
 here dx bx ADCRR16->, 8 dump
 here dx bx ADCRR16<-, 8 dump
 
 here edx ebx ADCRR32->, 8 dump
 here edx ebx ADCRR32<-, 8 dump
-
-use32
