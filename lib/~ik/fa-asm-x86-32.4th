@@ -295,93 +295,9 @@ B# 00001010
 B# 00111111
    I1B:  AAS,
 
-
-\ ADC – ADD with Carry
-
-B# 00010000 CONSTANT ALUOP-ADC
-
-ALUOP-ADC ALUOP->
-ALURR8: ADCRR8->, (S reg1 reg2 -- )
-\G Append operation ADC reg2, reg1 between two 8 bit registers
-
-ALUOP-ADC ALUOP<-
-ALURR8: ADCRR8<-, (S reg1 reg2 -- )
-\G Append operation ADC reg1, reg2 between two 8 bit registers
-
-ALUOP-ADC ALUOP->
-ALURR16: ADCRR16->, (S reg1 reg2 -- )
-\G Append operation ADC reg2, reg1 between two 16 bit registers
-
-ALUOP-ADC ALUOP<-
-ALURR16: ADCRR16<-, (S reg1 reg2 -- )
-\G Append operation ADC reg1, reg2 between two 16 bit registers
-
-ALUOP-ADC ALUOP->
-ALURR32: ADCRR32->, (S reg1 reg2 -- )
-\G Append operation ADC reg2, reg1 between two 32 bit registers
-
-ALUOP-ADC ALUOP<-
-ALURR32: ADCRR32<-, (S reg1 reg2 -- )
-\G Append operation ADC reg1, reg2 between two 32 bit registers
-
-
-\ ADD – Add
-
-B# 00000000 CONSTANT ALUOP-ADD
-
-ALUOP-ADD ALUOP->
-ALURR8: ADDRR8->, (S reg1 reg2 -- )
-\G Append operation ADD reg2, reg1 between two 8 bit registers
-
-ALUOP-ADD ALUOP<-
-ALURR8: ADDRR8<-, (S reg1 reg2 -- )
-\G Append operation ADD reg1, reg2 between two 8 bit registers
-
-ALUOP-ADD ALUOP->
-ALURR16: ADDRR16->, (S reg1 reg2 -- )
-\G Append operation ADD reg2, reg1 between two 16 bit registers
-
-ALUOP-ADD ALUOP<-
-ALURR16: ADDRR16<-, (S reg1 reg2 -- )
-\G Append operation ADD reg1, reg2 between two 16 bit registers
-
-ALUOP-ADD ALUOP->
-ALURR32: ADDRR32->, (S reg1 reg2 -- )
-\G Append operation ADD reg2, reg1 between two 32 bit registers
-
-ALUOP-ADD ALUOP<-
-ALURR32: ADDRR32<-, (S reg1 reg2 -- )
-\G Append operation ADD reg1, reg2 between two 32 bit registers
-
-
-\ AND – Logical AND
-
-B# 00100000 CONSTANT ALUOP-AND
-
-ALUOP-AND ALUOP->
-ALURR8: ANDRR8->, (S reg1 reg2 -- )
-\G Append operation AND reg2, reg1 between two 8 bit registers
-
-ALUOP-AND ALUOP<-
-ALURR8: ANDRR8<-, (S reg1 reg2 -- )
-\G Append operation AND reg1, reg2 between two 8 bit registers
-
-ALUOP-AND ALUOP->
-ALURR16: ANDRR16->, (S reg1 reg2 -- )
-\G Append operation AND reg2, reg1 between two 16 bit registers
-
-ALUOP-AND ALUOP<-
-ALURR16: ANDRR16<-, (S reg1 reg2 -- )
-\G Append operation AND reg1, reg2 between two 16 bit registers
-
-ALUOP-AND ALUOP->
-ALURR32: ANDRR32->, (S reg1 reg2 -- )
-\G Append operation AND reg2, reg1 between two 32 bit registers
-
-ALUOP-AND ALUOP<-
-ALURR32: ANDRR32<-, (S reg1 reg2 -- )
-\G Append operation AND reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-adc.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-add.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 
 \ ARPL – Adjust RPL Field of Selector
 \ BOUND – Check Array Against Bounds
@@ -416,35 +332,7 @@ B# 11111100
 B# 11110101
    I1B:  CMC,
 
-
-\ CMP – Compare Two Operands
-
-B# 00111000 CONSTANT ALUOP-CMP
-
-ALUOP-CMP ALUOP->
-ALURR8: CMPRR8->, (S reg1 reg2 -- )
-\G Append operation CMP reg2, reg1 between two 8 bit registers
-
-ALUOP-CMP ALUOP<-
-ALURR8: CMPRR8<-, (S reg1 reg2 -- )
-\G Append operation CMP reg1, reg2 between two 8 bit registers
-
-ALUOP-CMP ALUOP->
-ALURR16: CMPRR16->, (S reg1 reg2 -- )
-\G Append operation CMP reg2, reg1 between two 16 bit registers
-
-ALUOP-CMP ALUOP<-
-ALURR16: CMPRR16<-, (S reg1 reg2 -- )
-\G Append operation CMP reg1, reg2 between two 16 bit registers
-
-ALUOP-CMP ALUOP->
-ALURR32: CMPRR32->, (S reg1 reg2 -- )
-\G Append operation CMP reg2, reg1 between two 32 bit registers
-
-ALUOP-CMP ALUOP<-
-ALURR32: CMPRR32<-, (S reg1 reg2 -- )
-\G Append operation CMP reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-cmp.4th"
 
 \ CMPS/CMPSB/CMPSW/CMPSD – Compare String Operands
 \ CMPXCHG – Compare and Exchange
@@ -545,35 +433,7 @@ B# 10010000
 \ NOP – Multi-byte No Operation 1
 \ NOT – One's Complement Negation
 
-
-\ OR – Logical Inclusive OR
-
-B# 00001000 CONSTANT ALUOP-OR
-
-ALUOP-OR ALUOP->
-ALURR8: ORRR8->, (S reg1 reg2 -- )
-\G Append operation OR reg2, reg1 between two 8 bit registers
-
-ALUOP-OR ALUOP<-
-ALURR8: ORRR8<-, (S reg1 reg2 -- )
-\G Append operation OR reg1, reg2 between two 8 bit registers
-
-ALUOP-OR ALUOP->
-ALURR16: ORRR16->, (S reg1 reg2 -- )
-\G Append operation OR reg2, reg1 between two 16 bit registers
-
-ALUOP-OR ALUOP<-
-ALURR16: ORRR16<-, (S reg1 reg2 -- )
-\G Append operation OR reg1, reg2 between two 16 bit registers
-
-ALUOP-OR ALUOP->
-ALURR32: ORRR32->, (S reg1 reg2 -- )
-\G Append operation OR reg2, reg1 between two 32 bit registers
-
-ALUOP-OR ALUOP<-
-ALURR32: ORRR32<-, (S reg1 reg2 -- )
-\G Append operation OR reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-or.4th"
 
 \ OUT – Output to Port
 \ OUTS – Output to DX Port
@@ -647,35 +507,7 @@ B# 10011110
 \ SAL – Shift Arithmetic Left same instruction as SHL
 \ SAR – Shift Arithmetic Right
 
-
-\ SBB – Integer Subtraction with Borrow
-
-B# 00011000 CONSTANT ALUOP-SBB
-
-ALUOP-SBB ALUOP->
-ALURR8: SBBRR8->, (S reg1 reg2 -- )
-\G Append operation SBB reg2, reg1 between two 8 bit registers
-
-ALUOP-SBB ALUOP<-
-ALURR8: SBBRR8<-, (S reg1 reg2 -- )
-\G Append operation SBB reg1, reg2 between two 8 bit registers
-
-ALUOP-SBB ALUOP->
-ALURR16: SBBRR16->, (S reg1 reg2 -- )
-\G Append operation SBB reg2, reg1 between two 16 bit registers
-
-ALUOP-SBB ALUOP<-
-ALURR16: SBBRR16<-, (S reg1 reg2 -- )
-\G Append operation SBB reg1, reg2 between two 16 bit registers
-
-ALUOP-SBB ALUOP->
-ALURR32: SBBRR32->, (S reg1 reg2 -- )
-\G Append operation SBB reg2, reg1 between two 32 bit registers
-
-ALUOP-SBB ALUOP<-
-ALURR32: SBBRR32<-, (S reg1 reg2 -- )
-\G Append operation SBB reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-sbb.4th"
 
 \ SCAS/SCASB/SCASW/SCASD – Scan String
 \ SETcc – Byte Set on Condition
@@ -699,52 +531,8 @@ B# 11111101
 \ STOS/STOSB/STOSW/STOSD – Store String Data
 \ STR – Store Task Register
 
-
-\ SUB – Integer Subtraction
-
-B# 00101000 CONSTANT ALUOP-SUB
-
-ALUOP-SUB ALUOP->
-ALURR8: SUBRR8->, (S reg1 reg2 -- )
-\G Append operation SUB reg2, reg1 between two 8 bit registers
-
-ALUOP-SUB ALUOP<-
-ALURR8: SUBRR8<-, (S reg1 reg2 -- )
-\G Append operation SUB reg1, reg2 between two 8 bit registers
-
-ALUOP-SUB ALUOP->
-ALURR16: SUBRR16->, (S reg1 reg2 -- )
-\G Append operation SUB reg2, reg1 between two 16 bit registers
-
-ALUOP-SUB ALUOP<-
-ALURR16: SUBRR16<-, (S reg1 reg2 -- )
-\G Append operation SUB reg1, reg2 between two 16 bit registers
-
-ALUOP-SUB ALUOP->
-ALURR32: SUBRR32->, (S reg1 reg2 -- )
-\G Append operation SUB reg2, reg1 between two 32 bit registers
-
-ALUOP-SUB ALUOP<-
-ALURR32: SUBRR32<-, (S reg1 reg2 -- )
-\G Append operation SUB reg1, reg2 between two 32 bit registers
-
-
-\ TEST – Logical Compare
-
-B# 10000100 CONSTANT ALUOP-TEST
-
-ALUOP-TEST
-ALURR8: TESTRR8, (S reg1 reg2 -- )
-\G Append operation TEST reg1, reg2 between two 8 bit registers
-
-ALUOP-TEST
-ALURR16: TESTRR16, (S reg1 reg2 -- )
-\G Append operation TEST reg1, reg2 between two 16 bit registers
-
-ALUOP-TEST
-ALURR32: TESTRR32, (S reg1 reg2 -- )
-\G Append operation TEST reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-sub.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-test.4th"
 
 \ UD0 – Undefined instruction
 B# 00001111
@@ -767,23 +555,7 @@ B# 10011011
 \ WRMSR – Write to Model-Specific Register
 \ XADD – Exchange and Add
 
-
-\ XCHG – Exchange Register/Memory with Register
-
-B# 10000110 CONSTANT ALUOP-XCHG
-
-ALUOP-XCHG
-ALURR8: XCHGRR8, (S reg1 reg2 -- )
-\G Append operation XCHG reg1, reg2 between two 8 bit registers
-
-ALUOP-XCHG
-ALURR16: XCHGRR16, (S reg1 reg2 -- )
-\G Append operation XCHG reg1, reg2 between two 16 bit registers
-
-ALUOP-XCHG
-ALURR32: XCHGRR32, (S reg1 reg2 -- )
-\G Append operation XCHG reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-xchg.4th"
 
 \ XLAT/XLATB – Table Look-up Translation
 B# 11010111
@@ -791,35 +563,7 @@ B# 11010111
 
 SYNONYM XLATB, XLAT,
 
-
-\ XOR – Logical Exclusive OR
-
-B# 00110000 CONSTANT ALUOP-XOR
-
-ALUOP-XOR ALUOP->
-ALURR8: XORRR8->, (S reg1 reg2 -- )
-\G Append operation XOR reg2, reg1 between two 8 bit registers
-
-ALUOP-XOR ALUOP<-
-ALURR8: XORRR8<-, (S reg1 reg2 -- )
-\G Append operation XOR reg1, reg2 between two 8 bit registers
-
-ALUOP-XOR ALUOP->
-ALURR16: XORRR16->, (S reg1 reg2 -- )
-\G Append operation XOR reg2, reg1 between two 16 bit registers
-
-ALUOP-XOR ALUOP<-
-ALURR16: XORRR16<-, (S reg1 reg2 -- )
-\G Append operation XOR reg1, reg2 between two 16 bit registers
-
-ALUOP-XOR ALUOP->
-ALURR32: XORRR32->, (S reg1 reg2 -- )
-\G Append operation XOR reg2, reg1 between two 32 bit registers
-
-ALUOP-XOR ALUOP<-
-ALURR32: XORRR32<-, (S reg1 reg2 -- )
-\G Append operation XOR reg1, reg2 between two 32 bit registers
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-xor.4th"
 
 \ Prefix Bytes
 \ address size 0110 0111
@@ -858,217 +602,3 @@ ONLY FORTH DEFINITIONS ALSO FAASM8632-PRIVATE
 ONLY FORTH DEFINITIONS
 
 REPORT-NEW-NAME !
-
-\ EOF
-
-ALSO FAASM8632-PRIVATE
-
-CR
-
-use32 .( use32 ADC) cr
-
-here dl dh ADCRR8->, 8 dump
-here dl dh ADCRR8<-, 8 dump
-
-here dx bx ADCRR16->, 8 dump
-here dx bx ADCRR16<-, 8 dump
-
-here edx ebx ADCRR32->, 8 dump
-here edx ebx ADCRR32<-, 8 dump
-
-use16 .( use16 ADC) cr
-
-here dl dh ADCRR8->, 8 dump
-here dl dh ADCRR8<-, 8 dump
-
-here dx bx ADCRR16->, 8 dump
-here dx bx ADCRR16<-, 8 dump
-
-here edx ebx ADCRR32->, 8 dump
-here edx ebx ADCRR32<-, 8 dump
-
-use32 .( use32 ADD) cr
-
-here dl dh ADDRR8->, 8 dump
-here dl dh ADDRR8<-, 8 dump
-
-here dx bx ADDRR16->, 8 dump
-here dx bx ADDRR16<-, 8 dump
-
-here edx ebx ADDRR32->, 8 dump
-here edx ebx ADDRR32<-, 8 dump
-
-use16 .( use16 ADD) cr
-
-here dl dh ADDRR8->, 8 dump
-here dl dh ADDRR8<-, 8 dump
-
-here dx bx ADDRR16->, 8 dump
-here dx bx ADDRR16<-, 8 dump
-
-here edx ebx ADDRR32->, 8 dump
-here edx ebx ADDRR32<-, 8 dump
-
-use32 .( use32 AND) cr
-
-here dl dh ANDRR8->, 8 dump
-here dl dh ANDRR8<-, 8 dump
-
-here dx bx ANDRR16->, 8 dump
-here dx bx ANDRR16<-, 8 dump
-
-here edx ebx ANDRR32->, 8 dump
-here edx ebx ANDRR32<-, 8 dump
-
-use16 .( use16 AND) cr
-
-here dl dh ANDRR8->, 8 dump
-here dl dh ANDRR8<-, 8 dump
-
-here dx bx ANDRR16->, 8 dump
-here dx bx ANDRR16<-, 8 dump
-
-here edx ebx ANDRR32->, 8 dump
-here edx ebx ANDRR32<-, 8 dump
-
-use32 .( use32 CMP) cr
-
-here dl dh CMPRR8->, 8 dump
-here dl dh CMPRR8<-, 8 dump
-
-here dx bx CMPRR16->, 8 dump
-here dx bx CMPRR16<-, 8 dump
-
-here edx ebx CMPRR32->, 8 dump
-here edx ebx CMPRR32<-, 8 dump
-
-use16 .( use16 CMP) cr
-
-here dl dh CMPRR8->, 8 dump
-here dl dh CMPRR8<-, 8 dump
-
-here dx bx CMPRR16->, 8 dump
-here dx bx CMPRR16<-, 8 dump
-
-here edx ebx CMPRR32->, 8 dump
-here edx ebx CMPRR32<-, 8 dump
-
-use32 .( use32 OR) cr
-
-here dl dh ORRR8->, 8 dump
-here dl dh ORRR8<-, 8 dump
-
-here dx bx ORRR16->, 8 dump
-here dx bx ORRR16<-, 8 dump
-
-here edx ebx ORRR32->, 8 dump
-here edx ebx ORRR32<-, 8 dump
-
-use16 .( use16 OR) cr
-
-here dl dh ORRR8->, 8 dump
-here dl dh ORRR8<-, 8 dump
-
-here dx bx ORRR16->, 8 dump
-here dx bx ORRR16<-, 8 dump
-
-here edx ebx ORRR32->, 8 dump
-here edx ebx ORRR32<-, 8 dump
-
-use32 .( use32 SBB) cr
-
-here dl dh SBBRR8->, 8 dump
-here dl dh SBBRR8<-, 8 dump
-
-here dx bx SBBRR16->, 8 dump
-here dx bx SBBRR16<-, 8 dump
-
-here edx ebx SBBRR32->, 8 dump
-here edx ebx SBBRR32<-, 8 dump
-
-use16 .( use16 SBB) cr
-
-here dl dh SBBRR8->, 8 dump
-here dl dh SBBRR8<-, 8 dump
-
-here dx bx SBBRR16->, 8 dump
-here dx bx SBBRR16<-, 8 dump
-
-here edx ebx SBBRR32->, 8 dump
-here edx ebx SBBRR32<-, 8 dump
-
-use32 .( use32 SUB) cr
-
-here dl dh SUBRR8->, 8 dump
-here dl dh SUBRR8<-, 8 dump
-
-here dx bx SUBRR16->, 8 dump
-here dx bx SUBRR16<-, 8 dump
-
-here edx ebx SUBRR32->, 8 dump
-here edx ebx SUBRR32<-, 8 dump
-
-use16 .( use16 SUB) cr
-
-here dl dh SUBRR8->, 8 dump
-here dl dh SUBRR8<-, 8 dump
-
-here dx bx SUBRR16->, 8 dump
-here dx bx SUBRR16<-, 8 dump
-
-here edx ebx SUBRR32->, 8 dump
-here edx ebx SUBRR32<-, 8 dump
-
-use32 .( use32 TEST) cr
-
-here dl dh TESTRR8, 8 dump
-
-here dx bx TESTRR16, 8 dump
-
-here edx ebx TESTRR32, 8 dump
-
-use16 .( use16 TEST) cr
-
-here dl dh TESTRR8, 8 dump
-
-here dx bx TESTRR16, 8 dump
-
-here edx ebx TESTRR32, 8 dump
-
-use32 .( use32 XCHG) cr
-
-here dl dh XCHGRR8, 8 dump
-
-here dx bx XCHGRR16, 8 dump
-
-here edx ebx XCHGRR32, 8 dump
-
-use16 .( use16 XCHG) cr
-
-here dl dh XCHGRR8, 8 dump
-
-here dx bx XCHGRR16, 8 dump
-
-here edx ebx XCHGRR32, 8 dump
-
-use32 .( use32 XOR) cr
-
-here dl dh XORRR8->, 8 dump
-here dl dh XORRR8<-, 8 dump
-
-here dx bx XORRR16->, 8 dump
-here dx bx XORRR16<-, 8 dump
-
-here edx ebx XORRR32->, 8 dump
-here edx ebx XORRR32<-, 8 dump
-
-use16 .( use16 XOR) cr
-
-here dl dh XORRR8->, 8 dump
-here dl dh XORRR8<-, 8 dump
-
-here dx bx XORRR16->, 8 dump
-here dx bx XORRR16<-, 8 dump
-
-here edx ebx XORRR32->, 8 dump
-here edx ebx XORRR32<-, 8 dump
