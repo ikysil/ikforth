@@ -223,25 +223,6 @@ B# 101   CONSTANT GS
    DOES> C@+ ASM8, C@ ASM8,
 ;
 
-\ AAA – ASCII Adjust after Addition
-B# 00110111
-   I1B:  AAA,
-
-\ AAD – ASCII Adjust AX before Division
-B# 11010101
-B# 00001010
-   I2B:  AAD,
-
-\ AAM – ASCII Adjust AX after Multiply
-B# 11010100
-B# 00001010
-   I2B:  AAM,
-
-\ AAS – ASCII Adjust AL after Subtraction
-B# 00111111
-   I1B:  AAS,
-
-\ ADC – ADD with Carry
 
 B# 00000001 CONSTANT ALU-W-BIT
 B# 00000010 CONSTANT ALU-D-BIT
@@ -295,6 +276,27 @@ B# 00000010 CONSTANT ALU-S-BIT
    ALU-D-BIT OR
 ;
 
+
+\ AAA – ASCII Adjust after Addition
+B# 00110111
+   I1B:  AAA,
+
+\ AAD – ASCII Adjust AX before Division
+B# 11010101
+B# 00001010
+   I2B:  AAD,
+
+\ AAM – ASCII Adjust AX after Multiply
+B# 11010100
+B# 00001010
+   I2B:  AAM,
+
+\ AAS – ASCII Adjust AL after Subtraction
+B# 00111111
+   I1B:  AAS,
+
+\ ADC – ADD with Carry
+
 B# 00010000 CONSTANT ALUOP-ADC
 
 ALUOP-ADC ALUOP->
@@ -322,6 +324,33 @@ ALURR32: ADCRR32<-, (S reg1 reg2 -- )
 \G Append operation ADC reg1, reg2 between two 32 bit registers
 
 \ ADD – Add
+
+B# 00000000 CONSTANT ALUOP-ADD
+
+ALUOP-ADD ALUOP->
+ALURR8: ADDRR8->, (S reg1 reg2 -- )
+\G Append operation ADD reg2, reg1 between two 8 bit registers
+
+ALUOP-ADD ALUOP<-
+ALURR8: ADDRR8<-, (S reg1 reg2 -- )
+\G Append operation ADD reg1, reg2 between two 8 bit registers
+
+ALUOP-ADD ALUOP->
+ALURR16: ADDRR16->, (S reg1 reg2 -- )
+\G Append operation ADD reg2, reg1 between two 16 bit registers
+
+ALUOP-ADD ALUOP<-
+ALURR16: ADDRR16<-, (S reg1 reg2 -- )
+\G Append operation ADD reg1, reg2 between two 16 bit registers
+
+ALUOP-ADD ALUOP->
+ALURR32: ADDRR32->, (S reg1 reg2 -- )
+\G Append operation ADD reg2, reg1 between two 32 bit registers
+
+ALUOP-ADD ALUOP<-
+ALURR32: ADDRR32<-, (S reg1 reg2 -- )
+\G Append operation ADD reg1, reg2 between two 32 bit registers
+
 \ AND – Logical AND
 \ ARPL – Adjust RPL Field of Selector
 \ BOUND – Check Array Against Bounds
@@ -623,7 +652,7 @@ ALSO FAASM8632-PRIVATE
 
 CR
 
-use32 .( use32) cr
+use32 .( use32 ADC) cr
 
 here dl dh ADCRR8->, 8 dump
 here dl dh ADCRR8<-, 8 dump
@@ -634,7 +663,7 @@ here dx bx ADCRR16<-, 8 dump
 here edx ebx ADCRR32->, 8 dump
 here edx ebx ADCRR32<-, 8 dump
 
-use16 .( use16) cr
+use16 .( use16 ADC) cr
 
 here dl dh ADCRR8->, 8 dump
 here dl dh ADCRR8<-, 8 dump
@@ -644,3 +673,25 @@ here dx bx ADCRR16<-, 8 dump
 
 here edx ebx ADCRR32->, 8 dump
 here edx ebx ADCRR32<-, 8 dump
+
+use32 .( use32 ADD) cr
+
+here dl dh ADDRR8->, 8 dump
+here dl dh ADDRR8<-, 8 dump
+
+here dx bx ADDRR16->, 8 dump
+here dx bx ADDRR16<-, 8 dump
+
+here edx ebx ADDRR32->, 8 dump
+here edx ebx ADDRR32<-, 8 dump
+
+use16 .( use16 ADD) cr
+
+here dl dh ADDRR8->, 8 dump
+here dl dh ADDRR8<-, 8 dump
+
+here dx bx ADDRR16->, 8 dump
+here dx bx ADDRR16<-, 8 dump
+
+here edx ebx ADDRR32->, 8 dump
+here edx ebx ADDRR32<-, 8 dump
