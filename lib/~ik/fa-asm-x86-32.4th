@@ -295,6 +295,7 @@ B# 00001010
 B# 00111111
    I1B:  AAS,
 
+
 \ ADC – ADD with Carry
 
 B# 00010000 CONSTANT ALUOP-ADC
@@ -322,6 +323,7 @@ ALURR32: ADCRR32->, (S reg1 reg2 -- )
 ALUOP-ADC ALUOP<-
 ALURR32: ADCRR32<-, (S reg1 reg2 -- )
 \G Append operation ADC reg1, reg2 between two 32 bit registers
+
 
 \ ADD – Add
 
@@ -351,7 +353,36 @@ ALUOP-ADD ALUOP<-
 ALURR32: ADDRR32<-, (S reg1 reg2 -- )
 \G Append operation ADD reg1, reg2 between two 32 bit registers
 
+
 \ AND – Logical AND
+
+B# 00100000 CONSTANT ALUOP-AND
+
+ALUOP-AND ALUOP->
+ALURR8: ANDRR8->, (S reg1 reg2 -- )
+\G Append operation AND reg2, reg1 between two 8 bit registers
+
+ALUOP-AND ALUOP<-
+ALURR8: ANDRR8<-, (S reg1 reg2 -- )
+\G Append operation AND reg1, reg2 between two 8 bit registers
+
+ALUOP-AND ALUOP->
+ALURR16: ANDRR16->, (S reg1 reg2 -- )
+\G Append operation AND reg2, reg1 between two 16 bit registers
+
+ALUOP-AND ALUOP<-
+ALURR16: ANDRR16<-, (S reg1 reg2 -- )
+\G Append operation AND reg1, reg2 between two 16 bit registers
+
+ALUOP-AND ALUOP->
+ALURR32: ANDRR32->, (S reg1 reg2 -- )
+\G Append operation AND reg2, reg1 between two 32 bit registers
+
+ALUOP-AND ALUOP<-
+ALURR32: ANDRR32<-, (S reg1 reg2 -- )
+\G Append operation AND reg1, reg2 between two 32 bit registers
+
+
 \ ARPL – Adjust RPL Field of Selector
 \ BOUND – Check Array Against Bounds
 \ BSF – Bit Scan Forward
@@ -695,3 +726,25 @@ here dx bx ADDRR16<-, 8 dump
 
 here edx ebx ADDRR32->, 8 dump
 here edx ebx ADDRR32<-, 8 dump
+
+use32 .( use32 AND) cr
+
+here dl dh ANDRR8->, 8 dump
+here dl dh ANDRR8<-, 8 dump
+
+here dx bx ANDRR16->, 8 dump
+here dx bx ANDRR16<-, 8 dump
+
+here edx ebx ANDRR32->, 8 dump
+here edx ebx ANDRR32<-, 8 dump
+
+use16 .( use16 AND) cr
+
+here dl dh ANDRR8->, 8 dump
+here dl dh ANDRR8<-, 8 dump
+
+here dx bx ANDRR16->, 8 dump
+here dx bx ANDRR16<-, 8 dump
+
+here edx ebx ANDRR32->, 8 dump
+here edx ebx ANDRR32<-, 8 dump
