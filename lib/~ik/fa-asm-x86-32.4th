@@ -303,7 +303,26 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 \ BOUND – Check Array Against Bounds
 \ BSF – Bit Scan Forward
 \ BSR – Bit Scan Reverse
+
+
 \ BSWAP – Byte Swap
+
+: BSWAPR, (S reg -- )
+   B# 00001111 ASM8,
+   B# 11001000 OR ASM8,
+;
+
+: BSWAPR16, (S reg -- )
+   ?OP16,
+   BSWAPR,
+;
+
+: BSWAPR32, (S reg -- )
+   ?OP32,
+   BSWAPR,
+;
+
+
 \ BT – Bit Test
 \ BTC – Bit Test and Complement
 \ BTR – Bit Test and Reset
