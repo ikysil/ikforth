@@ -327,7 +327,29 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 \ BTC – Bit Test and Complement
 \ BTR – Bit Test and Reset
 \ BTS – Bit Test and Set
+
+
 \ CALL – Call Procedure (in same segment)
+
+: CALLR@, (S reg -- )
+   \G Compile register indirect CALL (without operand size prefix).
+   B# 11111111 ASM8,
+   B# 11010000 OR ASM8,
+;
+
+: CALLR16@, (S reg -- )
+   \G Compile 16 bits register indirect CALL.
+   ?OP16,
+   CALLR@,
+;
+
+: CALLR32@, (S reg -- )
+   \G Compile 32 bits register indirect CALL.
+   ?OP32,
+   CALLR@,
+;
+
+
 \ CALL – Call Procedure (in other segment)
 \ CBW – Convert Byte to Word
 B# 10011000
