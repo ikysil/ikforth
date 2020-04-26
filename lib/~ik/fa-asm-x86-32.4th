@@ -416,7 +416,9 @@ B# 11110000
 \ LSL – Load Segment Limit
 \ LSS – Load Pointer to SS
 \ LTR – Load Task Register
-\ MOV – Move Data
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-mov-data.4th"
+
 \ MOV – Move to/from Control Registers
 \ MOV – Move to/from Debug Registers
 \ MOV – Move to/from Segment Registers

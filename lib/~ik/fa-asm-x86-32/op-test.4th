@@ -1,4 +1,4 @@
-PURPOSE: x86 SUB operation encoding
+PURPOSE: x86 TEST operation encoding
 LICENSE: Unlicense since 1999 by Illya Kysil
 
 \ TEST – Logical Compare
