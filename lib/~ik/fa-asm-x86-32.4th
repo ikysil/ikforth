@@ -426,7 +426,29 @@ B# 11001111
 
 \ Jcc – Jump if Condition is Met
 \ JCXZ/JECXZ – Jump on CX/ECX Zero
+
+
 \ JMP – Unconditional Jump (to same segment)
+
+: JMPR@, (S reg -- )
+   \G Compile register indirect JMP (without operand size prefix).
+   B# 11111111 ASM8,
+   B# 11100000 OR ASM8,
+;
+
+: JMPR16@, (S reg -- )
+   \G Compile 16 bits register indirect JMP.
+   ?OP16,
+   JMPR@,
+;
+
+: JMPR32@, (S reg -- )
+   \G Compile 32 bits register indirect JMP.
+   ?OP32,
+   JMPR@,
+;
+
+
 \ JMP – Unconditional Jump (to other segment)
 \ LAHF – Load Flags into AHRegister
 B# 10011111
