@@ -698,7 +698,37 @@ B# 11111101
 \ STI – Set Interrupt Flag
 \ STOS/STOSB/STOSW/STOSD – Store String Data
 \ STR – Store Task Register
+
+
 \ SUB – Integer Subtraction
+
+B# 00101000 CONSTANT ALUOP-SUB
+
+ALUOP-SUB ALUOP->
+ALURR8: SUBRR8->, (S reg1 reg2 -- )
+\G Append operation SUB reg2, reg1 between two 8 bit registers
+
+ALUOP-SUB ALUOP<-
+ALURR8: SUBRR8<-, (S reg1 reg2 -- )
+\G Append operation SUB reg1, reg2 between two 8 bit registers
+
+ALUOP-SUB ALUOP->
+ALURR16: SUBRR16->, (S reg1 reg2 -- )
+\G Append operation SUB reg2, reg1 between two 16 bit registers
+
+ALUOP-SUB ALUOP<-
+ALURR16: SUBRR16<-, (S reg1 reg2 -- )
+\G Append operation SUB reg1, reg2 between two 16 bit registers
+
+ALUOP-SUB ALUOP->
+ALURR32: SUBRR32->, (S reg1 reg2 -- )
+\G Append operation SUB reg2, reg1 between two 32 bit registers
+
+ALUOP-SUB ALUOP<-
+ALURR32: SUBRR32<-, (S reg1 reg2 -- )
+\G Append operation SUB reg1, reg2 between two 32 bit registers
+
+
 \ TEST – Logical Compare
 \ UD0 – Undefined instruction
 B# 00001111
@@ -903,3 +933,25 @@ here dx bx SBBRR16<-, 8 dump
 
 here edx ebx SBBRR32->, 8 dump
 here edx ebx SBBRR32<-, 8 dump
+
+use32 .( use32 SUB) cr
+
+here dl dh SUBRR8->, 8 dump
+here dl dh SUBRR8<-, 8 dump
+
+here dx bx SUBRR16->, 8 dump
+here dx bx SUBRR16<-, 8 dump
+
+here edx ebx SUBRR32->, 8 dump
+here edx ebx SUBRR32<-, 8 dump
+
+use16 .( use16 SUB) cr
+
+here dl dh SUBRR8->, 8 dump
+here dl dh SUBRR8<-, 8 dump
+
+here dx bx SUBRR16->, 8 dump
+here dx bx SUBRR16<-, 8 dump
+
+here edx ebx SUBRR32->, 8 dump
+here edx ebx SUBRR32<-, 8 dump
