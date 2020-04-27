@@ -507,7 +507,9 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-or.4th"
 
 \ OUT – Output to Port
 \ OUTS – Output to DX Port
-\ POP – Pop a Word from the Stack
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-pop.4th"
+
 \ POP – Pop a Segment Register from the Stack (Note: CS cannot be sreg2 in this usage.)
 \ POPA/POPAD – Pop All General Registers
 B# 01100001
