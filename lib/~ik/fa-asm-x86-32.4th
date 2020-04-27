@@ -394,7 +394,8 @@ B# 00100111
 B# 00101111
    I1B:  DAS,
 
-\ DEC – Decrement by 1
+INCLUDE" lib/~ik/fa-asm-x86-32/op-dec.4th"
+
 \ DIV – Unsigned Divide
 \ HLT – Halt
 B# 11110100

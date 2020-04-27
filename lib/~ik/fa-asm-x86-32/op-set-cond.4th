@@ -14,7 +14,7 @@ LICENSE: Unlicense since 1999 by Illya Kysil
 
 CR
 
-.( use32 SETR8?,) cr
+.( SETR8?,) cr
 
 here dl ?A SETR8?, 8 dump
 
