@@ -525,7 +525,9 @@ B# 10011101
 B# 10011101
    I1B-OP32:   POPFD,
 
-\ PUSH – Push Operand onto the Stack
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-push.4th"
+
 \ PUSH – Push Segment Register onto the Stack
 \ PUSHA/PUSHAD – Push All General Registers
 B# 01100000
