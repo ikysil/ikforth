@@ -493,7 +493,9 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-mov-data.4th"
 \ MOVSX – Move with Sign-Extend
 \ MOVZX – Move with Zero-Extend
 \ MUL – Unsigned Multiply
-\ NEG – Two's Complement Negation
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-neg.4th"
+
 \ NOP – No Operation
 B# 10010000
    I1B:  NOP,
