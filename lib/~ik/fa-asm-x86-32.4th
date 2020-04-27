@@ -575,7 +575,9 @@ B# 10011110
 INCLUDE" lib/~ik/fa-asm-x86-32/op-sbb.4th"
 
 \ SCAS/SCASB/SCASW/SCASD – Scan String
-\ SETcc – Byte Set on Condition
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-set-cond.4th"
+
 \ SGDT – Store Global Descriptor Table Register
 \ SHL – Shift Left
 \ SHLD – Double Precision Shift Left
