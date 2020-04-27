@@ -404,7 +404,9 @@ B# 11110100
 \ IDIV – Signed Divide
 \ IMUL – Signed Multiply
 \ IN – Input From Port
-\ INC – Increment by 1
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-inc.4th"
+
 \ INS – Input from DX Port
 \ INT n – Interrupt Type n
 \ INT – Single-Step Interrupt 3
