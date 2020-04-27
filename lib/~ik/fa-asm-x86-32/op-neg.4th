@@ -1,5 +1,5 @@
-PURPOSE: NEG – Two's Complement Negation operation encoding
-LICENSE: Unlicense sNEGe 1999 by Illya Kysil
+PURPOSE: x86 NEG – Two's Complement Negation operation encoding
+LICENSE: Unlicense since 1999 by Illya Kysil
 
 \ NEG – Two's Complement Negation
 

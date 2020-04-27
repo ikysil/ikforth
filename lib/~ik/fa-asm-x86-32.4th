@@ -501,8 +501,8 @@ B# 10010000
    I1B:  NOP,
 
 \ NOP – Multi-byte No Operation 1
-\ NOT – One's Complement Negation
 
+INCLUDE" lib/~ik/fa-asm-x86-32/op-not.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-or.4th"
 
 \ OUT – Output to Port
