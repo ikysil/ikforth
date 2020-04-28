@@ -395,8 +395,8 @@ B# 00101111
    I1B:  DAS,
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-dec.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-div.4th"
 
-\ DIV – Unsigned Divide
 \ HLT – Halt
 B# 11110100
    I1B:  HLT,
