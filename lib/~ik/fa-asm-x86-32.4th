@@ -401,7 +401,8 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-div.4th"
 B# 11110100
    I1B:  HLT,
 
-\ IDIV – Signed Divide
+INCLUDE" lib/~ik/fa-asm-x86-32/op-idiv.4th"
+
 \ IMUL – Signed Multiply
 \ IN – Input From Port
 
