@@ -402,8 +402,8 @@ B# 11110100
    I1B:  HLT,
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-idiv.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-imul.4th"
 
-\ IMUL – Signed Multiply
 \ IN – Input From Port
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-inc.4th"
