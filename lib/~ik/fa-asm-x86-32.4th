@@ -493,8 +493,8 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-mov-data.4th"
 \ MOVS/MOVSB/MOVSW/MOVSD – Move Data from String to String
 \ MOVSX – Move with Sign-Extend
 \ MOVZX – Move with Zero-Extend
-\ MUL – Unsigned Multiply
 
+INCLUDE" lib/~ik/fa-asm-x86-32/op-mul.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-neg.4th"
 
 \ NOP – No Operation
