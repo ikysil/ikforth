@@ -302,6 +302,7 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 \ ARPL – Adjust RPL Field of Selector
 \ BOUND – Check Array Against Bounds
 
+
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bsf.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bsr.4th"
 
@@ -324,7 +325,8 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-bsr.4th"
 ;
 
 
-\ BT – Bit Test
+INCLUDE" lib/~ik/fa-asm-x86-32/op-bt.4th"
+
 \ BTC – Bit Test and Complement
 \ BTR – Bit Test and Reset
 \ BTS – Bit Test and Set
