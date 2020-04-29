@@ -3,7 +3,7 @@ LICENSE: Unlicense since 1999 by Illya Kysil
 
 \ BT – Bit Test
 
-: BTR, (S ra rb -- )
+: BT/RR, (S ra rb -- )
    \G Compile operation BT ra, rb without operand size prefix.
    B# 00001111 ASM8,
    B# 10100011 ASM8,
@@ -11,16 +11,16 @@ LICENSE: Unlicense since 1999 by Illya Kysil
    B# 11000000 OR ASM8,
 ;
 
-: BTR16, (S r16a r16b -- )
+: BT/RR16, (S r16a r16b -- )
    \G Compile operation BT r16a, r16b.
    ?OP16,
-   BTR,
+   BT/RR,
 ;
 
-: BTR32, (S r32a r32b -- )
+: BT/RR32, (S r32a r32b -- )
    \G Compile operation BT r32a, r32b.
    ?OP32,
-   BTR,
+   BT/RR,
 ;
 
 \ EOF
@@ -29,12 +29,12 @@ CR
 
 use32 .( use32 BT) cr
 
-here cx dx BTR16, 8 dump
+here cx dx BT/RR16, 8 dump
 
-here ecx edx BTR32, 8 dump
+here ecx edx BT/RR32, 8 dump
 
 use16 .( use16 BT) cr
 
-here cx dx BTR16, 8 dump
+here cx dx BT/RR16, 8 dump
 
-here ecx edx BTR32, 8 dump
+here ecx edx BT/RR32, 8 dump

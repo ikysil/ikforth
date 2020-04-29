@@ -228,7 +228,7 @@ B# 00000001 CONSTANT ALU-W-BIT
 B# 00000010 CONSTANT ALU-D-BIT
 B# 00000010 CONSTANT ALU-S-BIT
 
-: ALURR, (S reg1 reg2 alu-opcode -- )
+: ALU/RR, (S reg1 reg2 alu-opcode -- )
    \G Append ALU operation between two registers to the current definition.
    ASM8,
    SWAP 3 LSHIFT OR
@@ -236,34 +236,34 @@ B# 00000010 CONSTANT ALU-S-BIT
    ASM8,
 ;
 
-: ALURR8: (S alu-opcode -- )
+: ALU/RR8: (S alu-opcode -- )
    \G Create a word which compiles ALU operation between two 8 bit registers
    \G when executed with following stack effect:
    \G (S reg1 reg2 -- )
    CREATE
       [ ALU-W-BIT INVERT ] LITERAL AND C,
    DOES>
-      C@ ALURR,
+      C@ ALU/RR,
 ;
 
-: ALURR16: (S alu-opcode -- )
+: ALU/RR16: (S alu-opcode -- )
    \G Create a word which compiles ALU operation between two 16 bit registers
    \G when executed with following stack effect:
    \G (S reg1 reg2 -- )
    CREATE
       ALU-W-BIT OR C,
    DOES>
-      ?OP16, C@ ALURR,
+      ?OP16, C@ ALU/RR,
 ;
 
-: ALURR32: (S alu-opcode -- )
+: ALU/RR32: (S alu-opcode -- )
    \G Create a word which compiles ALU operation between two 32 bit registers
    \G when executed with following stack effect:
    \G (S reg1 reg2 -- )
    CREATE
       ALU-W-BIT OR C,
    DOES>
-      ?OP32, C@ ALURR,
+      ?OP32, C@ ALU/RR,
 ;
 
 : ALUOP-> (S alu-opcode -- alu-opcode' )
@@ -309,19 +309,19 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-bsr.4th"
 
 \ BSWAP – Byte Swap
 
-: BSWAPR, (S reg -- )
+: BSWAP/R, (S reg -- )
    B# 00001111 ASM8,
    B# 11001000 OR ASM8,
 ;
 
-: BSWAPR16, (S reg -- )
+: BSWAP/R16, (S reg -- )
    ?OP16,
-   BSWAPR,
+   BSWAP/R,
 ;
 
-: BSWAPR32, (S reg -- )
+: BSWAP/R32, (S reg -- )
    ?OP32,
-   BSWAPR,
+   BSWAP/R,
 ;
 
 
@@ -333,22 +333,22 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-bts.4th"
 
 \ CALL – Call Procedure (in same segment)
 
-: CALLR@, (S reg -- )
+: CALL/R@, (S reg -- )
    \G Compile register indirect CALL (without operand size prefix).
    B# 11111111 ASM8,
    B# 11010000 OR ASM8,
 ;
 
-: CALLR16@, (S reg -- )
+: CALL/R16@, (S reg -- )
    \G Compile 16 bits register indirect CALL.
    ?OP16,
-   CALLR@,
+   CALL/R@,
 ;
 
-: CALLR32@, (S reg -- )
+: CALL/R32@, (S reg -- )
    \G Compile 32 bits register indirect CALL.
    ?OP32,
-   CALLR@,
+   CALL/R@,
 ;
 
 
@@ -436,22 +436,22 @@ B# 11001111
 
 \ JMP – Unconditional Jump (to same segment)
 
-: JMPR@, (S reg -- )
+: JMP/R@, (S reg -- )
    \G Compile register indirect JMP (without operand size prefix).
    B# 11111111 ASM8,
    B# 11100000 OR ASM8,
 ;
 
-: JMPR16@, (S reg -- )
+: JMP/R16@, (S reg -- )
    \G Compile 16 bits register indirect JMP.
    ?OP16,
-   JMPR@,
+   JMP/R@,
 ;
 
-: JMPR32@, (S reg -- )
+: JMP/R32@, (S reg -- )
    \G Compile 32 bits register indirect JMP.
    ?OP32,
-   JMPR@,
+   JMP/R@,
 ;
 
 

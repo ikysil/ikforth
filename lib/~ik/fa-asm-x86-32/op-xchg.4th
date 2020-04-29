@@ -6,32 +6,32 @@ LICENSE: Unlicense since 1999 by Illya Kysil
 B# 10000110 CONSTANT ALUOP-XCHG
 
 ALUOP-XCHG
-ALURR8: XCHGRR8, (S reg1 reg2 -- )
+ALU/RR8: XCHG/RR8, (S reg1 reg2 -- )
 \G Append operation XCHG reg1, reg2 between two 8 bit registers
 
 ALUOP-XCHG
-ALURR16: XCHGRR16, (S reg1 reg2 -- )
+ALU/RR16: XCHG/RR16, (S reg1 reg2 -- )
 \G Append operation XCHG reg1, reg2 between two 16 bit registers
 
 ALUOP-XCHG
-ALURR32: XCHGRR32, (S reg1 reg2 -- )
+ALU/RR32: XCHG/RR32, (S reg1 reg2 -- )
 \G Append operation XCHG reg1, reg2 between two 32 bit registers
 
-: XCHGAR, (S reg -- )
+: XCHG/AR, (S reg -- )
    \G Compile operation XCHG [E]AX, reg (without operand size prefix).
    B# 10010000 OR ASM8,
 ;
 
-: XCHGAR16, (S reg -- )
+: XCHG/AR16, (S reg -- )
    \G Compile operation XCHG AX, reg.
    ?OP16,
-   XCHGAR,
+   XCHG/AR,
 ;
 
-: XCHGAR32, (S reg -- )
+: XCHG/AR32, (S reg -- )
    \G Compile operation XCHG EAX, reg.
    ?OP32,
-   XCHGAR,
+   XCHG/AR,
 ;
 
 
@@ -41,24 +41,24 @@ CR
 
 use32 .( use32 XCHG) cr
 
-here dl dh XCHGRR8, 8 dump
+here dl dh XCHG/RR8, 8 dump
 
-here dx bx XCHGRR16, 8 dump
+here dx bx XCHG/RR16, 8 dump
 
-here edx ebx XCHGRR32, 8 dump
+here edx ebx XCHG/RR32, 8 dump
 
-here cx XCHGAR16, 8 dump
+here cx XCHG/AR16, 8 dump
 
-here ecx XCHGAR32, 8 dump
+here ecx XCHG/AR32, 8 dump
 
 use16 .( use16 XCHG) cr
 
-here dl dh XCHGRR8, 8 dump
+here dl dh XCHG/RR8, 8 dump
 
-here dx bx XCHGRR16, 8 dump
+here dx bx XCHG/RR16, 8 dump
 
-here edx ebx XCHGRR32, 8 dump
+here edx ebx XCHG/RR32, 8 dump
 
-here cx XCHGAR16, 8 dump
+here cx XCHG/AR16, 8 dump
 
-here ecx XCHGAR32, 8 dump
+here ecx XCHG/AR32, 8 dump

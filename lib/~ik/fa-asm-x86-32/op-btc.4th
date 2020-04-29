@@ -1,9 +1,9 @@
-PURPOSE: x86 BTC – Bit Test and Complement operation encoding
+PURPOSE: x86 BTC/RR – Bit Test and Complement operation encoding
 LICENSE: Unlicense since 1999 by Illya Kysil
 
 \ BTC – Bit Test and Complement
 
-: BTCR, (S ra rb -- )
+: BTC/RR, (S ra rb -- )
    \G Compile operation BTC ra, rb without operand size prefix.
    B# 00001111 ASM8,
    B# 10111011 ASM8,
@@ -11,16 +11,16 @@ LICENSE: Unlicense since 1999 by Illya Kysil
    B# 11000000 OR ASM8,
 ;
 
-: BTCR16, (S r16a r16b -- )
+: BTC/RR16, (S r16a r16b -- )
    \G Compile operation BTC r16a, r16b.
    ?OP16,
-   BTCR,
+   BTC/RR,
 ;
 
-: BTCR32, (S r32a r32b -- )
+: BTC/RR32, (S r32a r32b -- )
    \G Compile operation BTC r32a, r32b.
    ?OP32,
-   BTCR,
+   BTC/RR,
 ;
 
 \ EOF
@@ -29,12 +29,12 @@ CR
 
 use32 .( use32 BTC) cr
 
-here cx dx BTCR16, 8 dump
+here cx dx BTC/RR16, 8 dump
 
-here ecx edx BTCR32, 8 dump
+here ecx edx BTC/RR32, 8 dump
 
 use16 .( use16 BTC) cr
 
-here cx dx BTCR16, 8 dump
+here cx dx BTC/RR16, 8 dump
 
-here ecx edx BTCR32, 8 dump
+here ecx edx BTC/RR32, 8 dump
