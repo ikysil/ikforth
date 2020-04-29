@@ -301,7 +301,9 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 
 \ ARPL – Adjust RPL Field of Selector
 \ BOUND – Check Array Against Bounds
-\ BSF – Bit Scan Forward
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-bsf.4th"
+
 \ BSR – Bit Scan Reverse
 
 
