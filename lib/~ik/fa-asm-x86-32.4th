@@ -378,7 +378,9 @@ B# 11110101
 INCLUDE" lib/~ik/fa-asm-x86-32/op-cmp.4th"
 
 \ CMPS/CMPSB/CMPSW/CMPSD – Compare String Operands
-\ CMPXCHG – Compare and Exchange
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-cmpxchg.4th"
+
 \ CPUID – CPU Identification
 \ CWD – Convert Word to Doubleword
 B# 10011001
