@@ -303,8 +303,7 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 \ BOUND – Check Array Against Bounds
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bsf.4th"
-
-\ BSR – Bit Scan Reverse
+INCLUDE" lib/~ik/fa-asm-x86-32/op-bsr.4th"
 
 
 \ BSWAP – Byte Swap
