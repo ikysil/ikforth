@@ -326,8 +326,8 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-bsr.4th"
 
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bt.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-btc.4th"
 
-\ BTC – Bit Test and Complement
 \ BTR – Bit Test and Reset
 \ BTS – Bit Test and Set
 
