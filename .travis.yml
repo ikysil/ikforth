@@ -12,6 +12,7 @@ env:
   - DOCKER_FILE=docker/centos-7/Dockerfile
   - DOCKER_FILE=docker/centos-8/Dockerfile
   - DOCKER_FILE=docker/fedora-31/Dockerfile
+  - DOCKER_FILE=docker/fedora-32/Dockerfile
   - DOCKER_FILE=docker/ubuntu-16.04-lts/Dockerfile
   - DOCKER_FILE=docker/ubuntu-18.04-lts/Dockerfile
   - DOCKER_FILE=docker/ubuntu-19.10/Dockerfile
