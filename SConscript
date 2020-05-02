@@ -31,7 +31,12 @@ senv.NoClean([ikforthDict, ikforthExec])
 senv.Alias('ikforth', [ikforthExec, ikforthDict])
 
 senv.Alias('all', ['ikforth'])
-senv.Clean('all', ['#build'])
+senv.Clean('all', [
+    '#build',
+    "#.sconsign.dblite",
+    "#.sconf_temp",
+    "#config.log",
+])
 
 senv.Alias('run', [], run)
 senv.Alias('test', [], test)

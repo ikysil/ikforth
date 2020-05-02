@@ -20,9 +20,3 @@ dist_tar = senv.Tar('${DIST_FILE_NAME}', dist_src)
 dist_zip = senv.Zip('${DIST_FILE_NAME}', dist_src)
 
 senv.Alias('dist', [dist_tar, dist_zip])
-
-senv.Clean("dist", [
-    "#.sconsign.dblite",
-    "#.sconf_temp",
-    "#config.log",
-])
