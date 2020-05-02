@@ -11,7 +11,7 @@ RUN dpkg --add-architecture i386 && apt-get update
 RUN apt-get -y install --no-install-recommends \
         git \
         wget \
-        scons \
+        python3 python3-pip python-is-python3 \
         libreadline8 libreadline8:i386 \
         libc6-dev libc6-dev-i386 \
         libgcc1 \
@@ -22,6 +22,10 @@ RUN apt-get -y install --no-install-recommends \
         && \
     apt-get clean && \
     apt-get autoclean
+
+RUN pip3 install --prefix=/opt/scons -r /opt/docker/python-requirements.txt
+
+RUN ln -s /opt/scons/bin/scons /usr/local/bin/scons
 
 RUN /opt/docker/install-fasm.sh
 
