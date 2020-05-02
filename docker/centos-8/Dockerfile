@@ -16,13 +16,15 @@ RUN yum -y install \
         gcc-c++ \
         glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686 \
         glibc-devel libgcc libstdc++ readline \
-        python3 \
+        python3 python3-pip \
         && \
     yum clean all
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-RUN pip3 install scons==3.1.2
+RUN pip3 install --prefix=/opt/scons -r /opt/docker/python-requirements.txt
+
+RUN ln -s /opt/scons/bin/scons /usr/local/bin/scons
 
 RUN /opt/docker/install-fasm.sh
 
