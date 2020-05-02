@@ -639,7 +639,8 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-ror.4th"
 B# 10011110
    I1B:  SAHF,
 
-\ SAL – Shift Arithmetic Left same instruction as SHL
+INCLUDE" lib/~ik/fa-asm-x86-32/op-sal.4th"
+
 \ SAR – Shift Arithmetic Right
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-sbb.4th"
