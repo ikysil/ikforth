@@ -602,8 +602,8 @@ B# 10011100
    I1B-OP32:   PUSHFD,
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-rcl.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-rcr.4th"
 
-\ RCR – Rotate thru Carry Right
 \ RDMSR – Read from Model-Specific Register
 \ RDPMC – Read Performance Monitoring Counters
 \ RDTSC – Read Time-Stamp Counter
