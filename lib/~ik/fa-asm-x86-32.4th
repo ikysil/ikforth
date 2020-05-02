@@ -632,8 +632,8 @@ SYNONYM REPNZ, REPNE,
 \ RET – Return from Procedure (to other segment)
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-rol.4th"
+INCLUDE" lib/~ik/fa-asm-x86-32/op-ror.4th"
 
-\ ROR – Rotate Right
 \ RSM – Resume from System Management Mode
 \ SAHF – Store AH into Flags
 B# 10011110
