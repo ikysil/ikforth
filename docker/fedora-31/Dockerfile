@@ -19,15 +19,17 @@ RUN dnf -y install \
         && \
     dnf clean all
 
-RUN /opt/docker/install-fasm.sh
-
 RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++ \
         && \
-    ln -s /usr/bin/i686-w64-mingw32-gcc /usr/local/bin/mingw32-gcc \
-        && \
-    ln -s /usr/bin/python3 /usr/bin/python
+    ln -s /usr/bin/i686-w64-mingw32-gcc /usr/local/bin/mingw32-gcc
 
-RUN pip3 install scons==3.1.2
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+RUN pip3 install --prefix=/opt/scons -r /opt/docker/python-requirements.txt
+
+RUN ln -s /opt/scons/bin/scons /usr/local/bin/scons
+
+RUN /opt/docker/install-fasm.sh
 
 ARG RUNUSER=ikforth
 
