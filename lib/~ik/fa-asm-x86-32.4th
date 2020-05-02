@@ -650,7 +650,9 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-sbb.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-set-cond.4th"
 
 \ SGDT – Store Global Descriptor Table Register
-\ SHL – Shift Left
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-shl.4th"
+
 \ SHLD – Double Precision Shift Left
 \ SHR – Shift Right
 \ SHRD – Double Precision Shift Right
