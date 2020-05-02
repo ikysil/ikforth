@@ -277,6 +277,59 @@ B# 00000010 CONSTANT ALU-S-BIT
 ;
 
 
+: SHIFT/R, (S r opcode1 opcode2 -- )
+   \G Compile shift by 1 operation.
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   SWAP ASM8,
+   B# 11000000 OR OR
+   ASM8,
+;
+
+: SHIFT/R8: (S opcode1 opcode2 -- )
+   \G Create a word which compiles shift by 1 operation on 8 bit register
+   \G when executed with following stack effect:
+   \G (S r8 -- )
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   CREATE
+      SWAP [ ALU-W-BIT INVERT ] LITERAL AND C, C,
+   DOES>
+      C@+ SWAP C@ SHIFT/R,
+;
+
+: SHIFT/R16: (S opcode1 opcode2 -- )
+   \G Create a word which compiles shift by 1 operation on 16 bit register
+   \G when executed with following stack effect:
+   \G (S r16 -- )
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   CREATE
+      SWAP ALU-W-BIT OR C, C,
+   DOES>
+      ?OP16, C@+ SWAP C@ SHIFT/R,
+;
+
+: SHIFT/R32: (S opcode1 opcode2 -- )
+   \G Create a word which compiles shift by 1 operation on 32 bit register
+   \G when executed with following stack effect:
+   \G (S r32 -- )
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   CREATE
+      SWAP ALU-W-BIT OR C, C,
+   DOES>
+      ?OP32, C@+ SWAP C@ SHIFT/R,
+;
+
+B# 11010000 CONSTANT ALUOP-SHIFT
+B# 00000010 CONSTANT SHIFT-CL-BIT
+
+: SHIFT/CL (S opcode -- opcode' )
+   \G Modify shift operation code from shift by 1 to shift by CL.
+   SHIFT-CL-BIT OR
+;
+
 \ AAA – ASCII Adjust after Addition
 B# 00110111
    I1B:  AAA,
@@ -548,7 +601,8 @@ B# 10011100
 B# 10011100
    I1B-OP32:   PUSHFD,
 
-\ RCL – Rotate thru Carry Left
+INCLUDE" lib/~ik/fa-asm-x86-32/op-rcl.4th"
+
 \ RCR – Rotate thru Carry Right
 \ RDMSR – Read from Model-Specific Register
 \ RDPMC – Read Performance Monitoring Counters
