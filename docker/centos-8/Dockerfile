@@ -5,8 +5,6 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
-ADD docker /opt/docker
-
 RUN yum -y install \
         epel-release \
         && \
@@ -20,11 +18,9 @@ RUN yum -y install \
         && \
     yum clean all
 
-RUN ln -s /usr/bin/python3 /usr/bin/python
+ADD docker /opt/docker
 
-RUN pip3 install --prefix=/opt/scons -r /opt/docker/python-requirements.txt
-
-RUN ln -s /opt/scons/bin/scons /usr/local/bin/scons
+RUN /opt/docker/install-scons.sh
 
 RUN /opt/docker/install-fasm.sh
 

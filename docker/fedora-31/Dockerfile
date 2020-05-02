@@ -5,8 +5,6 @@ ENV LANG=C.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=C.UTF-8
 
-ADD docker /opt/docker
-
 RUN dnf -y install \
         git \
         wget \
@@ -19,15 +17,13 @@ RUN dnf -y install \
         && \
     dnf clean all
 
+ADD docker /opt/docker
+
 RUN ln -s /usr/bin/i686-w64-mingw32-g++ /usr/local/bin/mingw32-g++ \
         && \
     ln -s /usr/bin/i686-w64-mingw32-gcc /usr/local/bin/mingw32-gcc
 
-RUN ln -s /usr/bin/python3 /usr/bin/python
-
-RUN pip3 install --prefix=/opt/scons -r /opt/docker/python-requirements.txt
-
-RUN ln -s /opt/scons/bin/scons /usr/local/bin/scons
+RUN /opt/docker/install-scons.sh
 
 RUN /opt/docker/install-fasm.sh
 

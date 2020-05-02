@@ -4,8 +4,6 @@ LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-ADD docker /opt/docker
-
 RUN dpkg --add-architecture i386 && apt-get update
 
 RUN apt-get -y install --no-install-recommends \
@@ -23,9 +21,9 @@ RUN apt-get -y install --no-install-recommends \
     apt-get clean && \
     apt-get autoclean
 
-RUN pip3 install --prefix=/opt/scons -r /opt/docker/python-requirements.txt
+ADD docker /opt/docker
 
-RUN ln -s /opt/scons/bin/scons /usr/local/bin/scons
+RUN /opt/docker/install-scons.sh
 
 RUN /opt/docker/install-fasm.sh
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# keep going when something fails
-set +e
+# exit as soon as something fails
+set -o errexit
 set -o pipefail
 
 docker_run() {
