@@ -640,9 +640,7 @@ B# 10011110
    I1B:  SAHF,
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-sal.4th"
-
-\ SAR – Shift Arithmetic Right
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-sar.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-sbb.4th"
 
 \ SCAS/SCASB/SCASW/SCASD – Scan String
