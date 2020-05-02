@@ -652,7 +652,9 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-set-cond.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-shl.4th"
 
 \ SHLD – Double Precision Shift Left
-\ SHR – Shift Right
+
+INCLUDE" lib/~ik/fa-asm-x86-32/op-shr.4th"
+
 \ SHRD – Double Precision Shift Right
 \ SIDT – Store Interrupt Descriptor Table Register
 \ SLDT – Store Local Descriptor Table Register
