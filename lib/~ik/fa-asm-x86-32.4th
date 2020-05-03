@@ -318,7 +318,7 @@ B# 00000010 CONSTANT ALU-S-BIT
 ;
 
 : SHIFT/R8: (S opcode1 opcode2 -- )
-   \G Create a word which compiles shift by 1 operation on 8 bit register
+   \G Create a word which compiles shift operation on 8 bit register
    \G when executed with following stack effect:
    \G (S r8 -- )
    \G opcode1 - first byte of operation encoding
@@ -330,7 +330,7 @@ B# 00000010 CONSTANT ALU-S-BIT
 ;
 
 : SHIFT/R16: (S opcode1 opcode2 -- )
-   \G Create a word which compiles shift by 1 operation on 16 bit register
+   \G Create a word which compiles shift operation on 16 bit register
    \G when executed with following stack effect:
    \G (S r16 -- )
    \G opcode1 - first byte of operation encoding
@@ -342,7 +342,7 @@ B# 00000010 CONSTANT ALU-S-BIT
 ;
 
 : SHIFT/R32: (S opcode1 opcode2 -- )
-   \G Create a word which compiles shift by 1 operation on 32 bit register
+   \G Create a word which compiles shift operation on 32 bit register
    \G when executed with following stack effect:
    \G (S r32 -- )
    \G opcode1 - first byte of operation encoding
@@ -353,7 +353,52 @@ B# 00000010 CONSTANT ALU-S-BIT
       ?OP32, C@+ SWAP C@ SHIFT/R,
 ;
 
+: SHIFT/R8I8: (S opcode1 opcode2 -- )
+   \G Create a word which compiles shift operation on 8 bit register
+   \G when executed with following stack effect:
+   \G (S r8 imm8 -- )
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   CREATE
+      SWAP [ ALU-W-BIT INVERT ] LITERAL AND C, C,
+   DOES> (S r8 imm8 addr -- )
+      SWAP >R
+      C@+ SWAP C@ SHIFT/R,
+      R> ASM8,
+;
+
+: SHIFT/R16I8: (S opcode1 opcode2 -- )
+   \G Create a word which compiles shift operation on 16 bit register
+   \G when executed with following stack effect:
+   \G (S r16 imm8 -- )
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   CREATE
+      SWAP ALU-W-BIT OR C, C,
+   DOES> (S r16 imm8 addr -- )
+      SWAP >R
+      ?OP16, C@+ SWAP C@ SHIFT/R,
+      R> ASM8,
+;
+
+: SHIFT/R32I8: (S opcode1 opcode2 -- )
+   \G Create a word which compiles shift operation on 32 bit register
+   \G when executed with following stack effect:
+   \G (S r32 imm8 -- )
+   \G opcode1 - first byte of operation encoding
+   \G opcode2 - second byte of operation encoding
+   CREATE
+      SWAP ALU-W-BIT OR C, C,
+   DOES> (S r32 imm8 addr -- )
+      SWAP >R
+      ?OP32, C@+ SWAP C@ SHIFT/R,
+      R> ASM8,
+;
+
 B# 11010000 CONSTANT ALUOP-SHIFT
+\G First byte of shift operations with CL or implicit 1.
+B# 11000000 CONSTANT ALUOP-SHIFT-IMM
+\G First byte of shift operations with immediate value.
 B# 00000010 CONSTANT SHIFT-CL-BIT
 
 : SHIFT/CL (S opcode -- opcode' )

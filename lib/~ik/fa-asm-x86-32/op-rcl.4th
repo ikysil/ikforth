@@ -29,6 +29,20 @@ ALUOP-SHIFT SHIFT/CL
 SHIFTOP-RCL
 SHIFT/R32: RCL/R32CL,
 
+
+ALUOP-SHIFT-IMM
+SHIFTOP-RCL
+SHIFT/R8I8: RCL/R8I8,
+
+ALUOP-SHIFT-IMM
+SHIFTOP-RCL
+SHIFT/R16I8: RCL/R16I8,
+
+ALUOP-SHIFT-IMM
+SHIFTOP-RCL
+SHIFT/R32I8: RCL/R32I8,
+
+
 \ EOF
 
 CR
@@ -64,3 +78,19 @@ here dl RCL/R8CL, 8 dump
 here dx RCL/R16CL, 8 dump
 
 here edx RCL/R32CL, 8 dump
+
+use32 .( use32 RCL/IMM) cr
+
+here dl h# 34 RCL/R8I8, 8 dump
+
+here dx h# 34 RCL/R16I8, 8 dump
+
+here edx h# 34 RCL/R32I8, 8 dump
+
+use16 .( use16 RCL/IMM) cr
+
+here dl h# 34 RCL/R8I8, 8 dump
+
+here dx h# 34 RCL/R16I8, 8 dump
+
+here edx h# 34 RCL/R32I8, 8 dump
