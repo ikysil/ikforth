@@ -277,6 +277,37 @@ B# 00000010 CONSTANT ALU-S-BIT
 ;
 
 
+: ALU/AI8: (S alu-opcode -- )
+   \G Create a word which compiles ALU operation between AL and imm8 value
+   \G when executed with following stack effect:
+   \G (S imm8 -- )
+   CREATE
+      [ ALU-W-BIT INVERT ] LITERAL AND C,
+   DOES>
+      C@ ASM8, ASM8,
+;
+
+: ALU/AI16: (S alu-opcode -- )
+   \G Create a word which compiles ALU operation between AX and imm16 value
+   \G when executed with following stack effect:
+   \G (S imm16 -- )
+   CREATE
+      ALU-W-BIT OR C,
+   DOES>
+      ?OP16, C@ ASM8, ASM16,
+;
+
+: ALU/AI32: (S alu-opcode -- )
+   \G Create a word which compiles ALU operation between EAX and imm32 value
+   \G when executed with following stack effect:
+   \G (S imm32 -- )
+   CREATE
+      ALU-W-BIT OR C,
+   DOES>
+      ?OP32, C@ ASM8, ASM32,
+;
+
+
 : SHIFT/R, (S r opcode1 opcode2 -- )
    \G Compile shift by 1 operation.
    \G opcode1 - first byte of operation encoding
