@@ -358,26 +358,7 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-and.4th"
 
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bsf.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bsr.4th"
-
-
-\ BSWAP – Byte Swap
-
-: BSWAP/R, (S reg -- )
-   B# 00001111 ASM8,
-   B# 11001000 OR ASM8,
-;
-
-: BSWAP/R16, (S reg -- )
-   ?OP16,
-   BSWAP/R,
-;
-
-: BSWAP/R32, (S reg -- )
-   ?OP32,
-   BSWAP/R,
-;
-
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-bswap.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-bt.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-btc.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-btr.4th"
