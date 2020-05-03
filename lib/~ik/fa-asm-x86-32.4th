@@ -553,13 +553,7 @@ INCLUDE" lib/~ik/fa-asm-x86-32/op-mov-data.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-movzx.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-mul.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-neg.4th"
-
-\ NOP – No Operation
-B# 10010000
-   I1B:  NOP,
-
-\ NOP – Multi-byte No Operation 1
-
+INCLUDE" lib/~ik/fa-asm-x86-32/op-nop.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-not.4th"
 INCLUDE" lib/~ik/fa-asm-x86-32/op-or.4th"
 
