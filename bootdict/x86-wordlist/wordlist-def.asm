@@ -90,9 +90,10 @@ __PREVFLD:
 ;; LFA
                 $DEFLABEL   LFA,CFA_NAME
                 IF          VOC_LINK > 0
-;; store as positive offset from previous word
+;; store as positive offset from the previous word
                 DD          IMAGE_BASE + $ - VOC_LINK
                 ELSE
+;; no previous word
                 DD          0
                 END IF
 VOC_LINK = __DEF + IMAGE_BASE

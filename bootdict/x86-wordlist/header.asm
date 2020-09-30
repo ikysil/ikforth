@@ -289,7 +289,12 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  H>NEXT>H
 ;  D: h-id -- prev_h-id | 0
                 $COLON      'H>NEXT>H',$H_TO_NEXT_TO_H
-                CW          $HEAD_FROM, $TO_LINK, $DUP, $FETCH, $SUB
+                CW          $HEAD_FROM, $TO_LINK, $DUP, $FETCH, $DUP
+                _IF         HTNTH_CONTINUE
+                CW          $SUB
+                _ELSE       HTNTH_CONTINUE
+                CW          $NIP
+                _THEN       HTNTH_CONTINUE
                 $END_COLON
 
 ;  H>#NAME
