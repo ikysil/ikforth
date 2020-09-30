@@ -50,7 +50,7 @@
 ;  D: -- n
                 $CONST      'CFA-SIZE',$CFA_SIZE,CFA_SIZE
 
-;  $NEXT-CODE-SIZE
+;  $NEXT-CODE
                 $CREATE     '$NEXT-CODE',$NEXT_CODE
 NEXT_CODE_START:
                 $NEXT
@@ -59,7 +59,7 @@ NEXT_CODE_END:
 NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 
 ;  $NEXT-CODE-SIZE
-;  Size of CFA field
+;  Size of $NEXT code fragment
 ;  D: -- n
                 $CONST      '$NEXT-CODE-SIZE',$NEXT_CODE_SIZE,NEXT_CODE_SIZE
 
