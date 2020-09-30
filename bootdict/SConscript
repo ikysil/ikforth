@@ -8,6 +8,7 @@ bootdict_src.extend(senv.Glob('#bootdict/tc/*.asm'))
 bootdict_src.extend(senv.Glob('#bootdict/${ARCH}/*.asm'))
 bootdict_src.extend(senv.Glob('#bootdict/${ARCH}-itc/*.asm'))
 bootdict_src.extend(senv.Glob('#bootdict/${ARCH}-dtc/*.asm'))
+bootdict_src.extend(senv.Glob('#bootdict/${ARCH}-wordlist/*.asm'))
 
 bootdict = senv.Command('${bootdictname}.img',
         bootdict_src,
