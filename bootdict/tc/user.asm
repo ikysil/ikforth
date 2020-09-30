@@ -27,6 +27,10 @@ USER_HERE = 0
                 USER_HERE = ( USER_HERE / CELL_SIZE + 1 ) * CELL_SIZE
                 }
 
+                POSTPONE {
+                USER_AREA_SIZE = USER_HERE
+                }
+
                 _VAR        RETURN_ADDR
                 _VAR        EDI
                 _VAR        ESI
@@ -77,6 +81,3 @@ USER_HERE = 0
                 _ALIGN
                 _ALLOC      RETURN_STACK_SIZE
                 _VAR        RSTACK
-
-; keep the following definition after all _VAR declarations
-USER_AREA_SIZE = USER_HERE
