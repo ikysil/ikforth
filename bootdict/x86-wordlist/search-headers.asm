@@ -48,7 +48,10 @@ SW_NEXT:
                 MOVZX       EAX,BYTE [ESI + 1]
                 ADD         ESI,EAX
                 ADD         ESI,3
-                MOV         ESI,DWORD [ESI]
+                MOV         EAX,DWORD [ESI]
+                OR          EAX,EAX
+                JZ          SHORT SW_NOT_FOUND
+                SUB         ESI,EAX
                 JMP         SHORT SW_LOOP
 
 SW_FOUND:

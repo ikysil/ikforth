@@ -89,7 +89,12 @@ __PREVFLD:
                 DB          __PREVFLD - __DEF
 ;; LFA
                 $DEFLABEL   LFA,CFA_NAME
-                DD          VOC_LINK
+                IF          VOC_LINK > 0
+;; store as positive offset from previous word
+                DD          IMAGE_BASE + $ - VOC_LINK
+                ELSE
+                DD          0
+                END IF
 VOC_LINK = __DEF + IMAGE_BASE
 
 ;; CFA
