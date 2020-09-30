@@ -28,7 +28,7 @@
 ;******************************************************************************
 ;                ALIGN       16
 
-                INCLUDE     "bootdict/tc/wordlist-def.asm"
+                INCLUDE     "bootdict/x86-wordlist/wordlist-def.asm"
                 INCLUDE     "bootdict/tc/tc-def.asm"
                 INCLUDE     "bootdict/tc/tc-trace.asm"
                 INCLUDE     "bootdict/tc/forth-vm-notc.asm"
@@ -42,8 +42,8 @@
                 INCLUDE     "bootdict/x86-itc/forth-vm-itc.asm"
                 }
 
-                INCLUDE     "bootdict/tc/forth-wordlist.asm"
-                INCLUDE     "bootdict/tc/included-wordlist.asm"
+                INCLUDE     "bootdict/x86-wordlist/forth-wordlist.asm"
+                INCLUDE     "bootdict/x86-wordlist/included-wordlist.asm"
 
                 $INCLUDED   "bootdict/x86/primitives.asm"
                 $INCLUDED   "bootdict/x86/fcontrol.asm"
@@ -66,7 +66,7 @@
                 $INCLUDED   "bootdict/x86/memory.asm"
                 $INCLUDED   "bootdict/x86/string.asm"
                 $INCLUDED   "bootdict/x86/host.asm"
-                $INCLUDED   "bootdict/x86/wid-to-vt.asm"
+                $INCLUDED   "bootdict/x86-wordlist/wid-to-vt.asm"
                 $INCLUDED   "bootdict/tc/search.asm"
                 $INCLUDED   "bootdict/x86/s-to-d.asm"
                 $INCLUDED   "bootdict/x86/b-to-h.asm"
@@ -85,15 +85,15 @@
                 $INCLUDED   "bootdict/x86/paren-parse-paren.asm"
                 $INCLUDED   "bootdict/tc/parse.asm"
                 $INCLUDED   "bootdict/tc/purpose.asm"
-                INCLUDE_HEADER_TC
-                $INCLUDED   "bootdict/x86/latest-head-fetch.asm"
-                $INCLUDED   "bootdict/x86/latest-head-store.asm"
-                $INCLUDED   "bootdict/x86/to-head.asm"
-                $INCLUDED   "bootdict/x86/head-from.asm"
                 $INCLUDED   "bootdict/x86/sys-upcase.asm"
                 $INCLUDED   "bootdict/x86/paren-name-equals-paren.asm"
-                $INCLUDED   "bootdict/x86/search-headers.asm"
-                $INCLUDED   "bootdict/tc/header.asm"
+                INCLUDE_HEADER_TC
+                $INCLUDED   "bootdict/x86-wordlist/latest-head-fetch.asm"
+                $INCLUDED   "bootdict/x86-wordlist/latest-head-store.asm"
+                $INCLUDED   "bootdict/x86-wordlist/to-head.asm"
+                $INCLUDED   "bootdict/x86-wordlist/head-from.asm"
+                $INCLUDED   "bootdict/x86-wordlist/search-headers.asm"
+                $INCLUDED   "bootdict/x86-wordlist/header.asm"
                 $INCLUDED   "bootdict/tc/recognizer-core.asm"
                 $INCLUDED   "bootdict/tc/recognizer-word.asm"
                 $INCLUDED   "bootdict/tc/recognizer-num.asm"
