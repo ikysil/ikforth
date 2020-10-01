@@ -44,14 +44,6 @@
                 CW          $CFASTORE
                 $END_COLON
 
-;  6.1.0550 >BODY
-;  Convert CFA to PFA
-;  D: CFA -- PFA
-                $COLON      '>BODY',$TOBODY
-                CCLIT       CFA_SIZE
-                CW          $ADD
-                $END_COLON
-
                 $CONST      'HOST-ITC?',,F_FALSE
 
                 $CONST      'HOST-DTC?',,F_TRUE

@@ -99,3 +99,11 @@
                 $COLON      'H>#NAME',$H_TO_HASH_NAME
                 CW          $HEAD_TO_NAME, $DUP, $1ADD, $SWAP, $CFETCH
                 $END_COLON
+
+;  6.1.0550 >BODY
+;  Convert CFA to PFA
+;  D: CFA -- PFA
+                $COLON      '>BODY',$TOBODY
+                CCLIT       CFA_SIZE
+                CW          $ADD
+                $END_COLON
