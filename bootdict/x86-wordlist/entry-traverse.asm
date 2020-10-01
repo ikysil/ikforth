@@ -1,6 +1,27 @@
 ;   PURPOSE: Traverse through the wordlist entry
 ;   LICENSE: Unlicense since 1999 by Illya Kysil
 
+; A wordlist is a linked list of words. The link offset at the end of the list is zero.
+; The offset is the positive number of bytes to the previous entry.
+; The offset is used instead of a pointer to avoid address relocation.
+;
+;                                              ^
+;                                              |
+; +-------+-----------+------+-----------+-------------+-----+-----+
+; | Flags | Name Len1 | Name | Name Len2 | Link offset | CFA | Body |
+; +-------+-----------+------+-----------+-------------+-----+-----+
+;     ^
+;     |
+;  LATEST
+;
+; Flags: 1 byte
+; Name Len1: 1 byte, length of Name
+; Name: 0-255 bytes
+; Name Len2: 1 byte, length of Name + 2
+; Link Offset: CELL
+; CFA: CELL in ITC, size of JMP instruction in DTC
+; Body: any number of bytes
+
 ;  HEAD>
 ;  D: h-id -- xt
 ;  h-id is the address of vocabulary entry flags
