@@ -90,8 +90,7 @@
                 INCLUDE_HEADER_TC
                 $INCLUDED   "bootdict/x86-wordlist/latest-head-fetch.asm"
                 $INCLUDED   "bootdict/x86-wordlist/latest-head-store.asm"
-                $INCLUDED   "bootdict/x86-wordlist/to-head.asm"
-                $INCLUDED   "bootdict/x86-wordlist/head-from.asm"
+                $INCLUDED   "bootdict/x86-wordlist/traverse-entry.asm"
                 $INCLUDED   "bootdict/x86-wordlist/search-headers.asm"
                 $INCLUDED   "bootdict/x86-wordlist/header.asm"
                 $INCLUDED   "bootdict/tc/recognizer-core.asm"
