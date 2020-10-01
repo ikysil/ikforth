@@ -7,9 +7,9 @@
 ;
 ;                                              ^
 ;                                              |
-; +-------+-----------+------+-----------+-------------+-----+-----+
+; +-------+-----------+------+-----------+-------------+-----+------+
 ; | Flags | Name Len1 | Name | Name Len2 | Link offset | CFA | Body |
-; +-------+-----------+------+-----------+-------------+-----+-----+
+; +-------+-----------+------+-----------+-------------+-----+------+
 ;     ^
 ;     |
 ;  LATEST
@@ -21,6 +21,16 @@
 ; Link Offset: CELL
 ; CFA: CELL in ITC, size of JMP instruction in DTC
 ; Body: any number of bytes
+
+;  HEAD>FLAGS
+;  D: h-id -- flags-addr
+                $CODE       'HEAD>FLAGS',$HEAD_TO_FLAGS
+                $NEXT
+
+;  FLAGS>HEAD
+;  D: flags-addr -- h-id
+                $CODE       'FLAGS>HEAD',$FLAGS_TO_HEAD
+                $NEXT
 
 ;  HEAD>
 ;  D: h-id -- xt

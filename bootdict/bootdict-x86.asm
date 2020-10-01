@@ -91,6 +91,8 @@
                 $INCLUDED   "bootdict/x86-wordlist/latest-head-fetch.asm"
                 $INCLUDED   "bootdict/x86-wordlist/latest-head-store.asm"
                 $INCLUDED   "bootdict/x86-wordlist/entry-traverse.asm"
+                $INCLUDED   "bootdict/x86-wordlist/entry-flags.asm"
+                $INCLUDED   "bootdict/x86-wordlist/entry-create.asm"
                 $INCLUDED   "bootdict/x86-wordlist/search-headers.asm"
                 $INCLUDED   "bootdict/x86-wordlist/header.asm"
                 $INCLUDED   "bootdict/tc/recognizer-core.asm"
