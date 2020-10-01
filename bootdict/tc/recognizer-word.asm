@@ -16,7 +16,7 @@
                 $TRACE_WORD  'R:WORD-INT'
                 $TRACE_STACK 'R:WORD-INT-A:',2
                 }
-                CW          HF_COMPILE_ONLY, $AND, $ZERONOEQ
+                CW          $AMPCOMPILE_ONLY, $AND, $ZERONOEQ
                 _IF         R_WORD_INT_COMPILE_ONLY
                 CW          $TO_HEAD, $NAME_TO_STRING
                 CW          $SQTOPOCKET, $DROP
