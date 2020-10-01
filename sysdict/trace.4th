@@ -16,7 +16,7 @@ TRACE-OFF
 : .TRACE-WORD-NAME
    \ S: xt --
    \ Print the name of the word or (noname)
-   >HEAD H>#NAME
+   >HEAD NAME>STRING
    ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
 ;
 

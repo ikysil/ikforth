@@ -73,7 +73,7 @@
 ;  nt is the address of vocabulary entry flags.
 ;  If the definition is found, return its execution token xt and one (1) if the definition is immediate, minus-one (-1) otherwise.
                 $COLON      'STDWL-SEARCH-NAME',$STDWL_SEARCH_NAME
-                CW          $DUP, $CFETCH, $AMPHIDDEN, $AND
+                CW          $DUP, $CFETCH, $AMPHIDDEN, $AND ; FIXME C@ -> HFLAGS@
                 _IF         STDWL_SEARCH_NAME_HIDDEN
                 CW          $2DROP, $FALSE, $TRUE, $EXIT
                 _THEN       STDWL_SEARCH_NAME_HIDDEN
@@ -81,7 +81,7 @@
                 CCLIT       2
                 CW          $PICK
                 ; S: c-addr u 0 nt c-addr u nt
-                CW          $H_TO_HASH_NAME
+                CW          $NAME_TO_STRING
                 ; S: c-addr u 0 nt c-addr u nt-addr nt-u
                 CW          $NAMEEQ
                 _IF         STDWL_SEARCH_NAME_FOUND
@@ -89,7 +89,7 @@
                 CW          $2SWAP, $2DROP, $NIP
                 ; S: nt
                 CW          $DUP, $HEAD_FROM, $SWAP
-                CW          $CFETCH, $AMPIMMEDIATE, $AND
+                CW          $CFETCH, $AMPIMMEDIATE, $AND ; FIXME C@ -> HFLAGS@
                 _IF         STDWL_SEARCH_NAME_IMM
                 CCLIT       1
                 _ELSE       STDWL_SEARCH_NAME_IMM

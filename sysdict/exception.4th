@@ -13,7 +13,7 @@ DEFER (.EXCEPTION) (S exc-id -- )
 : .THROW-WORD
    THROW-WORD @ ?DUP
    IF CR 9 EMIT ." at '"
-      H>#NAME DUP 0=
+      NAME>STRING DUP 0=
       IF
          2DROP S" (noname)"
       THEN

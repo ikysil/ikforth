@@ -38,7 +38,7 @@ VALUE-VT ' FORTH-RECOGNIZER >BODY !
 ;
 
 : .RECOGNIZER-NAME (S rec-xt -- )
-   DUP ." H# " H.8 SPACE >HEAD H>#NAME
+   DUP ." H# " H.8 SPACE >HEAD NAME>STRING
    DUP 0= IF  2DROP S" (nonamed)"  THEN
    TYPE
 ;

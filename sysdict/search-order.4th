@@ -142,7 +142,7 @@ INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
 : .WORDLIST-NAME (S wid -- )
    DUP ." H# " H.8 SPACE WL>VOC @ ?DUP
    IF
-      H>#NAME TYPE
+      NAME>STRING TYPE
    ELSE
       ." (nonamed)"
    THEN
@@ -184,7 +184,7 @@ INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
       THEN
    WHILE
       2 PICK <
-      IF   NIP H>#NAME TRUE EXIT   THEN
+      IF   NIP NAME>STRING TRUE EXIT   THEN
       H>NEXT>H
    REPEAT
    2DROP DROP FALSE

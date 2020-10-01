@@ -104,10 +104,14 @@
                 _THEN       HTNTH_CONTINUE
                 $END_COLON
 
-;  H>#NAME
-;  D: h-id -- addr len
-                $COLON      'H>#NAME',$H_TO_HASH_NAME
-                CW          $HEAD_TO_NAME, $DUP, $1ADD, $SWAP, $CFETCH
+;   15.6.2.1909.40 NAME>STRING
+;   (S nt -- c-addr u )
+;   (G NAME>STRING returns the name of the word nt in the character string c-addr u.
+;       The case of the characters in the string is implementation-dependent.
+;       The buffer containing c-addr u may be transient and valid until the next invocation of NAME>STRING.
+;       A program shall not write into the buffer containing the resulting string. )
+                $COLON      'NAME>STRING',$NAME_TO_STRING
+                CW          $HEAD_TO_NAME, $COUNT
                 $END_COLON
 
 ;  6.1.0550 >BODY

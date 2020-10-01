@@ -35,7 +35,7 @@ ONLY FORTH DEFINITIONS ALSO LOCATE-PRIVATE
    ' >HEAD DUP HFLAGS@ &LOCATE AND 0=
    IF  ." No LOCATE information available" DROP EXIT  THEN
    LOCATE@ 4 .R 4 .R 3 SPACES
-   ?DUP IF  @ >HEAD H>#NAME  ELSE  S" <unknown>"  THEN
+   ?DUP IF  @ >HEAD NAME>STRING  ELSE  S" <unknown>"  THEN
    TYPE
 ;
 

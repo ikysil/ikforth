@@ -34,7 +34,7 @@ DEFER DEFER-PRI
 : .WORD-NAME
    \ S: xt --
    \ Print the name of the word or (noname)
-   >HEAD H>#NAME ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
+   >HEAD NAME>STRING ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
 ;
 
 : CHECK-PRIMITIVE (S xt -- flag )
@@ -73,7 +73,7 @@ DEFER DEFER-PRI
       ENDOF
       [ ' DEFER-PRI CFA@ ] LITERAL OF
          ." DEFER "
-         R@ >HEAD H>#NAME TYPE SPACE
+         R@ >HEAD NAME>STRING TYPE SPACE
          ." XT=H# " R@ H.8 SPACE
          R@ >HEAD WORD-ATTR
          R@ >BODY @ NIP

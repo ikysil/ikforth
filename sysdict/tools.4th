@@ -98,7 +98,7 @@ VARIABLE DUMP/LINE
 ;
 
 : .WL-WORD (S count nt -- count true | count false )
-   DUP H>#NAME DUP 0<>
+   DUP NAME>STRING DUP 0<>
    IF
       CR TYPE SPACE WORD-ATTR
       1+ DUP 20 MOD 0=
@@ -130,7 +130,7 @@ VARIABLE DUMP/LINE
 ;
 
 : .WL-COUNT (S count nt -- count true | count false )
-   H>#NAME 0<> \ check for :NONAME, don't count them
+   NAME>STRING 0<> \ check for :NONAME, don't count them
    NIP IF  1+  THEN
    TRUE
 ;
@@ -225,19 +225,8 @@ DEFER CS-ROLL
 ;
 
 \ -----------------------------------------------------------------------------
-\   NAME>STRING NAME>COMPILE NAME>INTERPRET TRAVERSE-WORDLIST
+\   NAME>COMPILE NAME>INTERPRET
 \ -----------------------------------------------------------------------------
-
-\  15.6.2.1909.40 NAME>STRING
-\  ( nt -- c-addr u )
-: NAME>STRING
-   (S nt -- c-addr u )
-   (G NAME>STRING returns the name of the word nt in the character string c-addr u.
-      The case of the characters in the string is implementation-dependent.
-      The buffer containing c-addr u may be transient and valid until the next invocation of NAME>STRING.
-      A program shall not write into the buffer containing the resulting string. )
-   H>#NAME
-;
 
 \  15.6.2.1909.10 NAME>COMPILE
 \  ( nt -- x xt )
