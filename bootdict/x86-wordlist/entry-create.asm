@@ -137,7 +137,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                 $COLON      '(HEADER,)',$PHEADERC
-                CW          $CCOMMA                 ; compile flags
+                CW          $TOR
                 CW          $SWAP                   ; count c-addr
                 CW          $OVER                   ; count c-addr count
                 CW          $DUP
@@ -152,9 +152,10 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 _ELSE       PHEADERC_HAS_NAME
                 CW          $DROP
                 _THEN       PHEADERC_HAS_NAME
-                CCLIT       2
-                CW          $ADD
-                CW          $CCOMMA                 ; compile (length + 2)
+                CW          $1ADD
+                CW          $CCOMMA                 ; compile (length + 1)
+                CW          $RFROM
+                CW          $CCOMMA                 ; compile flags
                 CW          $CREATE_LINK_C
                 $END_COLON
 

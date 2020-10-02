@@ -61,8 +61,18 @@ INCLUDE_MARK            EQU     0
 
                 MACRO       $DEF NAME,CFA_NAME,CODE,FLAGS {
 
-                LOCAL       __FLAGS,__NAME,__PREVFLD,__LBLNAME,__CODE
+                LOCAL       __DEF_NAME_BEGIN,__DEF_NAME_END
+                LOCAL       __FLAGS,__NAME_TOKEN,__CODE,__BODY
                 $DEFLOCATE
+;; NFA
+                $DEFLABEL   NFA,CFA_NAME
+                DB          __DEF_NAME_END - __DEF_NAME_BEGIN
+__DEF_NAME_BEGIN:
+                IF          ~ NAME eq
+                DB          NAME
+                END IF
+__DEF_NAME_END:
+                DB          __DEF_NAME_END - __DEF_NAME_BEGIN + 1   ; include length byte before name
 __FLAGS:
                 $DEFLABEL   HEAD,CFA_NAME
                 IF          ~ FLAGS eq
@@ -70,17 +80,9 @@ __FLAGS:
                 ELSE
                 DB          VEF_USUAL OR VEF_INCLUDED
                 END IF
-;; NFA
-                $DEFLABEL   NFA,CFA_NAME
-                DB          __PREVFLD - $ - 1
-                IF          ~ NAME eq
-                DB          NAME
-                END IF
-__PREVFLD:
-                DB          __PREVFLD - __FLAGS
-;; LFA
-__NAME:
-LASTWORD = __NAME
+;; NAME TOKEN
+__NAME_TOKEN:
+LASTWORD = __NAME_TOKEN
                 $DEFLABEL   LFA,CFA_NAME
                 IF          VOC_LINK > 0
 ;; store as positive offset from the previous word
@@ -89,17 +91,18 @@ LASTWORD = __NAME
 ;; no previous word
                 DD          0
                 END IF
-VOC_LINK = __NAME + IMAGE_BASE
+VOC_LINK = __NAME_TOKEN + IMAGE_BASE
 
 ;; CFA
+__CODE:
                 IF          CODE eq
-                $CFA        __CODE,CFA_NAME
+                $CFA        __BODY,CFA_NAME
                 ELSE
                 $CFA        CFA_#CODE,CFA_NAME
                 END IF
-__CODE:
-                $DEFLABEL   PFA,CFA_NAME
 ;; PFA
+__BODY:
+                $DEFLABEL   PFA,CFA_NAME
                 }
 
                 POSTPONE {

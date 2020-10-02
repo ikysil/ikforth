@@ -15,7 +15,7 @@ ALSO LOCATE-PRIVATE DEFINITIONS
 \ private definitions go here
 
 : LOCATE@ \ S: nt -- include-mark position line-number
-   NAME>FLAGS
+   NAME>STRING DROP 1-    \ FIXME
    [ 3 CELLS ] LITERAL -  \ S: locate-addr1
    @+ SWAP                \ S: include-mark locate-addr2
    @+ SWAP                \ S: include-mark position locate-addr3

@@ -76,18 +76,18 @@ SW_LOOP:
                 OR          ESI,ESI
                 JZ          SHORT SW_NOT_FOUND
                 PUSHDS      ESI                     ; save nt
-                DEC         ESI                     ; NAME>FLAGS
-                MOVZX       EAX,BYTE [ESI]          ; NAME>FLAGS
-                SUB         ESI,EAX                 ; NAME>FLAGS
-                MOV         AX,WORD [ESI]
-                CMP         AH,CL
+                SUB         ESI,2                   ; NAME>FLAGS
+                MOV         AX,WORD [ESI]           ; AL = length + 1, AH = flags
+                DEC         AL                      ;
+                MOVZX       EDX,AL
+                SUB         ESI,EDX                 ; ESI -> first character of name
+                CMP         AL,CL
                 JNZ         SHORT SW_NEXT
-                TEST        AL,VEF_HIDDEN
+                TEST        AH,VEF_HIDDEN
                 JNZ         SHORT SW_NEXT
                 PUSHDS      EDI
                 PUSHDS      ECX
-                PUSHDS      EAX                     ; save flags in AL
-                ADD         ESI,2
+                PUSHDS      EAX                     ; save flags in AH
 CMP_LOOP:
                 MOV         AL,BYTE [ESI]
                 MOV         AH,BYTE [EDI]
@@ -123,7 +123,7 @@ SW_NEXT:
                 JMP         SHORT SW_LOOP
 
 SW_FOUND:
-                TEST        AL,VEF_IMMEDIATE
+                TEST        AH,VEF_IMMEDIATE
                 MOV         EAX,1
                 JNZ         SHORT SW_FOUND_IMMEDIATE
                 NEG         EAX
