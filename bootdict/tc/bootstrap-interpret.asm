@@ -24,7 +24,7 @@
                 CW          $POCKET, $COUNT, $TYPE
                 $CR
                 $WRITE      'Latest vocabulary entry: '
-                CW          $LATEST_HEAD_FETCH, $NAME_TO_STRING, $DUP, $ZERONOEQ
+                CW          $LATEST_NAME_FETCH, $NAME_TO_STRING, $DUP, $ZERONOEQ
                 _IF         BSI_ERROR_HAS_NAME
                 CW          $TYPE
                 _ELSE       BSI_ERROR_HAS_NAME

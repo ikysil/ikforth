@@ -34,7 +34,7 @@ REPORT-NEW-NAME OFF
    (S base -- )
       IMMEDIATE
       ,
-      LATEST-HEAD@
+      LATEST-NAME@
       ,
    DOES>
    (S "literal" -- )

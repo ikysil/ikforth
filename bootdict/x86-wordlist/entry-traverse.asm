@@ -55,18 +55,13 @@
                 PUSHDS      EAX
                 $NEXT
 
-;  >LINK
-;  D: CFA -- LFA
-                $COLON      '>LINK',$TO_LINK
+;   NAME>LINK
+;   D: nt -- nt-addr
+;   Fetch address of the field storing the link to the nt of the previous word.
+                $COLON      'NAME>LINK',$NAME_TO_LINK
+                CW          $NAME_TO_CODE
                 CCLIT       CELL_SIZE
                 CW          $SUB
-                $END_COLON
-
-;  LINK>
-;  D: LFA -- CFA
-                $COLON      'LINK>',$LINK_FROM
-                CCLIT       CELL_SIZE
-                CW          $ADD
                 $END_COLON
 
 ;   NAME>NEXT
@@ -77,7 +72,7 @@
                 _IF         NTNEXT_LAST
                 CW          $EXIT
                 _THEN       NTNEXT_LAST
-                CW          $NAME_TO_CODE, $TO_LINK, $DUP, $FETCH, $DUP
+                CW          $NAME_TO_LINK, $DUP, $FETCH, $DUP
                 _IF         NTNEXT_HASNEXT
                 CW          $SUB
                 _ELSE       NTNEXT_HASNEXT

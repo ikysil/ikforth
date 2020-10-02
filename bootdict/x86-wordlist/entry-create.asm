@@ -125,7 +125,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CREATE-LINK,
 ;  Compile link to the previous definition
                 $COLON      'CREATE-LINK,',$CREATE_LINK_C
-                CW          $HERE, $LATEST_HEAD_FETCH
+                CW          $HERE, $LATEST_NAME_FETCH
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'CREATE-LINK,-A:',2
                 }
@@ -157,7 +157,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $ADD
                 CW          $CCOMMA                 ; compile (length + 2)
                 CW          $CREATE_LINK_C
-                CW          $RFROM, $LATEST_HEAD_STORE
+                CW          $RFROM, $LATEST_NAME_STORE
                 $END_COLON
 
 ;  (CFA,)
