@@ -14,7 +14,8 @@ ALSO LOCATE-PRIVATE DEFINITIONS
 
 \ private definitions go here
 
-: LOCATE@ \ S: h-id -- include-mark position line-number
+: LOCATE@ \ S: nt -- include-mark position line-number
+   NAME>FLAGS
    [ 3 CELLS ] LITERAL -  \ S: locate-addr1
    @+ SWAP                \ S: include-mark locate-addr2
    @+ SWAP                \ S: include-mark position locate-addr3

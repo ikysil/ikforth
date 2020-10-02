@@ -1,13 +1,5 @@
-;******************************************************************************
-;
-;  wordlist-def.asm
-;  IKForth
-;
-;  Unlicense since 1999 by Illya Kysil
-;
-;******************************************************************************
-;  Define Forth wordlists in Assembler
-;******************************************************************************
+;   PURPOSE: Define Forth wordlists in Assembler
+;   LICENSE: Unlicense since 1999 by Illya Kysil
 
 VOC_LINK                =       0                       ; link to previous word
 WL_LINK                 =       0                       ; link to the previous wordlist
@@ -69,10 +61,9 @@ INCLUDE_MARK            EQU     0
 
                 MACRO       $DEF NAME,CFA_NAME,CODE,FLAGS {
 
-                LOCAL       __DEF,__PREVFLD,__LBLNAME,__CODE
+                LOCAL       __FLAGS,__NAME,__PREVFLD,__LBLNAME,__CODE
                 $DEFLOCATE
-__DEF:
-LASTWORD = __DEF
+__FLAGS:
                 $DEFLABEL   HEAD,CFA_NAME
                 IF          ~ FLAGS eq
                 DB          FLAGS OR VEF_INCLUDED
@@ -86,8 +77,10 @@ LASTWORD = __DEF
                 DB          NAME
                 END IF
 __PREVFLD:
-                DB          __PREVFLD - __DEF
+                DB          __PREVFLD - __FLAGS
 ;; LFA
+__NAME:
+LASTWORD = __NAME
                 $DEFLABEL   LFA,CFA_NAME
                 IF          VOC_LINK > 0
 ;; store as positive offset from the previous word
@@ -96,7 +89,7 @@ __PREVFLD:
 ;; no previous word
                 DD          0
                 END IF
-VOC_LINK = __DEF + IMAGE_BASE
+VOC_LINK = __NAME + IMAGE_BASE
 
 ;; CFA
                 IF          CODE eq

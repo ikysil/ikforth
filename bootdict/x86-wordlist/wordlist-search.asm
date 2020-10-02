@@ -64,7 +64,7 @@
                 $END_COLON
 
 ;  SEARCH-HEADERS
-;  D: ( c-addr u lfa-addr -- 0 | xt 1 | xt -1 )
+;  D: ( c-addr u nt -- 0 | xt 1 | xt -1 )
                 $CODE       'SEARCH-HEADERS',$SEARCH_HEADERS
                 PUSHRS      EDI
                 PUSHRS      ESI
@@ -75,14 +75,18 @@
 SW_LOOP:
                 OR          ESI,ESI
                 JZ          SHORT SW_NOT_FOUND
+                PUSHDS      ESI                     ; save nt
+                DEC         ESI                     ; NAME>FLAGS
+                MOVZX       EAX,BYTE [ESI]          ; NAME>FLAGS
+                SUB         ESI,EAX                 ; NAME>FLAGS
                 MOV         AX,WORD [ESI]
                 CMP         AH,CL
                 JNZ         SHORT SW_NEXT
                 TEST        AL,VEF_HIDDEN
                 JNZ         SHORT SW_NEXT
-                PUSHDS      ESI
                 PUSHDS      EDI
                 PUSHDS      ECX
+                PUSHDS      EAX                     ; save flags in AL
                 ADD         ESI,2
 CMP_LOOP:
                 MOV         AL,BYTE [ESI]
@@ -101,34 +105,30 @@ CMP_CONT:
                 OR          ECX,ECX
                 JNZ         SHORT CMP_LOOP
                 CMP         AL,AH
+                POPDS       EAX
                 POPDS       ECX
                 POPDS       EDI
                 POPDS       ESI
                 JZ          SHORT SW_FOUND
 CMP_EXIT:
+                POPDS       EAX
                 POPDS       ECX
                 POPDS       EDI
-                POPDS       ESI
 SW_NEXT:
-                MOVZX       EAX,BYTE [ESI + 1]
-                ADD         ESI,EAX
-                ADD         ESI,3
-                MOV         EAX,DWORD [ESI]
+                POPDS       ESI
+                MOV         EAX,DWORD [ESI]         ; NAME>NEXT
                 OR          EAX,EAX
                 JZ          SHORT SW_NOT_FOUND
                 SUB         ESI,EAX
                 JMP         SHORT SW_LOOP
 
 SW_FOUND:
-                MOV         AL,BYTE [ESI]
                 TEST        AL,VEF_IMMEDIATE
                 MOV         EAX,1
                 JNZ         SHORT SW_FOUND_IMMEDIATE
                 NEG         EAX
 SW_FOUND_IMMEDIATE:
-                MOVZX       EBX,BYTE [ESI + 1]
-                ADD         ESI,EBX
-                ADD         ESI,7
+                ADD         ESI,CELL_SIZE           ; NAME>CODE
                 PUSHDS      ESI
                 PUSHDS      EAX
                 POPRS       ESI

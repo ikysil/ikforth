@@ -125,19 +125,18 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CREATE-LINK,
 ;  Compile link to the previous definition
                 $COLON      'CREATE-LINK,',$CREATE_LINK_C
-                CW          $HERE, $LATEST_NAME_FETCH
+                CW          $HERE, $DUP, $LATEST_NAME_FETCH
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'CREATE-LINK,-A:',2
                 }
                 CW          $SUB, $COMMA
+                CW          $LATEST_NAME_STORE
                 $END_COLON
 
 ;  (HEADER,)
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                 $COLON      '(HEADER,)',$PHEADERC
-                CW          $HERE
-                CW          $TOR
                 CW          $CCOMMA                 ; compile flags
                 CW          $SWAP                   ; count c-addr
                 CW          $OVER                   ; count c-addr count
@@ -157,7 +156,6 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $ADD
                 CW          $CCOMMA                 ; compile (length + 2)
                 CW          $CREATE_LINK_C
-                CW          $RFROM, $LATEST_NAME_STORE
                 $END_COLON
 
 ;  (CFA,)

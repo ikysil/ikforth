@@ -5,42 +5,51 @@
 ; The offset is the positive number of bytes to the previous entry.
 ; The offset is used instead of a pointer to avoid address relocation.
 ;
-;                                              ^
-;                                              |
-; +-------+-----------+------+-----------+-------------+-----+------+
+;                                               ^
+;                                               |
+; +-------+-----------+------+-----------+------+------+-----+------+
 ; | Flags | Name Len1 | Name | Name Len2 | Link offset | CFA | Body |
-; +-------+-----------+------+-----------+-------------+-----+------+
-;     ^
-;     |
-;  LATEST
+; +-------+-----------+------+-----------+------+------+-----+------+
+;                                               ^
+;                                               |
+;                                            LATEST
 ;
 ; Flags: 1 byte
 ; Name Len1: 1 byte, length of Name
 ; Name: 0-255 bytes
 ; Name Len2: 1 byte, length of Name + 2
 ; Link Offset: CELL
-; CFA: CELL in ITC, size of JMP instruction in DTC
+; CFA: address of inner interpreter in ITC, machine code in DTC
 ; Body: any number of bytes
 
 ;  NAME>FLAGS
 ;  D: nt -- flags-addr
                 $CODE       'NAME>FLAGS',$NAME_TO_FLAGS
+                POPDS       EAX
+                DEC         EAX
+                XOR         EBX,EBX
+                MOV         BL,BYTE [EAX]
+                SUB         EAX,EBX
+                PUSHDS      EAX
                 $NEXT
 
 ;  FLAGS>NAME
 ;  D: flags-addr -- nt
                 $CODE       'FLAGS>NAME',$FLAGS_TO_NAME
+                POPDS       EAX
+                INC         EAX
+                XOR         EBX,EBX
+                MOV         BL,BYTE [EAX]
+                ADD         EAX,EBX
+                INC         EAX
+                PUSHDS      EAX
                 $NEXT
 
 ;  NAME>CODE
 ;  D: nt -- xt
                 $CODE       'NAME>CODE',$NAME_TO_CODE
                 POPDS       EAX
-                INC         EAX
-                XOR         EBX,EBX
-                MOV         BL,BYTE [EAX]
-                ADD         EAX,EBX
-                ADD         EAX,6
+                ADD         EAX,CELL_SIZE
                 PUSHDS      EAX
                 $NEXT
 
@@ -48,10 +57,7 @@
 ;  D: xt -- nt
                 $CODE       'CODE>NAME',$CODE_TO_NAME
                 POPDS       EAX
-                SUB         EAX,5
-                XOR         EBX,EBX
-                MOV         BL,BYTE [EAX]
-                SUB         EAX,EBX
+                SUB         EAX,CELL_SIZE
                 PUSHDS      EAX
                 $NEXT
 
@@ -59,9 +65,6 @@
 ;   D: nt -- nt-addr
 ;   Fetch address of the field storing the link to the nt of the previous word.
                 $COLON      'NAME>LINK',$NAME_TO_LINK
-                CW          $NAME_TO_CODE
-                CCLIT       CELL_SIZE
-                CW          $SUB
                 $END_COLON
 
 ;   NAME>NEXT
@@ -87,7 +90,7 @@
 ;       The buffer containing c-addr u may be transient and valid until the next invocation of NAME>STRING.
 ;       A program shall not write into the buffer containing the resulting string. )
                 $COLON      'NAME>STRING',$NAME_TO_STRING
-                CW          $1ADD, $COUNT
+                CW          $NAME_TO_FLAGS, $1ADD, $COUNT
                 $END_COLON
 
 ;  6.1.0550 >BODY
