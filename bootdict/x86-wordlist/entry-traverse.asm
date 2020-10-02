@@ -55,28 +55,6 @@
                 PUSHDS      EAX
                 $NEXT
 
-;  FIXME - remove HEAD>NAME
-                $COLON      'HEAD>NAME',$HEAD_TO_NAME
-                CW          $1ADD
-                $END_COLON
-
-;  FIXME - remove NAME>HEAD
-                $COLON      'NAME>HEAD',$NAME_TO_HEAD
-                CW          $1SUB
-                $END_COLON
-
-;  FIXME - remove >NAME
-;  D: xt -- name-addr
-                $COLON      '>NAME',$TO_NAME
-                CW          $TO_HEAD, $HEAD_TO_NAME
-                $END_COLON
-
-;  FIXME - remove NAME>
-;  D: name-addr -- xt
-                $COLON      'NAME>',$NAME_FROM
-                CW          $NAME_TO_HEAD, $HEAD_FROM
-                $END_COLON
-
 ;  >LINK
 ;  D: CFA -- LFA
                 $COLON      '>LINK',$TO_LINK
@@ -114,7 +92,7 @@
 ;       The buffer containing c-addr u may be transient and valid until the next invocation of NAME>STRING.
 ;       A program shall not write into the buffer containing the resulting string. )
                 $COLON      'NAME>STRING',$NAME_TO_STRING
-                CW          $HEAD_TO_NAME, $COUNT
+                CW          $1ADD, $COUNT
                 $END_COLON
 
 ;  6.1.0550 >BODY
