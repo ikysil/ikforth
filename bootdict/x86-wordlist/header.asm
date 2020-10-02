@@ -44,7 +44,7 @@
 ;       DUP 0<>
 ;    WHILE
 ;       R@ OVER >R EXECUTE R> SWAP
-;       IF  H>NEXT>H  ELSE  DROP 0  THEN
+;       IF   NAME>NEXT   ELSE   DROP 0   THEN
 ;    REPEAT
 ;    DROP R> DROP
 ; ;
@@ -59,7 +59,7 @@
                 _WHILE      STDWLTW_LOOP
                 CW          $RFETCH, $OVER, $TOR, $EXECUTE, $RFROM, $SWAP
                 _IF         STDWLTW_CONTINUE
-                CW          $H_TO_NEXT_TO_H
+                CW          $NAME_TO_NEXT
                 _ELSE       STDWLTW_CONTINUE
                 CW          $DROP, $ZERO
                 _THEN       STDWLTW_CONTINUE

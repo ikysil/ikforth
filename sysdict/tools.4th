@@ -73,24 +73,28 @@ VARIABLE DUMP/LINE
    IF OVER SET-CURRENT NDROP
       0 LATEST-HEAD@
       BEGIN ?DUP 0<> WHILE
-         DUP HEAD>NAME DUP COUNT DUP
+         DUP DUP NAME>STRING DUP
          IF
             OVER C@ ?UPCASE 7 PICK =
-            IF TYPE SPACE SWAP WORD-ATTR CR
+            IF
+               TYPE SPACE SWAP WORD-ATTR CR
                SWAP 1+
                DUP 20 MOD 0=
                IF DUP . ." word(s), press Q to exit, any other key to continue"
                   KEY DUP [CHAR] Q = SWAP [CHAR] q = OR
-                  IF 2DROP SET-CURRENT EXIT THEN CR
+                  IF
+                     DROP 2DROP SET-CURRENT
+                     EXIT
+                  THEN CR
                THEN
                SWAP
             ELSE
-            2DROP NIP
+               2DROP NIP
             THEN
          ELSE
             2DROP NIP
          THEN
-         NAME> >LINK @
+         NAME>NEXT
       REPEAT
       . ." word(s) total" CR
    THEN

@@ -57,23 +57,23 @@
                 PUSHDS      EAX
                 $NEXT
 
-;  HEAD>NAME
+;  FIXME - remove HEAD>NAME
                 $COLON      'HEAD>NAME',$HEAD_TO_NAME
                 CW          $1ADD
                 $END_COLON
 
-;  NAME>HEAD
+;  FIXME - remove NAME>HEAD
                 $COLON      'NAME>HEAD',$NAME_TO_HEAD
                 CW          $1SUB
                 $END_COLON
 
-;  >NAME
+;  FIXME - remove >NAME
 ;  D: xt -- name-addr
                 $COLON      '>NAME',$TO_NAME
                 CW          $TO_HEAD, $HEAD_TO_NAME
                 $END_COLON
 
-;  NAME>
+;  FIXME - remove NAME>
 ;  D: name-addr -- xt
                 $COLON      'NAME>',$NAME_FROM
                 CW          $NAME_TO_HEAD, $HEAD_FROM
@@ -93,15 +93,20 @@
                 CW          $ADD
                 $END_COLON
 
-;  H>NEXT>H
-;  D: h-id -- prev_h-id | 0
-                $COLON      'H>NEXT>H',$H_TO_NEXT_TO_H
+;   NAME>NEXT
+;   D: nt -- nt-next | 0
+;   Fetch nt of the previous word.
+                $COLON      'NAME>NEXT',$NAME_TO_NEXT
+                CW          $DUP, $ZEROEQ
+                _IF         NTNEXT_LAST
+                CW          $EXIT
+                _THEN       NTNEXT_LAST
                 CW          $HEAD_FROM, $TO_LINK, $DUP, $FETCH, $DUP
-                _IF         HTNTH_CONTINUE
+                _IF         NTNEXT_HASNEXT
                 CW          $SUB
-                _ELSE       HTNTH_CONTINUE
+                _ELSE       NTNEXT_HASNEXT
                 CW          $NIP
-                _THEN       HTNTH_CONTINUE
+                _THEN       NTNEXT_HASNEXT
                 $END_COLON
 
 ;   15.6.2.1909.40 NAME>STRING

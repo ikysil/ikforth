@@ -179,13 +179,13 @@ INT/COMP: WORDLIST-OF (S "vocabulary" -- wid )
    BEGIN
       DUP DUP 0<> \ S: addr h-id1 h-id1 flag
       IF
-         H>NEXT>H
+         NAME>NEXT
          DUP 0<>   \ S: addr h-id1 h-id2 flag
       THEN
    WHILE
       2 PICK <
       IF   NIP NAME>STRING TRUE EXIT   THEN
-      H>NEXT>H
+      NAME>NEXT
    REPEAT
    2DROP DROP FALSE
 ;
