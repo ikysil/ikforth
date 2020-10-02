@@ -43,7 +43,7 @@ FALSE REPORT-NEW-NAME !
 : IMMEDIATE?
    \ (S xt -- flag )
    \ (G Check if word identified by xt is an immediate word. )
-   >HEAD HFLAGS@ &IMMEDIATE AND 0<>
+   CODE>NAME HFLAGS@ &IMMEDIATE AND 0<>
 ;
 
 : COMPILE-ONLY
@@ -53,7 +53,7 @@ FALSE REPORT-NEW-NAME !
 : COMPILE-ONLY?
    \ (S xt -- flag )
    \ (G Check if word identified by xt is a compile-only word. )
-   >HEAD HFLAGS@ &COMPILE-ONLY AND 0<>
+   CODE>NAME HFLAGS@ &COMPILE-ONLY AND 0<>
 ;
 
 : IMMEDIATE/COMPILE-ONLY
@@ -111,7 +111,7 @@ FALSE REPORT-NEW-NAME !
 ; IMMEDIATE \ do nothing
 
 : (;CODE)
-   R> LATEST-HEAD@ HEAD> CFA!
+   R> LATEST-HEAD@ NAME>CODE CFA!
 ;
 
 : ;CODE
@@ -127,7 +127,7 @@ FALSE REPORT-NEW-NAME !
 ;
 
 : (DOES)
-   R> LATEST-HEAD@ HEAD> CFA!
+   R> LATEST-HEAD@ NAME>CODE CFA!
 ;
 
 : DOES>

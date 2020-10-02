@@ -32,10 +32,10 @@ ONLY FORTH DEFINITIONS ALSO LOCATE-PRIVATE
 
 : LOCATE \ S: "name" --
    \ Parse name and print the information on the source location
-   ' >HEAD DUP HFLAGS@ &LOCATE AND 0=
+   ' CODE>NAME DUP HFLAGS@ &LOCATE AND 0=
    IF  ." No LOCATE information available" DROP EXIT  THEN
    LOCATE@ 4 .R 4 .R 3 SPACES
-   ?DUP IF  @ >HEAD NAME>STRING  ELSE  S" <unknown>"  THEN
+   ?DUP IF  @ CODE>NAME NAME>STRING  ELSE  S" <unknown>"  THEN
    TYPE
 ;
 

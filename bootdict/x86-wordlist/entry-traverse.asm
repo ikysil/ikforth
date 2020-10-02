@@ -32,10 +32,9 @@
                 $CODE       'FLAGS>NAME',$FLAGS_TO_NAME
                 $NEXT
 
-;  HEAD>
-;  D: h-id -- xt
-;  h-id is the address of vocabulary entry flags
-                $CODE       'HEAD>',$HEAD_FROM
+;  NAME>CODE
+;  D: nt -- xt
+                $CODE       'NAME>CODE',$NAME_TO_CODE
                 POPDS       EAX
                 INC         EAX
                 XOR         EBX,EBX
@@ -45,10 +44,9 @@
                 PUSHDS      EAX
                 $NEXT
 
-;  >HEAD
-;  D: xt -- h-id
-;  h-id is the address of vocabulary entry flags
-                $CODE       '>HEAD',$TO_HEAD
+;  CODE>NAME
+;  D: xt -- nt
+                $CODE       'CODE>NAME',$CODE_TO_NAME
                 POPDS       EAX
                 SUB         EAX,5
                 XOR         EBX,EBX
@@ -101,7 +99,7 @@
                 _IF         NTNEXT_LAST
                 CW          $EXIT
                 _THEN       NTNEXT_LAST
-                CW          $HEAD_FROM, $TO_LINK, $DUP, $FETCH, $DUP
+                CW          $NAME_TO_CODE, $TO_LINK, $DUP, $FETCH, $DUP
                 _IF         NTNEXT_HASNEXT
                 CW          $SUB
                 _ELSE       NTNEXT_HASNEXT

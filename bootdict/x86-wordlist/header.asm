@@ -88,7 +88,7 @@
                 ; S: c-addr u 0 nt
                 CW          $2SWAP, $2DROP, $NIP
                 ; S: nt
-                CW          $DUP, $HEAD_FROM, $SWAP
+                CW          $DUP, $NAME_TO_CODE, $SWAP
                 CW          $HFLAGS_FETCH, $AMPIMMEDIATE, $AND
                 _IF         STDWL_SEARCH_NAME_IMM
                 CCLIT       1

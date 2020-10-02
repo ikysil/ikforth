@@ -18,7 +18,7 @@
                 }
                 CW          $AMPCOMPILE_ONLY, $AND, $ZERONOEQ
                 _IF         R_WORD_INT_COMPILE_ONLY
-                CW          $TO_HEAD, $NAME_TO_STRING
+                CW          $CODE_TO_NAME, $NAME_TO_STRING
                 CW          $SQTOPOCKET, $DROP
                 CTHROW      -14
                 _THEN       R_WORD_INT_COMPILE_ONLY
@@ -67,7 +67,7 @@
                 CW          $SEARCH_NAME     ; ( XT imm-flag | 0 )
                 CW          $QDUP
                 _IF         REC_WORD_SUCCESS
-                CW          $DROP, $DUP, $TO_HEAD, $HFLAGS_FETCH
+                CW          $DROP, $DUP, $CODE_TO_NAME, $HFLAGS_FETCH
                 CW          R_WORD
                 _ELSE       REC_WORD_SUCCESS
                 CW          R_FAIL

@@ -34,7 +34,7 @@ DEFER DEFER-PRI
 : .WORD-NAME
    \ S: xt --
    \ Print the name of the word or (noname)
-   >HEAD NAME>STRING ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
+   CODE>NAME NAME>STRING ?DUP IF   TYPE   ELSE   DROP ." (noname)"   THEN
 ;
 
 : CHECK-PRIMITIVE (S xt -- flag )
@@ -73,16 +73,16 @@ DEFER DEFER-PRI
       ENDOF
       [ ' DEFER-PRI CFA@ ] LITERAL OF
          ." DEFER "
-         R@ >HEAD NAME>STRING TYPE SPACE
+         R@ CODE>NAME NAME>STRING TYPE SPACE
          ." XT=H# " R@ H.8 SPACE
-         R@ >HEAD WORD-ATTR
+         R@ CODE>NAME WORD-ATTR
          R@ >BODY @ NIP
          CR DUP RECURSE
       ENDOF
       [ ' : CFA@ ] LITERAL OF
          R@ .WORD-NAME SPACE
          ." XT=H# " R@ H.8 SPACE
-         R@ >HEAD WORD-ATTR
+         R@ CODE>NAME WORD-ATTR
          CR FALSE
       ENDOF
       R@ ?DOES>
@@ -90,7 +90,7 @@ DEFER DEFER-PRI
          R@ .WORD-NAME SPACE
          ." XT=H# " R@ H.8 SPACE
          ." BODY@ " R@ >BODY WRITE-VALUE SPACE
-         R@ >HEAD WORD-ATTR
+         R@ CODE>NAME WORD-ATTR
          ." DOES> " CR
          FALSE
       ELSE
@@ -162,7 +162,7 @@ DEFER DEFER-PRI
       [']      (S") OF WRITE-S" ENDOF
       [']    (DOES) OF ." DOES>" 5 + ENDOF
       [']    (TYPE) OF WRITE-(TYPE)  ENDOF
-      [']      ([:) OF ." [: XT=H# " HEAD> DUP H.8 >BODY ENDOF
+      [']      ([:) OF ." [: XT=H# " NAME>CODE DUP H.8 >BODY ENDOF
       [']      (;]) OF ." ;]" ENDOF
       DUP .WORD-NAME
    ENDCASE

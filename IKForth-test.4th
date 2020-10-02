@@ -2,7 +2,7 @@
 
 : TEST-DUMP
   CR
-  ['] DUMP >HEAD
+  ['] DUMP CODE>NAME
   DUP 64 DUMP
   0 DUMP/LINE !
   DUP 64 DUMP

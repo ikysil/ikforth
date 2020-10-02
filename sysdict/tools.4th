@@ -239,7 +239,7 @@ DEFER CS-ROLL
    (G x xt represents the compilation semantics of the word nt.
       The returned xt has the stack effect [ i * x x -- j * x ].
       Executing xt consumes x and performs the compilation semantics of the word represented by nt. )
-   HEAD> DUP IMMEDIATE? IF  ['] EXECUTE  ELSE  ['] COMPILE,  THEN
+   NAME>CODE DUP IMMEDIATE? IF  ['] EXECUTE  ELSE  ['] COMPILE,  THEN
 ;
 
 \  15.6.2.1909.20 NAME>INTERPRET
@@ -248,7 +248,7 @@ DEFER CS-ROLL
    (S nt -- xt | 0 )
    (G xt represents the interpretation semantics of the word nt.
       If nt has no interpretation semantics, NAME>INTERPRET returns 0.)
-   HEAD> DUP COMPILE-ONLY? IF  DROP 0  THEN
+   NAME>CODE DUP COMPILE-ONLY? IF  DROP 0  THEN
 ;
 
 REPORT-NEW-NAME !
