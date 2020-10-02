@@ -22,14 +22,14 @@
 ; CFA: CELL in ITC, size of JMP instruction in DTC
 ; Body: any number of bytes
 
-;  HEAD>FLAGS
-;  D: h-id -- flags-addr
-                $CODE       'HEAD>FLAGS',$HEAD_TO_FLAGS
+;  NAME>FLAGS
+;  D: nt -- flags-addr
+                $CODE       'NAME>FLAGS',$NAME_TO_FLAGS
                 $NEXT
 
-;  FLAGS>HEAD
-;  D: flags-addr -- h-id
-                $CODE       'FLAGS>HEAD',$FLAGS_TO_HEAD
+;  FLAGS>NAME
+;  D: flags-addr -- nt
+                $CODE       'FLAGS>NAME',$FLAGS_TO_NAME
                 $NEXT
 
 ;  HEAD>
