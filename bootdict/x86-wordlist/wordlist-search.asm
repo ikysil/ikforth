@@ -72,15 +72,13 @@
                 MOV         EBX,DWORD [EDI + VAR_CASE_SENSITIVE]
                 POPDS       ECX                     ; u
                 POPDS       EDI                     ; c-addr
+                ADD         EDI,ECX                 ; EDI points to the next byte after the last byte of the name
 SW_LOOP:
                 OR          ESI,ESI
                 JZ          SHORT SW_NOT_FOUND
                 PUSHDS      ESI                     ; save nt
                 SUB         ESI,2                   ; NAME>FLAGS
-                MOV         AX,WORD [ESI]           ; AL = length + 1, AH = flags
-                DEC         AL                      ;
-                MOVZX       EDX,AL
-                SUB         ESI,EDX                 ; ESI -> first character of name
+                MOV         AX,WORD [ESI]           ; AL = length, AH = flags
                 CMP         AL,CL
                 JNZ         SHORT SW_NEXT
                 TEST        AH,VEF_HIDDEN
@@ -88,7 +86,12 @@ SW_LOOP:
                 PUSHDS      EDI
                 PUSHDS      ECX
                 PUSHDS      EAX                     ; save flags in AH
+; EDI points to the next byte after the last byte of the name
+; ESI points to the next byte after the last byte of the name
 CMP_LOOP:
+
+                DEC         ESI                     ; comparison is performed from the last byte to the first
+                DEC         EDI
                 MOV         AL,BYTE [ESI]
                 MOV         AH,BYTE [EDI]
                 OR          EBX,EBX
@@ -99,8 +102,6 @@ CMP_LOOP:
 CMP_CONT:
                 CMP         AL,AH
                 JNZ         SHORT CMP_EXIT
-                INC         ESI
-                INC         EDI
                 DEC         ECX
                 OR          ECX,ECX
                 JNZ         SHORT CMP_LOOP

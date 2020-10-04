@@ -51,13 +51,24 @@ INCLUDE_MARK            EQU     0
                 END IF
                 }
 
-                MACRO       $DEFLOCATE {
-                IF          ~ VEF_INCLUDED EQ VEF_USUAL
+                MACRO       $LOCATE_INFO {
                 DD          INCLUDE_MARK + IMAGE_BASE
                 DD          0                           ; column
                 DD          0                           ; line
+                }
+
+                MACRO       $DEFLOCATE {
+                IF          ~ VEF_INCLUDED EQ VEF_USUAL
+                $LOCATE_INFO
                 END IF
                 }
+
+                VIRTUAL AT 0
+__LOCATE_BEGIN:
+                $LOCATE_INFO
+__LOCATE_END:
+LOCATE_SIZE     EQU     __LOCATE_END - __LOCATE_BEGIN
+                END VIRTUAL
 
                 MACRO       $DEF NAME,CFA_NAME,CODE,FLAGS {
 
@@ -66,13 +77,13 @@ INCLUDE_MARK            EQU     0
                 $DEFLOCATE
 ;; NFA
                 $DEFLABEL   NFA,CFA_NAME
-                DB          __DEF_NAME_END - __DEF_NAME_BEGIN
+__DEF_NAME_LEN = __DEF_NAME_END - __DEF_NAME_BEGIN
 __DEF_NAME_BEGIN:
                 IF          ~ NAME eq
                 DB          NAME
                 END IF
 __DEF_NAME_END:
-                DB          __DEF_NAME_END - __DEF_NAME_BEGIN + 1   ; include length byte before name
+                DB          __DEF_NAME_LEN
 __FLAGS:
                 $DEFLABEL   HEAD,CFA_NAME
                 IF          ~ FLAGS eq

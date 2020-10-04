@@ -5,19 +5,19 @@
 ; The offset is the positive number of bytes to the previous entry.
 ; The offset is used instead of a pointer to avoid address relocation.
 ;
-;                                               ^
-;                                               |
-; +-----------+------+-----------+-------+------+------+-----+------+
-; | Name Len1 | Name | Name Len2 | Flags | Link offset | CFA | Body |
-; +-----------+------+-----------+-------+------+------+-----+------+
-;                                               ^
-;                                               |
-;                                            LATEST
+;                                           ^
+;                                           |
+; +--------+------+----------+-------+------+------+-----+------+
+; | Locate | Name | Name Len | Flags | Link offset | CFA | Body |
+; +--------+------+----------+-------+------+------+-----+------+
+;                                           ^
+;                                           |
+;                                        LATEST
 ;
-; Flags: 1 byte
-; Name Len1: 1 byte, length of Name
+; Locate: 0 or 3 CELLS
 ; Name: 0-255 bytes
-; Name Len2: 1 byte, length of Name + 1
+; Name Len: 1 byte
+; Flags: 1 byte
 ; Link Offset: CELL
 ; CFA: address of inner interpreter in ITC, machine code in DTC
 ; Body: any number of bytes
@@ -84,7 +84,28 @@
 ;       A program shall not write into the buffer containing the resulting string. )
                 $COLON      'NAME>STRING',$NAME_TO_STRING
                 CCLIT       2
-                CW          $SUB, $DUP, $CFETCH, $SUB, $COUNT
+                CW          $SUB
+                CW          $DUP                    ; S: name-len-addr name-len-addr
+                CW          $CFETCH                 ; S: name-len-addr name-len
+                CW          $SWAP, $OVER            ; S: name-len name-len-addr name-len
+                CW          $SUB
+                CW          $SWAP
+                $END_COLON
+
+;   NAME>LOCATE
+;   (S nt -- addr | 0 )
+;   (G NAME>LOCATE returns the address of the locate information of the word nt or 0 if it is not recorded. )
+                $COLON      'NAME>LOCATE',$NAME_TO_LOCATE
+                CW          $DUP, $HFLAGS_FETCH
+                CW          $AMPLOCATE, $AND
+                _IF         NTL_HAS_LOCATE
+                CW          $NAME_TO_STRING, $DROP
+                CCLIT       LOCATE_SIZE
+                CW          $SUB
+                _ELSE       NTL_HAS_LOCATE
+                CW          $DROP
+                CW          $ZERO
+                _THEN       NTL_HAS_LOCATE
                 $END_COLON
 
 ;  6.1.0550 >BODY

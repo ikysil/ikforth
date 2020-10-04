@@ -140,8 +140,6 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $TOR
                 CW          $SWAP                   ; count c-addr
                 CW          $OVER                   ; count c-addr count
-                CW          $DUP
-                CW          $CCOMMA                 ; compile length
                 CW          $QDUP
                 _IF         PHEADERC_HAS_NAME
                 CW          $HERE                   ; count c-addr count here
@@ -152,8 +150,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 _ELSE       PHEADERC_HAS_NAME
                 CW          $DROP
                 _THEN       PHEADERC_HAS_NAME
-                CW          $1ADD
-                CW          $CCOMMA                 ; compile (length + 1)
+                CW          $CCOMMA                 ; compile length
                 CW          $RFROM
                 CW          $CCOMMA                 ; compile flags
                 CW          $CREATE_LINK_C
