@@ -32,7 +32,7 @@ extractSrc1 = senv.Command('winconst-extract.E1',
 
 extractSrc2 = senv.Command('winconst-extract.E2',
         [extractSrc1],
-        "sed -E 's/(.+)/CONSTANT\(\\1\)/' < ${SOURCE} > ${TARGET}")
+        "sort -u ${SOURCE} | sed -E 's/(.+)/CONSTANT\(\\1\)/' > ${TARGET}")
 
 publishExec = senv.Program('winconst-publish.exe', 'winconst-publish.c', LIBS=['urlmon'])
 senv.Depends(publishExec, [extractSrc2])

@@ -39,4 +39,4 @@ forthLib = senv.Install('#lib', linconstForth)
 senv.NoClean(forthLib)
 senv.Precious(forthLib)
 
-senv.Alias('linconst', [publishExec, forthLib])
+senv.Alias('linconst', [forthLib, publishExec])
