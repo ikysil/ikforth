@@ -1,4 +1,8 @@
+_IOT_termios
+_LP64
 _POSIX[_[:alnum:]]+
+_XBS5_LP64_OFF64
+_XBS5_LPBIG_OFFBIG
 [_[:alnum:]]+_H
 d_fileno
 GETLONG
@@ -6,6 +10,10 @@ GETSHORT
 nsaddr
 PUTLONG
 PUTSHORT
+REG_R[_[:alnum:]]+
+REG_CR2
+REG_CSGSFS
+REG_OLDMASK
 sched_priority
 SCM_SRCRT
 st_atime

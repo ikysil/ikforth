@@ -4,9 +4,9 @@ Import('env')
 senv = env.Clone()
 senv['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME'] = True
 
-senv.Append(CCFLAGS = ['-Wall', '-zq', '-fno-exceptions'])
+senv.Append(CCFLAGS = ['-m32', '-Wall', '-zq', '-fno-exceptions'])
 
-senv.Append(LINKFLAGS = ['-Wl,--no-as-needed'])
+senv.Append(LINKFLAGS = ['-m32', '-Wl,--no-as-needed'])
 
 extractPreProcessSrc = ['linconst-extract.c']
 
@@ -26,7 +26,7 @@ extractSrc1 = senv.Command('linconst-extract.E1',
 
 extractSrc2 = senv.Command('linconst-extract.E2',
         [extractSrc1],
-        "sed -E 's/(.+)/CONSTANT\(\\1\)/' < ${SOURCE} > ${TARGET}")
+        "sort -u ${SOURCE} | sed -E 's/(.+)/CONSTANT\(\\1\)/' > ${TARGET}")
 
 publishExec = senv.Program('linconst-publish.elf', 'linconst-publish.c')
 senv.Depends(publishExec, [extractSrc2])
@@ -39,4 +39,4 @@ forthLib = senv.Install('#lib', linconstForth)
 senv.NoClean(forthLib)
 senv.Precious(forthLib)
 
-senv.Alias('linconst', [forthLib, publishExec])
+senv.Alias('linconst', [publishExec, forthLib])
