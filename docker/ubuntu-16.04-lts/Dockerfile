@@ -4,9 +4,14 @@ LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-RUN dpkg --add-architecture i386 && apt-get update
+RUN yes | ( dpkg --add-architecture i386 && \
+    apt-get update && \
+    apt-get upgrade && \
+    apt-get dist-upgrade && \
+    apt-get clean && \
+    apt-get autoclean )
 
-RUN apt-get -y install --no-install-recommends \
+RUN yes | ( apt-get install --no-install-recommends \
         git \
         wget \
         python3 python3-pip \
@@ -17,7 +22,7 @@ RUN apt-get -y install --no-install-recommends \
         build-essential gcc-multilib g++-multilib \
         && \
     apt-get clean && \
-    apt-get autoclean
+    apt-get autoclean )
 
 ADD docker /opt/docker
 
