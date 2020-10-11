@@ -50,7 +50,10 @@ USER_HERE = 0
                 _VAR        CURR_FILE_POS,CELL_SIZE * 2
 
                 _VAR        HASH_FILE_LINE
+                ; buffer for REFILL-FILE
                 _VAR        FILE_LINE,MAX_FILE_LINE_LENGTH
+                ; The line buffer provided by c-addr should be at least u1+2 characters long.
+                _VAR        FILE_LINE_OVERRUN,CELL_SIZE
 
                 _VAR        HASH_INTERPRET_TEXT
                 _VAR        INTERPRET_TEXT,MAX_FILE_LINE_LENGTH

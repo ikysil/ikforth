@@ -32,4 +32,6 @@ void sys_rewindFile(HANDLE fileId, CELL distance);
 /* Reset last error value. */
 void sys_resetLastError();
 
+void ShowLastError(char const *where);
+
 #endif

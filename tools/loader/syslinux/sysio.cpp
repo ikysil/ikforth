@@ -45,7 +45,8 @@ HANDLE __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * nam
     sys_resetLastError();
     char fileName[MAX_FILE_PATH];
     initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
-    return open(fileName, accessMethod[fileAccessMethod & 3], modeOpen);
+    HANDLE fHandle = open(fileName, accessMethod[fileAccessMethod & 3], modeOpen);
+    return fHandle;
 }
 
 void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {

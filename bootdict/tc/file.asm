@@ -28,7 +28,17 @@
 
                 CW          $FILE_LINE
                 CCLIT       MAX_FILE_LINE_LENGTH
-                CW          $SOURCE_ID, $READ_LINE, $THROW, $SWAP
+                CW          $SOURCE_ID
+                MATCH       =TRUE, DEBUG {
+                $TRACE_WORD  'REFILL-FILE'
+                $TRACE_STACK 'REFILL-FILE-C:',3
+                }
+                CW          $READ_LINE
+                MATCH       =TRUE, DEBUG {
+                $TRACE_WORD  'REFILL-FILE'
+                $TRACE_STACK 'REFILL-FILE-D:',3
+                }
+                CW          $THROW, $SWAP
                 CSTORE      $HASH_FILE_LINE
                 CW          $ZERO
                 CSTORE      $TOIN
@@ -99,7 +109,12 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 ; re-read last line
                 CW          $FILE_LINE
                 CCLIT       MAX_FILE_LINE_LENGTH
-                CW          $SOURCE_ID, $READ_LINE, $THROW, $DROP, $DUP
+                CW          $SOURCE_ID, $READ_LINE
+                MATCH       =TRUE, DEBUG {
+                $TRACE_WORD  'RESTORE-INPUT-FILE'
+                $TRACE_STACK 'RESTORE-INPUT-A:',3
+                }
+                CW          $THROW, $DROP, $DUP
                 CSTORE      $HASH_FILE_LINE
                 CFETCH      $TOIN
                 CW          $GR
