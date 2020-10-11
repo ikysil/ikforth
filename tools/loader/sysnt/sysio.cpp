@@ -1,6 +1,9 @@
-#include <stdlib.h>
+#include "../sysio.hpp"
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
+
 #include "../IKFCommon.hpp"
 #include "../IKFunc.hpp"
 
@@ -32,7 +35,7 @@ HANDLE  __stdcall fFileCreate(CELL fileAccessMethod, CELL nameLen, char const * 
 
 __int64 __stdcall fFilePosition(HANDLE fileId) {
     LONG HWord = 0;
-    LONG res = SetFilePointer(fileId, 0, &HWord, FILE_CURRENT);
+    DWORD res = SetFilePointer(fileId, 0, &HWord, FILE_CURRENT);
     if (res != INVALID_SET_FILE_POINTER) {
         SetLastError(0);
     }
@@ -49,7 +52,7 @@ HANDLE  __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * na
 
 void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
     LONG hPos = HWord;
-    LONG res = SetFilePointer(fileId, LWord, &hPos, FILE_BEGIN);
+    DWORD res = SetFilePointer(fileId, LWord, &hPos, FILE_BEGIN);
     if (res != INVALID_SET_FILE_POINTER) {
         SetLastError(0);
     }
@@ -99,9 +102,13 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
         }
         i++;
     }
-    if (rewind > 0) {
-        SetFilePointer(fileId, -rewind, NULL, FILE_CURRENT);
-    }
+    sys_rewindFile(fileId, rewind);
     flag = (eof && (i == 0)) ? fFALSE : fTRUE;
     return ((__int64)flag << 32) | i;
+}
+
+void sys_rewindFile(HANDLE fileId, CELL distance) {
+    if (distance > 0) {
+        SetFilePointer(fileId, -distance, NULL, FILE_CURRENT);
+    }
 }

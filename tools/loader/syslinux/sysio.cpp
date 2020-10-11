@@ -1,10 +1,13 @@
+#include "../sysio.hpp"
+
 #include <errno.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 #include "../IKFCommon.hpp"
 #include "../IKFunc.hpp"
 
@@ -94,9 +97,13 @@ __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
         }
         i++;
     }
-    if (rewind > 0) {
-        lseek(fileId, -rewind, SEEK_CUR);
-    }
+    sys_rewindFile(fileId, rewind);
     flag = (eof && (i == 0)) ? fFALSE : fTRUE;
     return ((__int64)flag << 32) | i;
+}
+
+void sys_rewindFile(HANDLE fileId, CELL distance) {
+    if (distance > 0) {
+        lseek(fileId, -distance, SEEK_CUR);
+    }
 }
