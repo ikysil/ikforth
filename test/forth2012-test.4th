@@ -16,6 +16,12 @@ DEFER TEST-ROOT (S  -- c-addr count )
 
 ' DEFAULT-TEST-ROOT IS TEST-ROOT
 
+: TEST-BLOCK-ROOT
+   S" build/forth2012-test-blocks/"
+;
+
+' TEST-BLOCK-ROOT IS BLOCK-ROOT
+
 : APPEND-TEST-ROOT (S c-addr1 u1 -- c-addr2 u2 )
    TEST-ROOT >S"BUFFER   \ S: f-addr f-u r-addr r-u
    2SWAP 2OVER + SWAP    \ S: r-addr r-u f-addr r-addr' f-u

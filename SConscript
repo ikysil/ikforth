@@ -19,6 +19,7 @@ def test_stdin(source, target, env):
     env.Execute('echo \'S\" fine!\" TYPE\' | ${RUN_CMD} -f test/stdin-test.4th')
 
 def ansitest(source, target, env):
+    Execute(Mkdir('build/forth2012-test-blocks'))
     env.Execute('${RUN_CMD} -f test/forth2012-test.4th')
 
 def fptest(source, target, env):
