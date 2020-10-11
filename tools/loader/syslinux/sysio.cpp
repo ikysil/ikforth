@@ -30,31 +30,31 @@ const mode_t modeCreate = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 const mode_t modeOpen = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
 HANDLE  __stdcall fFileCreate(CELL fileAccessMethod, CELL nameLen, char const * nameAddr) {
-    errno = 0;
+    sys_resetLastError();
     char fileName[MAX_FILE_PATH];
     initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
     return open(fileName, accessMethod[fileAccessMethod & 3] | O_CREAT | O_TRUNC, modeCreate);
 }
 
 __int64 __stdcall fFilePosition(HANDLE fileId) {
-    errno = 0;
+    sys_resetLastError();
     return lseek(fileId, 0, SEEK_CUR);
 }
 
 HANDLE __stdcall fFileOpen(CELL fileAccessMethod, CELL nameLen, char const * nameAddr) {
-    errno = 0;
+    sys_resetLastError();
     char fileName[MAX_FILE_PATH];
     initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
     return open(fileName, accessMethod[fileAccessMethod & 3], modeOpen);
 }
 
 void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
-    errno = 0;
+    sys_resetLastError();
     lseek(fileId, ((__int64) HWord << 32) | LWord, SEEK_SET);
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
-    errno = 0;
+    sys_resetLastError();
     char c;
     bool eof = false;
     int flag = 0;
@@ -107,3 +107,5 @@ void sys_rewindFile(HANDLE fileId, CELL distance) {
         lseek(fileId, -distance, SEEK_CUR);
     }
 }
+
+void sys_resetLastError() { errno = 0; }

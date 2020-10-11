@@ -28,7 +28,7 @@ HANDLE  __stdcall fFileCreate(CELL fileAccessMethod, CELL nameLen, char const * 
     initName(fileName, MAX_FILE_PATH, nameAddr, nameLen);
     HANDLE result = CreateFile(fileName, accessMethod[fileAccessMethod & 3], 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
     if (result != INVALID_HANDLE_VALUE) {
-        SetLastError(0);
+        sys_resetLastError();
     }
     return result;
 }
@@ -37,7 +37,7 @@ __int64 __stdcall fFilePosition(HANDLE fileId) {
     LONG HWord = 0;
     DWORD res = SetFilePointer(fileId, 0, &HWord, FILE_CURRENT);
     if (res != INVALID_SET_FILE_POINTER) {
-        SetLastError(0);
+        sys_resetLastError();
     }
     LONG LWord = res;
     return ((__int64)HWord << 32) | LWord;
@@ -54,12 +54,12 @@ void    __stdcall fFileReposition(HANDLE fileId, CELL HWord, CELL LWord) {
     LONG hPos = HWord;
     DWORD res = SetFilePointer(fileId, LWord, &hPos, FILE_BEGIN);
     if (res != INVALID_SET_FILE_POINTER) {
-        SetLastError(0);
+        sys_resetLastError();
     }
 }
 
 __int64 __stdcall fFileReadLine(HANDLE fileId, CELL cLen, char * cAddr) {
-    SetLastError(0);
+    sys_resetLastError();
     char c;
     bool eof = false;
     int flag = 0;
@@ -112,3 +112,5 @@ void sys_rewindFile(HANDLE fileId, CELL distance) {
         SetFilePointer(fileId, -distance, NULL, FILE_CURRENT);
     }
 }
+
+void sys_resetLastError() { SetLastError(0); }

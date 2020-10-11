@@ -29,4 +29,7 @@ bool sys_ReadFile(HANDLE hFile, void *lpBuffer, DWORD nNumberOfBytesToRead, DWOR
 /* Rewind file identified with fileId by the specified distance (positive number of bytes). */
 void sys_rewindFile(HANDLE fileId, CELL distance);
 
+/* Reset last error value. */
+void sys_resetLastError();
+
 #endif
