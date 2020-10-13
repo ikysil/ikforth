@@ -17,6 +17,7 @@ env:
   - DOCKER_FILE=docker/ubuntu-18.04-lts/Dockerfile
   - DOCKER_FILE=docker/ubuntu-19.10/Dockerfile
   - DOCKER_FILE=docker/ubuntu-20.04-lts/Dockerfile
+  - DOCKER_FILE=docker/ubuntu-20.10/Dockerfile
 
 before_install:
   - docker build --rm -f ${DOCKER_FILE} --build-arg RUNUID=$UID -t ikforth-build:latest .
