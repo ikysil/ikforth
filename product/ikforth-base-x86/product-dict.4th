@@ -57,6 +57,8 @@ REQUIRES" sysdict/locals-stack.4th"
 REQUIRES" sysdict/locals.4th"
 REQUIRES" sysdict/locals-ext.4th"
 
+REQUIRES" sysdict/string-substitute.4th"
+
 REQUIRES" sysdict/constdict.4th"
 
 REQUIRES" sysdict/dynlib.4th"
