@@ -52,20 +52,6 @@ REPORT-NEW-NAME OFF
    REPEAT
 ;
 
-\  17.6.2.2375 UNESCAPE
-\  Replace each '%' character in the input string c-addr1 len1 with two '%' characters.
-\  The output is represented by c-addr2 len2.
-\  If you pass a string through UNESCAPE and then SUBSTITUTE, you get the original string.
-: UNESCAPE \ c-addr1 len1 c-addr2 -- c-addr2 len2
-   DUP 2SWAP OVER + SWAP ?DO
-      I C@ [CHAR] % = IF
-         [CHAR] % OVER C! 1+
-      THEN
-      I C@ OVER C! 1+
-   LOOP
-   OVER -
-;
-
 : SEARCH
    2 PICK OVER U< IF   2DROP FALSE EXIT   THEN
    2SWAP 2DUP 2>R DUP 3 PICK - 1+ 0
