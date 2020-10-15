@@ -12,6 +12,25 @@ ALSO STRING-SUBSTITUTE-PRIVATE DEFINITIONS
 
 \ private definitions go here
 
+WORDLIST CONSTANT wid-subst
+\ Wordlist ID of the wordlist used to hold substitution names and replacement text.
+
+: makeSubst \ (S c-addr1 u1 c-addr2 u2 -- )
+\ Given a name string (c-addr2 u2) create a substution returning c-addr1 u1.
+   GET-CURRENT >R wid-subst SET-CURRENT
+   2>R (DO-:) 2R> &USUAL
+   HEADER, DROP
+   POSTPONE SLITERAL
+   POSTPONE (;)
+   R> SET-CURRENT
+;
+
+: findSubst \ c-addr len -- xt flag | 0
+\ Given a name string, find the substitution.
+\ Return xt and flag if found, or just zero if not found.
+   wid-subst SEARCH-WORDLIST
+;
+
 ONLY FORTH DEFINITIONS ALSO STRING-SUBSTITUTE-PRIVATE
 
 \ public definitions go here
@@ -28,8 +47,11 @@ ONLY FORTH DEFINITIONS ALSO STRING-SUBSTITUTE-PRIVATE
    (G The substitution cannot be created;)
    (G The name of a substitution contains the `%' delimiter character.)
    (G REPLACES may allot data space and create a definition. This breaks the contiguity of the current region and is not allowed during compilation of a colon definition)
-   \ FIXME
-   2DROP 2DROP
+   2DUP findSubst IF
+      DROP 2DROP 2DROP
+   ELSE
+      makeSubst
+   THEN
 ;
 
 : SUBSTITUTE (S c-addr1 u1 c-addr2 u2 -- c-addr2 u3 n )
