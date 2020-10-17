@@ -196,7 +196,7 @@ __BODY:
                 VOC_LINK_#CFA_NAME = 0
                 $CREATE     NAME,CFA_NAME
                 DD          LATEST_WORD_#CFA_NAME       ; last word in a list
-                CC          HEAD_#CFA_NAME + IMAGE_BASE ; wordlist name
+                CC          LFA_#CFA_NAME + IMAGE_BASE  ; wordlist name
                 CC          WL_LINK                     ; wordlist link
                 $DEFLABEL   VT,CFA_NAME
                 PW          $WORDLIST_VT                ; wordlist VT
