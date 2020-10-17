@@ -80,23 +80,23 @@ ILC2L_EXIT:
 
 ;  R:NUM-COMP - number COMPILE and POSTPONE action
 ;  ( n -- )
-                $NONAME     R_NUM_COMP
+                $NONAME     $R_NUM_COMP
                 CW          $LITERAL
                 $END_COLON
 
-                $RTABLE     'R:NUM',R_NUM,$NOOP,R_NUM_COMP,R_NUM_COMP
+                $RTABLE     'R:NUM',$R_NUM,$NOOP,$R_NUM_COMP,$R_NUM_COMP
 
 ;  R:DNUM-COMP - double COMPILE and POSTPONE action
 ;  ( d -- )
-                $NONAME     R_DNUM_COMP
+                $NONAME     $R_DNUM_COMP
                 CW          $2LITERAL
                 $END_COLON
 
-                $RTABLE     'R:DNUM',R_DNUM,$NOOP,R_DNUM_COMP,R_DNUM_COMP
+                $RTABLE     'R:DNUM',$R_DNUM,$NOOP,$R_DNUM_COMP,$R_DNUM_COMP
 
 ;  REC:NUM
 ;  ( addr len -- n R:NUM | d R:DNUM | R:FAIL )
-                $COLON      'REC:NUM',REC_NUM
+                $COLON      'REC:NUM',$REC_NUM
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'REC:NUM'
                 $TRACE_STACK 'REC:NUM-A:',2
@@ -122,7 +122,7 @@ RECN_OK1:
                 }
                 CW          $ILCL
                 CQBR        RECN_CHECK_2LIT
-                CW          R_NUM
+                CW          $R_NUM
                 CBR         RECN_EXIT
 RECN_CHECK_2LIT:
                 MATCH       =TRUE, DEBUG {
@@ -131,9 +131,9 @@ RECN_CHECK_2LIT:
                 }
                 CW          $ILC2L
                 CQBR        RECN_FAIL
-                CW          R_DNUM
+                CW          $R_DNUM
                 CBR         RECN_EXIT
 RECN_FAIL:
-                CW          R_FAIL
+                CW          $R_FAIL
 RECN_EXIT:
                 $END_COLON

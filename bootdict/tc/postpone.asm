@@ -8,6 +8,6 @@
 ;  An ambiguous condition exists if name is not found.
                 $COLON      'POSTPONE',,VEF_IMMEDIATE
                 CW          $PARSE_NAME
-                CW          FORTH_RECOGNIZER, DO_RECOGNIZER
-                CW          $DUP, $TOR, R2POST, $EXECUTE, $RFROM, R2COMP, $COMPILEC
+                CW          $FORTH_RECOGNIZER, $DO_RECOGNIZER
+                CW          $DUP, $TOR, $R2POST, $EXECUTE, $RFROM, $R2COMP, $COMPILEC
                 $END_COLON

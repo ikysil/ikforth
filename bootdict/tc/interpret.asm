@@ -26,16 +26,16 @@
                 $TRACE_WORD  'INTERPRET-WORD'
                 $TRACE_STACK 'INTERPRET-WORD-A:',4
                 }
-                CW          FORTH_RECOGNIZER, DO_RECOGNIZER
+                CW          $FORTH_RECOGNIZER, $DO_RECOGNIZER
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'INTERPRET-WORD'
                 $TRACE_STACK 'INTERPRET-WORD-B:',4
                 }
                 CFETCH      $STATE
                 _IF         IW_COMPILE
-                CW          R2COMP
+                CW          $R2COMP
                 _ELSE       IW_COMPILE
-                CW          R2INT
+                CW          $R2INT
                 _THEN       IW_COMPILE
                 MATCH       =TRUE, DEBUG {
                 $TRACE_WORD  'INTERPRET-WORD'
