@@ -31,6 +31,75 @@ WORDLIST CONSTANT wid-subst
    wid-subst SEARCH-WORDLIST
 ;
 
+: "/COUNTED-STRING" S" /COUNTED-STRING" ;
+"/COUNTED-STRING" ENVIRONMENT? 0= [IF] 256 [THEN]
+CHARS CONSTANT string-max
+
+CHAR % CONSTANT delim                  \ Character used as the substitution name delimiter.
+string-max CHARS BUFFER: Name          \ Holds substitution name as a counted string.
+string-max CHARS BUFFER: Src           \ Source string buffer for substitution to accommodate overlapping input buffers.
+VARIABLE DestLen                       \ Maximum length of the destination buffer.
+2VARIABLE Dest                         \ Holds destination string current length and address.
+VARIABLE SubstErr                      \ Holds zero or an error code.
+
+: addDest \ char --
+\ Add the character to the destination string.
+   Dest @ DestLen @ < IF
+      Dest 2@ + C! 1 CHARS Dest +!
+   ELSE
+      DROP -1 SubstErr !
+   THEN
+;
+
+[UNDEFINED] place [IF]
+   : place    \ c-addr1 u c-addr2 --
+   \ Copy the string described by c-addr1 u as a counted
+   \ string at the memory address described by c-addr2.
+      2DUP 2>R
+      1 CHARS + SWAP MOVE
+      2R> C!
+   ;
+[THEN]
+
+: formName \ c-addr len -- c-addr' len' flag
+\ Given a source string pointing at a leading delimiter, place the name string in the name buffer.
+\ Flag is true if closing delimiter has been found.
+   1 /STRING 2DUP delim SCAN >R DROP   \ find length of residue
+   2DUP R@ - DUP >R Name place         \ save name in buffer
+   R> 1 CHARS + /STRING                \ step over name and trailing %
+   R> 0<>
+;
+
+[UNDEFINED] bounds [IF]
+   : bounds    \ addr len -- addr+len addr
+      OVER + SWAP
+   ;
+[THEN]
+
+: >dest \ c-addr len --
+\ Add a string to the output string.
+   bounds ?DO
+      I C@ addDest
+   1 CHARS +LOOP
+;
+
+: processName \ delim-flag -- flag
+\ Process the last substitution name. Return true if found, 0 if not found.
+   IF
+      \ closing delimeter has been found -> process substitution
+      Name COUNT findSubst DUP >R IF
+         EXECUTE >dest
+      ELSE
+         delim addDest Name COUNT >dest delim addDest
+      THEN
+      R>
+   ELSE
+      \ closing delimeter has NOT been found -> copy rest of the string
+      delim addDest Name COUNT >dest
+      FALSE
+   THEN
+;
+
 ONLY FORTH DEFINITIONS ALSO STRING-SUBSTITUTE-PRIVATE
 
 \ public definitions go here
@@ -78,8 +147,30 @@ ONLY FORTH DEFINITIONS ALSO STRING-SUBSTITUTE-PRIVATE
       If after processing any pairs of delimiters, the residue of the input string contains a single delimiter,
       the residue is passed unchanged to the output.
    )
-   \ FIXME
-   2SWAP 2DROP 0
+\ Expand the source string using substitutions.
+\ Note that this version is simplistic, performs no error checking,
+\ and requires a global buffer and global variables.
+   Destlen ! 0 Dest 2! 0 -rot             \ -- 0 src slen
+   0 SubstErr !
+   Src SWAP 2DUP 2>R CMOVE 2R>            \ copy to Src buffer to accommodate overlapping input buffers
+   BEGIN
+      DUP 0 >
+   WHILE
+      OVER C@ delim <> IF                 \ character not %
+         OVER C@ addDest 1 /STRING
+      ELSE
+         OVER 1 CHARS + C@ delim = IF     \ %% for one output %
+            delim addDest 2 /STRING       \ add one % to output
+         ELSE
+            formName processName IF
+               ROT 1+ -rot                \ count substitutions
+            THEN
+         THEN
+      THEN
+   REPEAT
+   2DROP Dest 2@ ROT SubstErr @ IF
+      DROP SubstErr @
+   THEN
 ;
 
 : UNESCAPE (S c-addr1 u1 c-addr2 -- c-addr2 u2 )

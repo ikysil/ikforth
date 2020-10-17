@@ -40,8 +40,6 @@ S" prelimtest.fth" INCLUDED
 S" ttester.fs" INCLUDED
 
 S" core.fr" INCLUDED
-VERBOSE ON
-
 S" coreplustest.fth" INCLUDED
 S" utilities.fth" INCLUDED
 S" errorreport.fth" INCLUDED
@@ -55,7 +53,7 @@ S" localstest.fth" INCLUDED
 S" memorytest.fth" INCLUDED
 S" toolstest.fth" INCLUDED
 S" searchordertest.fth" INCLUDED
-\ S" stringtest.fth" INCLUDED
+S" stringtest.fth" INCLUDED
 REPORT-ERRORS
 
 CR .( Forth tests completed ) CR CR
