@@ -47,11 +47,7 @@ ONLY FORTH DEFINITIONS ALSO STRING-SUBSTITUTE-PRIVATE
    (G The substitution cannot be created;)
    (G The name of a substitution contains the `%' delimiter character.)
    (G REPLACES may allot data space and create a definition. This breaks the contiguity of the current region and is not allowed during compilation of a colon definition)
-   2DUP findSubst IF
-      DROP 2DROP 2DROP
-   ELSE
-      makeSubst
-   THEN
+   makeSubst
 ;
 
 : SUBSTITUTE (S c-addr1 u1 c-addr2 u2 -- c-addr2 u3 n )
