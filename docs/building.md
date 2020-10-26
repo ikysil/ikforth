@@ -18,13 +18,15 @@
   * readline.i686 (CentOS 7+)
 
 ## Dockerized build environment
+
 ```bash
 docker build --rm -f docker/fedora-31/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
 docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c && scons all"
 ```
 
 ## Dockerized run environment
-```
+
+```bash
 docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ```
 
@@ -49,7 +51,8 @@ docker run --rm -it -v $PWD:/opt/ikforth ikforth-build:latest
 ## Build Environment Matrix
 
 ### CentOS 7 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/4.8.5/lto-wrapper
@@ -71,7 +74,8 @@ gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC)
 ```
 
 ### CentOS 8 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/8/lto-wrapper
@@ -95,7 +99,8 @@ gcc version 8.3.1 20190507 (Red Hat 8.3.1-4) (GCC)
 ```
 
 ### Fedora 31 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/libexec/gcc/x86_64-redhat-linux/9/lto-wrapper
@@ -119,7 +124,8 @@ gcc version 9.3.1 20200317 (Red Hat 9.3.1-1) (GCC)
 ```
 
 ### Ubuntu 16.04 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/5/lto-wrapper
@@ -149,7 +155,8 @@ gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.12)
 ```
 
 ### Ubuntu 18.04 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
@@ -179,7 +186,8 @@ gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)
 ```
 
 ### Ubuntu 19.10 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
@@ -209,7 +217,8 @@ gcc version 9.2.1 20191008 (Ubuntu 9.2.1-9ubuntu2)
 ```
 
 ### Ubuntu 20.04 - OK
-```
+
+```plain
 Using built-in specs.
 COLLECT_GCC=gcc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/9/lto-wrapper
