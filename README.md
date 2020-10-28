@@ -2,7 +2,7 @@
 
 **ikforth** is an idiomatic Forth implementation.
 
-[![Build Status](https://travis-ci.org/ikysil/ikforth.svg?branch=master)](https://travis-ci.org/ikysil/ikforth)
+[![Build Status](https://travis-ci.com/ikysil/ikforth.svg?branch=master)](https://travis-ci.com/ikysil/ikforth)
 
 A few facts:
 * 32 bits code
@@ -19,4 +19,3 @@ A few facts:
 
 * https://forth-standard.org/
 * http://www.forth200x.org/
-
