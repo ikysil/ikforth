@@ -8,7 +8,7 @@ docker_run() {
     echo "------------------------------------------------------"
     echo ">>> Executing $*"
     echo "------------------------------------------------------"
-    docker run --rm -it --env BUILD_TAG -v $PWD:/opt/ikforth ikforth-build:latest -c "$*"
+    docker run --rm -i --env BUILD_TAG -v $PWD:/opt/ikforth ikforth-build:latest -c "$*"
 }
 
 check_command() {
