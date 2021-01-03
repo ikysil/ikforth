@@ -44,9 +44,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: IKForth ${RELEASE_TAG}
-          draft: true
+          prerelease: true
           files: |
-            build/ikforth-dist/ikforth-dist-${BUILD_TAG}.tar.gz
-            build/ikforth-dist/ikforth-dist-${BUILD_TAG}.zip
+            build/ikforth-dist/ikforth-dist-${{ env.BUILD_TAG }}.tar.gz
+            build/ikforth-dist/ikforth-dist-${{ env.BUILD_TAG }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
