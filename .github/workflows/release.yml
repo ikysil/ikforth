@@ -43,7 +43,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          name: IKForth ${RELEASE_TAG}
+          name: IKForth ${{ env.RELEASE_TAG }}
           prerelease: true
           files: |
             build/ikforth-dist/ikforth-dist-${{ env.BUILD_TAG }}.tar.gz
