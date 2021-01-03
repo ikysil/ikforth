@@ -41,4 +41,4 @@ jobs:
             build/ikforth-dist/ikforth-dist-${BUILD_TAG}.tar.gz
             build/ikforth-dist/ikforth-dist-${BUILD_TAG}.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}p
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
