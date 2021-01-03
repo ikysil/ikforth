@@ -28,15 +28,23 @@ jobs:
           docker build --rm -f ${DOCKER_FILE} --build-arg RUNUID=$UID -t ikforth-build:latest .
           docker run --rm -i -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c linux all && scons -c win32 all"
 
-      - name: Build IKForth
+      - name: Set build environment variables
         run: |
           export GIT_DESC=`git describe --tags --always --abbrev=8 --dirty=-wip`
-          export BUILD_TAG=${${{ github.ref }}:-${GIT_DESC}}
+          export BUILD_TAG=${GIT_DESC}
+          echo GIT_DESC=$GIT_DESC >> $GITHUB_ENV
+          echo BUILD_TAG=$BUILD_TAG >> $GITHUB_ENV
+          echo RELEASE_TAG=${BUILD_TAG:1} >> $GITHUB_ENV
+
+      - name: Build IKForth
+        run: |
           ./docker/build-ci.sh
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          name: IKForth ${RELEASE_TAG}
+          draft: true
           files: |
             build/ikforth-dist/ikforth-dist-${BUILD_TAG}.tar.gz
             build/ikforth-dist/ikforth-dist-${BUILD_TAG}.zip
