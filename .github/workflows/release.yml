@@ -1,0 +1,44 @@
+# Release Workflow
+
+name: Release
+
+# Controls when the action will run.
+on:
+  push:
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    env:
+      DOCKER_FILE: docker/fedora-33/Dockerfile
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Prepare the build container
+        run: |
+          docker build --rm -f ${DOCKER_FILE} --build-arg RUNUID=$UID -t ikforth-build:latest .
+          docker run --rm -i -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c linux all && scons -c win32 all"
+
+      - name: Build IKForth
+        run: |
+          export GIT_DESC=`git describe --tags --always --abbrev=8 --dirty=-wip`
+          export BUILD_TAG=${${{ github.ref }}:-${GIT_DESC}}
+          ./docker/build-ci.sh
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/ikforth-dist/ikforth-dist-${BUILD_TAG}.tar.gz
+            build/ikforth-dist/ikforth-dist-${BUILD_TAG}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}p
