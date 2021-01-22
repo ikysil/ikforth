@@ -2,9 +2,10 @@
 
 **ikforth** is an idiomatic Forth implementation.
 
-[![Build Status](https://github.com/ikysil/ikforth/workflows/CI/badge.svg?branch=master)](https://github.com/ikysil/ikforth/actions
+[![Build Status](https://github.com/ikysil/ikforth/workflows/CI/badge.svg?branch=master)](https://github.com/ikysil/ikforth/actions)
 
 A few facts:
+
 * 32 bits code
 * Runs on Linux and Windows (tested with Wine)
 * Supports Indirect and Direct Threaded Code representations
@@ -17,5 +18,5 @@ A few facts:
 
 ----
 
-* https://forth-standard.org/
-* http://www.forth200x.org/
+* <https://forth-standard.org/>
+* <http://www.forth200x.org/>
