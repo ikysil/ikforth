@@ -11,7 +11,7 @@ RUN yum -y install \
     yum -y install \
         git \
         wget \
-        python2 python2-pip \
+        python3 python3-pip \
         gcc-c++ \
         glibc-devel.i686 libgcc.i686 libstdc++.i686 readline.i686 \
         glibc-devel libgcc libstdc++ readline \
