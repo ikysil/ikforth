@@ -59,7 +59,7 @@
                 $TRACE_WORD  'REC:WORD'
                 $TRACE_STACK 'REC:WORD-A:',2
                 }
-                CW          $DUP, $ZERO_EQUALS
+                CW          $DUPE, $ZERO_EQUALS
                 _IF         REC_WORD_EMPTY_NAME
                 CW          $DROP, $R_FAIL
                 CW          $EXIT
@@ -67,7 +67,7 @@
                 CW          $SEARCH_NAME     ; ( XT imm-flag | 0 )
                 CW          $QUESTION_DUPE
                 _IF         REC_WORD_SUCCESS
-                CW          $DROP, $DUP, $CODE_TO_NAME, $HFLAGS_FETCH
+                CW          $DROP, $DUPE, $CODE_TO_NAME, $HFLAGS_FETCH
                 CW          $R_WORD
                 _ELSE       REC_WORD_SUCCESS
                 CW          $R_FAIL

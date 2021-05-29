@@ -68,7 +68,7 @@ QDUPZERO:
 
 ;  6.1.1290 DUP
 ;  D: a -- a a
-                $CODE       'DUP',$DUP,VEF_USUAL
+                $CODE       'DUP',$DUPE,VEF_USUAL
                 FETCHDS     EAX
                 PUSHDS      EAX
                 $NEXT

@@ -31,7 +31,7 @@
 ;  D: code-addr xt --
 ;  Create a code field with code address code-addr at xt
                 $COLON      'CODE-ADDRESS!',$CODE_ADDRESS_STORE
-                CW          $DUP
+                CW          $DUPE
                 ; D: code-addr xt xt
                 CWLIT       TMPLT_START
                 ; D: code-addr xt xt CFA_START

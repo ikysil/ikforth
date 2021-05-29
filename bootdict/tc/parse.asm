@@ -23,7 +23,7 @@
                 CFETCH      $TOIN
                 CW          $SLASH_STRING
                 CW          $PPARSE             ; c-addr u
-                CW          $DUP, $CHAR_PLUS, $TOINADD
+                CW          $DUPE, $CHAR_PLUS, $TOINADD
                 $END_COLON
 
 ;  17.6.1.0245 /STRING
@@ -36,7 +36,7 @@
                 $COLON      '/STRING',$SLASH_STRING
                 CW          $TWO_DUPE, $LESS_THAN
                 _IF         SLS_SHORT
-                CW          $DROP, $DUP
+                CW          $DROP, $DUPE
                 _THEN       SLS_SHORT
                 CW          $ROT, $OVER, $PLUS, $MROT, $MINUS
                 $END_COLON
@@ -45,7 +45,7 @@
 ;  c-addr u -- c-addr' u'
                 $COLON      'SKIP-BLANK',$SKIP_BLANK
                 _BEGIN      SKBL_LOOP
-                CW          $DUP, $ZERO_GREATER
+                CW          $DUPE, $ZERO_GREATER
                 _WHILE      SKBL_LOOP
                 CW          $OVER, $C_FETCH, $BL, $ONE_PLUS, $U_LESS_THAN
                 _WHILE      SKBL_LOOP
@@ -58,7 +58,7 @@
 ;  c-addr u -- c-addr' u'
                 $COLON      'SKIP-NON-BLANK',$SKIP_NON_BLANK
                 _BEGIN      SKNBL_LOOP
-                CW          $DUP, $ZERO_GREATER
+                CW          $DUPE, $ZERO_GREATER
                 _WHILE      SKNBL_LOOP
                 CW          $OVER, $C_FETCH, $BL, $U_GREATER_THAN
                 _WHILE      SKNBL_LOOP
@@ -97,7 +97,7 @@
                 CW          $OVER, $TO_R         ; S: c-addr' u' R: c-addr'
                 CW          $SKIP_NON_BLANK     ; S: c-addr" u" R: c-addr'
                 CW          $DROP, $R_FROM, $TUCK, $MINUS
-                CW          $DUP, $CHAR_PLUS, $TOINADD ; fix >IN over parsed name and delimiter
+                CW          $DUPE, $CHAR_PLUS, $TOINADD ; fix >IN over parsed name and delimiter
 
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK '(PARSE-NAME)-D:',2
@@ -126,14 +126,14 @@
 ;  Copy string from c-addr1 to POCKET as counted string and return its address.
 ;  Trim to maximum length of POCKET if needed.
                 $COLON      'S">POCKET',$SQTOPOCKET
-                CW          $DUP
+                CW          $DUPE
                 CCLIT       SLPOCKET - 1
                 CW          $U_GREATER_THAN
                 _IF         SQTOPOCKET_TOO_LONG
                 CW          $DROP
                 CCLIT       SLPOCKET - 1
                 _THEN       SQTOPOCKET_TOO_LONG
-                CW          $DUP, $POCKET, $DUP, $TO_R, $C_STORE
+                CW          $DUPE, $POCKET, $DUPE, $TO_R, $C_STORE
                 CW          $R_FETCH, $ONE_PLUS, $SWAP
                 CW          $TWO_DUPE, $TWO_TO_R, $CMOVE, $TWO_R_FROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
@@ -143,13 +143,13 @@
 ;  ,S"
 ;  S: c-addr count --
                 $COLON      ',S"',$COMMA_SQUOTE
-                CW          $DUP, $COMMA, $HERE, $OVER, $ALLOT, $SWAP, $CMOVE
+                CW          $DUPE, $COMMA, $HERE, $OVER, $ALLOT, $SWAP, $CMOVE
                 $END_COLON
 
 ;  (S")
 ;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
-                CW          $R_FROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $TWO_DUPE, $PLUS, $TO_R, $SWAP
+                CW          $R_FROM, $DUPE, $FETCH, $SWAP, $CELL_PLUS, $TWO_DUPE, $PLUS, $TO_R, $SWAP
                 $END_COLON
 
 ;  S"-COMP
@@ -175,7 +175,7 @@
 ;  Size of the buffer is provided by /S"BUFFER
                 $COLON      '+S"BUFFER',$PLSQBUFFER
                 CFETCH      $SQINDEX
-                CW          $ONE_PLUS, $SQINDEX_MASK, $AND, $DUP
+                CW          $ONE_PLUS, $SQINDEX_MASK, $AND, $DUPE
                 CSTORE      $SQINDEX
                 CW          $SLSQBUFFER, $STAR, $SQBUFFER, $PLUS
                 $END_COLON

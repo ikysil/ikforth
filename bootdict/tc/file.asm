@@ -102,7 +102,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $DROP
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $TOIN
-                CW          $CURRENT_FILE_POSITION, $TWO_STORE, $DUP, $SOURCE_ID_STORE, $ZERO_GREATER
+                CW          $CURRENT_FILE_POSITION, $TWO_STORE, $DUPE, $SOURCE_ID_STORE, $ZERO_GREATER
                 _IF         RESTORE_INPUT_FILE_FILE
                 ; restore file position
                 CW          $CURRENT_FILE_POSITION, $TWO_FETCH, $SOURCE_ID, $REPOSITION_FILE, $THROW
@@ -114,7 +114,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 $TRACE_WORD  'RESTORE-INPUT-FILE'
                 $TRACE_STACK 'RESTORE-INPUT-A:',3
                 }
-                CW          $THROW, $DROP, $DUP
+                CW          $THROW, $DROP, $DUPE
                 CSTORE      $HASH_FILE_LINE
                 CFETCH      $TOIN
                 CW          $GREATER_THAN
@@ -129,11 +129,11 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
 
 ;  RESET-INPUT for file
                 $NONAME     $RESET_INPUT_FILE
-                CW          $ZERO, $DUP
+                CW          $ZERO, $DUPE
                 CSTORE      $TOIN
-                CW          $DUP, $SOURCE_ID_STORE
+                CW          $DUPE, $SOURCE_ID_STORE
                 CW          $ZERO
-                CW          $DUP
+                CW          $DUPE
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $ERROR_LINE_NUM
                 CW          $S_TO_D, $CURRENT_FILE_POSITION, $TWO_STORE

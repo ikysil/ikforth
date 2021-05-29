@@ -36,17 +36,17 @@
 ;  DO-RECOGNIZER
 ;  c-addr len rec-id -- i*x R:TABLE | R:FAIL
                 $COLON      'DO-RECOGNIZER',$DO_RECOGNIZER
-                CW          $DUP, $TO_R, $FETCH
+                CW          $DUPE, $TO_R, $FETCH
                 _BEGIN      DO_REC_LOOP
                 ; S: c-addr len rec-count
-                CW          $DUP
+                CW          $DUPE
                 _WHILE      DO_REC_LOOP
-                CW          $DUP, $CELLS, $R_FETCH, $PLUS, $FETCH
+                CW          $DUPE, $CELLS, $R_FETCH, $PLUS, $FETCH
                 ; S: c-addr len rec-count rec-xt R: rec-id
                 CW          $TWO_OVER, $TWO_TO_R, $SWAP, $ONE_MINUS, $TO_R
                 ; S: c-addr len rec-xt R: rec-id c-addr len rec-count'
                 CW          $EXECUTE
-                CW          $DUP, $R_FAIL, $NOT_EQUALS
+                CW          $DUPE, $R_FAIL, $NOT_EQUALS
                 _IF         DO_REC_FOUND
                 CW          $TWO_R_FROM, $TWO_DROP, $TWO_R_FROM, $TWO_DROP
                 ; S: R:TABLE

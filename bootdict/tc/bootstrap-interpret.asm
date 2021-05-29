@@ -3,7 +3,7 @@
                 CFETCH      $SF
                 CFETCH      $HASH_SF
                 CWLIT       $INCLUDED
-                CW          $CATCH, $DUP, $EXIT_CODE, $STORE, $QUESTION_DUPE
+                CW          $CATCH, $DUPE, $EXIT_CODE, $STORE, $QUESTION_DUPE
                 _IF         BSI_HAS_EXCEPTION
                 $CR
                 $CR
@@ -24,7 +24,7 @@
                 CW          $POCKET, $COUNT, $TYPE
                 $CR
                 $WRITE      'Latest vocabulary entry: '
-                CW          $LATEST_NAME_FETCH, $NAME_TO_STRING, $DUP, $ZERO_NOT_EQUALS
+                CW          $LATEST_NAME_FETCH, $NAME_TO_STRING, $DUPE, $ZERO_NOT_EQUALS
                 _IF         BSI_ERROR_HAS_NAME
                 CW          $TYPE
                 _ELSE       BSI_ERROR_HAS_NAME

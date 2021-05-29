@@ -9,5 +9,5 @@
                 $COLON      'POSTPONE',,VEF_IMMEDIATE
                 CW          $PARSE_NAME
                 CW          $FORTH_RECOGNIZER, $DO_RECOGNIZER
-                CW          $DUP, $TO_R, $R2POST, $EXECUTE, $R_FROM, $R2COMP, $COMPILEC
+                CW          $DUPE, $TO_R, $R2POST, $EXECUTE, $R_FROM, $R2COMP, $COMPILEC
                 $END_COLON

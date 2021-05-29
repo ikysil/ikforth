@@ -18,17 +18,17 @@
 ;  SET-HFLAGS!
 ;  D: flags --
                 $COLON      'SET-HFLAGS!'
-                CW          $LATEST_NAME_FETCH, $DUP, $HFLAGS_FETCH, $ROT, $OR, $SWAP, $HFLAGS_STORE
+                CW          $LATEST_NAME_FETCH, $DUPE, $HFLAGS_FETCH, $ROT, $OR, $SWAP, $HFLAGS_STORE
                 $END_COLON
 
 ;  RESET-HFLAGS!
 ;  D: flags --
                 $COLON      'RESET-HFLAGS!'
-                CW          $LATEST_NAME_FETCH, $DUP, $HFLAGS_FETCH, $ROT, $INVERT, $AND, $SWAP, $HFLAGS_STORE
+                CW          $LATEST_NAME_FETCH, $DUPE, $HFLAGS_FETCH, $ROT, $INVERT, $AND, $SWAP, $HFLAGS_STORE
                 $END_COLON
 
 ;  INVERT-HFLAGS!
 ;  D: flags --
                 $COLON      'INVERT-HFLAGS!'
-                CW          $LATEST_NAME_FETCH, $DUP, $HFLAGS_FETCH, $ROT, $X_OR, $SWAP, $HFLAGS_STORE
+                CW          $LATEST_NAME_FETCH, $DUPE, $HFLAGS_FETCH, $ROT, $X_OR, $SWAP, $HFLAGS_STORE
                 $END_COLON

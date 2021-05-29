@@ -51,7 +51,7 @@
 ;  INTERPRET-TEXT!
 ;  Save current SOURCE for error reporting purposes
                 $COLON      'INTERPRET-TEXT!',$INTERPRET_TEXT_STORE
-                CW          $SOURCE, $DUP
+                CW          $SOURCE, $DUPE
                 CSTORE      $HASH_INTERPRET_TEXT
                 CW          $INTERPRET_TEXT, $SWAP, $CMOVE
                 CW          $INTERPRET_TEXT, $HASH_INTERPRET_TEXT, $REFILL_SOURCE, $TWO_STORE
@@ -63,7 +63,7 @@
                 $COLON      'INTERPRET',$INTERPRET
                 CW          $INTERPRET_TEXT_STORE
                 _BEGIN      INT_LOOP
-                CW          $PARSE_NAME, $DUP
+                CW          $PARSE_NAME, $DUPE
                 _WHILE      INT_LOOP                    ; exit loop if parse area is exhausted
                 CW          $INTERPRET_WORD
                 _REPEAT     INT_LOOP

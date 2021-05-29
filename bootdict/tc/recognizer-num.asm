@@ -19,7 +19,7 @@
                 $COLON      'IL-CHECK-SIGN',$ILCS
                 CW          $FALSE
                 CSTORE      $TONUMBER_SIGNED
-                CW          $OVER, $C_FETCH, $DUP
+                CW          $OVER, $C_FETCH, $DUPE
                 CCLIT       '-'
                 CW          $NOT_EQUALS
                 CQBR        ILCS_SIGNED
@@ -41,7 +41,7 @@ ILCS_EXIT:
 ;  Return literal and TRUE if successful.
 ;  Return remaining literal string to convert and FALSE if not successful.
                 $COLON      'IL-CHECK-LIT',$ILCL
-                CW          $ZERO, $DUP, $TWO_SWAP, $TONUMBER, $DUP, $ZERO_EQUALS
+                CW          $ZERO, $DUPE, $TWO_SWAP, $TONUMBER, $DUPE, $ZERO_EQUALS
                 _IF         ILCL_TONUMBER_SUCCESS
                 CW          $TWO_DROP, $DROP
                 CFETCH      $TONUMBER_SIGNED
@@ -101,10 +101,10 @@ ILC2L_EXIT:
                 $TRACE_WORD  'REC:NUM'
                 $TRACE_STACK 'REC:NUM-A:',2
                 }
-                CW          $DUP, $ZERO, $NOT_EQUALS
+                CW          $DUPE, $ZERO, $NOT_EQUALS
                 CQBR        RECN_FAIL
                 CW          $ILCS       ; c-addr u
-                CW          $DUP        ; c-addr u u
+                CW          $DUPE        ; c-addr u u
                 CCLIT       1
                 CW          $EQUALS
                 CQBR        RECN_OK1    ; branch if u <> 1

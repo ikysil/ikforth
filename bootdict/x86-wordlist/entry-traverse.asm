@@ -64,11 +64,11 @@
 ;   D: nt -- nt-next | 0
 ;   Fetch nt of the previous word.
                 $COLON      'NAME>NEXT',$NAME_TO_NEXT
-                CW          $DUP, $ZERO_EQUALS
+                CW          $DUPE, $ZERO_EQUALS
                 _IF         NTNEXT_LAST
                 CW          $EXIT
                 _THEN       NTNEXT_LAST
-                CW          $NAME_TO_LINK, $DUP, $FETCH, $DUP
+                CW          $NAME_TO_LINK, $DUPE, $FETCH, $DUPE
                 _IF         NTNEXT_HASNEXT
                 CW          $MINUS
                 _ELSE       NTNEXT_HASNEXT
@@ -85,7 +85,7 @@
                 $COLON      'NAME>STRING',$NAME_TO_STRING
                 CCLIT       2
                 CW          $MINUS
-                CW          $DUP                    ; S: name-len-addr name-len-addr
+                CW          $DUPE                    ; S: name-len-addr name-len-addr
                 CW          $C_FETCH                 ; S: name-len-addr name-len
                 CW          $SWAP, $OVER            ; S: name-len name-len-addr name-len
                 CW          $MINUS
@@ -96,7 +96,7 @@
 ;   (S nt -- addr | 0 )
 ;   (G NAME>LOCATE returns the address of the locate information of the word nt or 0 if it is not recorded. )
                 $COLON      'NAME>LOCATE',$NAME_TO_LOCATE
-                CW          $DUP, $HFLAGS_FETCH
+                CW          $DUPE, $HFLAGS_FETCH
                 CW          $AMPLOCATE, $AND
                 _IF         NTL_HAS_LOCATE
                 CW          $NAME_TO_STRING, $DROP

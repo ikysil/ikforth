@@ -65,11 +65,11 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CHECK-NAME
 ;  D: c-addr count -- c-addr count
                 $COLON      'CHECK-NAME',$CHECK_NAME
-                CW          $DUP, $ZERO_EQUALS
+                CW          $DUPE, $ZERO_EQUALS
                 _IF         CHECK_NAME_TOO_SHORT
                 CTHROW  -16
                 _THEN       CHECK_NAME_TOO_SHORT
-                CW          $DUP
+                CW          $DUPE
                 CFETCH      $MAX_NAME_LENGTH
                 CW          $GREATER_THAN
                 _IF         CHECK_NAME_TOO_LONG
@@ -125,7 +125,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CREATE-LINK,
 ;  Compile link to the previous definition
                 $COLON      'CREATE-LINK,',$CREATE_LINK_C
-                CW          $HERE, $DUP, $LATEST_NAME_FETCH
+                CW          $HERE, $DUPE, $LATEST_NAME_FETCH
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'CREATE-LINK,-A:',2
                 }
@@ -144,7 +144,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 _IF         PHEADERC_HAS_NAME
                 CW          $HERE                   ; count c-addr count here
                 CW          $SWAP                   ; count c-addr here count
-                CW          $DUP
+                CW          $DUPE
                 CW          $ALLOT
                 CW          $CMOVE                  ; put name
                 _ELSE       PHEADERC_HAS_NAME
@@ -165,7 +165,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $HERE, $HOUT8
                 $WRITE      '  '
                 }
-                CW          $DUP
+                CW          $DUPE
                 ;  D: [ code-addr | 0 ] [ code-addr | 0 ]
                 CW          $ZERO_EQUALS
                 ;  D: [ code-addr | 0 ] eq-zero-flag
