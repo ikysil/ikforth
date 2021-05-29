@@ -31,7 +31,7 @@
 ;  Copy value from the return stack to data stack
 ;  R: a -- a
 ;  D:   -- a
-                $CODE       'R@',$RFETCH,VEF_USUAL
+                $CODE       'R@',$R_FETCH,VEF_USUAL
                 FETCHRS     EAX
                 PUSHDS      EAX
                 $NEXT

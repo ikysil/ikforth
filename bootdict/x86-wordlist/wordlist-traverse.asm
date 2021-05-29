@@ -49,7 +49,7 @@
                 _BEGIN      STDWLTW_LOOP
                 CW          $DUP, $ZERO_NOT_EQUALS
                 _WHILE      STDWLTW_LOOP
-                CW          $RFETCH, $OVER, $TO_R, $EXECUTE, $R_FROM, $SWAP
+                CW          $R_FETCH, $OVER, $TO_R, $EXECUTE, $R_FROM, $SWAP
                 _IF         STDWLTW_CONTINUE
                 CW          $NAME_TO_NEXT
                 _ELSE       STDWLTW_CONTINUE

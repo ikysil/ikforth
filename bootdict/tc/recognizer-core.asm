@@ -41,7 +41,7 @@
                 ; S: c-addr len rec-count
                 CW          $DUP
                 _WHILE      DO_REC_LOOP
-                CW          $DUP, $CELLS, $RFETCH, $PLUS, $FETCH
+                CW          $DUP, $CELLS, $R_FETCH, $PLUS, $FETCH
                 ; S: c-addr len rec-count rec-xt R: rec-id
                 CW          $2OVER, $2TOR, $SWAP, $ONE_MINUS, $TO_R
                 ; S: c-addr len rec-xt R: rec-id c-addr len rec-count'
