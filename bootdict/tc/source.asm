@@ -93,7 +93,7 @@
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'INPUT>R',12
                 }
-                CW          $N_TO_R, $TOR
+                CW          $N_TO_R, $TO_R
                 $END_COLON
 
 ;  R>INPUT
@@ -102,5 +102,5 @@
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'R>INPUT',12
                 }
-                CW          $RESTORE_INPUT, $THROW, $TOR
+                CW          $RESTORE_INPUT, $THROW, $TO_R
                 $END_COLON

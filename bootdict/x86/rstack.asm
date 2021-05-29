@@ -13,7 +13,7 @@
 ;  Move value from the data stack to return stack
 ;  D: a --
 ;  R:   -- a
-                $CODE       '>R',$TOR,VEF_COMPILE_ONLY
+                $CODE       '>R',$TO_R,VEF_COMPILE_ONLY
                 POPDS       EAX
                 PUSHRS      EAX
                 $NEXT

@@ -51,7 +51,7 @@
 ;  6.1.1550 FIND
 ;  D: ( c-addr -- c-addr 0 | xt 1 | xt -1 )
                 $COLON      'FIND',$FIND
-                CW          $DUP, $TOR, $COUNT, $SEARCH_NAME, $DUP, $ZERO_NOT_EQUALS
+                CW          $DUP, $TO_R, $COUNT, $SEARCH_NAME, $DUP, $ZERO_NOT_EQUALS
                 _IF         FF_FOUND
                 CW          $RFROM, $DROP
                 _ELSE       FF_FOUND

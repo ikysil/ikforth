@@ -98,7 +98,7 @@
                 CWLIT       $PEXC_POP_THROW
                 CW          $TOEXC, $EXCPFETCH, $EXC_FRAME_PUSH, $TOEXC, $EXCPFETCH
                 CSTORE      $EXCEPTION_HANDLER
-                CW          $TOR
+                CW          $TO_R
                 $END_COLON
 
 ;  pop exception frame from exception stack
@@ -132,7 +132,7 @@
                 $COLON      '(EXC-POP-THROW)',$PEXC_POP_THROW
                 CW          $EXCFROM, $RPSTORE, $EXCFROM
                 CSTORE      $EXCEPTION_HANDLER
-                CW          $EXCFROM, $SWAP, $TOR, $SPSTORE, $DROP, $RFROM
+                CW          $EXCFROM, $SWAP, $TO_R, $SPSTORE, $DROP, $RFROM
                 $END_COLON
 
 ;  9.6.1.0875 CATCH

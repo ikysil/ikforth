@@ -83,7 +83,7 @@
                 $TRACE_STACK '(PARSE-NAME)-A:',3
                 }
 
-                CW          $OVER, $TOR         ; S: c-addr u R: c-addr
+                CW          $OVER, $TO_R         ; S: c-addr u R: c-addr
                 CW          $SKIP_BLANK         ; S: c-addr' u' R: c-addr
                 CW          $OVER, $RFROM, $MINUS, $TOINADD ; fix >IN over skipped spaces
 
@@ -94,7 +94,7 @@
                 CW          $2DUP, $TYPE
                 }
 
-                CW          $OVER, $TOR         ; S: c-addr' u' R: c-addr'
+                CW          $OVER, $TO_R         ; S: c-addr' u' R: c-addr'
                 CW          $SKIP_NON_BLANK     ; S: c-addr" u" R: c-addr'
                 CW          $DROP, $RFROM, $TUCK, $MINUS
                 CW          $DUP, $CHAR_PLUS, $TOINADD ; fix >IN over parsed name and delimiter
@@ -133,7 +133,7 @@
                 CW          $DROP
                 CCLIT       SLPOCKET - 1
                 _THEN       SQTOPOCKET_TOO_LONG
-                CW          $DUP, $POCKET, $DUP, $TOR, $C_STORE
+                CW          $DUP, $POCKET, $DUP, $TO_R, $C_STORE
                 CW          $RFETCH, $ONE_PLUS, $SWAP
                 CW          $2DUP, $2TOR, $CMOVE, $2RFROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
@@ -149,7 +149,7 @@
 ;  (S")
 ;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
-                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $PLUS, $TOR, $SWAP
+                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $PLUS, $TO_R, $SWAP
                 $END_COLON
 
 ;  S"-COMP

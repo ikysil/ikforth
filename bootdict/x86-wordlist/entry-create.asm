@@ -137,7 +137,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  Compile header without CFA
 ;  D: [ 0 0 | c-addr count ] flags --
                 $COLON      '(HEADER,)',$PHEADERC
-                CW          $TOR
+                CW          $TO_R
                 CW          $SWAP                   ; count c-addr
                 CW          $OVER                   ; count c-addr count
                 CW          $QDUP
@@ -197,12 +197,12 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
                 $COLON      'CHECK-HEADER,',$CHECK_HEADERC
-                CW          $TOR, $CHECK_NAME, $REPORT_NAME, $RFROM, $HEADERC
+                CW          $TO_R, $CHECK_NAME, $REPORT_NAME, $RFROM, $HEADERC
                 $END_COLON
 
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
                 $COLON      'PARSE-CHECK-HEADER,',$PARSE_CHECK_HEADERC
-                CW          $TOR, $PARSE_NAME, $RFROM, $CHECK_HEADERC
+                CW          $TO_R, $PARSE_NAME, $RFROM, $CHECK_HEADERC
                 $END_COLON
 

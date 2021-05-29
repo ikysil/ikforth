@@ -45,11 +45,11 @@
 ; ( i * x xt wid -- j * x )
                 $COLON      'STDWL-TRAVERSE',$STDWL_TRAVERSE
                 CW          $WLTOLATEST, $FETCH
-                CW          $SWAP, $TOR
+                CW          $SWAP, $TO_R
                 _BEGIN      STDWLTW_LOOP
                 CW          $DUP, $ZERO_NOT_EQUALS
                 _WHILE      STDWLTW_LOOP
-                CW          $RFETCH, $OVER, $TOR, $EXECUTE, $RFROM, $SWAP
+                CW          $RFETCH, $OVER, $TO_R, $EXECUTE, $RFROM, $SWAP
                 _IF         STDWLTW_CONTINUE
                 CW          $NAME_TO_NEXT
                 _ELSE       STDWLTW_CONTINUE
