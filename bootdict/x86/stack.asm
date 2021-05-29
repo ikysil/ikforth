@@ -38,7 +38,7 @@ QDUPZERO:
 
 ;  6.1.0400 2OVER
 ;  D: a b c d -- a b c d a b
-                $CODE       '2OVER',$2OVER,VEF_USUAL
+                $CODE       '2OVER',$TWO_OVER,VEF_USUAL
                 FETCHDS     EAX,3
                 FETCHDS     EBX,2
                 PUSHDS      EAX

@@ -19,7 +19,7 @@
                 _IF         STDWL_SEARCH_NAME_HIDDEN
                 CW          $TWO_DROP, $FALSE, $TRUE, $EXIT
                 _THEN       STDWL_SEARCH_NAME_HIDDEN
-                CW          $2OVER
+                CW          $TWO_OVER
                 CCLIT       2
                 CW          $PICK
                 ; S: c-addr u 0 nt c-addr u nt

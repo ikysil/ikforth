@@ -43,7 +43,7 @@
                 _WHILE      DO_REC_LOOP
                 CW          $DUP, $CELLS, $R_FETCH, $PLUS, $FETCH
                 ; S: c-addr len rec-count rec-xt R: rec-id
-                CW          $2OVER, $TWO_TO_R, $SWAP, $ONE_MINUS, $TO_R
+                CW          $TWO_OVER, $TWO_TO_R, $SWAP, $ONE_MINUS, $TO_R
                 ; S: c-addr len rec-xt R: rec-id c-addr len rec-count'
                 CW          $EXECUTE
                 CW          $DUP, $R_FAIL, $NOT_EQUALS
