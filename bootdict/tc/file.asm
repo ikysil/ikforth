@@ -89,7 +89,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
 
 ;  SAVE-INPUT for file
                 $NONAME     $SAVE_INPUT_FILE
-                CW          $SOURCE_ID, $CURRENT_FILE_POSITION, $2FETCH
+                CW          $SOURCE_ID, $CURRENT_FILE_POSITION, $TWO_FETCH
                 CFETCH      $TOIN
                 CFETCH      $INCLUDE_LINE_NUM
                 CWLIT       $RESTORE_INPUT_FILE
@@ -105,7 +105,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $CURRENT_FILE_POSITION, $TWO_STORE, $DUP, $SOURCE_ID_STORE, $ZEROGR
                 _IF         RESTORE_INPUT_FILE_FILE
                 ; restore file position
-                CW          $CURRENT_FILE_POSITION, $2FETCH, $SOURCE_ID, $REPOSITION_FILE, $THROW
+                CW          $CURRENT_FILE_POSITION, $TWO_FETCH, $SOURCE_ID, $REPOSITION_FILE, $THROW
                 ; re-read last line
                 CW          $FILE_LINE
                 CCLIT       MAX_FILE_LINE_LENGTH

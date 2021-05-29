@@ -40,7 +40,7 @@
 ;  ( a-addr -- x1 x2 )
 ;  Fetch the cell pair x1 x2 stored at a-addr. x2 is stored at a-addr and x1 at the next consecutive cell.
 ;  It is equivalent to the sequence DUP CELL+ @ SWAP @.
-                $CODE       '2@',$2FETCH,VEF_USUAL
+                $CODE       '2@',$TWO_FETCH,VEF_USUAL
                 POPDS       EBX
                 PUSHDS      <DWORD [EBX + CELL_SIZE]>
                 PUSHDS      <DWORD [EBX]>

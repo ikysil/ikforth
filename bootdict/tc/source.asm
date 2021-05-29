@@ -31,7 +31,7 @@
 
 ;  REPORT-REFILL
                 $COLON      'REPORT-REFILL',$REPORT_REFILL
-                CW          $REFILL_SOURCE, $2FETCH
+                CW          $REFILL_SOURCE, $TWO_FETCH
                 CFETCH      $INCLUDE_LINE_NUM
                 CW          $PREPORT_SOURCE
                 $END_COLON
