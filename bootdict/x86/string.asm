@@ -34,7 +34,7 @@ CMOVE_EXIT:
 ;  If u is greater than zero, copy u consecutive characters from the data space
 ;  starting at c-addr1 to that starting at c-addr2, proceeding character-by-character
 ;  from higher addresses to lower addresses.
-                $CODE       'CMOVE>',$CMOVEGR
+                $CODE       'CMOVE>',$C_MOVE_UP
                 PUSHRS      EDI
                 PUSHRS      ESI
                 POPDS       ECX
