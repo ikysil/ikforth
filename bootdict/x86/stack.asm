@@ -102,7 +102,7 @@ QDUPZERO:
 
 ;  8.6.2.0420 2ROT
 ;  D: a1 a2 b1 b2 c1 c2 -- b1 b2 c1 c2 a1 a2
-                $CODE       '2ROT',$2ROT,VEF_USUAL
+                $CODE       '2ROT',$TWO_ROTE,VEF_USUAL
                 PUSHRS      EDI
                 PUSHRS      ESI
                 POPDS       EDX     ;\ c2
