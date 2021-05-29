@@ -67,7 +67,7 @@
 
 ;  6.1.0250 0<
 ;  D: a -- flag ( a < 0 )
-                $CODE       '0<',$ZEROLE,VEF_USUAL
+                $CODE       '0<',$ZERO_LESS,VEF_USUAL
                 COMPZ_OP    L
                 $NEXT
 
