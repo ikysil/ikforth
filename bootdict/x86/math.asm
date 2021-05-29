@@ -90,7 +90,7 @@
 ;  6.1.1810 M*
 ;  d is the signed product of n1 times n2.
 ;  D: n1 n2 -- d
-                $CODE       'M*',$MMUL,VEF_USUAL
+                $CODE       'M*',$M_STAR,VEF_USUAL
                 POPDS       EAX
                 POPDS       EBX
                 IMUL        EBX
