@@ -49,7 +49,7 @@
 ;  6.2.0410 2R>
 ;  D:     -- a b
 ;  R: a b --
-                $CODE       '2R>',$2RFROM,VEF_COMPILE_ONLY
+                $CODE       '2R>',$TWO_R_FROM,VEF_COMPILE_ONLY
                 POPRS       EBX
                 POPRS       EAX
                 PUSHDS      EAX
