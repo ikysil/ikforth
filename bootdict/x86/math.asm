@@ -128,7 +128,7 @@
 ;  Multiply u1 by u2, giving the unsigned double-cell product ud.
 ;  All values and arithmetic are unsigned.
 ;  D: u1 u2 -- ud
-                $CODE       'UM*',$UMMUL,VEF_USUAL
+                $CODE       'UM*',$U_M_STAR,VEF_USUAL
                 POPDS       EBX
                 POPDS       EAX
                 MUL         EBX
