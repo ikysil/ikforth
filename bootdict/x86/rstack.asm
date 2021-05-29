@@ -39,7 +39,7 @@
 ;  6.2.0340 2>R
 ;  D: a b --
 ;  R:     -- a b
-                $CODE       '2>R',$2TOR,VEF_COMPILE_ONLY
+                $CODE       '2>R',$TWO_TO_R,VEF_COMPILE_ONLY
                 POPDS       EBX
                 POPDS       EAX
                 PUSHRS      EAX

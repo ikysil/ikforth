@@ -135,7 +135,7 @@
                 _THEN       SQTOPOCKET_TOO_LONG
                 CW          $DUP, $POCKET, $DUP, $TO_R, $C_STORE
                 CW          $R_FETCH, $ONE_PLUS, $SWAP
-                CW          $2DUP, $2TOR, $CMOVE, $2RFROM
+                CW          $2DUP, $TWO_TO_R, $CMOVE, $2RFROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
                 CW          $R_FROM
                 $END_COLON
@@ -185,7 +185,7 @@
 ;  Copy string from c-addr1 to a temporary buffer and return it's address c-addr2.
 ;  u2 is the actual number of characters copied.
                 $COLON      '>S"BUFFER',$TOSQBUFFER
-                CW          $PLSQBUFFER, $SWAP, $2DUP, $2TOR, $CMOVE, $2RFROM
+                CW          $PLSQBUFFER, $SWAP, $2DUP, $TWO_TO_R, $CMOVE, $2RFROM
                 $END_COLON
 
 ;  S"-INT
