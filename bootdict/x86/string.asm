@@ -14,7 +14,7 @@
 ;  If u is greater than zero, copy u consecutive characters from the data space
 ;  starting at c-addr1 to that starting at c-addr2, proceeding character-by-character
 ;  from lower addresses to higher addresses.
-                $CODE       'CMOVE',$CMOVE
+                $CODE       'CMOVE',$C_MOVE
                 PUSHRS      EDI
                 PUSHRS      ESI
                 POPDS       ECX

@@ -59,7 +59,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  Compile the machine code for $NEXT primitive of inner interpreter at addr address.
 ;  D: addr --
                 $COLON      '$NEXT!',$NEXTSTORE
-                CW          $NEXT_CODE, $SWAP, $NEXT_CODE_SIZE, $CMOVE
+                CW          $NEXT_CODE, $SWAP, $NEXT_CODE_SIZE, $C_MOVE
                 $END_COLON
 
 ;  CHECK-NAME
@@ -146,7 +146,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $SWAP                   ; count c-addr here count
                 CW          $DUPE
                 CW          $ALLOT
-                CW          $CMOVE                  ; put name
+                CW          $C_MOVE                  ; put name
                 _ELSE       PHEADERC_HAS_NAME
                 CW          $DROP
                 _THEN       PHEADERC_HAS_NAME

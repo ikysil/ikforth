@@ -39,7 +39,7 @@
                 ; D: code-addr xt CFA_START xt
                 CCLIT       CFA_SIZE
                 ; D: code-addr xt CFA_START xt CFA_SIZE
-                CW          $CMOVE
+                CW          $C_MOVE
                 ; D: code-addr xt
                 CW          $CFASTORE
                 $END_COLON

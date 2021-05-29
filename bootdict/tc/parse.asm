@@ -135,7 +135,7 @@
                 _THEN       SQTOPOCKET_TOO_LONG
                 CW          $DUPE, $POCKET, $DUPE, $TO_R, $C_STORE
                 CW          $R_FETCH, $ONE_PLUS, $SWAP
-                CW          $TWO_DUPE, $TWO_TO_R, $CMOVE, $TWO_R_FROM
+                CW          $TWO_DUPE, $TWO_TO_R, $C_MOVE, $TWO_R_FROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
                 CW          $R_FROM
                 $END_COLON
@@ -143,7 +143,7 @@
 ;  ,S"
 ;  S: c-addr count --
                 $COLON      ',S"',$COMMA_SQUOTE
-                CW          $DUPE, $COMMA, $HERE, $OVER, $ALLOT, $SWAP, $CMOVE
+                CW          $DUPE, $COMMA, $HERE, $OVER, $ALLOT, $SWAP, $C_MOVE
                 $END_COLON
 
 ;  (S")
@@ -185,7 +185,7 @@
 ;  Copy string from c-addr1 to a temporary buffer and return it's address c-addr2.
 ;  u2 is the actual number of characters copied.
                 $COLON      '>S"BUFFER',$TOSQBUFFER
-                CW          $PLSQBUFFER, $SWAP, $TWO_DUPE, $TWO_TO_R, $CMOVE, $TWO_R_FROM
+                CW          $PLSQBUFFER, $SWAP, $TWO_DUPE, $TWO_TO_R, $C_MOVE, $TWO_R_FROM
                 $END_COLON
 
 ;  S"-INT
