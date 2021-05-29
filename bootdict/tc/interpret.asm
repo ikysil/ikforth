@@ -54,7 +54,7 @@
                 CW          $SOURCE, $DUP
                 CSTORE      $HASH_INTERPRET_TEXT
                 CW          $INTERPRET_TEXT, $SWAP, $CMOVE
-                CW          $INTERPRET_TEXT, $HASH_INTERPRET_TEXT, $REFILL_SOURCE, $2STORE
+                CW          $INTERPRET_TEXT, $HASH_INTERPRET_TEXT, $REFILL_SOURCE, $TWO_STORE
                 CFETCH      $INCLUDE_LINE_NUM
                 CSTORE      $ERROR_LINE_NUM
                 $END_COLON

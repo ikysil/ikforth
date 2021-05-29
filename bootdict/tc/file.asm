@@ -24,7 +24,7 @@
                 $TRACE_WORD  'REFILL-FILE'
                 $TRACE_STACK 'REFILL-FILE-B:',3
                 }
-                CW          $THROW, $CURRENT_FILE_POSITION, $2STORE
+                CW          $THROW, $CURRENT_FILE_POSITION, $TWO_STORE
 
                 CW          $FILE_LINE
                 CCLIT       MAX_FILE_LINE_LENGTH
@@ -102,7 +102,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $DROP
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $TOIN
-                CW          $CURRENT_FILE_POSITION, $2STORE, $DUP, $SOURCE_ID_STORE, $ZEROGR
+                CW          $CURRENT_FILE_POSITION, $TWO_STORE, $DUP, $SOURCE_ID_STORE, $ZEROGR
                 _IF         RESTORE_INPUT_FILE_FILE
                 ; restore file position
                 CW          $CURRENT_FILE_POSITION, $2FETCH, $SOURCE_ID, $REPOSITION_FILE, $THROW
@@ -136,5 +136,5 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $DUP
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $ERROR_LINE_NUM
-                CW          $STOD, $CURRENT_FILE_POSITION, $2STORE
+                CW          $STOD, $CURRENT_FILE_POSITION, $TWO_STORE
                 $END_COLON

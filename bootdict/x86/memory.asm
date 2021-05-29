@@ -30,7 +30,7 @@
 ;  ( x1 x2 a-addr -- )
 ;  Store the cell pair x1 x2 at a-addr, with x2 at a-addr and x1 at the next consecutive cell.
 ;  It is equivalent to the sequence SWAP OVER ! CELL+ !.
-                $CODE       '2!',$2STORE,VEF_USUAL
+                $CODE       '2!',$TWO_STORE,VEF_USUAL
                 POPDS       EBX
                 POPDS       <DWORD [EBX]>
                 POPDS       <DWORD [EBX + CELL_SIZE]>
