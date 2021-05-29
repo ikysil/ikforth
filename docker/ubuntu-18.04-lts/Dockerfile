@@ -2,7 +2,8 @@ FROM ubuntu:18.04
 LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 
 ENV LANG=C.UTF-8 \
-    LC_ALL=C.UTF-8
+    LC_ALL=C.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive
 
 RUN yes | ( dpkg --add-architecture i386 && \
     apt-get update && \
