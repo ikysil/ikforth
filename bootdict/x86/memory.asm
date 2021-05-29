@@ -84,7 +84,7 @@
 
 ;  6.1.0897 CHAR+
 ;  D: addr - addr+charsize
-                $CODE       'CHAR+',$CHARADD,VEF_USUAL
+                $CODE       'CHAR+',$CHAR_PLUS,VEF_USUAL
                 POPDS       EAX
                 INC         EAX
                 PUSHDS      EAX

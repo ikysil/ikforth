@@ -23,7 +23,7 @@
                 CFETCH      $TOIN
                 CW          $SLASH_STRING
                 CW          $PPARSE             ; c-addr u
-                CW          $DUP, $CHARADD, $TOINADD
+                CW          $DUP, $CHAR_PLUS, $TOINADD
                 $END_COLON
 
 ;  17.6.1.0245 /STRING
@@ -97,7 +97,7 @@
                 CW          $OVER, $TOR         ; S: c-addr' u' R: c-addr'
                 CW          $SKIP_NON_BLANK     ; S: c-addr" u" R: c-addr'
                 CW          $DROP, $RFROM, $TUCK, $SUB
-                CW          $DUP, $CHARADD, $TOINADD ; fix >IN over parsed name and delimiter
+                CW          $DUP, $CHAR_PLUS, $TOINADD ; fix >IN over parsed name and delimiter
 
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK '(PARSE-NAME)-D:',2

@@ -31,7 +31,7 @@ ILCS_SIGNED:
                 CW          $DROP, $TRUE
                 CSTORE      $TONUMBER_SIGNED
 ILCS_UNSIGNED:
-                CW          $SWAP, $CHARADD, $SWAP, $1SUB
+                CW          $SWAP, $CHAR_PLUS, $SWAP, $1SUB
 ILCS_EXIT:
                 $END_COLON
 
