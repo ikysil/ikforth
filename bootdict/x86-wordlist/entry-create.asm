@@ -150,9 +150,9 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 _ELSE       PHEADERC_HAS_NAME
                 CW          $DROP
                 _THEN       PHEADERC_HAS_NAME
-                CW          $CCOMMA                 ; compile length
+                CW          $C_COMMA                 ; compile length
                 CW          $RFROM
-                CW          $CCOMMA                 ; compile flags
+                CW          $C_COMMA                 ; compile flags
                 CW          $CREATE_LINK_C
                 $END_COLON
 
