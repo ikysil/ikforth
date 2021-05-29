@@ -71,7 +71,7 @@
 
 ;  6.1.1805 LSHIFT
 ;  D: a b -- a << b
-                $CODE       'LSHIFT',$LSHIFT,VEF_USUAL
+                $CODE       'LSHIFT',$L_SHIFT,VEF_USUAL
                 POPDS       ECX
                 POPDS       EAX
                 SHL         EAX,CL
