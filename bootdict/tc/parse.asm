@@ -45,7 +45,7 @@
 ;  c-addr u -- c-addr' u'
                 $COLON      'SKIP-BLANK',$SKIP_BLANK
                 _BEGIN      SKBL_LOOP
-                CW          $DUP, $ZEROGR
+                CW          $DUP, $ZERO_GREATER
                 _WHILE      SKBL_LOOP
                 CW          $OVER, $C_FETCH, $BL, $1ADD, $ULE
                 _WHILE      SKBL_LOOP
@@ -58,7 +58,7 @@
 ;  c-addr u -- c-addr' u'
                 $COLON      'SKIP-NON-BLANK',$SKIP_NON_BLANK
                 _BEGIN      SKNBL_LOOP
-                CW          $DUP, $ZEROGR
+                CW          $DUP, $ZERO_GREATER
                 _WHILE      SKNBL_LOOP
                 CW          $OVER, $C_FETCH, $BL, $UGR
                 _WHILE      SKNBL_LOOP

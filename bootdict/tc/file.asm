@@ -102,7 +102,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $DROP
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $TOIN
-                CW          $CURRENT_FILE_POSITION, $TWO_STORE, $DUP, $SOURCE_ID_STORE, $ZEROGR
+                CW          $CURRENT_FILE_POSITION, $TWO_STORE, $DUP, $SOURCE_ID_STORE, $ZERO_GREATER
                 _IF         RESTORE_INPUT_FILE_FILE
                 ; restore file position
                 CW          $CURRENT_FILE_POSITION, $TWO_FETCH, $SOURCE_ID, $REPOSITION_FILE, $THROW

@@ -87,7 +87,7 @@
 ;  6.2.0280 0>
 ;  Flag is true if and only if n is greater than zero.
 ;  D: n -- flag
-                $CODE       '0>',$ZEROGR,VEF_USUAL
+                $CODE       '0>',$ZERO_GREATER,VEF_USUAL
                 COMPZ_OP    G
                 $NEXT
 
