@@ -136,5 +136,5 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $DUP
                 CSTORE      $INCLUDE_LINE_NUM
                 CSTORE      $ERROR_LINE_NUM
-                CW          $STOD, $CURRENT_FILE_POSITION, $TWO_STORE
+                CW          $S_TO_D, $CURRENT_FILE_POSITION, $TWO_STORE
                 $END_COLON

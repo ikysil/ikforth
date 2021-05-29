@@ -52,7 +52,7 @@
 ;  Return depth of exception stack
 ;  D:   -- a
                 $COLON      'EXC-DEPTH',$EXCDEPTH,VEF_USUAL
-                CW          $EXCP0, $EXCPFETCH, $MINUS, $STOD
+                CW          $EXCP0, $EXCPFETCH, $MINUS, $S_TO_D
                 CCLIT       CELL_SIZE
                 CW          $U_M_SLASH_MOD, $SWAP, $DROP
                 $END_COLON
