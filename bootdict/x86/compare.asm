@@ -98,7 +98,7 @@
 ;  6.1.2340 U<
 ;  Flag is true if and only if u1 is less than u2.
 ;  D: u1 u2 -- flag ( u1 < u2 )
-                $CODE       'U<',$ULE,VEF_USUAL
+                $CODE       'U<',$U_LESS_THAN,VEF_USUAL
                 COMP_OP     B
                 $NEXT
 

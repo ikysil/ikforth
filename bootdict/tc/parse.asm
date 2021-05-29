@@ -47,7 +47,7 @@
                 _BEGIN      SKBL_LOOP
                 CW          $DUP, $ZERO_GREATER
                 _WHILE      SKBL_LOOP
-                CW          $OVER, $C_FETCH, $BL, $1ADD, $ULE
+                CW          $OVER, $C_FETCH, $BL, $1ADD, $U_LESS_THAN
                 _WHILE      SKBL_LOOP
                 CCLIT       1
                 CW          $SLASH_STRING
