@@ -44,7 +44,7 @@
                 CSTORE      $TOIN
 
                 CFETCH      $INCLUDE_LINE_NUM
-                CW          $1ADD
+                CW          $ONE_PLUS
                 CSTORE      $INCLUDE_LINE_NUM
 
                 CW          $REPORT_SOURCE_STORE

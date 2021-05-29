@@ -37,7 +37,7 @@ __S_END:
                 IF          NAME EQ
                 CW          $LIT
                 CC          LASTWORD + IMAGE_BASE
-                CW          $1ADD, $COUNT, $TYPE
+                CW          $ONE_PLUS, $COUNT, $TYPE
                 ELSE
                 $WRITE      NAME
                 END IF

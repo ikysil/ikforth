@@ -47,7 +47,7 @@
                 _BEGIN      SKBL_LOOP
                 CW          $DUP, $ZERO_GREATER
                 _WHILE      SKBL_LOOP
-                CW          $OVER, $C_FETCH, $BL, $1ADD, $U_LESS_THAN
+                CW          $OVER, $C_FETCH, $BL, $ONE_PLUS, $U_LESS_THAN
                 _WHILE      SKBL_LOOP
                 CCLIT       1
                 CW          $SLASH_STRING
@@ -134,7 +134,7 @@
                 CCLIT       SLPOCKET - 1
                 _THEN       SQTOPOCKET_TOO_LONG
                 CW          $DUP, $POCKET, $DUP, $TOR, $C_STORE
-                CW          $RFETCH, $1ADD, $SWAP
+                CW          $RFETCH, $ONE_PLUS, $SWAP
                 CW          $2DUP, $2TOR, $CMOVE, $2RFROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
                 CW          $RFROM
@@ -175,7 +175,7 @@
 ;  Size of the buffer is provided by /S"BUFFER
                 $COLON      '+S"BUFFER',$PLSQBUFFER
                 CFETCH      $SQINDEX
-                CW          $1ADD, $SQINDEX_MASK, $AND, $DUP
+                CW          $ONE_PLUS, $SQINDEX_MASK, $AND, $DUP
                 CSTORE      $SQINDEX
                 CW          $SLSQBUFFER, $STAR, $SQBUFFER, $PLUS
                 $END_COLON

@@ -39,7 +39,7 @@
 
 ;  6.1.0290 1+
 ;  D: a -- a+1
-                $CODE       '1+',$1ADD,VEF_USUAL
+                $CODE       '1+',$ONE_PLUS,VEF_USUAL
                 POPDS       EAX
                 INC         EAX
                 PUSHDS      EAX
