@@ -47,7 +47,7 @@ QDUPZERO:
 
 ;  6.1.0430 2SWAP
 ;  D: a b c d -- c d a b
-                $CODE       '2SWAP',$2SWAP,VEF_USUAL
+                $CODE       '2SWAP',$TWO_SWAP,VEF_USUAL
                 POPDS       EDX
                 POPDS       ECX
                 POPDS       EBX

@@ -28,7 +28,7 @@
                 CW          $NAMEEQ
                 _IF         STDWL_SEARCH_NAME_FOUND
                 ; S: c-addr u 0 nt
-                CW          $2SWAP, $TWO_DROP, $NIP
+                CW          $TWO_SWAP, $TWO_DROP, $NIP
                 ; S: nt
                 CW          $DUP, $NAME_TO_CODE, $SWAP
                 CW          $HFLAGS_FETCH, $AMPIMMEDIATE, $AND

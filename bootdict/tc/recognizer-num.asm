@@ -41,7 +41,7 @@ ILCS_EXIT:
 ;  Return literal and TRUE if successful.
 ;  Return remaining literal string to convert and FALSE if not successful.
                 $COLON      'IL-CHECK-LIT',$ILCL
-                CW          $ZERO, $DUP, $2SWAP, $TONUMBER, $DUP, $ZERO_EQUALS
+                CW          $ZERO, $DUP, $TWO_SWAP, $TONUMBER, $DUP, $ZERO_EQUALS
                 _IF         ILCL_TONUMBER_SUCCESS
                 CW          $TWO_DROP, $DROP
                 CFETCH      $TONUMBER_SIGNED
