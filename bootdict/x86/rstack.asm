@@ -22,7 +22,7 @@
 ;  Interpretation: Interpretation semantics for this word are undefined.
 ;  Execution: ( -- x ) ( R:  x -- )
 ;    Move x from the return stack to the data stack.
-                $CODE       'R>',$RFROM,VEF_COMPILE_ONLY
+                $CODE       'R>',$R_FROM,VEF_COMPILE_ONLY
                 POPRS       EAX
                 PUSHDS      EAX
                 $NEXT

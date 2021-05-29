@@ -92,7 +92,7 @@
 ;  D: exc-id --
 ;  the chain will be invoked by THROW runtime in reverse order
                 $COLON      '(EXC-PUSH)',$PEXC_PUSH
-                CW          $SPFETCH, $RFROM, $SWAP, $TOEXC
+                CW          $SPFETCH, $R_FROM, $SWAP, $TOEXC
                 CFETCH      $EXCEPTION_HANDLER
                 CW          $TOEXC, $RPFETCH, $TOEXC
                 CWLIT       $PEXC_POP_THROW
@@ -132,7 +132,7 @@
                 $COLON      '(EXC-POP-THROW)',$PEXC_POP_THROW
                 CW          $EXCFROM, $RPSTORE, $EXCFROM
                 CSTORE      $EXCEPTION_HANDLER
-                CW          $EXCFROM, $SWAP, $TO_R, $SPSTORE, $DROP, $RFROM
+                CW          $EXCFROM, $SWAP, $TO_R, $SPSTORE, $DROP, $R_FROM
                 $END_COLON
 
 ;  9.6.1.0875 CATCH

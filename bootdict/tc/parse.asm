@@ -85,7 +85,7 @@
 
                 CW          $OVER, $TO_R         ; S: c-addr u R: c-addr
                 CW          $SKIP_BLANK         ; S: c-addr' u' R: c-addr
-                CW          $OVER, $RFROM, $MINUS, $TOINADD ; fix >IN over skipped spaces
+                CW          $OVER, $R_FROM, $MINUS, $TOINADD ; fix >IN over skipped spaces
 
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK '(PARSE-NAME)-B:',2
@@ -96,7 +96,7 @@
 
                 CW          $OVER, $TO_R         ; S: c-addr' u' R: c-addr'
                 CW          $SKIP_NON_BLANK     ; S: c-addr" u" R: c-addr'
-                CW          $DROP, $RFROM, $TUCK, $MINUS
+                CW          $DROP, $R_FROM, $TUCK, $MINUS
                 CW          $DUP, $CHAR_PLUS, $TOINADD ; fix >IN over parsed name and delimiter
 
                 MATCH       =TRUE, DEBUG {
@@ -137,7 +137,7 @@
                 CW          $RFETCH, $ONE_PLUS, $SWAP
                 CW          $2DUP, $2TOR, $CMOVE, $2RFROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
-                CW          $RFROM
+                CW          $R_FROM
                 $END_COLON
 
 ;  ,S"
@@ -149,7 +149,7 @@
 ;  (S")
 ;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
-                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $PLUS, $TO_R, $SWAP
+                CW          $R_FROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $PLUS, $TO_R, $SWAP
                 $END_COLON
 
 ;  S"-COMP

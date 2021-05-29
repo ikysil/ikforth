@@ -49,12 +49,12 @@
                 _BEGIN      STDWLTW_LOOP
                 CW          $DUP, $ZERO_NOT_EQUALS
                 _WHILE      STDWLTW_LOOP
-                CW          $RFETCH, $OVER, $TO_R, $EXECUTE, $RFROM, $SWAP
+                CW          $RFETCH, $OVER, $TO_R, $EXECUTE, $R_FROM, $SWAP
                 _IF         STDWLTW_CONTINUE
                 CW          $NAME_TO_NEXT
                 _ELSE       STDWLTW_CONTINUE
                 CW          $DROP, $ZERO
                 _THEN       STDWLTW_CONTINUE
                 _REPEAT     STDWLTW_LOOP
-                CW          $DROP, $RFROM, $DROP
+                CW          $DROP, $R_FROM, $DROP
                 $END_COLON

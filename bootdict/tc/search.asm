@@ -53,8 +53,8 @@
                 $COLON      'FIND',$FIND
                 CW          $DUP, $TO_R, $COUNT, $SEARCH_NAME, $DUP, $ZERO_NOT_EQUALS
                 _IF         FF_FOUND
-                CW          $RFROM, $DROP
+                CW          $R_FROM, $DROP
                 _ELSE       FF_FOUND
-                CW          $RFROM, $SWAP
+                CW          $R_FROM, $SWAP
                 _THEN       FF_FOUND
                 $END_COLON

@@ -52,9 +52,9 @@
                 ; S: R:TABLE
                 CW          $EXIT
                 _THEN       DO_REC_FOUND
-                CW          $DROP, $RFROM, $2RFROM, $ROT
+                CW          $DROP, $R_FROM, $2RFROM, $ROT
                 _REPEAT     DO_REC_LOOP
-                CW          $DROP, $2DROP, $RFROM, $DROP, $R_FAIL
+                CW          $DROP, $2DROP, $R_FROM, $DROP, $R_FAIL
                 $END_COLON
 
                 $RTABLE     'R:NOT-FOUND',$R_NOT_FOUND,$NOOP,$NOOP,$NOOP

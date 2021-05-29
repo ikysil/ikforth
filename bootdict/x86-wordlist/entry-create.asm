@@ -151,7 +151,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $DROP
                 _THEN       PHEADERC_HAS_NAME
                 CW          $C_COMMA                 ; compile length
-                CW          $RFROM
+                CW          $R_FROM
                 CW          $C_COMMA                 ; compile flags
                 CW          $CREATE_LINK_C
                 $END_COLON
@@ -197,12 +197,12 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] [ 0 0 | c-addr count ] flags -- xt
                 $COLON      'CHECK-HEADER,',$CHECK_HEADERC
-                CW          $TO_R, $CHECK_NAME, $REPORT_NAME, $RFROM, $HEADERC
+                CW          $TO_R, $CHECK_NAME, $REPORT_NAME, $R_FROM, $HEADERC
                 $END_COLON
 
 ;  PARSE-CHECK-HEADER,
 ;  D: [ executor-xt | 0 ] flags "name" -- xt
                 $COLON      'PARSE-CHECK-HEADER,',$PARSE_CHECK_HEADERC
-                CW          $TO_R, $PARSE_NAME, $RFROM, $CHECK_HEADERC
+                CW          $TO_R, $PARSE_NAME, $R_FROM, $CHECK_HEADERC
                 $END_COLON
 

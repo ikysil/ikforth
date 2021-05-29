@@ -89,7 +89,7 @@
 
 ;  INPUT>R
                 $COLON      'INPUT>R',$INPUT_TO_R,VEF_COMPILE_ONLY
-                CW          $RFROM, $SAVE_INPUT
+                CW          $R_FROM, $SAVE_INPUT
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'INPUT>R',12
                 }
@@ -98,7 +98,7 @@
 
 ;  R>INPUT
                 $COLON      'R>INPUT',$R_TO_INPUT,VEF_COMPILE_ONLY
-                CW          $RFROM, $N_R_FROM
+                CW          $R_FROM, $N_R_FROM
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'R>INPUT',12
                 }
