@@ -22,7 +22,7 @@ QDUPZERO:
 
 ;  6.1.0370 2DROP
 ;  D: a b --
-                $CODE       '2DROP',$2DROP,VEF_USUAL
+                $CODE       '2DROP',$TWO_DROP,VEF_USUAL
                 POPDS       EAX
                 POPDS       EAX
                 $NEXT

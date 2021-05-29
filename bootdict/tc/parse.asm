@@ -211,7 +211,7 @@
 
 ;  \ (filler text)
                 $COLON      '(\)',$PBSLASH
-                CW          $ZERO, $PARSE, $2DROP
+                CW          $ZERO, $PARSE, $TWO_DROP
                 $END_COLON
 
                 $DEFER      '\',,$PBSLASH,VEF_IMMEDIATE

@@ -16,7 +16,7 @@
                 $WRITE      'Exception: H# '
                 CW          $HOUT8
                 $CR
-                CW          $2DROP
+                CW          $TWO_DROP
                 $WRITE      'HERE:      H# '
                 CW          $HERE, $HOUT8
                 $CR
@@ -28,7 +28,7 @@
                 _IF         BSI_ERROR_HAS_NAME
                 CW          $TYPE
                 _ELSE       BSI_ERROR_HAS_NAME
-                CW          $2DROP
+                CW          $TWO_DROP
                 $WRITE      '(nonamed)'
                 _THEN       BSI_ERROR_HAS_NAME
                 $CR

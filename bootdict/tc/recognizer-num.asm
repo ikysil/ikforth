@@ -43,7 +43,7 @@ ILCS_EXIT:
                 $COLON      'IL-CHECK-LIT',$ILCL
                 CW          $ZERO, $DUP, $2SWAP, $TONUMBER, $DUP, $ZERO_EQUALS
                 _IF         ILCL_TONUMBER_SUCCESS
-                CW          $2DROP, $DROP
+                CW          $TWO_DROP, $DROP
                 CFETCH      $TONUMBER_SIGNED
                 _IF         ILCL_SIGNED
                 CW          $NEGATE
@@ -74,7 +74,7 @@ ILC2L_UNSIGNED:
 ILC2L_TOO_SHORT:
                 CW          $DROP               ; S: d
 ILC2L_NOT_DOUBLE:
-                CW          $2DROP, $FALSE
+                CW          $TWO_DROP, $FALSE
 ILC2L_EXIT:
                 $END_COLON
 
@@ -113,7 +113,7 @@ ILC2L_EXIT:
                 CCLIT       '.'
                 CW          $EQUALS
                 CQBR        RECN_OK1    ; branch if c-addr @ <> '.'
-                CW          $2DROP
+                CW          $TWO_DROP
                 CBR         RECN_FAIL   ; do not accept DOT (.) as literal
 RECN_OK1:
                 MATCH       =TRUE, DEBUG {

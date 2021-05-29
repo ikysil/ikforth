@@ -17,7 +17,7 @@
                 $COLON      'STDWL-SEARCH-NAME',$STDWL_SEARCH_NAME
                 CW          $DUP, $HFLAGS_FETCH, $AMPHIDDEN, $AND
                 _IF         STDWL_SEARCH_NAME_HIDDEN
-                CW          $2DROP, $FALSE, $TRUE, $EXIT
+                CW          $TWO_DROP, $FALSE, $TRUE, $EXIT
                 _THEN       STDWL_SEARCH_NAME_HIDDEN
                 CW          $2OVER
                 CCLIT       2
@@ -28,7 +28,7 @@
                 CW          $NAMEEQ
                 _IF         STDWL_SEARCH_NAME_FOUND
                 ; S: c-addr u 0 nt
-                CW          $2SWAP, $2DROP, $NIP
+                CW          $2SWAP, $TWO_DROP, $NIP
                 ; S: nt
                 CW          $DUP, $NAME_TO_CODE, $SWAP
                 CW          $HFLAGS_FETCH, $AMPIMMEDIATE, $AND
@@ -40,7 +40,7 @@
                 CW          $TRUE, $FALSE
                 _ELSE       STDWL_SEARCH_NAME_FOUND
                 ; S: c-addr u 0 nt
-                CW          $2DROP, $FALSE, $TRUE
+                CW          $TWO_DROP, $FALSE, $TRUE
                 _THEN       STDWL_SEARCH_NAME_FOUND
                 $END_COLON
 
@@ -51,7 +51,7 @@
                 CWLIT       $STDWL_SEARCH_NAME
                 CW          $ROT, $STDWL_TRAVERSE, $INVERT
                 _IF         STDWL_SEARCH_NOT_FOUND
-                CW          $2DROP
+                CW          $TWO_DROP
                 CCLIT       0
                 _THEN       STDWL_SEARCH_NOT_FOUND
                 $END_COLON

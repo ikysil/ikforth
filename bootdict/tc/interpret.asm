@@ -67,5 +67,5 @@
                 _WHILE      INT_LOOP                    ; exit loop if parse area is exhausted
                 CW          $INTERPRET_WORD
                 _REPEAT     INT_LOOP
-                CW          $2DROP
+                CW          $TWO_DROP
                 $END_COLON

@@ -48,13 +48,13 @@
                 CW          $EXECUTE
                 CW          $DUP, $R_FAIL, $NOT_EQUALS
                 _IF         DO_REC_FOUND
-                CW          $TWO_R_FROM, $2DROP, $TWO_R_FROM, $2DROP
+                CW          $TWO_R_FROM, $TWO_DROP, $TWO_R_FROM, $TWO_DROP
                 ; S: R:TABLE
                 CW          $EXIT
                 _THEN       DO_REC_FOUND
                 CW          $DROP, $R_FROM, $TWO_R_FROM, $ROT
                 _REPEAT     DO_REC_LOOP
-                CW          $DROP, $2DROP, $R_FROM, $DROP, $R_FAIL
+                CW          $DROP, $TWO_DROP, $R_FROM, $DROP, $R_FAIL
                 $END_COLON
 
                 $RTABLE     'R:NOT-FOUND',$R_NOT_FOUND,$NOOP,$NOOP,$NOOP
