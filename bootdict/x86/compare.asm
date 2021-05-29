@@ -48,7 +48,7 @@
                 $NEXT
 
 ;  >
-                $CODE       '>',$GR
+                $CODE       '>',$GREATER_THAN
                 COMP_OP     G
                 $NEXT
 

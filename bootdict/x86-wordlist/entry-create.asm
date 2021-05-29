@@ -71,7 +71,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 _THEN       CHECK_NAME_TOO_SHORT
                 CW          $DUP
                 CFETCH      $MAX_NAME_LENGTH
-                CW          $GR
+                CW          $GREATER_THAN
                 _IF         CHECK_NAME_TOO_LONG
                 CTHROW  -19
                 _THEN       CHECK_NAME_TOO_LONG

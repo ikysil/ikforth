@@ -117,7 +117,7 @@ SAVE_INPUT_FILE_DATA_SIZE EQU 6
                 CW          $THROW, $DROP, $DUP
                 CSTORE      $HASH_FILE_LINE
                 CFETCH      $TOIN
-                CW          $GR
+                CW          $GREATER_THAN
                 _IF         RESTORE_INPUT_FILE_MORE_CURRENT_LINE
                 ; if value of #FILE-LINE is larger than value of >IN
                 ; then we have more things to process on this line
