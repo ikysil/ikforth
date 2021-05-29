@@ -43,7 +43,7 @@
                 }
 
 ;  <
-                $CODE       '<',$LE
+                $CODE       '<',$LESS_THAN
                 COMP_OP     L
                 $NEXT
 

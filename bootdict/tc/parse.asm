@@ -34,7 +34,7 @@
 ;     2DUP < IF DROP DUP THEN ROT OVER + -ROT -
 ;  ;
                 $COLON      '/STRING',$SLASH_STRING
-                CW          $2DUP, $LE
+                CW          $2DUP, $LESS_THAN
                 _IF         SLS_SHORT
                 CW          $DROP, $DUP
                 _THEN       SLS_SHORT
