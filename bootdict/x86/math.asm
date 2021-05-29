@@ -141,7 +141,7 @@
 ;  All values and arithmetic are unsigned. An ambiguous condition exists if u1
 ;  is zero or if the quotient lies outside the range of a single-cell unsigned integer.
 ;  D: ud u1 -- u2 u3
-                $CODE       'UM/MOD',$UMDIVMOD,VEF_USUAL
+                $CODE       'UM/MOD',$U_M_SLASH_MOD,VEF_USUAL
                 POPDS       EBX                     ; u1
                 POPDS       EDX
                 POPDS       EAX

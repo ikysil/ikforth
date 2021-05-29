@@ -54,7 +54,7 @@
                 $COLON      'EXC-DEPTH',$EXCDEPTH,VEF_USUAL
                 CW          $EXCP0, $EXCPFETCH, $MINUS, $STOD
                 CCLIT       CELL_SIZE
-                CW          $UMDIVMOD, $SWAP, $DROP
+                CW          $U_M_SLASH_MOD, $SWAP, $DROP
                 $END_COLON
 
 ;  EXC-DROP
