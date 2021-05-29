@@ -49,7 +49,7 @@
 ;  6.1.0850 C!
 ;  Store char value
 ;  D: char addr --
-                $CODE       'C!',$CSTORE,VEF_USUAL
+                $CODE       'C!',$C_STORE,VEF_USUAL
                 POPDS       EBX
                 POPDS       EAX
                 MOV         BYTE [EBX],AL

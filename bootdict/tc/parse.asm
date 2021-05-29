@@ -133,7 +133,7 @@
                 CW          $DROP
                 CCLIT       SLPOCKET - 1
                 _THEN       SQTOPOCKET_TOO_LONG
-                CW          $DUP, $POCKET, $DUP, $TOR, $CSTORE
+                CW          $DUP, $POCKET, $DUP, $TOR, $C_STORE
                 CW          $RFETCH, $1ADD, $SWAP
                 CW          $2DUP, $2TOR, $CMOVE, $2RFROM
                 CW          $CHARS, $ADD, $BL, $SWAP, $STORE

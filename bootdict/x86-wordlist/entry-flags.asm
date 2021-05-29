@@ -5,7 +5,7 @@
 ;  D: x h-id --
 ;  Store flags specified by x to the flags field of the header
                 $COLON      'HFLAGS!',$HFLAGS_STORE
-                CW          $NAME_TO_FLAGS, $CSTORE
+                CW          $NAME_TO_FLAGS, $C_STORE
                 $END_COLON
 
 ;  HFLAGS@
