@@ -63,7 +63,7 @@
 
 ;  6.1.0330 2/
 ;  D: a -- a/2
-                $CODE       '2/',$2DIV,VEF_USUAL
+                $CODE       '2/',$TWO_SLASH,VEF_USUAL
                 POPDS       EAX
                 SAR         EAX,1
                 PUSHDS      EAX
