@@ -59,7 +59,7 @@
                 $TRACE_WORD  'REC:WORD'
                 $TRACE_STACK 'REC:WORD-A:',2
                 }
-                CW          $DUP, $ZEROEQ
+                CW          $DUP, $ZERO_EQUALS
                 _IF         REC_WORD_EMPTY_NAME
                 CW          $DROP, $R_FAIL
                 CW          $EXIT

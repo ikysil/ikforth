@@ -65,7 +65,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
 ;  CHECK-NAME
 ;  D: c-addr count -- c-addr count
                 $COLON      'CHECK-NAME',$CHECK_NAME
-                CW          $DUP, $ZEROEQ
+                CW          $DUP, $ZERO_EQUALS
                 _IF         CHECK_NAME_TOO_SHORT
                 CTHROW  -16
                 _THEN       CHECK_NAME_TOO_SHORT
@@ -167,7 +167,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 }
                 CW          $DUP
                 ;  D: [ code-addr | 0 ] [ code-addr | 0 ]
-                CW          $ZEROEQ
+                CW          $ZERO_EQUALS
                 ;  D: [ code-addr | 0 ] eq-zero-flag
                 _IF         PCFA_C_HAS_CODE_ADDR
                 CW          $DROP, $HERE

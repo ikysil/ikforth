@@ -64,7 +64,7 @@
 ;   D: nt -- nt-next | 0
 ;   Fetch nt of the previous word.
                 $COLON      'NAME>NEXT',$NAME_TO_NEXT
-                CW          $DUP, $ZEROEQ
+                CW          $DUP, $ZERO_EQUALS
                 _IF         NTNEXT_LAST
                 CW          $EXIT
                 _THEN       NTNEXT_LAST

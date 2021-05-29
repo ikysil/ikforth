@@ -73,7 +73,7 @@
 
 ;  6.1.0270 0=
 ;  D: a -- flag ( a = 0 )
-                $CODE       '0=',$ZEROEQ,VEF_USUAL
+                $CODE       '0=',$ZERO_EQUALS,VEF_USUAL
                 COMPZ_OP    Z
                 $NEXT
 

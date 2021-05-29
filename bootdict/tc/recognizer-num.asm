@@ -41,7 +41,7 @@ ILCS_EXIT:
 ;  Return literal and TRUE if successful.
 ;  Return remaining literal string to convert and FALSE if not successful.
                 $COLON      'IL-CHECK-LIT',$ILCL
-                CW          $ZERO, $DUP, $2SWAP, $TONUMBER, $DUP, $ZEROEQ
+                CW          $ZERO, $DUP, $2SWAP, $TONUMBER, $DUP, $ZERO_EQUALS
                 _IF         ILCL_TONUMBER_SUCCESS
                 CW          $2DROP, $DROP
                 CFETCH      $TONUMBER_SIGNED
@@ -59,7 +59,7 @@ ILCS_EXIT:
 ;  Check that number literal at c-addr ends with DOT (.) and return literal and TRUE.
 ;  Otherwise return FALSE.
                 $COLON      'IL-CHECK-2LIT',$ILC2L
-                CW          $1SUB, $ZEROEQ      ; S: d c-addr flag
+                CW          $1SUB, $ZERO_EQUALS      ; S: d c-addr flag
                 CQBR        ILC2L_TOO_SHORT
                 CW          $C_FETCH             ; S: d char
                 CCLIT       '.'
