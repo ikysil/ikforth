@@ -47,7 +47,7 @@
                 _BEGIN      SKBL_LOOP
                 CW          $DUP, $ZEROGR
                 _WHILE      SKBL_LOOP
-                CW          $OVER, $CFETCH, $BL, $1ADD, $ULE
+                CW          $OVER, $C_FETCH, $BL, $1ADD, $ULE
                 _WHILE      SKBL_LOOP
                 CCLIT       1
                 CW          $SLASH_STRING
@@ -60,7 +60,7 @@
                 _BEGIN      SKNBL_LOOP
                 CW          $DUP, $ZEROGR
                 _WHILE      SKNBL_LOOP
-                CW          $OVER, $CFETCH, $BL, $UGR
+                CW          $OVER, $C_FETCH, $BL, $UGR
                 _WHILE      SKNBL_LOOP
                 CCLIT       1
                 CW          $SLASH_STRING

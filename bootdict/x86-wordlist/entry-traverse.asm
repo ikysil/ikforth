@@ -86,7 +86,7 @@
                 CCLIT       2
                 CW          $SUB
                 CW          $DUP                    ; S: name-len-addr name-len-addr
-                CW          $CFETCH                 ; S: name-len-addr name-len
+                CW          $C_FETCH                 ; S: name-len-addr name-len
                 CW          $SWAP, $OVER            ; S: name-len name-len-addr name-len
                 CW          $SUB
                 CW          $SWAP

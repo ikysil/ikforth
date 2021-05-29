@@ -58,7 +58,7 @@
 ;  6.1.0870 C@
 ;  Fetch char value
 ;  D: addr -- char
-                $CODE       'C@',$CFETCH,VEF_USUAL
+                $CODE       'C@',$C_FETCH,VEF_USUAL
                 POPDS       EBX
                 XOR         EAX,EAX
                 MOV         AL,BYTE [EBX]

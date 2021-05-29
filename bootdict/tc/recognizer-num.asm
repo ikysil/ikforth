@@ -19,7 +19,7 @@
                 $COLON      'IL-CHECK-SIGN',$ILCS
                 CW          $FALSE
                 CSTORE      $TONUMBER_SIGNED
-                CW          $OVER, $CFETCH, $DUP
+                CW          $OVER, $C_FETCH, $DUP
                 CCLIT       '-'
                 CW          $NOEQ
                 CQBR        ILCS_SIGNED
@@ -61,7 +61,7 @@ ILCS_EXIT:
                 $COLON      'IL-CHECK-2LIT',$ILC2L
                 CW          $1SUB, $ZEROEQ      ; S: d c-addr flag
                 CQBR        ILC2L_TOO_SHORT
-                CW          $CFETCH             ; S: d char
+                CW          $C_FETCH             ; S: d char
                 CCLIT       '.'
                 CW          $EQ
                 CQBR        ILC2L_NOT_DOUBLE
@@ -109,7 +109,7 @@ ILC2L_EXIT:
                 CW          $EQ
                 CQBR        RECN_OK1    ; branch if u <> 1
                 CW          $OVER       ; c-addr u c-addr
-                CW          $CFETCH
+                CW          $C_FETCH
                 CCLIT       '.'
                 CW          $EQ
                 CQBR        RECN_OK1    ; branch if c-addr @ <> '.'
