@@ -34,7 +34,7 @@
 ;     2DUP < IF DROP DUP THEN ROT OVER + -ROT -
 ;  ;
                 $COLON      '/STRING',$SLASH_STRING
-                CW          $2DUP, $LESS_THAN
+                CW          $TWO_DUPE, $LESS_THAN
                 _IF         SLS_SHORT
                 CW          $DROP, $DUP
                 _THEN       SLS_SHORT
@@ -91,7 +91,7 @@
                 $TRACE_STACK '(PARSE-NAME)-B:',2
                 $CR
                 $WRITE      '(PARSE-NAME)-C: '
-                CW          $2DUP, $TYPE
+                CW          $TWO_DUPE, $TYPE
                 }
 
                 CW          $OVER, $TO_R         ; S: c-addr' u' R: c-addr'
@@ -103,7 +103,7 @@
                 $TRACE_STACK '(PARSE-NAME)-D:',2
                 $CR
                 $WRITE      '(PARSE-NAME)-E: '
-                CW          $2DUP, $TYPE
+                CW          $TWO_DUPE, $TYPE
                 }
 
                 $END_COLON
@@ -135,7 +135,7 @@
                 _THEN       SQTOPOCKET_TOO_LONG
                 CW          $DUP, $POCKET, $DUP, $TO_R, $C_STORE
                 CW          $R_FETCH, $ONE_PLUS, $SWAP
-                CW          $2DUP, $TWO_TO_R, $CMOVE, $TWO_R_FROM
+                CW          $TWO_DUPE, $TWO_TO_R, $CMOVE, $TWO_R_FROM
                 CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
                 CW          $R_FROM
                 $END_COLON
@@ -149,7 +149,7 @@
 ;  (S")
 ;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
-                CW          $R_FROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $PLUS, $TO_R, $SWAP
+                CW          $R_FROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $TWO_DUPE, $PLUS, $TO_R, $SWAP
                 $END_COLON
 
 ;  S"-COMP
@@ -161,7 +161,7 @@
                 $TRACE_STACK 'S"-COMP-A:',2
                 $CR
                 $WRITE      'S"-COMP-B: '
-                CW          $2DUP, $TYPE
+                CW          $TWO_DUPE, $TYPE
                 }
 
                 CWLIT       $PSQUOTE
@@ -185,7 +185,7 @@
 ;  Copy string from c-addr1 to a temporary buffer and return it's address c-addr2.
 ;  u2 is the actual number of characters copied.
                 $COLON      '>S"BUFFER',$TOSQBUFFER
-                CW          $PLSQBUFFER, $SWAP, $2DUP, $TWO_TO_R, $CMOVE, $TWO_R_FROM
+                CW          $PLSQBUFFER, $SWAP, $TWO_DUPE, $TWO_TO_R, $CMOVE, $TWO_R_FROM
                 $END_COLON
 
 ;  S"-INT
@@ -197,7 +197,7 @@
                 $TRACE_STACK 'S"-INT-A:',2
                 $CR
                 $WRITE      'S"-INT-B: '
-                CW          $2DUP, $TYPE
+                CW          $TWO_DUPE, $TYPE
                 }
 
                 CW          $TOSQBUFFER

@@ -82,19 +82,19 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 $COLON      '(REPORT-NAME)',$PREPORT_NAME
                 CFETCH      $REPORT_NEW_NAME
                 _IF         PREPORT_NAME_NEW
-                CW          $2DUP, $TYPE
+                CW          $TWO_DUPE, $TYPE
                 $WRITE      ' '
                 _THEN       PREPORT_NAME_NEW
                 CFETCH      $REPORT_NEW_NAME_DUPLICATE
                 _IF         PREPORT_NAME_DUPLICATE
-                CW          $2DUP
+                CW          $TWO_DUPE
                 CFETCH      $CURRENT
                 CW          $SEARCH_WORDLIST        ; c-addr u 0 | c-addr u xt +/-1
                 CW          $ZERO_NOT_EQUALS
                 _IF         PREPORT_NAME_HAS_DUPLICATE
                 CW          $DROP
                 $WRITE  'Redefinition of '
-                CW          $2DUP, $TYPE
+                CW          $TWO_DUPE, $TYPE
                 $WRITE  ' '
                 _THEN       PREPORT_NAME_HAS_DUPLICATE
                 _THEN       PREPORT_NAME_DUPLICATE

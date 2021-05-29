@@ -29,7 +29,7 @@ QDUPZERO:
 
 ;  6.1.0380 2DUP
 ;  D: a b -- a b a b
-                $CODE       '2DUP',$2DUP,VEF_USUAL
+                $CODE       '2DUP',$TWO_DUPE,VEF_USUAL
                 FETCHDS     EAX,1
                 FETCHDS     EBX
                 PUSHDS      EAX
