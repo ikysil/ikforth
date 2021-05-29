@@ -80,7 +80,7 @@
 
 ;  6.1.2162 RSHIFT
 ;  D: a b -- a >> b
-                $CODE       'RSHIFT',$RSHIFT,VEF_USUAL
+                $CODE       'RSHIFT',$R_SHIFT,VEF_USUAL
                 POPDS       ECX
                 POPDS       EAX
                 SHR         EAX,CL
