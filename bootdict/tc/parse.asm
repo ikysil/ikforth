@@ -177,7 +177,7 @@
                 CFETCH      $SQINDEX
                 CW          $1ADD, $SQINDEX_MASK, $AND, $DUP
                 CSTORE      $SQINDEX
-                CW          $SLSQBUFFER, $MUL, $SQBUFFER, $ADD
+                CW          $SLSQBUFFER, $STAR, $SQBUFFER, $ADD
                 $END_COLON
 
 ;  >S"BUFFER

@@ -12,7 +12,7 @@
 ;  6.1.0090 *
 ;  Multiply n1|u1 by n2|u2 giving the product n3|u3.
 ;  D: n1|u1 n2|u2 -- n3|u3
-                $CODE       '*',$MUL,VEF_USUAL
+                $CODE       '*',$STAR,VEF_USUAL
                 POPDS       EAX
                 POPDS       EBX
                 IMUL        EBX
