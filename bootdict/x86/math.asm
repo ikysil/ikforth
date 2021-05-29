@@ -111,7 +111,7 @@
 ;  Input and output stack arguments are signed. An ambiguous condition exists
 ;  if n1 is zero or if the quotient lies outside the range of a single-cell signed integer.
 ;  D: d1 n1 -- n2 n3
-                $CODE       'SM/REM',$SMDIVREM,VEF_USUAL
+                $CODE       'SM/REM',$S_M_SLASH_REM,VEF_USUAL
                 POPDS       EBX                     ; n1
                 POPDS       EDX
                 POPDS       EAX
