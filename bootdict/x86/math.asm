@@ -47,7 +47,7 @@
 
 ;  6.1.0300 1-
 ;  D: a -- a-1
-                $CODE       '1-',$1SUB,VEF_USUAL
+                $CODE       '1-',$ONE_MINUS,VEF_USUAL
                 POPDS       EAX
                 DEC         EAX
                 PUSHDS      EAX

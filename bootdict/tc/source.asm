@@ -74,7 +74,7 @@
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'RESTORE-INPUT-A',12
                 }
-                CW          $1SUB, $SWAP, $CATCH
+                CW          $ONE_MINUS, $SWAP, $CATCH
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'RESTORE-INPUT-B',1
                 }

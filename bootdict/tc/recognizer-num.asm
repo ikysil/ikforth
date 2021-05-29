@@ -31,7 +31,7 @@ ILCS_SIGNED:
                 CW          $DROP, $TRUE
                 CSTORE      $TONUMBER_SIGNED
 ILCS_UNSIGNED:
-                CW          $SWAP, $CHAR_PLUS, $SWAP, $1SUB
+                CW          $SWAP, $CHAR_PLUS, $SWAP, $ONE_MINUS
 ILCS_EXIT:
                 $END_COLON
 
@@ -59,7 +59,7 @@ ILCS_EXIT:
 ;  Check that number literal at c-addr ends with DOT (.) and return literal and TRUE.
 ;  Otherwise return FALSE.
                 $COLON      'IL-CHECK-2LIT',$ILC2L
-                CW          $1SUB, $ZERO_EQUALS      ; S: d c-addr flag
+                CW          $ONE_MINUS, $ZERO_EQUALS      ; S: d c-addr flag
                 CQBR        ILC2L_TOO_SHORT
                 CW          $C_FETCH             ; S: d char
                 CCLIT       '.'
