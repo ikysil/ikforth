@@ -55,7 +55,7 @@
 
 ;  6.1.0320 2*
 ;  D: a -- a*2
-                $CODE       '2*',$2MUL,VEF_USUAL
+                $CODE       '2*',$TWO_STAR,VEF_USUAL
                 POPDS       EAX
                 SAL         EAX,1
                 PUSHDS      EAX
