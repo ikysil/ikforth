@@ -10,7 +10,7 @@
 ;******************************************************************************
 
 ;  >NUMBER-SIGNED
-                $USER       '>NUMBER-SIGNED',$TONUMBER_SIGNED,VAR_TONUMBER_SIGNED
+                $USER       '>NUMBER-SIGNED',$TO_NUMBER_SIGNED,VAR_TONUMBER_SIGNED
 
 ;  IL-CHECK-SIGN
 ;  ( c-addr u -- c-addr' u' )
@@ -18,7 +18,7 @@
 ;  Set >NUMBER-SIGNED according to the sign and advance c-addr' if present.
                 $COLON      'IL-CHECK-SIGN',$ILCS
                 CW          $FALSE
-                CSTORE      $TONUMBER_SIGNED
+                CSTORE      $TO_NUMBER_SIGNED
                 CW          $OVER, $C_FETCH, $DUPE
                 CCLIT       '-'
                 CW          $NOT_EQUALS
@@ -29,7 +29,7 @@
                 CBR         ILCS_EXIT
 ILCS_SIGNED:
                 CW          $DROP, $TRUE
-                CSTORE      $TONUMBER_SIGNED
+                CSTORE      $TO_NUMBER_SIGNED
 ILCS_UNSIGNED:
                 CW          $SWAP, $CHAR_PLUS, $SWAP, $ONE_MINUS
 ILCS_EXIT:
@@ -41,10 +41,10 @@ ILCS_EXIT:
 ;  Return literal and TRUE if successful.
 ;  Return remaining literal string to convert and FALSE if not successful.
                 $COLON      'IL-CHECK-LIT',$ILCL
-                CW          $ZERO, $DUPE, $TWO_SWAP, $TONUMBER, $DUPE, $ZERO_EQUALS
+                CW          $ZERO, $DUPE, $TWO_SWAP, $TO_NUMBER, $DUPE, $ZERO_EQUALS
                 _IF         ILCL_TONUMBER_SUCCESS
                 CW          $TWO_DROP, $DROP
-                CFETCH      $TONUMBER_SIGNED
+                CFETCH      $TO_NUMBER_SIGNED
                 _IF         ILCL_SIGNED
                 CW          $NEGATE
                 _THEN       ILCL_SIGNED
@@ -65,7 +65,7 @@ ILCS_EXIT:
                 CCLIT       '.'
                 CW          $EQUALS
                 CQBR        ILC2L_NOT_DOUBLE
-                CFETCH      $TONUMBER_SIGNED
+                CFETCH      $TO_NUMBER_SIGNED
                 CQBR        ILC2L_UNSIGNED
                 CW          $D_NEGATE
 ILC2L_UNSIGNED:

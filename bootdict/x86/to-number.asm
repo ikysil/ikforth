@@ -9,7 +9,7 @@
 ;  character past the end of the string if the string was entirely converted.
 ;  u2 is the number of unconverted characters in the string.
 ;  An ambiguous condition exists if ud2 overflows during the conversion.
-                $CODE       '>NUMBER',$TONUMBER
+                $CODE       '>NUMBER',$TO_NUMBER
                 PUSHRS      ESI
                 POPDS       ECX                         ; ECX - u1
                 POPDS       ESI                         ; ESI - c-addr1
