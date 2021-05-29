@@ -195,7 +195,7 @@
 
 ;  6.1.2490 XOR
 ;  D: a b -- a xor b
-                $CODE       'XOR',$XOR,VEF_USUAL
+                $CODE       'XOR',$X_OR,VEF_USUAL
                 POPDS       EBX
                 POPDS       EAX
                 XOR         EAX,EBX

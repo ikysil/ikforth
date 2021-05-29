@@ -30,5 +30,5 @@
 ;  INVERT-HFLAGS!
 ;  D: flags --
                 $COLON      'INVERT-HFLAGS!'
-                CW          $LATEST_NAME_FETCH, $DUP, $HFLAGS_FETCH, $ROT, $XOR, $SWAP, $HFLAGS_STORE
+                CW          $LATEST_NAME_FETCH, $DUP, $HFLAGS_FETCH, $ROT, $X_OR, $SWAP, $HFLAGS_STORE
                 $END_COLON
