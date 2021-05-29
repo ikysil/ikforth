@@ -70,7 +70,7 @@
                 _IF         INCF_INTERPRET
                 CW          $DROP
                 CWLIT       $INTERPRET
-                CW          $CATCH, $QDUP
+                CW          $CATCH, $QUESTION_DUPE
                 _UNTIL      INCF_LOOP
                 _THEN       INCF_INTERPRET
                 CW          $SOURCE_ID, $CLOSE_FILE, $THROW, $R_TO_INPUT, $THROW

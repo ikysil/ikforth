@@ -140,7 +140,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $TO_R
                 CW          $SWAP                   ; count c-addr
                 CW          $OVER                   ; count c-addr count
-                CW          $QDUP
+                CW          $QUESTION_DUPE
                 _IF         PHEADERC_HAS_NAME
                 CW          $HERE                   ; count c-addr count here
                 CW          $SWAP                   ; count c-addr here count

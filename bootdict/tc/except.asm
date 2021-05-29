@@ -148,7 +148,7 @@
                 $TRACE_WORD
                 $TRACE_STACK 'THROW',1
                 }
-                CW          $QDUP
+                CW          $QUESTION_DUPE
                 _IF         THROW_HAS_EXCEPTION
                 CW          $PTHROW
                 _THEN       THROW_HAS_EXCEPTION

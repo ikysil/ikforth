@@ -12,7 +12,7 @@
 ;  6.1.0630 ?DUP
 ;  Duplicate top stack cell if it is not equal to zero
 ;  D: a -- a | a a
-                $CODE       '?DUP',$QDUP,VEF_USUAL
+                $CODE       '?DUP',$QUESTION_DUPE,VEF_USUAL
                 FETCHDS     EAX
                 AND         EAX,EAX
                 JZ          SHORT QDUPZERO

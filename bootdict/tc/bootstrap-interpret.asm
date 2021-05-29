@@ -3,7 +3,7 @@
                 CFETCH      $SF
                 CFETCH      $HASH_SF
                 CWLIT       $INCLUDED
-                CW          $CATCH, $DUP, $EXIT_CODE, $STORE, $QDUP
+                CW          $CATCH, $DUP, $EXIT_CODE, $STORE, $QUESTION_DUPE
                 _IF         BSI_HAS_EXCEPTION
                 $CR
                 $CR

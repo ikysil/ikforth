@@ -65,7 +65,7 @@
                 CW          $EXIT
                 _THEN       REC_WORD_EMPTY_NAME
                 CW          $SEARCH_NAME     ; ( XT imm-flag | 0 )
-                CW          $QDUP
+                CW          $QUESTION_DUPE
                 _IF         REC_WORD_SUCCESS
                 CW          $DROP, $DUP, $CODE_TO_NAME, $HFLAGS_FETCH
                 CW          $R_WORD
