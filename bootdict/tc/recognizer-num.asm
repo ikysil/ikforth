@@ -21,10 +21,10 @@
                 CSTORE      $TONUMBER_SIGNED
                 CW          $OVER, $C_FETCH, $DUP
                 CCLIT       '-'
-                CW          $NOEQ
+                CW          $NOT_EQUALS
                 CQBR        ILCS_SIGNED
                 CCLIT       '+'
-                CW          $NOEQ
+                CW          $NOT_EQUALS
                 CQBR        ILCS_UNSIGNED
                 CBR         ILCS_EXIT
 ILCS_SIGNED:
@@ -101,7 +101,7 @@ ILC2L_EXIT:
                 $TRACE_WORD  'REC:NUM'
                 $TRACE_STACK 'REC:NUM-A:',2
                 }
-                CW          $DUP, $ZERO, $NOEQ
+                CW          $DUP, $ZERO, $NOT_EQUALS
                 CQBR        RECN_FAIL
                 CW          $ILCS       ; c-addr u
                 CW          $DUP        ; c-addr u u

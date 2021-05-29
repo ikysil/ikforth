@@ -61,7 +61,7 @@
 ;  6.2.0500 <>
 ;  Flag is true if and only if x1 is not bit-for-bit the same as x2.
 ;  D: x1 x2 -- flag
-                $CODE       '<>',$NOEQ
+                $CODE       '<>',$NOT_EQUALS
                 COMP_OP     NZ
                 $NEXT
 

@@ -46,7 +46,7 @@
                 CW          $2OVER, $2TOR, $SWAP, $1SUB, $TOR
                 ; S: c-addr len rec-xt R: rec-id c-addr len rec-count'
                 CW          $EXECUTE
-                CW          $DUP, $R_FAIL, $NOEQ
+                CW          $DUP, $R_FAIL, $NOT_EQUALS
                 _IF         DO_REC_FOUND
                 CW          $2RFROM, $2DROP, $2RFROM, $2DROP
                 ; S: R:TABLE
