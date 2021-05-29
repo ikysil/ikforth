@@ -60,7 +60,7 @@
                 _BEGIN      SKNBL_LOOP
                 CW          $DUP, $ZERO_GREATER
                 _WHILE      SKNBL_LOOP
-                CW          $OVER, $C_FETCH, $BL, $UGR
+                CW          $OVER, $C_FETCH, $BL, $U_GREATER_THAN
                 _WHILE      SKNBL_LOOP
                 CCLIT       1
                 CW          $SLASH_STRING
@@ -128,7 +128,7 @@
                 $COLON      'S">POCKET',$SQTOPOCKET
                 CW          $DUP
                 CCLIT       SLPOCKET - 1
-                CW          $UGR
+                CW          $U_GREATER_THAN
                 _IF         SQTOPOCKET_TOO_LONG
                 CW          $DROP
                 CCLIT       SLPOCKET - 1

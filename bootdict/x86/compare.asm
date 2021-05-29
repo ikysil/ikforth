@@ -105,6 +105,6 @@
 ;  6.2.2350 U>
 ;  D: u1 u2 -- flag
 ;  flag is true if and only if u1 is greater than u2.
-                $CODE       'U>',$UGR,VEF_USUAL
+                $CODE       'U>',$U_GREATER_THAN,VEF_USUAL
                 COMP_OP     A
                 $NEXT
