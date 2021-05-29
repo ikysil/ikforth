@@ -26,7 +26,7 @@
 ;  8.6.1.1230 DNEGATE
 ;  ( d1 -- d2 )
 ;  d2 is the negation of d1.
-                $CODE       'DNEGATE',$DNEGATE,VEF_USUAL
+                $CODE       'DNEGATE',$D_NEGATE,VEF_USUAL
                 POPDS       EDX
                 POPDS       EAX
                 SUB         EAX,1

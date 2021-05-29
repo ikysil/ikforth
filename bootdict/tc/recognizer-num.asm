@@ -67,7 +67,7 @@ ILCS_EXIT:
                 CQBR        ILC2L_NOT_DOUBLE
                 CFETCH      $TONUMBER_SIGNED
                 CQBR        ILC2L_UNSIGNED
-                CW          $DNEGATE
+                CW          $D_NEGATE
 ILC2L_UNSIGNED:
                 CW          $TRUE
                 CBR         ILC2L_EXIT
