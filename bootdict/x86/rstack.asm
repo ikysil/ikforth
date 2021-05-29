@@ -59,7 +59,7 @@
 ;  6.2.0415 2R@
 ;  D:     -- a b
 ;  R: a b -- a b
-                $CODE       '2R@',$2RFETCH,VEF_USUAL
+                $CODE       '2R@',$TWO_R_FETCH,VEF_USUAL
                 FETCHRS     EBX,0
                 FETCHRS     EAX,1
                 PUSHDS      EAX
