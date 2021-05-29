@@ -54,7 +54,7 @@
 
 ;  6.1.0530 =
 ;  D: a b -- flag ( a = b )
-                $CODE       '=',$EQ
+                $CODE       '=',$EQUALS
                 COMP_OP     Z
                 $NEXT
 

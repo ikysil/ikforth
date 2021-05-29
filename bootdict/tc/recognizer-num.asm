@@ -63,7 +63,7 @@ ILCS_EXIT:
                 CQBR        ILC2L_TOO_SHORT
                 CW          $C_FETCH             ; S: d char
                 CCLIT       '.'
-                CW          $EQ
+                CW          $EQUALS
                 CQBR        ILC2L_NOT_DOUBLE
                 CFETCH      $TONUMBER_SIGNED
                 CQBR        ILC2L_UNSIGNED
@@ -106,12 +106,12 @@ ILC2L_EXIT:
                 CW          $ILCS       ; c-addr u
                 CW          $DUP        ; c-addr u u
                 CCLIT       1
-                CW          $EQ
+                CW          $EQUALS
                 CQBR        RECN_OK1    ; branch if u <> 1
                 CW          $OVER       ; c-addr u c-addr
                 CW          $C_FETCH
                 CCLIT       '.'
-                CW          $EQ
+                CW          $EQUALS
                 CQBR        RECN_OK1    ; branch if c-addr @ <> '.'
                 CW          $2DROP
                 CBR         RECN_FAIL   ; do not accept DOT (.) as literal
