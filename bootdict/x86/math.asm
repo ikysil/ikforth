@@ -30,7 +30,7 @@
 
 ;  6.1.0160 -
 ;  D: a b -- a-b
-                $CODE       '-',$SUB,VEF_USUAL
+                $CODE       '-',$MINUS,VEF_USUAL
                 POPDS       EBX
                 POPDS       EAX
                 SUB         EAX,EBX

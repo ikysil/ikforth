@@ -31,7 +31,7 @@
                 $COLON      '>EXC',$TOEXC
                 CW          $EXCPFETCH
                 CCLIT       CELL_SIZE
-                CW          $SUB, $SWAP, $OVER, $STORE, $EXCPSTORE
+                CW          $MINUS, $SWAP, $OVER, $STORE, $EXCPSTORE
                 $END_COLON
 
 ;  EXC>
@@ -52,7 +52,7 @@
 ;  Return depth of exception stack
 ;  D:   -- a
                 $COLON      'EXC-DEPTH',$EXCDEPTH,VEF_USUAL
-                CW          $EXCP0, $EXCPFETCH, $SUB, $STOD
+                CW          $EXCP0, $EXCPFETCH, $MINUS, $STOD
                 CCLIT       CELL_SIZE
                 CW          $UMDIVMOD, $SWAP, $DROP
                 $END_COLON

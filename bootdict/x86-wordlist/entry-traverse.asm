@@ -70,7 +70,7 @@
                 _THEN       NTNEXT_LAST
                 CW          $NAME_TO_LINK, $DUP, $FETCH, $DUP
                 _IF         NTNEXT_HASNEXT
-                CW          $SUB
+                CW          $MINUS
                 _ELSE       NTNEXT_HASNEXT
                 CW          $NIP
                 _THEN       NTNEXT_HASNEXT
@@ -84,11 +84,11 @@
 ;       A program shall not write into the buffer containing the resulting string. )
                 $COLON      'NAME>STRING',$NAME_TO_STRING
                 CCLIT       2
-                CW          $SUB
+                CW          $MINUS
                 CW          $DUP                    ; S: name-len-addr name-len-addr
                 CW          $C_FETCH                 ; S: name-len-addr name-len
                 CW          $SWAP, $OVER            ; S: name-len name-len-addr name-len
-                CW          $SUB
+                CW          $MINUS
                 CW          $SWAP
                 $END_COLON
 
@@ -101,7 +101,7 @@
                 _IF         NTL_HAS_LOCATE
                 CW          $NAME_TO_STRING, $DROP
                 CCLIT       LOCATE_SIZE
-                CW          $SUB
+                CW          $MINUS
                 _ELSE       NTL_HAS_LOCATE
                 CW          $DROP
                 CW          $ZERO

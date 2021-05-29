@@ -113,7 +113,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CFETCH      $INCLUDE_MARK
                 CW          $COMMA
                 CFETCH      $TOIN
-                CW          $SWAP, $SUB
+                CW          $SWAP, $MINUS
                 CW          $COMMA
                 CFETCH      $INCLUDE_LINE_NUM
                 CW          $COMMA, $AMPLOCATE, $OR
@@ -129,7 +129,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK 'CREATE-LINK,-A:',2
                 }
-                CW          $SUB, $COMMA
+                CW          $MINUS, $COMMA
                 CW          $LATEST_NAME_STORE
                 $END_COLON
 

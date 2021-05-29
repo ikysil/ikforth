@@ -38,7 +38,7 @@
                 _IF         SLS_SHORT
                 CW          $DROP, $DUP
                 _THEN       SLS_SHORT
-                CW          $ROT, $OVER, $PLUS, $MROT, $SUB
+                CW          $ROT, $OVER, $PLUS, $MROT, $MINUS
                 $END_COLON
 
 ;  SKIP-BLANK
@@ -85,7 +85,7 @@
 
                 CW          $OVER, $TOR         ; S: c-addr u R: c-addr
                 CW          $SKIP_BLANK         ; S: c-addr' u' R: c-addr
-                CW          $OVER, $RFROM, $SUB, $TOINADD ; fix >IN over skipped spaces
+                CW          $OVER, $RFROM, $MINUS, $TOINADD ; fix >IN over skipped spaces
 
                 MATCH       =TRUE, DEBUG {
                 $TRACE_STACK '(PARSE-NAME)-B:',2
@@ -96,7 +96,7 @@
 
                 CW          $OVER, $TOR         ; S: c-addr' u' R: c-addr'
                 CW          $SKIP_NON_BLANK     ; S: c-addr" u" R: c-addr'
-                CW          $DROP, $RFROM, $TUCK, $SUB
+                CW          $DROP, $RFROM, $TUCK, $MINUS
                 CW          $DUP, $CHAR_PLUS, $TOINADD ; fix >IN over parsed name and delimiter
 
                 MATCH       =TRUE, DEBUG {
