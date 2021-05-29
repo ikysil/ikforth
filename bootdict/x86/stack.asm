@@ -91,7 +91,7 @@ QDUPZERO:
 
 ;  6.1.2160 ROT
 ;  D: a b c -- b c a
-                $CODE       'ROT',$ROT,VEF_USUAL
+                $CODE       'ROT',$ROTE,VEF_USUAL
                 POPDS       ECX
                 POPDS       EBX
                 POPDS       EAX

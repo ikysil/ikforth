@@ -49,7 +49,7 @@
                 $COLON      'STDWL-SEARCH',$STDWL_SEARCH
                 CCLIT       0
                 CWLIT       $STDWL_SEARCH_NAME
-                CW          $ROT, $STDWL_TRAVERSE, $INVERT
+                CW          $ROTE, $STDWL_TRAVERSE, $INVERT
                 _IF         STDWL_SEARCH_NOT_FOUND
                 CW          $TWO_DROP
                 CCLIT       0

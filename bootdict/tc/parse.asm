@@ -38,7 +38,7 @@
                 _IF         SLS_SHORT
                 CW          $DROP, $DUPE
                 _THEN       SLS_SHORT
-                CW          $ROT, $OVER, $PLUS, $MROT, $MINUS
+                CW          $ROTE, $OVER, $PLUS, $MROT, $MINUS
                 $END_COLON
 
 ;  SKIP-BLANK

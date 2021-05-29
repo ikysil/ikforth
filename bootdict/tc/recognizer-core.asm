@@ -52,7 +52,7 @@
                 ; S: R:TABLE
                 CW          $EXIT
                 _THEN       DO_REC_FOUND
-                CW          $DROP, $R_FROM, $TWO_R_FROM, $ROT
+                CW          $DROP, $R_FROM, $TWO_R_FROM, $ROTE
                 _REPEAT     DO_REC_LOOP
                 CW          $DROP, $TWO_DROP, $R_FROM, $DROP, $R_FAIL
                 $END_COLON
