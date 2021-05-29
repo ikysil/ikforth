@@ -90,7 +90,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $2DUP
                 CFETCH      $CURRENT
                 CW          $SEARCH_WORDLIST        ; c-addr u 0 | c-addr u xt +/-1
-                CW          $ZERONOEQ
+                CW          $ZERO_NOT_EQUALS
                 _IF         PREPORT_NAME_HAS_DUPLICATE
                 CW          $DROP
                 $WRITE  'Redefinition of '

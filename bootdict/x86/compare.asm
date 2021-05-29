@@ -80,7 +80,7 @@
 ;  6.2.0260 0<>
 ;  Flag is true if and only if x is not equal to zero.
 ;  D: x -- flag
-                $CODE       '0<>',$ZERONOEQ,VEF_USUAL
+                $CODE       '0<>',$ZERO_NOT_EQUALS,VEF_USUAL
                 COMPZ_OP    NZ
                 $NEXT
 

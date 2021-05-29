@@ -16,7 +16,7 @@
                 $TRACE_WORD  'R:WORD-INT'
                 $TRACE_STACK 'R:WORD-INT-A:',2
                 }
-                CW          $AMPCOMPILE_ONLY, $AND, $ZERONOEQ
+                CW          $AMPCOMPILE_ONLY, $AND, $ZERO_NOT_EQUALS
                 _IF         R_WORD_INT_COMPILE_ONLY
                 CW          $CODE_TO_NAME, $NAME_TO_STRING
                 CW          $SQTOPOCKET, $DROP
@@ -32,7 +32,7 @@
                 $TRACE_WORD  'R:WORD-COMP'
                 $TRACE_STACK 'R:WORD-COMP-A:',2
                 }
-                CW          $AMPIMMEDIATE, $AND, $ZERONOEQ
+                CW          $AMPIMMEDIATE, $AND, $ZERO_NOT_EQUALS
                 _IF         R_WORD_COMP_IMMEDIATE
                 CW          $EXECUTE
                 _ELSE       R_WORD_COMP_IMMEDIATE

@@ -47,7 +47,7 @@
                 CW          $WLTOLATEST, $FETCH
                 CW          $SWAP, $TOR
                 _BEGIN      STDWLTW_LOOP
-                CW          $DUP, $ZERONOEQ
+                CW          $DUP, $ZERO_NOT_EQUALS
                 _WHILE      STDWLTW_LOOP
                 CW          $RFETCH, $OVER, $TOR, $EXECUTE, $RFROM, $SWAP
                 _IF         STDWLTW_CONTINUE
