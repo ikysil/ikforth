@@ -111,7 +111,7 @@
 ;  6.1.0550 >BODY
 ;  Convert CFA to PFA
 ;  D: CFA -- PFA
-                $COLON      '>BODY',$TOBODY
+                $COLON      '>BODY',$TO_BODY
                 CCLIT       CFA_SIZE
                 CW          $PLUS
                 $END_COLON
