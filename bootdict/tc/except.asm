@@ -38,7 +38,7 @@
 ;  Move x from the exception stack to the data stack.
 ;  ( D: -- x ) ( EXC:  x -- )
                 $COLON      'EXC>',$EXCFROM
-                CW          $EXCPFETCH, $DUP, $FETCH, $SWAP, $CELLADD, $EXCPSTORE
+                CW          $EXCPFETCH, $DUP, $FETCH, $SWAP, $CELL_PLUS, $EXCPSTORE
                 $END_COLON
 
 ;  EXC@

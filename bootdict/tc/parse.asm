@@ -149,7 +149,7 @@
 ;  (S")
 ;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
-                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELLADD, $2DUP, $ADD, $TOR, $SWAP
+                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $ADD, $TOR, $SWAP
                 $END_COLON
 
 ;  S"-COMP

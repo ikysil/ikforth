@@ -67,7 +67,7 @@
 
 ;  6.1.0880 CELL+
 ;  D: addr - addr+cellsize
-                $CODE       'CELL+',$CELLADD,VEF_USUAL
+                $CODE       'CELL+',$CELL_PLUS,VEF_USUAL
                 POPDS       EAX
                 ADD         EAX,CELL_SIZE
                 PUSHDS      EAX

@@ -24,13 +24,13 @@
 ;  R>COMP
 ;  R:TABLE -- XT-COMPILE
                 $COLON      'R>COMP',$R2COMP
-                CW          $CELLADD, $FETCH
+                CW          $CELL_PLUS, $FETCH
                 $END_COLON
 
 ;  R>POST
 ;  R:TABLE -- XT-POSTPONE
                 $COLON      'R>POST',$R2POST
-                CW          $CELLADD, $CELLADD, $FETCH
+                CW          $CELL_PLUS, $CELL_PLUS, $FETCH
                 $END_COLON
 
 ;  DO-RECOGNIZER

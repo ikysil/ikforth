@@ -20,7 +20,7 @@
 ;  WID>XT-TRAVERSE
 ;  D: ( wid -- xt-traverse )
                 $COLON      'WID>XT-TRAVERSE',$WID_TO_XT_TRAVERSE
-                CW          $WID_TO_VT, $FETCH, $CELLADD, $FETCH
+                CW          $WID_TO_VT, $FETCH, $CELL_PLUS, $FETCH
                 $END_COLON
 
 ;  16.6.1.2192 SEARCH-WORDLIST
