@@ -21,7 +21,7 @@
 
 ;  6.1.0120 +
 ;  D: a b -- a+b
-                $CODE       '+',$ADD,VEF_USUAL
+                $CODE       '+',$PLUS,VEF_USUAL
                 POPDS       EAX
                 POPDS       EBX
                 ADD         EAX,EBX

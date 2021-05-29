@@ -38,7 +38,7 @@
                 _IF         SLS_SHORT
                 CW          $DROP, $DUP
                 _THEN       SLS_SHORT
-                CW          $ROT, $OVER, $ADD, $MROT, $SUB
+                CW          $ROT, $OVER, $PLUS, $MROT, $SUB
                 $END_COLON
 
 ;  SKIP-BLANK
@@ -71,7 +71,7 @@
 ;  S: n --
 ;  Add n to the value of >IN
                 $COLON      '>IN+',$TOINADD
-                CW          $TOIN, $FETCH, $ADD, $TOIN, $STORE
+                CW          $TOIN, $FETCH, $PLUS, $TOIN, $STORE
                 $END_COLON
 
 ;  (PARSE-NAME)
@@ -136,7 +136,7 @@
                 CW          $DUP, $POCKET, $DUP, $TOR, $C_STORE
                 CW          $RFETCH, $1ADD, $SWAP
                 CW          $2DUP, $2TOR, $CMOVE, $2RFROM
-                CW          $CHARS, $ADD, $BL, $SWAP, $STORE
+                CW          $CHARS, $PLUS, $BL, $SWAP, $STORE
                 CW          $RFROM
                 $END_COLON
 
@@ -149,7 +149,7 @@
 ;  (S")
 ;  S: -- c-addr count
                 $COLON      '(S")',$PSQUOTE
-                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $ADD, $TOR, $SWAP
+                CW          $RFROM, $DUP, $FETCH, $SWAP, $CELL_PLUS, $2DUP, $PLUS, $TOR, $SWAP
                 $END_COLON
 
 ;  S"-COMP
@@ -177,7 +177,7 @@
                 CFETCH      $SQINDEX
                 CW          $1ADD, $SQINDEX_MASK, $AND, $DUP
                 CSTORE      $SQINDEX
-                CW          $SLSQBUFFER, $STAR, $SQBUFFER, $ADD
+                CW          $SLSQBUFFER, $STAR, $SQBUFFER, $PLUS
                 $END_COLON
 
 ;  >S"BUFFER

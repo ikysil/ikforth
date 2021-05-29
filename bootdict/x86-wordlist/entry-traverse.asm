@@ -113,5 +113,5 @@
 ;  D: CFA -- PFA
                 $COLON      '>BODY',$TOBODY
                 CCLIT       CFA_SIZE
-                CW          $ADD
+                CW          $PLUS
                 $END_COLON

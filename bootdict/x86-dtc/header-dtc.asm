@@ -16,7 +16,7 @@
 ;  code-addr is the code address of the word xt
                 $COLON      'CFA@',$CFAFETCH
                 CCLIT       CFA_EXECUTOR_OFFSET
-                CW          $ADD, $FETCH
+                CW          $PLUS, $FETCH
                 $END_COLON
 
 ;  CFA!
@@ -24,7 +24,7 @@
 ;  Change a code address of the word xt to code-addr
                 $COLON      'CFA!',$CFASTORE
                 CCLIT       CFA_EXECUTOR_OFFSET
-                CW          $ADD, $STORE
+                CW          $PLUS, $STORE
                 $END_COLON
 
 ;  CODE-ADDRESS!

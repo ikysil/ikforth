@@ -173,7 +173,7 @@ NEXT_CODE_SIZE  EQU         NEXT_CODE_END - NEXT_CODE_START
                 CW          $DROP, $HERE
                 ;   D: xt
                 CCLIT       CFA_SIZE
-                CW          $ADD
+                CW          $PLUS
                 ;   D: code-addr
                 _THEN       PCFA_C_HAS_CODE_ADDR
                 CW          $HERE
