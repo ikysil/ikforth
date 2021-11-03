@@ -30,6 +30,7 @@ jobs:
           docker/fedora-32/Dockerfile,
           docker/fedora-33/Dockerfile,
           docker/fedora-34/Dockerfile,
+          docker/fedora-35/Dockerfile,
           docker/ubuntu-18.04-lts/Dockerfile,
           docker/ubuntu-20.04-lts/Dockerfile,
           docker/ubuntu-20.10/Dockerfile,
