@@ -4,7 +4,7 @@
 set -o errexit
 set -o pipefail
 
-fasm_version=1.73.23
+fasm_version=1.73.28
 workdir=`mktemp -d fasm.XXXXXXXXXX`
 
 cd ${workdir}
