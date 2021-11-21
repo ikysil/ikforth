@@ -26,6 +26,7 @@ jobs:
         DOCKER_FILE: [
           docker/centos-7/Dockerfile,
           docker/centos-8/Dockerfile,
+          docker/centos-stream8/Dockerfile,
           docker/fedora-31/Dockerfile,
           docker/fedora-32/Dockerfile,
           docker/fedora-33/Dockerfile,
