@@ -35,7 +35,6 @@ jobs:
           docker/fedora-35/Dockerfile,
           docker/ubuntu-18.04-lts/Dockerfile,
           docker/ubuntu-20.04-lts/Dockerfile,
-          docker/ubuntu-20.10/Dockerfile,
           docker/ubuntu-21.04/Dockerfile,
           docker/ubuntu-21.10/Dockerfile,
         ]
