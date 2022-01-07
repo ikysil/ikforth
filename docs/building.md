@@ -2,8 +2,8 @@
 
 ## Pre-requisites
 
-* SConstruct 3.1+
-* flat assembler version 1.73.23
+* SConstruct 4.3+
+* flat assembler version 1.73+
   * Linux version for Linux environment
   * Windows version for Windows and Cygwin environments
   * `listing` utility built from sources provided with flat assembler package
@@ -20,7 +20,7 @@
 ## Dockerized build environment with Docker
 
 ```bash
-docker build --rm -f docker/fedora-31/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+docker build --rm -f docker/fedora-35/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
 docker run --rm -it -v $PWD:/opt/ikforth --userns=host ikforth-build:latest -c "scons -c && scons all"
 ```
 
@@ -33,7 +33,7 @@ docker run --rm -it -v $PWD:/opt/ikforth --userns=host ikforth-build:latest
 ## Dockerized build environment with Podman
 
 ```bash
-podman build --rm -f docker/fedora-31/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+podman build --rm -f docker/fedora-35/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
 podman run --rm -it -v $PWD:/opt/ikforth --userns=keep-id ikforth-build:latest -c "scons -c && scons all"
 ```
 
