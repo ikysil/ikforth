@@ -5,7 +5,7 @@ ENV LANG=C.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=C.UTF-8
 
-RUN dnf -y install \
+RUN dnf -y --nobest install \
         git \
         wget \
         gcc-c++ \
