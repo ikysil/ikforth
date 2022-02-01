@@ -86,7 +86,7 @@ Thread model: posix
 gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC)
 ```
 
-### CentOS 8 - OK
+### CentOS 8 - EOL
 
 ```plain
 Using built-in specs.
@@ -167,7 +167,7 @@ Thread model: posix
 gcc version 7.5.0 (Ubuntu 7.5.0-3ubuntu1~18.04)
 ```
 
-### Ubuntu 19.10 - OK
+### Ubuntu 19.10 - EOL
 
 ```plain
 Using built-in specs.

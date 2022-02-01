@@ -1,14 +1,14 @@
-FROM centos:8
+FROM rockylinux:8
 LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 
-ENV LANG=en_US.UTF-8 \
+ENV LANG=C.UTF-8 \
     LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8
+    LC_ALL=C.UTF-8
 
-RUN yum -y install \
+RUN dnf -y install \
         epel-release \
         && \
-    yum -y install \
+    dnf -y install \
         git \
         wget \
         gcc-c++ \
@@ -16,7 +16,7 @@ RUN yum -y install \
         glibc-devel libgcc libstdc++ readline \
         python3 python3-pip \
         && \
-    yum clean all
+    dnf clean all
 
 ADD docker /opt/docker
 

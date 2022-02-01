@@ -25,7 +25,6 @@ jobs:
       matrix:
         DOCKER_FILE: [
           docker/centos-7/Dockerfile,
-          docker/centos-8/Dockerfile,
           docker/centos-stream8/Dockerfile,
           docker/centos-stream9/Dockerfile,
           docker/fedora-31/Dockerfile,
@@ -34,6 +33,7 @@ jobs:
           docker/fedora-34/Dockerfile,
           docker/fedora-35/Dockerfile,
           docker/fedora-36/Dockerfile,
+          docker/rocky-8/Dockerfile,
           docker/ubuntu-18.04-lts/Dockerfile,
           docker/ubuntu-20.04-lts/Dockerfile,
           docker/ubuntu-21.04/Dockerfile,
