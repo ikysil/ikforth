@@ -10,5 +10,5 @@ insert_final_newline = true
 [*.4th]
 indent_size = 3
 
-[*.yml,*.md]
+[{*.yml,*.md,*.sh}]
 indent_size = 2
