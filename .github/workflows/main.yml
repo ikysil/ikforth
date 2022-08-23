@@ -36,8 +36,6 @@ jobs:
           docker/rocky-8.5/Dockerfile,
           docker/ubuntu-18.04-lts/Dockerfile,
           docker/ubuntu-20.04-lts/Dockerfile,
-          docker/ubuntu-21.04/Dockerfile,
-          docker/ubuntu-21.10/Dockerfile,
           docker/ubuntu-22.04-lts/Dockerfile,
         ]
 
