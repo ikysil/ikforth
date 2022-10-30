@@ -33,6 +33,7 @@ jobs:
           docker/fedora-34/Dockerfile,
           docker/fedora-35/Dockerfile,
           docker/fedora-36/Dockerfile,
+          docker/fedora-37/Dockerfile,
           docker/rocky-8/Dockerfile,
           docker/rocky-8.5/Dockerfile,
           docker/rocky-9/Dockerfile,

@@ -5,3 +5,4 @@
 build/*
 core.*
 *.log
+.fleet/*
