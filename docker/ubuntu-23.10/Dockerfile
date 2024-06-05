@@ -1,4 +1,4 @@
-FROM ubuntu:22.10
+FROM ubuntu:23.10
 LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 
 ENV LANG=C.UTF-8 \
