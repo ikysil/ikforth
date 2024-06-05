@@ -1,4 +1,4 @@
-FROM fedora:36
+FROM fedora:40
 LABEL maintainer="Illya Kysil <ikysil@ikysil.name>"
 
 ENV LANG=C.UTF-8 \
