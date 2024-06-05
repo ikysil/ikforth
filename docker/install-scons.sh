@@ -9,7 +9,15 @@ if [[ ! -f /usr/bin/python3 ]]; then
     exit 1
 fi
 
-PIP="python3 -m pip"
+python3 -m venv /opt/scons
+PIP="/opt/scons/bin/pip"
 
 $PIP install --upgrade pip
 $PIP install -r /opt/docker/python-requirements.txt
+
+ln -s /opt/scons/bin/scons /usr/bin/scons
+
+if [[ ! -x "$(command -v scons)" ]]; then
+    echo SCons installation failed
+    exit 1
+fi
