@@ -15,7 +15,7 @@ RUN yes | ( dpkg --add-architecture i386 && \
 RUN yes | ( apt-get install --no-install-recommends \
     git \
     wget \
-    python3 python3-pip \
+    python3 python3-venv \
     libreadline8 libreadline8:i386 \
     libc6-dev libc6-dev-i386 \
     libgcc1 libgcc1:i386 \
