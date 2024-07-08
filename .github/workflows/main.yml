@@ -24,7 +24,6 @@ jobs:
     strategy:
       matrix:
         DOCKER_FILE: [
-          docker/centos-7/Dockerfile,
           docker/centos-stream9/Dockerfile,
           docker/fedora-39/Dockerfile,
           docker/fedora-40/Dockerfile,
