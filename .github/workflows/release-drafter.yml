@@ -8,6 +8,9 @@ jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
       - name: Generate Git Describe version
         id: git_describe_ver
         run: |
