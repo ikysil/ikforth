@@ -14,13 +14,14 @@ jobs:
           export GIT_DESC=`git describe --tags --always --abbrev=8 --dirty=-wip`
           export BUILD_TAG=${GIT_DESC}
           export VERSION=${BUILD_TAG:1}
-          echo ::set-output name=version::${VERSION}
-          echo ::set-output name=tag::${BUILD_TAG}
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "tag=${BUILD_TAG}" >> $GITHUB_OUTPUT
+          echo "name=IKForth ${VERSION}" >> $GITHUB_OUTPUT
           echo "Version set to ${VERSION}"
       - uses: release-drafter/release-drafter@v6
         with:
           tag: ${{ steps.git_describe_ver.outputs.tag }}
-          name: IKForth ${{ steps.git_describe_ver.outputs.version }}
+          name: ${{ steps.git_describe_ver.outputs.name }}
           version: ${{ steps.git_describe_ver.outputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
