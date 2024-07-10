@@ -13,3 +13,14 @@ updates:
     labels:
       - area/infra
     rebase-strategy: auto
+
+    - package-ecosystem: "pip"
+    directory: "/docker"
+    schedule:
+      interval: daily
+      time: "00:30"
+      timezone: Europe/Paris
+    open-pull-requests-limit: 2
+    labels:
+      - area/infra
+    rebase-strategy: auto
