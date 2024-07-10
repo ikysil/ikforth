@@ -14,7 +14,7 @@ updates:
       - area/infra
     rebase-strategy: auto
 
-    - package-ecosystem: "pip"
+  - package-ecosystem: "pip"
     directory: "/docker"
     schedule:
       interval: daily
