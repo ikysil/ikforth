@@ -20,7 +20,7 @@
 ## Dockerized build environment with Docker
 
 ```bash
-docker build --rm -f docker/fedora-35/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+docker build --rm -f docker/fedora-40/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
 docker run --rm -it -v $PWD:/opt/ikforth --userns=host ikforth-build:latest -c "scons -c && scons all"
 ```
 
@@ -33,7 +33,7 @@ docker run --rm -it -v $PWD:/opt/ikforth --userns=host ikforth-build:latest
 ## Dockerized build environment with Podman
 
 ```bash
-podman build --rm -f docker/fedora-35/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
+podman build --rm -f docker/fedora-40/Dockerfile --build-arg RUNUID=$UID -t ikforth-build:latest .
 podman run --rm -it -v $PWD:/opt/ikforth --userns=keep-id ikforth-build:latest -c "scons -c && scons all"
 ```
 
