@@ -35,6 +35,9 @@ RUN useradd ${RUNUSER} --uid ${RUNUID} --user-group
 
 USER ${RUNUSER}
 
+ENV WINEARCH=win32 \
+    WINEPREFIX=/home/${RUNUSER}/.wine
+
 RUN winecfg
 
 VOLUME ["/opt/ikforth"]
