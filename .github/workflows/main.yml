@@ -32,8 +32,8 @@ jobs:
           docker/ubuntu-18.04-lts/Dockerfile,
           docker/ubuntu-20.04-lts/Dockerfile,
           docker/ubuntu-22.04-lts/Dockerfile,
-          docker/ubuntu-23.10/Dockerfile,
           docker/ubuntu-24.04-lts/Dockerfile,
+          docker/ubuntu-24.10/Dockerfile,
         ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
