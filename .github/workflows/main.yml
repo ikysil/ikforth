@@ -28,6 +28,7 @@ jobs:
           docker/centos-stream9/Dockerfile,
           docker/fedora-39/Dockerfile,
           docker/fedora-40/Dockerfile,
+          docker/fedora-41/Dockerfile,
           docker/rocky-8/Dockerfile,
           docker/rocky-9/Dockerfile,
           docker/ubuntu-18.04-lts/Dockerfile,
