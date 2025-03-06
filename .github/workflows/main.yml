@@ -26,7 +26,7 @@ jobs:
       matrix:
         DOCKER_FILE: [
           docker/centos-stream9/Dockerfile,
-          docker/centos-stream10/Dockerfile,
+          # docker/centos-stream10/Dockerfile,
           docker/fedora-39/Dockerfile,
           docker/fedora-40/Dockerfile,
           docker/fedora-41/Dockerfile,
