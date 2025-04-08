@@ -12,7 +12,7 @@ on:
 
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 4 */7 * *'
+    - cron: "0 4 */7 * *"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,20 +24,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        DOCKER_FILE: [
-          docker/centos-stream9/Dockerfile,
-          # docker/centos-stream10/Dockerfile,
-          docker/fedora-39/Dockerfile,
-          docker/fedora-40/Dockerfile,
-          docker/fedora-41/Dockerfile,
-          docker/rocky-8/Dockerfile,
-          docker/rocky-9/Dockerfile,
-          docker/ubuntu-18.04-lts/Dockerfile,
-          docker/ubuntu-20.04-lts/Dockerfile,
-          docker/ubuntu-22.04-lts/Dockerfile,
-          docker/ubuntu-24.04-lts/Dockerfile,
-          docker/ubuntu-24.10/Dockerfile,
-        ]
+        CI_OS:
+          - centos-stream9
+          # - centos-stream10
+          - fedora-39
+          - fedora-40
+          - fedora-41
+          - rocky-8
+          - rocky-9
+          - ubuntu-18.04-lts
+          - ubuntu-20.04-lts
+          - ubuntu-22.04-lts
+          - ubuntu-24.04-lts
+          - ubuntu-24.10
+          - ubuntu-25.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -46,7 +46,7 @@ jobs:
 
       - name: Prepare the build container
         env:
-          DOCKER_FILE: ${{ matrix.DOCKER_FILE }}
+          DOCKER_FILE: docker/${{ matrix.CI_OS }}/Dockerfile
         run: |
           docker build --rm -f ${DOCKER_FILE} --build-arg RUNUID=$UID -t ikforth-build:latest .
           docker run --rm -i -v $PWD:/opt/ikforth ikforth-build:latest -c "scons -c linux all && scons -c win32 all"
