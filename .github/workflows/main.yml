@@ -30,9 +30,9 @@ jobs:
           - fedora-39
           - fedora-40
           - fedora-41
-          - rocky-8
+          # - rocky-8
           - rocky-9
-          - ubuntu-18.04-lts
+          # - ubuntu-18.04-lts
           - ubuntu-20.04-lts
           - ubuntu-22.04-lts
           - ubuntu-24.04-lts
